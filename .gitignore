@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.cache/
+.private/
+node_modules/
+.DS_Store
+.sites-runtime/
+test-results/
+build/
+.wrangler/
+.dev.vars
+.dev.vars.*

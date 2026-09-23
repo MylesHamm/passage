@@ -1,0 +1,29 @@
+passage-oil-quotes { display: block; min-width: 0; }
+.oil-intraday-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px 8px; }
+.oil-intraday-heading .eyebrow { font-size: 9px; color: var(--mint); }
+.oil-intraday-heading p { margin: 4px 0 0; font-size: 12px; }
+.oil-intraday-heading p span { color: var(--command-dim); font-size: 10px; }
+.oil-intraday-heading .text-button { min-height: 36px; font-size: 11px; padding: 6px; }
+.oil-provider-chart { height: 280px; margin: 0 8px; background: #131722; border-radius: 4px; overflow: hidden; }
+.oil-provider-chart iframe { width: 100%; height: 100%; border: 0; display: block; }
+.oil-provider-status, .oil-provider-credit { margin: 0; padding: 8px 14px 0; font-size: 10px; line-height: 1.6; color: var(--command-dim); }
+.oil-provider-credit { padding-top: 4px; }
+.oil-provider-credit a, .oil-provider-links a { color: var(--sky, #44ACE9); }
+.oil-quote-notes { padding: 8px 14px 12px; color: var(--command-dim); font-size: 11px; line-height: 1.6; }
+.oil-quote-notes summary { cursor: pointer; min-height: 28px; padding: 4px 0; }
+.oil-quote-notes p { margin: 8px 0; }
+.oil-provider-links { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.oil-provider-links a { min-height: 28px; display: inline-flex; align-items: center; }
+passage-oil-quotes[data-quote-state="unavailable"] .oil-provider-chart { display: none; }
+passage-oil-quotes[data-quote-state="unavailable"] .oil-provider-status,
+passage-oil-quotes[data-quote-state="slow"] .oil-provider-status { color: var(--mint); }
+.oil-spot-history { border-top: 1px solid var(--rule); }
+.oil-spot-history > summary { cursor: pointer; padding: 12px 14px; font-size: 12px; min-height: 44px; }
+.oil-spot-history > summary small { display: block; margin: 5px 0 0 14px; font-size: 10px; color: var(--command-dim); }
+.oil-history-period { padding: 0 14px 4px; display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--command-dim); font-size: 10px; }
+.command-center .context-column.has-selection passage-oil-quotes,
+.command-center .context-column.has-selection .oil-spot-history { display: none; }
+.view-energy .oil-provider-chart { height: 320px; }
+@media (max-width: 540px) {
+  .oil-intraday-heading p span { display: block; margin-top: 3px; }
+}

@@ -1,0 +1,64 @@
+#monitoring-dock{margin:0 0 28px;min-width:0;scroll-margin-top:88px}
+#monitoring-dock .monitor-shell{border:1px solid var(--border);background:rgba(5,17,29,.84);color:var(--mist);overflow:hidden}
+#monitoring-dock .monitor-toolbar{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 24px;border-bottom:1px solid var(--border)}
+#monitoring-dock .monitor-eyebrow{color:var(--green);font:10px/1.5 Consolas,monospace;letter-spacing:.16em}
+#monitoring-dock h2{font-size:20px;line-height:1.3;letter-spacing:-.02em;margin:5px 0 0;font-weight:500}
+#monitoring-dock .monitor-tabs{display:flex;gap:4px;flex-wrap:wrap}
+#monitoring-dock button{min-height:36px;padding:8px 12px;border:1px solid var(--border);border-radius:3px;background:transparent;color:var(--mist);font-size:12px;cursor:pointer;line-height:1.4}
+#monitoring-dock button:hover{border-color:var(--sky);background:rgba(68,172,233,.06)}
+#monitoring-dock button:focus-visible,#monitoring-dock a:focus-visible,#monitoring-dock input:focus-visible,#monitoring-dock select:focus-visible,#monitoring-dock summary:focus-visible{outline:2px solid var(--sky);outline-offset:3px}
+#monitoring-dock button:disabled{opacity:.45;cursor:default}
+#monitoring-dock .monitor-tabs button{border-color:transparent;white-space:nowrap}
+#monitoring-dock .monitor-tabs button[aria-pressed=true]{border-color:var(--border);background:rgba(130,250,129,.08);color:var(--mint)}
+#monitoring-dock .monitor-arrivals{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:11px 24px;border-bottom:1px solid var(--border);font-size:11px;color:var(--line);line-height:1.55}
+#monitoring-dock .monitor-arrivals.has-arrivals{background:rgba(130,250,129,.06);border-left:2px solid var(--green)}
+#monitoring-dock .monitor-arrivals strong{color:var(--mint);font-weight:500;margin-right:8px}
+#monitoring-dock .monitor-primary{background:var(--mint);color:var(--deep);border-color:var(--mint);font-weight:600;white-space:nowrap}
+#monitoring-dock .monitor-primary:hover{background:var(--green);color:var(--deep)}
+#monitoring-dock .monitor-body{padding:22px 24px;min-height:170px}
+#monitoring-dock .monitor-panel-heading,#monitoring-dock .monitor-intro{display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+#monitoring-dock .monitor-intro{align-items:center;min-height:115px}
+#monitoring-dock h3{font-size:16px;line-height:1.5;font-weight:500;margin:0 0 5px}
+#monitoring-dock h3 span,#monitoring-dock .monitor-watch-name span{display:inline-block;margin-left:7px;padding:1px 6px;font:11px/1.5 Consolas,monospace;background:rgba(130,250,129,.1);color:var(--mint);vertical-align:middle}
+#monitoring-dock p{font-size:12px;line-height:1.65;color:var(--line);margin:0 0 12px;max-width:950px}
+#monitoring-dock .monitor-panel-heading>button{flex-shrink:0}
+#monitoring-dock .monitor-report-list{padding:0;margin:14px 0 0;list-style:none}
+#monitoring-dock .monitor-report-list>li{display:flex;align-items:flex-start;gap:20px;padding:14px 0;border-top:1px solid var(--border)}
+#monitoring-dock .monitor-report-copy{min-width:0;flex:1}
+#monitoring-dock .monitor-headline{display:inline;padding:0;border:0;min-height:0;text-align:left;font-size:13px;line-height:1.5;font-weight:500;text-decoration:none;color:var(--mist);overflow-wrap:anywhere}
+#monitoring-dock .monitor-headline:hover{background:transparent;text-decoration:underline;text-underline-offset:3px}
+#monitoring-dock .monitor-report-copy p{font-size:10px;color:var(--line);margin:5px 0 0}
+#monitoring-dock .monitor-clock{display:block;color:var(--mint);font-size:10px;line-height:1.5;margin-top:5px}
+#monitoring-dock a{color:var(--mint);text-underline-offset:3px}
+#monitoring-dock .monitor-source{font-size:10px;white-space:nowrap;margin-top:3px}
+#monitoring-dock .monitor-empty{padding:18px 0 8px;color:var(--line)}
+#monitoring-dock .monitor-footnote{font-size:10px;line-height:1.7;color:var(--line);margin:16px 0 0}
+#monitoring-dock .monitor-footnote button{padding:0;min-height:0;border:0;text-decoration:underline;font-size:inherit;color:var(--mint)}
+#monitoring-dock .monitor-grouping{margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
+#monitoring-dock .monitor-grouping summary{font-size:12px;color:var(--mint);cursor:pointer;margin-bottom:10px}
+#monitoring-dock .monitor-watch-form{display:flex;align-items:center;gap:12px;margin:9px 0 20px}
+#monitoring-dock .monitor-watch-form label{font-size:11px;color:var(--line)}
+#monitoring-dock .monitor-watch-form select{max-width:300px;min-width:170px;min-height:38px;padding:8px;border:1px solid var(--border);background:var(--deep);color:var(--mist);font-size:12px;border-radius:3px}
+#monitoring-dock .monitor-watches{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#monitoring-dock .monitor-watch{display:grid;grid-template-columns:1fr auto;align-items:start;gap:8px 12px;border-top:1px solid var(--border);padding-top:14px}
+#monitoring-dock .monitor-watch-name{font-size:14px;padding:0;border:0;text-align:left}
+#monitoring-dock .monitor-watch p{font-size:10px;margin:4px 0}
+#monitoring-dock .monitor-watch .monitor-report-list{grid-column:1/-1;margin:0}
+#monitoring-dock .monitor-watch .monitor-headline{font-size:11px}
+#monitoring-dock .monitor-remove{font-size:10px;min-height:30px;padding:5px 8px;color:var(--line)}
+#monitoring-dock .monitor-price-strip{display:flex;flex-wrap:wrap;gap:22px;margin:20px 0 0;padding:18px 0 0;border-top:1px solid var(--border)}
+#monitoring-dock .monitor-price-strip>div{min-width:230px;flex:1}
+#monitoring-dock .monitor-price-strip span{display:block;font-size:10px;color:var(--line)}
+#monitoring-dock .monitor-price-strip strong{display:block;font-size:24px;font-weight:500;line-height:1.5;font-variant-numeric:tabular-nums}
+#monitoring-dock .monitor-price-strip small{font-size:10px;font-weight:400;color:var(--line)}
+#monitoring-dock .monitor-price-strip p,#monitoring-dock .monitor-price-strip a{font-size:10px;margin:0}
+#monitoring-dock .monitor-price-state{margin-top:4px}
+#monitoring-dock .monitor-replay-scope{padding:10px 12px;border-left:2px solid var(--sky);background:rgba(68,172,233,.045);font-size:11px}
+#monitoring-dock .monitor-replay-label{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin:21px 0 10px;font-size:12px;color:var(--line)}
+#monitoring-dock .monitor-replay-label strong{font-weight:500;color:var(--mist);font-variant-numeric:tabular-nums}
+#monitoring-dock input[type=range]{width:100%;accent-color:var(--green);height:24px;cursor:pointer}
+#monitoring-dock .monitor-replay-endpoints{display:flex;justify-content:space-between;gap:14px;font:10px/1.6 Consolas,monospace;color:var(--line)}
+#monitoring-dock .monitor-status{margin:0;padding:0 24px 16px;font-size:11px;color:var(--mint)}
+#monitoring-dock .monitor-status:empty{display:none}
+@media(max-width:900px){#monitoring-dock .monitor-toolbar{align-items:flex-start;flex-direction:column;gap:15px}#monitoring-dock .monitor-watches{grid-template-columns:1fr}}
+@media(max-width:600px){#monitoring-dock .monitor-toolbar,#monitoring-dock .monitor-body{padding:18px 14px}#monitoring-dock .monitor-arrivals{padding:11px 14px;align-items:flex-start;flex-direction:column;gap:10px}#monitoring-dock .monitor-intro,#monitoring-dock .monitor-panel-heading{flex-direction:column;gap:12px}#monitoring-dock .monitor-watch-form{flex-wrap:wrap;gap:8px}#monitoring-dock .monitor-watch-form label{flex-basis:100%}#monitoring-dock .monitor-watch-form select{min-width:0;flex:1}#monitoring-dock .monitor-report-list>li{gap:12px}#monitoring-dock .monitor-tabs{gap:1px}#monitoring-dock .monitor-tabs button{padding:8px;font-size:11px}#monitoring-dock .monitor-status{padding-left:14px;padding-right:14px}#monitoring-dock .monitor-replay-endpoints{font-size:9px}#monitoring-dock h2{font-size:19px}}

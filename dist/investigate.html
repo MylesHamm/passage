@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#071A2C">
+  <meta name="description" content="Explore source-linked reporting, regional actors, energy infrastructure and oil-market mechanisms in Passage.">
+  <title>Passage · Investigate</title><link rel="icon" href="./assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./investigate.css">
+<meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<link rel="stylesheet" href="./runtime.css"><script type="module" src="./runtime-config.mjs"></script>
+</head>
+<body>
+<a class="skip-link" href="#workspace">Skip to investigation</a>
+<header class="app-header">
+  <a class="brand" href="./" aria-label="Passage Watch"><span class="brand-mark" aria-hidden="true">⌁</span><span><strong>PASSAGE</strong><small>MARITIME INTELLIGENCE</small></span></a>
+  <nav class="main-nav" aria-label="Passage workspaces"><a href="./">Watch</a><a href="./investigate.html" aria-current="page">Investigate</a><a href="./research.html">Saved research</a></nav>
+  <button class="button quiet header-add" data-add-link><span aria-hidden="true">＋</span> Add a source</button>
+</header>
+<main id="workspace" tabindex="-1">
+  <section class="workspace-intro" aria-labelledby="workspace-title"><div><p class="eyebrow">REGIONAL EVENTS <span>/</span> ENERGY CONSEQUENCES</p><h1 id="workspace-title">Investigate oil-market connections.</h1><p>Choose an actor to explore its reporting, connected infrastructure and potential oil-market mechanisms.</p></div><div class="intro-actions"><button id="export-evidence" class="button quiet" disabled>Export library</button><button id="refresh-evidence" class="button"><span aria-hidden="true">↻</span> Refresh</button></div></section>
+  <div class="source-bar"><p id="load-status" role="status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span> Loading connected sources…</p><button id="show-coverage" class="text-button">Coverage &amp; limits <span aria-hidden="true">↗</span></button></div>
+  <p id="reporting-coverage" class="microcopy coverage-overview" aria-live="polite">Checking reporting coverage…</p>
+  <section class="explore-controls" aria-label="Choose where to start">
+    <div class="actor-field"><label for="actor-select">Explore an actor</label><select id="actor-select" aria-describedby="actor-help" disabled><option value="">Loading actors…</option></select></div>
+    <div class="explore-guidance"><p id="actor-help">Switch actors here at any time. Open a short topic label to read the full source and follow its evidence paths.</p><p id="selection-status" role="status" aria-live="polite">Loading your starting point…</p></div>
+    <button id="return-to-actor" class="button quiet" hidden>Back to actor</button>
+  </section>
+  <div class="investigation-layout">
+    <section class="entity-panel" aria-labelledby="entities-heading">
+      <div class="panel-heading"><h2 id="entities-heading">Evidence library</h2><span id="library-count" class="count">—</span></div>
+      <div class="library-controls"><label class="search-field"><span class="sr-only">Search all evidence and entities</span><span aria-hidden="true">⌕</span><input id="entity-search" type="search" placeholder="Search people, places, reporting…" autocomplete="off"></label><div class="filter-row"><label>Type<select id="entity-type"><option value="all">Everything</option><option value="report">Reports</option><option value="actor">Actors</option><option value="event">Events</option><option value="asset">Infrastructure</option><option value="market">Markets</option><option value="channel">Oil mechanisms</option></select></label><label>Date window<select id="evidence-window"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="all">All dates</option></select></label></div><p id="filter-summary" class="microcopy">Undated sources remain visible and are labelled.</p></div>
+      <div id="entity-list" class="entity-list" aria-label="All matching evidence and entities"><div class="loading-placeholder" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="library-pagination"><button id="previous-page" class="icon-button" aria-label="Previous evidence page" disabled>←</button><span id="page-status">Loading…</span><button id="next-page" class="icon-button" aria-label="Next evidence page" disabled>→</button></div>
+      <button class="add-source-button" data-add-link><span aria-hidden="true">＋</span> Include an article you found</button>
+    </section>
+    <section class="network-panel" aria-labelledby="network-heading">
+      <div class="panel-heading network-heading"><div><h2 id="network-heading">Evidence network</h2><p id="network-scope">Choose an actor above to begin</p></div></div>
+      <div class="network-toolbar"><div class="view-switch" role="group" aria-label="Evidence presentation"><button id="network-view" aria-pressed="true" class="active">Network</button><button id="connections-view" aria-pressed="false">Connections list</button></div><button id="expand-network" class="small-button" disabled>Show more evidence</button></div>
+      <div id="network-key" class="network-key" aria-label="Node types and linked evidence counts"></div>
+      <div id="graph-stage" class="graph-stage"><div class="graph-scroll"><svg id="evidence-graph" role="group" aria-labelledby="graph-title graph-description"><title id="graph-title">Source-linked evidence network</title><desc id="graph-description">Each visible node has a short topic label. Focus or hover for the full original title; select to inspect its source and connections. Scroll to see every category. Tab reaches nodes; Enter selects them. Use zoom buttons or Control and scroll to zoom. Drag the canvas to pan. All items are also available in the evidence library.</desc></svg></div><div id="graph-empty" class="graph-empty"><span class="empty-symbol" aria-hidden="true">⌁</span><strong>Connecting the evidence</strong><p>Publisher records and their source links will appear here.</p></div><div id="graph-tooltip" class="graph-tooltip" role="tooltip" hidden></div><div class="graph-controls" aria-label="Network viewport"><button id="zoom-in" class="icon-button" aria-label="Zoom network in">＋</button><button id="zoom-out" class="icon-button" aria-label="Zoom network out">−</button><button id="reset-view" class="icon-button" aria-label="Fit network to view">⤢</button></div><div class="graph-hint" aria-hidden="true">Drag to pan · Ctrl + scroll to zoom</div></div>
+      <div id="connection-list" class="connection-list" hidden></div>
+      <div class="network-footer"><button id="inspect-selection" class="button inspect-selection" disabled>Inspect selected item ↓</button><p id="network-count">The network shows a focused selection; the library includes every matching record.</p><p>Select a legend type to browse its records. Lines preserve source references or text matches. Market links are shared context; no causal effect, responsibility or alliance is established.</p></div>
+    </section>
+    <aside class="inspector-panel" aria-labelledby="inspector-heading"><div class="panel-heading"><h2 id="inspector-heading" tabindex="-1">Source details</h2><span class="inspector-label">EVIDENCE</span></div><div id="inspector-body" class="inspector-body"><div class="inspector-empty"><span aria-hidden="true">◎</span><h3>Start with an actor.</h3><p>Choose an actor above, then open a connected report. Its original source, dates and reasons for each connection appear here.</p><p>Daily oil observations and potential price mechanisms have different meanings. Passage keeps them separate.</p></div></div></aside>
+  </div>
+  <footer class="workspace-footer"><span>PUBLIC REPORTING + YOUR SAVED SOURCES</span><p>Source coverage is partial. Publication time is not event time. <a href="./data-upgrades.html">Explore free sources ↗</a></p></footer>
+</main>
+<dialog id="add-source-dialog" aria-labelledby="add-source-heading"><form id="add-source-form"><div class="dialog-heading"><div><p class="eyebrow">YOUR RESEARCH</p><h2 id="add-source-heading">Include an article.</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="Close add source dialog">×</button></div><p class="dialog-intro">Keep an original link, its headline and your short note alongside the connected feeds. This saves metadata in this browser; it does not retrieve the article or connect a subscription.</p><label>Original article URL<input id="article-url" name="url" type="url" required maxlength="2000" placeholder="https://www.reuters.com/…"></label><label>Headline<input id="article-title" name="title" required maxlength="300" placeholder="Use the publisher’s headline"></label><div class="form-row"><label>Publisher<input id="article-publisher" name="publisher" required maxlength="100" placeholder="Reuters"></label><label>Publication date <small>Optional</small><input id="article-published" name="publishedAt" type="date"></label></div><label>Your note <small>Optional · up to 1,000 characters</small><textarea id="article-note" name="note" maxlength="1000" rows="4" placeholder="Why it matters, what needs checking, or a short factual summary in your own words."></textarea></label><p class="microcopy">Connections found in your headline or note are labelled as analyst-supplied text matches, not independently verified claims.</p><p id="save-source-status" role="status"></p><div class="dialog-actions"><button type="button" class="button quiet" data-close-dialog>Cancel</button><button type="submit" class="button primary">Save source</button></div></form></dialog>
+<dialog id="coverage-dialog" aria-labelledby="coverage-heading"><div class="dialog-heading"><div><p class="eyebrow">KNOW WHAT YOU ARE SEEING</p><h2 id="coverage-heading">Coverage &amp; limits</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="Close coverage dialog">×</button></div><div id="coverage-body"></div></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script type="module" src="./investigate.js"></script>
+</body>
+</html>
