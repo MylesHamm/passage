@@ -1,6 +1,6 @@
-# Passage live API candidate
+# Passage live API
 
-This local candidate separates the GitHub Pages dashboard from its background data collector. **Nothing in this folder has been deployed.** Publishing and enabling the cloud account remain a review checkpoint.
+The [published dashboard](https://myleshamm.github.io/passage/) uses a separate background data collector at `https://passage-live-api.myles-hamm.workers.dev`. This deployment was approved and verified on September 23, 2026. Publishing changes remains a deliberate release step.
 
 One Worker accepts the dashboard's fixed public GET routes. It forwards them to one named SQLite Durable Object shared by both theaters. The object stores source snapshots, retry deadlines and bounded reporting metadata, runs a collection cycle every five minutes, and maintains one AISStream connection even when nobody is viewing. A fifteen-minute platform cron reaches the same object to recover scheduling after a failed alarm or runtime restart. Source-specific refresh intervals and provider backoff remain in force; a scheduled cycle does not mean every provider publishes new data.
 
@@ -40,7 +40,7 @@ Do not put account credentials, ACLED settings, cookies or Reuters subscription 
 
 ## Reviewed deployment sequence
 
-These commands are documented for the later approved deployment. They have not been executed as part of building this candidate.
+Use this sequence for a reviewed deployment to your own account. Passage's current deployment has completed these setup steps; provider coverage and free-tier usage still require ongoing observation.
 
 1. Confirm `cloud/wrangler.jsonc` uses the intended Cloudflare account and exact Pages origin. The current origin is `https://myleshamm.github.io`; CORS origins have no repository path. Other projects under that same origin share the browser origin boundary.
 2. Authenticate Wrangler to the chosen account with the required permissions and review its free-plan limits. After release approval, create the Worker with `npm run cloud:deploy`. Keep the singleton name and migration class unchanged so both theaters continue to share one subscription and database. Renaming these can create another object and abandon the previous archive.

@@ -1,5 +1,7 @@
 # Passage
 
+[Open Passage](https://myleshamm.github.io/passage/)
+
 A globe-led watch for maritime security, regional oil supply, and the relationship between reporting and energy markets. Covers Bab el-Mandeb, Hormuz, and related regional infrastructure.
 
 The interface runs on GitHub Pages. A separate Cloudflare Worker and one SQLite Durable Object collect public-source metadata in the background, retain source timestamps, and provide a read-only API. Pages does not run a server or contain API keys.
