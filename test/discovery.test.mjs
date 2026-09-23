@@ -77,12 +77,30 @@ test('after a shared rate limit expires, never-attempted families get a turn bef
  assert.equal(requests[1],DISCOVERY_SOURCES[1].query);assert.equal(requests.at(-1),DISCOVERY_SOURCES[0].query);
  assert.ok(rows.every(row=>row.connection==='connected'&&row.resultLimit===250));
 });
-test('discovery attempts oldest checked family first without bypassing serialized spacing',async()=>{
+test('discovery attempts oldest checked family first and rechecks spacing after early timer wakes',async()=>{
+ let elapsed=0;const waits=[];
  const values=new Map(DISCOVERY_SOURCES.map((source,index)=>[source.id,{checkedAt:new Date(now-index*60000).toISOString()}]));const starts=[];
- const runtime={now:()=>now,peek:id=>values.get(id),get:async(id,interval,loader)=>{const data=await loader({fetchText:async()=>{starts.push({id,at:Date.now()});return JSON.stringify({articles:[]});}});const value={...data,id,checkedAt:new Date(now).toISOString(),retrievedAt:new Date(now).toISOString(),connection:'connected'};values.set(id,value);return value;}};
- await loadDiscovery(runtime,{}, {waitMs:500,spacingMs:15});
+ const runtime={now:()=>now,peek:id=>values.get(id),get:async(id,interval,loader)=>{const data=await loader({fetchText:async()=>{starts.push({id,at:elapsed});return JSON.stringify({articles:[]});}});const value={...data,id,checkedAt:new Date(now).toISOString(),retrievedAt:new Date(now).toISOString(),connection:'connected'};values.set(id,value);return value;}};
+ const timing={monotonicNow:()=>elapsed,sleep:async ms=>{waits.push(ms);elapsed+=ms>2?ms-2:ms;}};
+ await loadDiscovery(runtime,{}, {waitMs:500,spacingMs:15,...timing});
  assert.deepEqual(starts.map(row=>row.id),DISCOVERY_SOURCES.map(row=>row.id).reverse());
- assert.ok(starts.slice(1).every((row,index)=>row.at-starts[index].at>=14));
+ assert.ok(starts.slice(1).every((row,index)=>row.at-starts[index].at>=15));
+ assert.deepEqual(waits,[15,2,15,2,15,2,15,2]);
+});
+test('discovery spacing survives consecutive polls independently of wall-clock corrections',async()=>{
+ let elapsed=0,wall=now,lastId;const starts=[],values=new Map();
+ const runtime={now:()=>wall,peek:id=>values.get(id),get:async(id,interval,loader)=>{
+   const data=await loader({fetchText:async()=>{lastId=id;starts.push(elapsed);return JSON.stringify({articles:[]});}});
+   const value={...data,id,checkedAt:new Date(wall).toISOString(),retrievedAt:new Date(wall).toISOString(),connection:'connected'};
+   values.set(id,value);return value;
+ }};
+ const options={waitMs:500,spacingMs:6000,monotonicNow:()=>elapsed,sleep:async ms=>{elapsed+=ms;wall+=starts.length%2?3600000:-7200000;}};
+ await loadDiscovery(runtime,{},options);
+ await loadDiscovery(runtime,{},options);
+ assert.equal(starts.length,10);
+ assert.ok(starts.slice(1).every((at,index)=>at-starts[index]>=6000));
+ assert.equal(elapsed,54000);
+ assert.equal(values.get(lastId).retrievedAt,new Date(wall).toISOString());
 });
 test('restart restores every family cache before a shared provider limit can stop discovery',async()=>{
  const savedAt='2026-09-16T10:00:00.000Z',files=new Map(),reads=[],requests=[];
