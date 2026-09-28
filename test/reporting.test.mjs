@@ -2,6 +2,7 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import {SourceRuntime} from '../lib/source-runtime.mjs';
 import {loadReporting,deduplicateReports} from '../lib/reporting.mjs';
 import {SOURCE_DEFINITIONS} from '../dist/source-health.mjs';
+import {SOURCES} from '../lib/feeds.mjs';
 
 const now=Date.parse('2026-09-17T12:00:00Z');
 const storage={readFile:async()=>{throw Object.assign(Error(),{code:'ENOENT'});},mkdir:async()=>{},writeFile:async()=>{}};
@@ -18,11 +19,42 @@ test('aggregated reporting keeps regional context, source provenance and per-sou
  assert.ok(result.items.some(x=>x.relevanceScopes.includes('regional-energy')&&x.theaters.length===0));
  assert.equal(result.sources.find(x=>x.id==='un').connection,'unavailable');
  assert.equal(result.sources.find(x=>x.id==='centcom').publicationPrecision,'day');
- assert.equal(result.sources.length,12);assert.equal(result.coverage.complete,false);
+ assert.equal(result.sources.length,14);assert.equal(result.coverage.complete,false);
  assert.ok(result.items.find(x=>x.url==='https://example.com/pipeline').provenance.length>1);
  assert.ok(result.items.find(x=>x.url==='https://example.com/pipeline').publishedAt);
  assert.ok(result.sources.every(x=>!('items' in x)));assert.ok(urls.every(x=>!x.includes('example.com')));
  const previous=urls.length;result=await loadReporting(runtime,{reliefweb:false,discoveryWaitMs:30000,discoverySpacingMs:0},{});assert.equal(urls.length,previous);
+});
+test('Arab News and France 24 retain attributed publisher reporting during a GDELT outage',async()=>{
+ const current=Date.parse('2026-09-28T18:00:00Z');
+ const publishers=[
+  {id:'arabnews',name:'Arab News',feed:'https://www.arabnews.com/rss',title:'Houthis announce restrictions on Saudi shipping',url:'https://www.arabnews.com/node/fixture-shipping',date:'Mon, 28 Sep 2026 16:21:32 GMT',publishedAt:'2026-09-28T16:21:32.000Z',summary:'The report attributes the shipping restrictions to a Houthi statement.',actor:'Houthis',theater:'bab'},
+  {id:'france24',name:'France 24 Middle East',feed:'https://www.france24.com/en/middle-east/rss',title:'Iran proposes reopening Hormuz for oil shipments',url:'https://www.france24.com/en/middle-east/fixture-hormuz',date:'Sun, 27 Sep 2026 22:10:44 GMT',publishedAt:'2026-09-27T22:10:44.000Z',summary:'The report discusses Iranian negotiations and crude shipments through the strait.',actor:'Iran',theater:'hormuz'},
+ ];
+ const requests=[];
+ const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>current,fetchImpl:async url=>{
+  const address=new URL(url);requests.push(address.href);
+  if(address.hostname==='api.gdeltproject.org')return new Response('Rate limited',{status:429,headers:{'Retry-After':'900'}});
+  const publisher=publishers.find(source=>source.feed===address.href);
+  if(!publisher)return new Response('Unavailable',{status:503});
+  return new Response(`<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>${publisher.name}</title><item><title>${publisher.title}</title><link>${publisher.url}</link><pubDate>${publisher.date}</pubDate><description><![CDATA[<p>${publisher.summary}</p>]]></description><media:thumbnail url="https://example.com/unused-image"/></item><item><title>Local gardening exhibition opens</title><link>https://example.com/unrelated-${publisher.id}</link><pubDate>${publisher.date}</pubDate><description>Community planting projects.</description></item></channel></rss>`);
+ }});
+ const result=await loadReporting(runtime,{reliefweb:false,includeReviewedContext:false,discoveryWaitMs:30000,discoverySpacingMs:0});
+ assert.equal(result.items.length,2);assert.equal(result.coverage.publisherSources,8);assert.equal(result.coverage.complete,false);
+ for(const publisher of publishers){
+  const registered=SOURCES.find(source=>source.id===publisher.id),record=result.items.find(item=>item.sourceId===publisher.id),health=result.sources.find(source=>source.id===publisher.id);
+  assert.equal(registered.url,publisher.feed);assert.equal(registered.interval,300);
+  assert.equal(record.title,publisher.title);assert.equal(record.publisher,publisher.name);assert.equal(record.source,publisher.name);
+  assert.equal(record.url,publisher.url);assert.equal(record.summary,publisher.summary);assert.equal(record.publishedAt,publisher.publishedAt);
+  assert.equal(record.eventDate,null);assert.equal(record.discoveredAt,null);assert.equal(record.dateBasis,'publisher-publication');assert.equal(record.contentAccess,'publisher-summary');
+  assert.ok(record.theaters.includes(publisher.theater));assert.ok(record.actors.includes(publisher.actor));
+  assert.equal(health.connection,'connected');assert.equal(health.recordCount,1);assert.equal(health.parsedCount,2);assert.equal(health.retrievedAt,new Date(current).toISOString());
+  assert.equal(record.provenance[0].sourceId,publisher.id);assert.equal(record.provenance[0].publishedAt,publisher.publishedAt);
+ }
+ assert.equal(result.items.find(item=>item.sourceId==='france24').energy,true);
+ assert.equal(requests.filter(url=>new URL(url).hostname==='api.gdeltproject.org').length,1);
+ assert.ok(result.sources.filter(source=>source.group==='discovery').every(source=>source.status==='unavailable'));
+ assert.ok(!JSON.stringify(result).includes('unused-image'));
 });
 test('deduplication preserves publication metadata over discovery without claiming independent confirmation',()=>{
  const a={id:'rss',url:'https://example.com/story?utm_source=rss',sourceId:'bbc',publisher:'BBC',publishedAt:'2026-09-17T10:00:00Z',discoveredAt:null,dateBasis:'publisher-publication'};

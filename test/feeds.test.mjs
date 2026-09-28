@@ -27,6 +27,37 @@ test('security tags and energy tags identify text mentions without constructing 
   assert.equal(reportRelevant(classify('A gardening story')),false);
   const d=classify('CENTCOM says U.S. Navy escorts a tanker near Hormuz');assert.ok(d.actors.includes('U.S. military'));assert.equal(d.energy,true);assert.deepEqual(d.theaters,['hormuz']);
 });
+test('direct Iran and Houthi headline aliases remain relevant as broad theatre context',()=>{
+  for(const [title,theater,actor] of [
+    ['Tehran threatens retaliation after air strikes','hormuz','Iran'],
+    ['IRGC announces naval drills','hormuz','IRGC'],
+    ['Revolutionary Guards announce naval drills','hormuz','IRGC'],
+    ['Islamic Revolutionary Guard Corps announces naval drills','hormuz','IRGC'],
+    ['Ansar Allah claims missile strike','bab','Houthis'],
+    ['AnsarAllah claims missile strike','bab','Houthis'],
+    ['Ansar-Allah claims missile strike','bab','Houthis'],
+  ]){
+    const record=classifyReport({title,type:'Reporting'});
+    assert.equal(reportRelevant(record),true,title);
+    assert.deepEqual(record.theaters,[theater],title);
+    assert.ok(record.actors.includes(actor),title);
+    assert.deepEqual(record.matchEvidence.filter(match=>match.kind==='theater'),[{kind:'theater',value:theater,field:'headline',basis:'Text mention; not an event location'}]);
+    assert.equal(record.latitude,undefined);assert.equal(record.longitude,undefined);
+  }
+});
+test('actor aliases confined to summaries and unrelated words do not supply theatre relevance',()=>{
+  for(const summary of ['Tehran and IRGC announce naval drills.','The Revolutionary Guards issued a statement.','Ansar Allah claims a missile strike.']){
+    const record=classifyReport({title:'A gardening story',summary,type:'Reporting'});
+    assert.ok(record.actors.length>0,summary);
+    assert.deepEqual(record.theaters,[],summary);
+    assert.equal(reportRelevant(record),false,summary);
+  }
+  for(const title of ['A revolutionary gardening method','Museum guards announce an exhibition','IRGCulture opens an exhibition','AnsarAllahy opens a restaurant']){
+    const record=classifyReport({title,type:'Reporting'});
+    assert.deepEqual(record.theaters,[],title);
+    assert.equal(reportRelevant(record),false,title);
+  }
+});
 test('edible oil prices alone do not count as petroleum market reporting',()=>{
   const unrelated=classify('Crude palm oil prices to remain above $1,154 per ton');
   assert.equal(reportRelevant(unrelated),false);assert.equal(unrelated.energy,false);

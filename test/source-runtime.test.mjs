@@ -63,3 +63,23 @@ test('failed refresh persists retained records without advancing their successfu
 test('request histograms use bounded entry points and never accept arbitrary text',()=>{
  const {runtime}=fixture();runtime.event('request_finished',null,{entryPoint:'news',requestId:randomUUID()},{durationMs:150,httpStatus:500});runtime.event('request_finished',null,{entryPoint:'SECRET URL'},{durationMs:40,httpStatus:200});const d=runtime.snapshot();assert.equal(d.requests.find(x=>x.entryPoint==='news').errors,1);assert.equal(d.requests.find(x=>x.entryPoint==='news').bucketCounts[1],1);assert.ok(!JSON.stringify(d).includes('SECRET'));assert.ok(d.requests.some(x=>x.entryPoint==='background'));
 });
+test('registered digit-bearing publisher IDs persist and restore their own cache',async()=>{
+ const {runtime,storage,files}=fixture();
+ const original=await runtime.get('france24',300,async()=>data);
+ assert.equal(original.connection,'connected');assert.ok(files.has('/cache/france24.json'));
+ const restarted=new SourceRuntime({cacheDir:'/cache',storage,now:runtime.now});
+ const restored=await restarted.restore('france24');
+ assert.deepEqual(restored.value.items,data.items);assert.equal(restored.value.retrievedAt,original.retrievedAt);
+ let requests=0;const cached=await restarted.get('france24',300,async()=>{requests++;return data;});
+ assert.equal(requests,0);assert.equal(cached.retrievedAt,original.retrievedAt);
+});
+test('digit-bearing cache support still rejects path traversal and unknown source IDs',async()=>{
+ const {runtime,files}=fixture();
+ for(const key of ['../france24','france24/child','/tmp/france24','france24.json','france24%2f..','france24\\child']){
+  await assert.rejects(runtime.get('france24',300,async()=>data,{},key),/Invalid cache key/);
+  await assert.rejects(runtime.restore('france24',key),/Invalid cache key/);
+ }
+ await assert.rejects(runtime.get('unknown24',300,async()=>data),/Unknown source ID/);
+ await assert.rejects(runtime.restore('unknown24'),/Unknown source ID/);
+ assert.equal(files.size,0);
+});

@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#071A2C">
 <meta name="description" content="Passage connects maritime evidence, energy infrastructure, received vessel positions and daily oil observations across Bab el-Mandeb and the Strait of Hormuz.">
 <title>Passage | Maritime and energy watch</title>
-<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./globe.css"><link rel="stylesheet" href="./situation.css"><link rel="stylesheet" href="./command-center.css"><link rel="stylesheet" href="./monitoring.css"><link rel="stylesheet" href="./oil-quotes.css">
+<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./globe.css"><link rel="stylesheet" href="./situation.css"><link rel="stylesheet" href="./command-center.css"><link rel="stylesheet" href="./monitoring.css"><link rel="stylesheet" href="./oil-quotes.css"><link rel="stylesheet" href="./priority-brief.css">
 <meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
 <link rel="stylesheet" href="./runtime.css"><script type="module" src="./runtime-config.mjs"></script>
 </head>
@@ -22,6 +22,7 @@
     <div><h1 id="view-title">The maritime oil watch.</h1><p class="scope-subtitle" id="scope-subtitle">An overview of both theatres · select a chokepoint to focus.</p></div>
     <div class="heading-controls"><button class="text-button" id="brief-button">Brief me</button><button class="text-button" id="export-button">Export ↗</button></div>
   </section>
+  <section id="priority-watch" class="priority-watch" tabindex="-1" aria-label="Current maritime and oil developments"></section>
   <div class="command-grid">
     <section class="panel feed-panel" aria-labelledby="feed-heading">
       <div class="panel-heading"><div><span class="section-index">01</span><h2 id="feed-heading">Latest reporting</h2></div><span id="feed-count" class="count-badge">—</span></div>
@@ -29,7 +30,7 @@
         <label class="search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg><input id="search" type="search" placeholder="Search reporting…" aria-label="Search reporting"></label>
         <div class="report-filters"><label>Actor<select id="actors" aria-label="Filter reporting by actor"><option value="All">All actors</option></select></label><label>Published / discovered<select id="time-window"><option value="24">Past 24 hours</option><option value="72" selected>Past 72 hours</option><option value="168">Past 7 days</option><option value="all">All retrieved</option></select></label></div>
       </div>
-      <details class="reporting-limits"><summary>Reporting coverage</summary><p id="reporting-coverage" class="reporting-scope-note" aria-live="polite">Checking reporting coverage…</p><p class="reporting-scope-note">Reports may cover the same event. Regional and market context stay visible across both theaters. Dates are labelled in UTC.</p></details>
+      <details class="reporting-limits"><summary>Reporting coverage</summary><p id="reporting-coverage" class="reporting-scope-note" aria-live="polite">Checking reporting coverage…</p><p class="reporting-scope-note">Matching long headlines are grouped; counts show headline groups, not events. Regional and market context stay visible across both theaters. Dates are labelled in UTC.</p></details>
       <div id="feed" class="feed"><div class="empty">Connecting to public reporting sources…</div></div>
       <div class="feed-bottom"><label><input type="checkbox" id="auto-refresh" checked> Auto refresh</label><span id="last-refresh">Every minute while open</span></div>
     </section>
