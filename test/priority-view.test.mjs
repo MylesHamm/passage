@@ -16,6 +16,21 @@ test('recent failed attempts and a healthy collector never replace source succes
   assert.equal(briefCoverage(null,{now,failed:true}).checking,false);
 });
 
+test('working direct regional feeds show their success clocks while outages stay visible',()=>{
+ const news={sources:[
+  {id:'mee',name:'Middle East Eye',retrievedAt:'2026-09-28T17:58:00Z'},
+  {id:'memo',name:'Middle East Monitor',retrievedAt:'2026-09-28T17:59:00Z'},
+  {id:'france24',name:'France 24 Middle East',retrievedAt:'2026-09-28T16:00:00Z',error:'Unavailable'},
+  {id:'gdelt-hormuz',error:'Rate limited'},
+ ]};
+ const result=briefCoverage(news,{now});
+ assert.deepEqual(result.direct.map(source=>source.id),['mee','memo']);
+ assert.deepEqual(result.delayed.map(source=>source.id),['france24','gdelt-hormuz']);
+ const mount={innerHTML:'',ownerDocument:{activeElement:null},contains:()=>false,querySelectorAll:()=>[],addEventListener:()=>{}};
+ createPriorityView({mount,getState:()=>({news,actor:'All',theater:'both',auto:true}),now:()=>now}).update();
+ assert.match(mount.innerHTML,/Middle East Eye retrieved 2m ago/);assert.match(mount.innerHTML,/Middle East Monitor retrieved 1m ago/);assert.match(mount.innerHTML,/Reporting coverage delayed/);
+});
+
 test('new briefing arrivals appear before applying the reading snapshot; official records keep their dates',()=>{
   const old={id:'old',title:'Iran holds nuclear talks',url:'https://example.com/old',source:'Publisher',publishedAt:'2026-09-28T16:00:00Z',actors:['Iran']};
   const added={...old,id:'new',title:'Iran tanker attack closes Strait of Hormuz',url:'https://example.com/new',publishedAt:'2026-09-28T17:55:00Z'};

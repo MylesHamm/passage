@@ -14,7 +14,7 @@ export function briefCoverage(news,{now=Date.now(),failed=false}={}){
     const at=instant(source.lastSuccessAt||source.retrievedAt);
     return source.attention||source.error||source.delayed||at===null||at>now||now-at>Math.max(3600,(source.interval||300)*2)*1000;
   });
-  const direct=sources.filter(source=>['bbc','aj','france24','arabnews'].includes(source.id)&&!delayed.includes(source));
+  const direct=sources.filter(source=>['bbc','aj','france24','mee','memo'].includes(source.id)&&!delayed.includes(source));
   return {delayed,direct,checking:!news&&!failed,failed,truncated:Boolean(news?.coverage?.archive?.truncated||news?.coverage?.possiblyTruncatedFamilies?.length)};
 }
 

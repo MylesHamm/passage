@@ -3,12 +3,12 @@ import {collectSources,coverage,statusSummary,panelNotice,sourceHealth,ageSecond
 const now=Date.parse('2026-09-13T18:00:00Z');
 const connected={connection:'connected',retrievedAt:'2026-09-13T17:00:00Z'};
 test('source inventory stays stable through first load and configuration',()=>{
- const loading=collectSources({},now);assert.equal(loading.length,25);assert.equal(statusSummary(loading),'Checking source coverage');
- const configured=collectSources({config:{aisstream:true,reliefweb:false}},now);assert.equal(configured.length,25);assert.equal(statusSummary(configured),'Checking source coverage');assert.equal(configured.find(s=>s.id==='reliefweb').label,'Not configured');
+ const loading=collectSources({},now);assert.equal(loading.length,26);assert.equal(statusSummary(loading),'Checking source coverage');
+ const configured=collectSources({config:{aisstream:true,reliefweb:false}},now);assert.equal(configured.length,26);assert.equal(statusSummary(configured),'Checking source coverage');assert.equal(configured.find(s=>s.id==='reliefweb').label,'Not configured');
 });
-test('free Arab News and France 24 publisher sources have unique public health identities',()=>{
+test('free regional publisher sources have unique public health identities',()=>{
  assert.equal(new Set(SOURCE_DEFINITIONS.map(source=>source.id)).size,SOURCE_DEFINITIONS.length);
- for(const [id,name] of [['arabnews','Arab News'],['france24','France 24 Middle East']]){
+ for(const [id,name] of [['mee','Middle East Eye'],['memo','Middle East Monitor'],['france24','France 24 Middle East']]){
   const source=collectSources({},now).find(source=>source.id===id);
   assert.ok(source,id);assert.equal(source.name,name);assert.equal(source.group,'news');
   assert.equal(source.interval,300);assert.equal(source.configured,true);assert.equal(source.status,'loading');

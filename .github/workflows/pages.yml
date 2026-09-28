@@ -24,7 +24,7 @@ jobs:
         env:
           PASSAGE_API_BASE: ${{ vars.PASSAGE_API_BASE }}
         run: node --input-type=module -e "import {normalizeApiBase} from './dist/runtime-config.mjs'; if(!normalizeApiBase(process.env.PASSAGE_API_BASE)) throw Error('Set the PASSAGE_API_BASE repository variable before publishing.');"
-      - name: Check the collector is responding
+      - name: Verify current core reporting
         env:
           PASSAGE_API_BASE: ${{ vars.PASSAGE_API_BASE }}
         run: node scripts/check-hosted-api.mjs

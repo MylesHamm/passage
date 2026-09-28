@@ -11,6 +11,17 @@ const INFRASTRUCTURE=/\b(?:ports?|terminals?|pipeline\w*|refiner\w*|exports?|pro
 const DISRUPTION=/\b(?:halt\w*|suspend\w*|clos(?:e[ds]?|ure)|block(?:ed|ade|ades|ading)|disrupt\w*|outage\w*|damag\w*|rerout\w*|divert\w*|delay\w*|seiz\w*|seized|hijack\w*|sink\w*|sunk|sank|stranded)\b/i;
 const SECURITY=/\b(?:attack\w*|missiles?|drones?|strikes?|struck|airstrikes?|bomb\w*|intercept\w*|seiz\w*|seized|hijack\w*|explosion\w*|(?:military|naval) (?:operations?|drills?|exercises?)|(?:military|forces) (?:target(?:s|ed|ing)?|mobili[sz](?:e[sd]?|ing)|advanc(?:e[sd]?|ing))|incidents?|security alerts?|missile alerts?)\b/i;
 const POLICY=/\b(?:sanctions?|ceasefire|cease-fire|truce|peace (?:talks?|negotiat\w*)|nuclear (?:talks?|negotiat\w*|deal)|arming|disarm\w*|weapons?|arms embargo|military aid|war|blockade)\b/i;
+// These combinations select broader conflict reporting without treating a
+// mobilisation call, casualty estimate or diplomatic position as an incident.
+const ARMED_CONTEXT=/\b(?:army|armies|military|navy|naval|armed forces|government forces|houthis?|ansar[ -]?allah|irgc|(?:islamic )?revolutionary guards?)\b/i;
+const MOBILIZATION=/\bmobili[sz](?:e[sd]?|ing|ation)\b/i;
+const CASUALTIES=/\b(?:casualt(?:y|ies)|death toll|killed|wounded|fatalit(?:y|ies))\b/i;
+const CONFLICT=/\b(?:conflict|fighting|battles?|clashes?|warring|war|combat)\b/i;
+const MEDIATION=/\bmediat(?:ion|e[sd]?|ing)\b/i;
+const FORCE_BACKING=/\b(?:backs?|backing|supports?|supporting|(?:pledges?|offers?) support (?:for|to))\b.{0,80}\b(?:army|armies|military|(?:armed |government )?forces|houthis?|ansar[ -]?allah|irgc)\b/i;
+// Only the added contextual rules use this exclusion. A report explicitly
+// describing an attack during a protest still qualifies under SECURITY.
+const NON_OPERATIONAL=/\b(?:peaceful|protests?|protesters?|demonstrations?|football|sports?|athletes?|fans|championships?|concerts?|festivals?)\b/i;
 const MARKET=/\b(?:(?:oil|crude|diesel|petroleum|gasoline|natural gas) (?:prices?|markets?|suppl\w*|demand|inventor\w*|stocks?)|brent|wti|opec|refining margins)\b/i;
 const normalizedTitle=title=>title.normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
 const petroleumText=title=>title.replace(/\b(?:crude\s+)?(?:palm|olive|soy(?:bean)?|sunflower|coconut|cooking|vegetable|edible)\s+oil\b/gi,'food commodity');
@@ -35,7 +46,11 @@ function clockFor(report){
 // A topic tag supplied by a discovery query or RSS footer is never sufficient.
 function headlineContext(title){
   const text=petroleumText(title),maritime=MARITIME.test(text),energy=ENERGY.test(text);
-  const security=SECURITY.test(text),disruption=DISRUPTION.test(text),policy=POLICY.test(text);
+  const conflictContext=!NON_OPERATIONAL.test(text);
+  const mobilization=conflictContext&&MOBILIZATION.test(text)&&ARMED_CONTEXT.test(text);
+  const casualties=conflictContext&&CASUALTIES.test(text)&&CONFLICT.test(text);
+  const diplomacy=conflictContext&&(FORCE_BACKING.test(text)||MEDIATION.test(text)&&(CONFLICT.test(text)||ARMED_CONTEXT.test(text)));
+  const security=SECURITY.test(text)||mobilization||casualties,disruption=DISRUPTION.test(text),policy=POLICY.test(text)||diplomacy;
   const infrastructure=INFRASTRUCTURE.test(text),market=MARKET.test(text);
   const theatres=[HORMUZ.test(text)?'hormuz':null,BAB.test(text)?'bab':null].filter(Boolean);
   const regional=REGION.test(text),energyContext=energy&&(infrastructure||market||disruption||security||policy);

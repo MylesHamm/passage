@@ -3,7 +3,8 @@ import {isCurrentVesselPosition} from './vessel-data.mjs';
 export const SOURCE_DEFINITIONS = [
   {id:'bbc',name:'BBC Middle East',group:'news',interval:300,home:'https://www.bbc.com/news/world/middle_east'},
   {id:'aj',name:'Al Jazeera',group:'news',interval:300,home:'https://www.aljazeera.com/middle-east/'},
-  {id:'arabnews',name:'Arab News',group:'news',interval:300,home:'https://www.arabnews.com/'},
+  {id:'mee',name:'Middle East Eye',group:'news',interval:300,home:'https://www.middleeasteye.net/'},
+  {id:'memo',name:'Middle East Monitor',group:'news',interval:300,home:'https://www.middleeastmonitor.com/'},
   {id:'france24',name:'France 24 Middle East',group:'news',interval:300,home:'https://www.france24.com/en/middle-east/'},
   {id:'un',name:'UN News',group:'news',interval:600,home:'https://news.un.org/en/news/region/middle-east'},
   {id:'centcom',name:'CENTCOM',group:'news',interval:900,home:'https://www.centcom.mil/MEDIA/PRESS-RELEASES/'},

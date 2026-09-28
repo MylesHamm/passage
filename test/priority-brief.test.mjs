@@ -233,3 +233,39 @@ test('explicit forces targeting or military movement remains visible without mat
   assert.equal(card(brief,'bab').items.find(item=>item.report.id==='arab-news').title,title);
   assert.equal(brief.uniqueGroupCount,3);
 });
+
+test('recent Yemen mobilization, conflict casualties and mediation reach Bab without invented oil effects',()=>{
+  const rows=[
+    report('mobilisation',"Yemen's president calls on his people to mobilise against Iran-backed Houthis",{source:'France 24 Middle East',sourceId:'france24',publishedAt:'2026-09-25T20:41:00Z'}),
+    report('casualties','Yemen casualties rising by around 100 per day amid escalating conflict: WHO',{source:'Middle East Monitor',sourceId:'memo',publishedAt:'2026-09-28T09:30:00Z'}),
+    report('backing','Sudanese army chief backs Yemen’s government forces against Houthis',{source:'Middle East Monitor',sourceId:'memo',publishedAt:'2026-09-28T09:00:00Z'}),
+    report('mediation','Hamas says it offered mediation in Yemen, awaits response from warring sides',{source:'Middle East Monitor',sourceId:'memo',publishedAt:'2026-09-27T08:00:00Z'}),
+  ];
+  const brief=buildPriorityBrief({items:rows},{now:NOW});
+  assert.equal(card(brief,'bab').items.length,4);
+  for(const row of rows){
+    const selected=card(brief,'bab').items.find(item=>item.report.id===row.id);
+    assert.equal(selected.title,row.title);assert.equal(selected.clock.value,row.publishedAt);assert.equal(selected.report,row);assert.equal(selected.independentConfirmation,false);
+    assert.equal(selected.category,['mobilisation','casualties'].includes(row.id)?'Military & security':'Conflict policy');
+    assert.equal(selected.report.eventDate,undefined);assert.equal(selected.report.oilImpact,undefined);
+  }
+  assert.equal(card(brief,'energy'),undefined);
+});
+
+test('civil mobilization, sports metaphors and casualties without conflict stay out of military selection',()=>{
+  const rows=[
+    report('peaceful','Yemen activists mobilise for peaceful protest against Houthis'),
+    report('supporters','Houthis mobilise supporters for peaceful demonstration'),
+    report('sports','Iran army football team mobilises fans for championship'),
+    report('sports-support','Yemen president backs army football team'),
+    report('civil-support','Houthi leader backs local education reforms'),
+    report('school-mediation','Yemen teachers offer mediation in school wage dispute'),
+    report('civil-dispute','Yemen community mediator settles land dispute'),
+    report('road','Yemen casualties rising after bus accident'),
+    report('health','Yemen death toll rises amid cholera outbreak'),
+    report('sports-casualties','Iran football casualties mount amid conflict between rival teams'),
+    report('summary-only','Yemen president speaks to supporters',{summary:'The president urged mobilization against Houthis; elsewhere there are casualties from fighting.'}),
+  ];
+  const brief=buildPriorityBrief({items:rows},{now:NOW});
+  assert.equal(brief.uniqueGroupCount,0);
+});

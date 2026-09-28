@@ -19,16 +19,17 @@ test('aggregated reporting keeps regional context, source provenance and per-sou
  assert.ok(result.items.some(x=>x.relevanceScopes.includes('regional-energy')&&x.theaters.length===0));
  assert.equal(result.sources.find(x=>x.id==='un').connection,'unavailable');
  assert.equal(result.sources.find(x=>x.id==='centcom').publicationPrecision,'day');
- assert.equal(result.sources.length,14);assert.equal(result.coverage.complete,false);
+ assert.equal(result.sources.length,15);assert.equal(result.coverage.complete,false);
  assert.ok(result.items.find(x=>x.url==='https://example.com/pipeline').provenance.length>1);
  assert.ok(result.items.find(x=>x.url==='https://example.com/pipeline').publishedAt);
  assert.ok(result.sources.every(x=>!('items' in x)));assert.ok(urls.every(x=>!x.includes('example.com')));
  const previous=urls.length;result=await loadReporting(runtime,{reliefweb:false,discoveryWaitMs:30000,discoverySpacingMs:0},{});assert.equal(urls.length,previous);
 });
-test('Arab News and France 24 retain attributed publisher reporting during a GDELT outage',async()=>{
+test('working regional publishers retain attributed theatre and energy reporting during a GDELT outage',async()=>{
  const current=Date.parse('2026-09-28T18:00:00Z');
  const publishers=[
-  {id:'arabnews',name:'Arab News',feed:'https://www.arabnews.com/rss',title:'Houthis announce restrictions on Saudi shipping',url:'https://www.arabnews.com/node/fixture-shipping',date:'Mon, 28 Sep 2026 16:21:32 GMT',publishedAt:'2026-09-28T16:21:32.000Z',summary:'The report attributes the shipping restrictions to a Houthi statement.',actor:'Houthis',theater:'bab'},
+  {id:'mee',name:'Middle East Eye',feed:'https://www.middleeasteye.net/rss',title:'Iran says its forces seized a vessel near Hormuz',url:'https://www.middleeasteye.net/news/fixture-vessel',date:'Mon, 28 Sep 2026 16:21:32 GMT',publishedAt:'2026-09-28T16:21:32.000Z',summary:'The report attributes the vessel seizure to a statement by Iranian authorities.',actor:'Iran',theater:'hormuz'},
+  {id:'memo',name:'Middle East Monitor',feed:'https://www.middleeastmonitor.com/feed/',title:'Houthis say Saudi shipping restrictions remain in place',url:'https://www.middleeastmonitor.com/fixture-shipping/',date:'Mon, 28 Sep 2026 16:30:00 GMT',publishedAt:'2026-09-28T16:30:00.000Z',summary:'The report attributes the restrictions to a Houthi statement.',actor:'Houthis',theater:'bab'},
   {id:'france24',name:'France 24 Middle East',feed:'https://www.france24.com/en/middle-east/rss',title:'Iran proposes reopening Hormuz for oil shipments',url:'https://www.france24.com/en/middle-east/fixture-hormuz',date:'Sun, 27 Sep 2026 22:10:44 GMT',publishedAt:'2026-09-27T22:10:44.000Z',summary:'The report discusses Iranian negotiations and crude shipments through the strait.',actor:'Iran',theater:'hormuz'},
  ];
  const requests=[];
@@ -37,24 +38,43 @@ test('Arab News and France 24 retain attributed publisher reporting during a GDE
   if(address.hostname==='api.gdeltproject.org')return new Response('Rate limited',{status:429,headers:{'Retry-After':'900'}});
   const publisher=publishers.find(source=>source.feed===address.href);
   if(!publisher)return new Response('Unavailable',{status:503});
-  return new Response(`<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>${publisher.name}</title><item><title>${publisher.title}</title><link>${publisher.url}</link><pubDate>${publisher.date}</pubDate><description><![CDATA[<p>${publisher.summary}</p>]]></description><media:thumbnail url="https://example.com/unused-image"/></item><item><title>Local gardening exhibition opens</title><link>https://example.com/unrelated-${publisher.id}</link><pubDate>${publisher.date}</pubDate><description>Community planting projects.</description></item></channel></rss>`);
+  return new Response(`<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>${publisher.name}</title><item><title>${publisher.title}</title><link>${publisher.url}</link><pubDate>${publisher.date}</pubDate><description><![CDATA[<p>${publisher.summary}</p>]]></description><media:thumbnail url="https://example.com/unused-image"/></item>${publisher.id==='memo'?'<item><title>Qatar says LNG exports face new delays</title><link>https://www.middleeastmonitor.com/fixture-lng/</link><pubDate>Mon, 28 Sep 2026 16:35:00 GMT</pubDate><description>Officials discuss energy exports.</description></item>':''}<item><title>Local gardening exhibition opens</title><link>https://example.com/unrelated-${publisher.id}</link><pubDate>${publisher.date}</pubDate><description>Community planting projects.</description></item></channel></rss>`);
  }});
  const result=await loadReporting(runtime,{reliefweb:false,includeReviewedContext:false,discoveryWaitMs:30000,discoverySpacingMs:0});
- assert.equal(result.items.length,2);assert.equal(result.coverage.publisherSources,8);assert.equal(result.coverage.complete,false);
+ assert.equal(result.items.length,4);assert.equal(result.coverage.publisherSources,9);assert.equal(result.coverage.complete,false);
  for(const publisher of publishers){
-  const registered=SOURCES.find(source=>source.id===publisher.id),record=result.items.find(item=>item.sourceId===publisher.id),health=result.sources.find(source=>source.id===publisher.id);
+  const registered=SOURCES.find(source=>source.id===publisher.id),record=result.items.find(item=>item.url===publisher.url),health=result.sources.find(source=>source.id===publisher.id);
   assert.equal(registered.url,publisher.feed);assert.equal(registered.interval,300);
   assert.equal(record.title,publisher.title);assert.equal(record.publisher,publisher.name);assert.equal(record.source,publisher.name);
   assert.equal(record.url,publisher.url);assert.equal(record.summary,publisher.summary);assert.equal(record.publishedAt,publisher.publishedAt);
   assert.equal(record.eventDate,null);assert.equal(record.discoveredAt,null);assert.equal(record.dateBasis,'publisher-publication');assert.equal(record.contentAccess,'publisher-summary');
   assert.ok(record.theaters.includes(publisher.theater));assert.ok(record.actors.includes(publisher.actor));
-  assert.equal(health.connection,'connected');assert.equal(health.recordCount,1);assert.equal(health.parsedCount,2);assert.equal(health.retrievedAt,new Date(current).toISOString());
+  assert.equal(health.connection,'connected');assert.equal(health.recordCount,publisher.id==='memo'?2:1);assert.equal(health.parsedCount,publisher.id==='memo'?3:2);assert.equal(health.retrievedAt,new Date(current).toISOString());
   assert.equal(record.provenance[0].sourceId,publisher.id);assert.equal(record.provenance[0].publishedAt,publisher.publishedAt);
  }
+ const regional=result.items.find(item=>item.url.endsWith('/fixture-lng/'));
+ assert.deepEqual(regional.theaters,[]);assert.ok(regional.relevanceScopes.includes('regional-energy'));assert.ok(regional.actors.includes('Qatar'));assert.equal(regional.energy,true);
  assert.equal(result.items.find(item=>item.sourceId==='france24').energy,true);
+ assert.ok(!requests.some(url=>new URL(url).hostname==='www.arabnews.com'));
+ assert.ok(!result.sources.some(source=>source.id==='arabnews'));
  assert.equal(requests.filter(url=>new URL(url).hostname==='api.gdeltproject.org').length,1);
  assert.ok(result.sources.filter(source=>source.group==='discovery').every(source=>source.status==='unavailable'));
  assert.ok(!JSON.stringify(result).includes('unused-image'));
+});
+test('regional publisher failure retains dated records without disguising an outage as fresh coverage',async()=>{
+ const current=Date.parse('2026-09-28T18:00:00Z');let tick=current,failed=false;
+ const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>tick,fetchImpl:async url=>{
+  if(new URL(url).hostname!=='www.middleeasteye.net'||failed)return new Response('Unavailable',{status:503});
+  return new Response('<rss><channel><item><title>Tehran says oil tanker seized</title><link>https://www.middleeasteye.net/news/fixture-retained</link><pubDate>Mon, 28 Sep 2026 17:30:00 GMT</pubDate><description>Authorities made the claim.</description></item></channel></rss>');
+ }});
+ const options={includeReviewedContext:false,discoveryWaitMs:30000,discoverySpacingMs:0};
+ const first=await loadReporting(runtime,options),record=first.items.find(item=>item.sourceId==='mee');
+ assert.ok(record);assert.equal(first.sources.find(source=>source.id==='mee').status,'current');
+ tick+=3601000;failed=true;
+ const retained=await loadReporting(runtime,options),source=retained.sources.find(source=>source.id==='mee');
+ assert.equal(source.status,'retained');assert.equal(source.connection,'cached');assert.equal(source.retrievedAt,new Date(current).toISOString());assert.equal(source.checkedAt,new Date(tick).toISOString());
+ assert.equal(retained.items.find(item=>item.id===record.id).publishedAt,record.publishedAt);assert.equal(retained.items.find(item=>item.id===record.id).title,record.title);
+ assert.equal(source.attention,true);assert.equal(retained.coverage.complete,false);
 });
 test('deduplication preserves publication metadata over discovery without claiming independent confirmation',()=>{
  const a={id:'rss',url:'https://example.com/story?utm_source=rss',sourceId:'bbc',publisher:'BBC',publishedAt:'2026-09-17T10:00:00Z',discoveredAt:null,dateBasis:'publisher-publication'};
