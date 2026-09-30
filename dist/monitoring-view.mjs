@@ -97,5 +97,5 @@ export function createMonitoringView({mount,getState,onAccept=()=>{},onReport=()
     const [type,...parts]=mount.querySelector('#monitor-watch-choice').value.split(':');session.addWatch(type,parts.join(':'));persist();message='Watch saved on this browser. Only new matching links will count.';render();
   }
   mount?.addEventListener('click',click);mount?.addEventListener('input',input);mount?.addEventListener('submit',submit);render();
-  return {ingestNews:incoming=>session.ingestNews(incoming),pendingCount:()=>session.pending().length,acceptArrivals:()=>{onAccept(session.acceptPending());render();},update:render,destroy(){destroyed=true;stopSpeech();mount?.removeEventListener('click',click);mount?.removeEventListener('input',input);mount?.removeEventListener('submit',submit);}};
+  return {ingestNews:incoming=>session.ingestNews(incoming),pendingCount:()=>session.pending().length,retainedCount:()=>session.retained().length,acceptArrivals:()=>{onAccept(session.acceptPending());render();},update:render,destroy(){destroyed=true;stopSpeech();mount?.removeEventListener('click',click);mount?.removeEventListener('input',input);mount?.removeEventListener('submit',submit);}};
 }

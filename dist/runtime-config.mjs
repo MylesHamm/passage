@@ -64,6 +64,7 @@ export function mountRuntimeNotice(doc = globalThis.document, config = runtime) 
   let notice = doc.getElementById('runtime-notice');
   if (!notice) { notice = doc.createElement('aside'); notice.id = 'runtime-notice'; notice.className = 'runtime-notice'; notice.setAttribute('aria-label', 'Public site connection'); doc.querySelector('header')?.after(notice); }
   notice.dataset.state = config.configurationError ? 'unconfigured' : 'public';
+  if (!config.configurationError && doc.body?.classList.contains('passage-workspace')) doc.querySelector('.page-footer')?.after(notice);
   notice.textContent = config.configurationError
     ? `${config.configurationError} Live reports, EIA observations, forecasts and vessel positions are unavailable. Dated reference context and your saved sources are not live updates. The separate oil chart connects directly to its named provider.`
     : 'Public source watch · this view checks while the page is open. Source dates and coverage limits still apply. Private account connections stay in local Passage.';

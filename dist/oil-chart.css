@@ -1,0 +1,47 @@
+/* Exact daily EIA observations, with a keyboard/touch date control. */
+.oil-history-chart.chart-area,
+.command-center .oil-history-chart.chart-area,
+.view-energy .oil-panel .oil-history-chart.chart-area {
+  height: auto;
+  min-height: 280px;
+  padding: 8px 16px 16px;
+}
+.oil-history-figure { margin: 0; min-width: 0; }
+.oil-history-caption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11px; line-height: 1.5; color: var(--line, #c9d3e0); }
+.oil-history-caption > span:first-child { letter-spacing: .07em; }
+.oil-history-plot { width: 100%; min-height: 280px; }
+.oil-history-plot svg { display: block; width: 100%; height: 280px; overflow: visible; }
+.oil-chart-axis { fill: var(--line, #c9d3e0); font: 11px 'IBM Plex Sans', sans-serif; }
+.oil-chart-grid { stroke: var(--border, #344555); stroke-width: 1; stroke-dasharray: 2 5; }
+.oil-series-brent { --series-color: var(--mint, #d9fdd9); }
+.oil-series-wti { --series-color: var(--sky, #44ace9); }
+.oil-chart-line { fill: none; stroke: var(--series-color); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.oil-chart-line.oil-series-wti { stroke-dasharray: 6 5; }
+.oil-chart-observation, .oil-chart-endpoint circle { fill: var(--series-color); }
+.oil-chart-endpoint text { fill: var(--series-color); font: 11px 'IBM Plex Sans', sans-serif; }
+.oil-chart-endpoint text tspan:first-child { font-weight: 600; }
+.oil-chart-leader { stroke: var(--line, #c9d3e0); stroke-width: .75; stroke-opacity: .4; fill: none; }
+.oil-chart-crosshair { stroke: var(--line, #c9d3e0); stroke-width: 1; stroke-opacity: .55; stroke-dasharray: 3 4; }
+.oil-chart-focus-dot { fill: var(--deep, #071a2c); stroke: var(--series-color); stroke-width: 2; }
+.oil-history-readout { border-block: 1px solid var(--border); padding: 12px 0; min-height: 88px; }
+.oil-history-readout > time { display: block; font-size: 12px; line-height: 1.5; color: var(--line); font-variant-numeric: tabular-nums; }
+.oil-history-readout dl { display: flex; flex-wrap: wrap; gap: 12px 28px; margin: 8px 0 0; }
+.oil-readout-series { min-width: 88px; }
+.oil-readout-series dt { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--line); }
+.oil-readout-series dt i { display: inline-block; width: 16px; border-top: 2px solid var(--series-color); }
+.oil-readout-series.oil-series-wti dt i { border-top-style: dashed; }
+.oil-readout-series dd { margin: 3px 0 0; color: var(--series-color); font-size: 20px; line-height: 1.25; font-variant-numeric: tabular-nums; }
+.oil-no-value small { font-size: 11px; color: var(--line); }
+.oil-history-scrubber { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; margin-top: 12px; }
+.oil-history-scrubber[hidden] { display: none; }
+.oil-history-scrubber label { font-size: 12px; color: var(--mist); }
+.oil-history-scrubber > span { font-size: 10px; color: var(--line); }
+.oil-history-scrubber input { grid-column: 1 / -1; width: 100%; height: 44px; margin: 0; accent-color: var(--mint); cursor: ew-resize; }
+.oil-history-scrubber input:focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
+.oil-history-note { margin: 0; font-size: 11px; line-height: 1.6; color: var(--line); }
+.oil-history-empty { padding: 48px 0; max-width: 38ch; font-size: 13px; line-height: 1.7; color: var(--line); }
+@media (max-width: 420px) {
+  .oil-history-chart.chart-area, .command-center .oil-history-chart.chart-area { padding-inline: 12px; }
+  .oil-history-scrubber { grid-template-columns: 1fr; }
+  .oil-history-scrubber > span { font-size: 11px; }
+}

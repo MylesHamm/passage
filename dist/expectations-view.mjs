@@ -28,6 +28,7 @@ function marketMarkup(market,index){
   const basis=({midpoint:'Bid/ask midpoint','Gamma order-book midpoint':'Bid/ask midpoint',last_trade:'Last trade',lastTrade:'Last trade','Gamma last trade':'Last trade',gamma:'Market price',outcome_price:'Market price',outcomePrices:'Market price'})[market.priceBasis]||market.priceBasis||'Not supplied';
   return `<article class="expectation-row">
     <div class="expectation-question"><h3>${url?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" data-expectations-key="link:${esc(key)}">${esc(market.question)}<span aria-hidden="true"> ↗</span></a>`:esc(market.question)}</h3><div class="expectation-probability"><strong>${esc(price)}</strong><span>${hasPrice?'YES':'No price'}</span></div></div>
+    ${hasPrice?`<div class="expectation-scale" aria-hidden="true"><span style="width:${(market.probability*100).toFixed(2)}%"></span></div>`:''}<p class="expectation-deadline">Market end date ${esc(date(market.endDate))} · YES probability</p>
     <details class="expectation-details" data-expectations-section="market:${esc(key)}"><summary data-expectations-key="details:${esc(key)}">Market details</summary><dl>
       <div><dt>Deadline</dt><dd>${esc(date(market.endDate))}</dd></div>
       <div><dt>Liquidity</dt><dd>${esc(money(market.liquidityUsd))}</dd></div>
