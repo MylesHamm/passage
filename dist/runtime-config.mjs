@@ -1,6 +1,6 @@
 // Public deployment settings contain an API address only. Credentials stay on the server.
 export const LIVE_REFRESH_MS = 60000;
-const PUBLIC_ENDPOINTS = new Set(['/api/news', '/api/intelligence', '/api/maritime', '/api/oil', '/api/market-context', '/api/weather', '/api/vessels', '/api/config', '/api/diagnostics', '/api/acled', '/api/acled/events']);
+const PUBLIC_ENDPOINTS = new Set(['/api/news', '/api/intelligence', '/api/maritime', '/api/oil', '/api/market-context', '/api/expectations', '/api/weather', '/api/vessels', '/api/config', '/api/diagnostics', '/api/acled', '/api/acled/events']);
 const localHost = hostname => hostname === 'localhost' || hostname === '[::1]' || /^127(?:\.\d{1,3}){3}$/.test(hostname);
 const publicHostname = hostname => {
   const host = hostname.toLowerCase().replace(/\.$/, '');

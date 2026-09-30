@@ -55,3 +55,11 @@ test('public requests omit credentials and reject private headers, bodies and mu
   for (const options of [{ method: 'POST' }, { body: 'private' }, { headers: { Authorization: 'secret' } }, { headers: { 'X-API-Key': 'secret' } }]) await assert.rejects(runtime.apiFetch('/api/news', options));
   assert.equal(calls.length, 1);
 });
+test('public market expectations reach the hosted service without credentials', async () => {
+  const calls = [], runtime = hosted({ apiBase: 'https://live.example.com/', fetchImpl: (...args) => { calls.push(args); return 'markets'; } });
+  assert.equal(await runtime.apiFetch('/api/expectations'), 'markets');
+  assert.equal(calls[0][0], 'https://live.example.com/api/expectations');
+  assert.equal(calls[0][1].credentials, 'omit');
+  await assert.rejects(runtime.apiFetch('/api/expectations', { method: 'POST' }), /read-only/);
+  assert.equal(calls.length, 1);
+});
