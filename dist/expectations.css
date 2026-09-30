@@ -1,0 +1,38 @@
+/* Compact, attributed market context beside the globe. */
+.expectations-panel { flex-shrink: 0; min-width: 0; overflow: hidden; }
+.expectations-panel .expectations-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.expectations-heading > a { flex-shrink: 0; color: var(--command-dim, var(--line)); font-size: 10px; padding-block: 4px; }
+.expectations-context { margin: 0; padding: 0 14px 12px; color: var(--command-dim, var(--line)); font-size: 10px; line-height: 1.6; }
+.expectations-status { padding: 8px 14px; border-block: 1px solid var(--rule, var(--border)); color: var(--line); font-size: 10px; line-height: 1.6; }
+.expectations-status > span { display: block; font-weight: 500; }
+.expectations-status > small { display: block; font-size: 10px; color: var(--command-dim, var(--line)); }
+.expectations-status[data-state="retained"], .expectations-status[data-state="stale"], .expectations-status[data-state="unavailable"] { border-left: 2px solid var(--sky); padding-left: 12px; }
+.expectation-row { padding: 12px 14px 8px; min-width: 0; }
+.expectation-row + .expectation-row { border-top: 1px solid var(--rule, var(--border)); }
+.expectation-question { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 12px; }
+.expectation-question h3 { margin: 0; color: var(--mist); font-size: 12px; line-height: 1.6; font-weight: 400; overflow-wrap: anywhere; }
+.expectation-question h3 a { color: inherit; }
+.expectation-question h3 a > span { color: var(--sky); white-space: nowrap; }
+.expectation-probability { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; min-width: 48px; padding-top: 1px; }
+.expectation-probability strong { color: var(--mint); font-size: 22px; line-height: 1.15; font-weight: 500; letter-spacing: -.025em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.expectation-probability > span { color: var(--command-dim, var(--line)); font-size: 9px; letter-spacing: .07em; }
+.expectations-panel summary { color: var(--command-dim, var(--line)); font-size: 10px; line-height: 1.6; min-height: 30px; padding-block: 8px; cursor: pointer; }
+.expectation-details > summary { width: fit-content; }
+.expectation-details dl { margin: 4px 0 12px; }
+.expectation-details dl > div { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 8px; padding-block: 4px; font-size: 10px; line-height: 1.6; }
+.expectation-details dt { color: var(--command-dim, var(--line)); }
+.expectation-details dd { margin: 0; color: var(--line); overflow-wrap: anywhere; }
+.expectation-rules, .expectation-caveat { margin: 8px 0; color: var(--command-dim, var(--line)); font-size: 11px; line-height: 1.65; overflow-wrap: anywhere; white-space: pre-line; }
+.expectation-rules-link { display: inline-block; padding-block: 4px; font-size: 11px; line-height: 1.6; }
+.expectation-caveat { font-size: 10px; }
+.expectations-more, .expectations-notes { border-top: 1px solid var(--rule, var(--border)); }
+.expectations-more > summary, .expectations-notes > summary { padding: 10px 14px; }
+.expectations-more[open] > summary { border-bottom: 1px solid var(--rule, var(--border)); }
+.expectations-notes ul { margin: 0; padding: 0 14px 12px 28px; color: var(--command-dim, var(--line)); font-size: 10px; line-height: 1.65; }
+.expectations-notes li + li { margin-top: 8px; }
+.expectations-empty { padding: 16px 14px; margin: 0; font-size: 12px; line-height: 1.65; color: var(--command-dim, var(--line)); }
+.command-center .context-column.has-selection .expectations-panel { display: none; }
+@media (max-width: 700px) {
+  .expectation-question h3 { font-size: 13px; }
+  .expectations-panel summary { min-height: 36px; font-size: 11px; }
+}

@@ -3,8 +3,8 @@ import {collectSources,coverage,statusSummary,panelNotice,sourceHealth,ageSecond
 const now=Date.parse('2026-09-13T18:00:00Z');
 const connected={connection:'connected',retrievedAt:'2026-09-13T17:00:00Z'};
 test('source inventory stays stable through first load and configuration',()=>{
- const loading=collectSources({},now);assert.equal(loading.length,26);assert.equal(statusSummary(loading),'Checking source coverage');
- const configured=collectSources({config:{aisstream:true,reliefweb:false}},now);assert.equal(configured.length,26);assert.equal(statusSummary(configured),'Checking source coverage');assert.equal(configured.find(s=>s.id==='reliefweb').label,'Not configured');
+ const loading=collectSources({},now);assert.equal(loading.length,28);assert.equal(statusSummary(loading),'Checking source coverage');
+ const configured=collectSources({config:{aisstream:true,reliefweb:false}},now);assert.equal(configured.length,28);assert.equal(statusSummary(configured),'Checking source coverage');assert.equal(configured.find(s=>s.id==='reliefweb').label,'Not configured');
 });
 test('free regional publisher sources have unique public health identities',()=>{
  assert.equal(new Set(SOURCE_DEFINITIONS.map(source=>source.id)).size,SOURCE_DEFINITIONS.length);
@@ -152,4 +152,13 @@ test('Doomberg publishing cadence is separate from source checks and failed tran
  const old=sourceHealth({...recent,latestRelevant:'2026-08-20'},now);assert.equal(old.status,'stale');assert.equal(old.attention,false);
  const failed=sourceHealth({...recent,connection:'cached'},now);assert.equal(failed.status,'retained');assert.equal(failed.attention,true);
  const overdue=sourceHealth({...recent,retrievedAt:'2026-09-13T14:59:59Z'},now);assert.equal(overdue.checkOverdue,true);assert.equal(overdue.attention,true);
+});
+
+
+test('preferred-source checks disclose new-post discovery gap and expectations preserve failures',()=>{
+ const state={sourceWatch:{source:{id:'hormuz-letter',connection:'connected',recordCount:2,retrievedAt:'2026-09-13T17:59:00Z'}},expectations:{source:{id:'polymarket',connection:'connected',recordCount:5,retrievedAt:'2026-09-13T17:59:00Z'}}};
+ const sources=collectSources(state,now),watch=sources.find(s=>s.id==='hormuz-letter');
+ assert.equal(watch.coverageStatus,'limited');assert.match(watch.label,/new-post discovery unavailable/);assert.equal(watch.attention,false);
+ const failed=collectSources({...state,failures:{expectations:true}},now).find(s=>s.id==='polymarket');
+ assert.equal(failed.status,'retained');assert.equal(failed.recordCount,5);assert.equal(failed.retrievedAt,'2026-09-13T17:59:00Z');
 });

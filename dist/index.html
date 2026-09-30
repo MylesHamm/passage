@@ -5,6 +5,7 @@
 <meta name="description" content="Passage connects maritime evidence, energy infrastructure, received vessel positions and daily oil observations across Bab el-Mandeb and the Strait of Hormuz.">
 <title>Passage | Maritime and energy watch</title>
 <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./globe.css"><link rel="stylesheet" href="./situation.css"><link rel="stylesheet" href="./command-center.css"><link rel="stylesheet" href="./monitoring.css"><link rel="stylesheet" href="./oil-quotes.css"><link rel="stylesheet" href="./priority-brief.css">
+<link rel="stylesheet" href="./expectations.css"><link rel="stylesheet" href="./source-watch.css">
 <meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
 <link rel="stylesheet" href="./runtime.css"><script type="module" src="./runtime-config.mjs"></script>
 </head>
@@ -20,7 +21,7 @@
 <main id="workspace" class="view-overview" tabindex="-1">
   <section class="workspace-heading">
     <div><h1 id="view-title">The maritime oil watch.</h1><p class="scope-subtitle" id="scope-subtitle">An overview of both theatres · select a chokepoint to focus.</p></div>
-    <div class="heading-controls"><button class="text-button" id="brief-button">Brief me</button><button class="text-button" id="export-button">Export ↗</button></div>
+    <div class="heading-controls"><a class="text-button source-watch-shortcut" href="#source-watch">The Hormuz Letter ↘</a><button class="text-button" id="brief-button">Brief me</button><button class="text-button" id="export-button">Export ↗</button></div>
   </section>
   <section id="priority-watch" class="priority-watch" tabindex="-1" aria-label="Current maritime and oil developments"></section>
   <div class="command-grid">
@@ -59,10 +60,11 @@
       </details>
     </section>
     <aside class="context-column" aria-label="Oil context and selected evidence">
-<section class="panel oil-panel" aria-labelledby="oil-heading"><div class="panel-heading"><div><span class="section-index">03</span><h2 id="oil-heading">The oil market</h2></div></div>
+<section class="panel oil-panel" aria-labelledby="oil-heading"><div class="panel-heading"><div><span class="section-index">03</span><h2 id="oil-heading">The oil market</h2></div><a class="text-button" href="#market-expectations">Expectations ↓</a></div>
 <passage-oil-quotes aria-label="Intraday oil market quotes"></passage-oil-quotes>
 <details class="oil-spot-history"><summary>EIA spot-price history<small>Daily observations · published with a lag</small></summary><div class="oil-history-period"><span>History window</span><div class="segmented" role="group" aria-label="Oil chart period"><button data-period="30">1M</button><button data-period="90" class="active">3M</button><button data-period="180">6M</button></div></div><div class="oil-summary" id="oil-summary"><span class="muted">Loading daily spot observations…</span></div><div id="oil-chart" class="chart-area"></div><div class="chart-foot"><button class="text-button" id="price-table">Inspect daily values</button><a href="https://www.eia.gov/dnav/pet/PET_PRI_SPT_S1_D.htm" target="_blank" rel="noopener noreferrer">EIA · USD/barrel ↗</a><span>Daily spot · publication lag</span></div></details>
 <details class="oil-baseline"><summary>Exposure &amp; historical flows</summary><div id="oil-exposure" class="oil-exposure" aria-label="Chokepoint exposure baseline"></div></details><details class="market-backdrop"><summary>Market backdrop · weekly</summary><div id="market-context"></div></details><p class="context-note">An observed price move is not, by itself, evidence of an event’s effect.</p></section>
+      <section id="market-expectations" tabindex="-1" class="panel expectations-panel" aria-label="Market expectations"></section>
       <section id="context-inspector" class="panel context-inspector" aria-labelledby="inspector-kicker" hidden>
         <div class="inspector-top"><h2 id="inspector-kicker" tabindex="-1">Selected evidence</h2><button id="inspector-close" class="icon-button" aria-label="Close selected evidence and return to outlook">×</button></div>
         <div id="inspector-content" class="inspector-content"></div>
@@ -70,6 +72,7 @@
       <section id="situation-brief" class="situation-brief" aria-label="Dated situation context"><div class="brief-kicker">SITUATION CONTEXT</div><p class="brief-copy">Checking maritime evidence and regional coverage.</p></section>
     </aside>
   </div>
+  <section id="source-watch" class="source-watch" aria-label="Preferred source watch" tabindex="-1"></section>
   <div id="monitoring-dock" aria-label="Monitoring changes and watchlist"></div>
   <nav class="secondary-nav" aria-label="Supporting evidence"><a href="#incident-section">Incident evidence</a><a href="#regional-section">Regional system</a><a href="#conditions-section">Marine conditions</a><a href="#coverage-section">Coverage</a><a href="./investigate.html">Investigate ↗</a></nav>
   <div class="supporting-evidence">

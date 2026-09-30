@@ -53,6 +53,21 @@ test('discovery enrichment cannot attach a changed headline to an older publicat
   const result=await archive.merge([report('a',{title:'Different index headline',sourceId:'gdelt-redsea',discoveredAt:stamp(START+DAY)})],{observedAtBySource:{'gdelt-redsea':stamp(START+DAY)}});
   assert.equal(result.items[0].title,'Publisher headline');assert.equal(result.items[0].sourceId,'bbc');assert.equal(result.items[0].discoveredAt,stamp(START+DAY));
 });
+test('same publisher regional index cannot replace an archived exact RSS clock with midnight',async t=>{
+  const f=await fixture(t),archive=f.create(),publishedAt=stamp(START-1000);
+  await archive.merge([report('regional',{publishedAt,publicationPrecision:'timestamp',dateBasis:'publisher-publication',summary:'Publisher RSS preview.'})],f.observation());
+  f.setTime(START+DAY);
+  const result=await archive.merge([report('regional',{publishedAt:'2026-09-01T00:00:00.000Z',publishedDate:'2026-09-01',publicationPrecision:'day',dateBasis:'publisher-date',dateNote:'Publisher index supplies no timezone.',summary:'Index preview.'})],f.observation());
+  const row=result.items[0];assert.equal(row.publishedAt,publishedAt);assert.equal(row.publicationPrecision,'timestamp');assert.equal(row.dateBasis,'publisher-publication');assert.equal(row.summary,'Publisher RSS preview.');assert.equal(row.dateNote,'');
+  assert.equal(row.firstSeenAt,stamp(START));assert.equal(row.lastSeenAt,stamp(START+DAY));assert.equal(row.retainedFromHistory,false);
+  assert.equal(row.provenance[0].publishedAt,publishedAt);
+  const restored=await f.create().merge([]);assert.equal(restored.items[0].publishedAt,publishedAt);assert.equal(restored.items[0].publicationPrecision,'timestamp');
+});
+test('day-only publisher metadata retains its precision note through archive persistence',async t=>{
+  const f=await fixture(t),archive=f.create(),dateNote='Publisher index supplies no timezone.';
+  await archive.merge([report('regional',{publishedAt:'2026-09-01T00:00:00.000Z',publishedDate:'2026-09-01',publicationPrecision:'day',dateBasis:'publisher-date',dateNote})],f.observation());
+  const row=(await f.create().merge([])).items[0];assert.equal(row.dateNote,dateNote);assert.equal(row.publicationPrecision,'day');assert.equal(row.publishedDate,'2026-09-01');
+});
 test('older concurrent snapshot does not replace newer report metadata',async t=>{
   const f=await fixture(t),archive=f.create();f.setTime(START+DAY);
   await archive.merge([report('a',{title:'New headline'})],f.observation());

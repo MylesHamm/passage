@@ -3,10 +3,51 @@ import {SourceRuntime} from '../lib/source-runtime.mjs';
 import {loadReporting,deduplicateReports} from '../lib/reporting.mjs';
 import {SOURCE_DEFINITIONS} from '../dist/source-health.mjs';
 import {SOURCES} from '../lib/feeds.mjs';
+import {AL_JAZEERA_INDEX} from '../lib/aljazeera.mjs';
 
 const now=Date.parse('2026-09-17T12:00:00Z');
 const storage={readFile:async()=>{throw Object.assign(Error(),{code:'ENOENT'});},mkdir:async()=>{},writeFile:async()=>{}};
 const xml='<rss><channel><item><title>Saudi oil pipeline exports disrupted</title><link>https://example.com/pipeline</link><pubDate>Thu, 17 Sep 2026 10:00:00 GMT</pubDate><description>Aramco discusses crude deliveries.</description></item></channel></rss>';
+const ajIndex=(posts)=>`<script>window.__APOLLO_STATE__="${Buffer.from(JSON.stringify({ROOT_QUERY:{'posts({"category":"middle-east","categoryType":"where"})':posts.map((_,i)=>({__ref:'Post:'+i}))},...Object.fromEntries(posts.map((p,i)=>['Post:'+i,{__typename:'Post',...p}]))})).toString('base64')}";</script>`;
+test('Al Jazeera regional index supplies current reports after the global feed rotates past them',async()=>{
+ const current=Date.parse('2026-09-30T18:00:00Z'),requests=[];
+ const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>current,fetchImpl:async url=>{
+  const address=new URL(url).href;requests.push(address);
+  if(address===AL_JAZEERA_INDEX)return new Response(ajIndex([{title:'Iran reviews oil tanker access through Hormuz',excerpt:'Officials discuss shipping access.',link:'/news/2026/9/30/fixture-index',date:'2026-09-30T12:05:45'}]));
+  if(address===SOURCES.find(source=>source.id==='aj').url)return new Response('<rss><channel><item><title>Local gardening exhibition opens</title><link>https://www.aljazeera.com/news/2026/9/30/fixture-gardens</link><pubDate>Wed, 30 Sep 2026 17:00:00 GMT</pubDate></item></channel></rss>');
+  return new Response('Unavailable',{status:503});
+ }});
+ const result=await loadReporting(runtime,{includeReviewedContext:false,discoveryWaitMs:30000,discoverySpacingMs:0}),source=result.sources.find(s=>s.id==='aj');
+ assert.equal(result.items.length,1);assert.equal(result.items[0].sourceId,'aj');assert.equal(result.items[0].publicationPrecision,'day');
+ assert.equal(source.status,'current');assert.equal(source.recordCount,1);assert.equal(source.parsedCount,2);assert.equal(source.latestRelevant,'2026-09-30T00:00:00.000Z');
+ assert.equal(source.access,'Publisher RSS + public regional index');assert.equal(source.publicationPrecision,'mixed');assert.equal(result.coverage.complete,false);
+ assert.equal(requests.filter(url=>new URL(url).hostname==='www.aljazeera.com').length,2);
+});
+for(const failure of ['index-http','index-markup','rss-http'])test(`Al Jazeera ${failure} failure retains the complete dated source snapshot`,async()=>{
+ const current=Date.parse('2026-09-30T18:00:00Z');let clock=current,failed=false;
+ const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>clock,fetchImpl:async url=>{
+  const address=new URL(url).href;
+  if(address===AL_JAZEERA_INDEX){
+   if(failed&&failure==='index-http')return new Response('Unavailable',{status:503});
+   if(failed&&failure==='index-markup')return new Response('<html>Changed markup</html>');
+   return new Response(ajIndex([{title:'Iran discusses Hormuz shipping',excerpt:'Regional index preview.',link:'/news/2026/9/30/fixture-shared',date:'2026-09-30T12:05:45'},{title:'Houthis issue Red Sea shipping statement',excerpt:'The group issued a statement.',link:'/news/2026/9/30/fixture-regional',date:'2026-09-30T11:00:00'}]));
+  }
+  if(address===SOURCES.find(source=>source.id==='aj').url){
+   if(failed&&failure==='rss-http')return new Response('Unavailable',{status:503});
+   return new Response(`<rss><channel><item><title>Iran discusses Hormuz shipping</title><link>https://www.aljazeera.com/news/2026/9/30/fixture-shared</link><pubDate>Wed, 30 Sep 2026 ${failed?'18:01:00':'12:05:45'} GMT</pubDate><description>RSS preview with an exact timestamp.</description></item></channel></rss>`);
+  }
+  return new Response('Unavailable',{status:503});
+ }});
+ const options={includeReviewedContext:false,discoveryWaitMs:30000,discoverySpacingMs:0};
+ const first=await loadReporting(runtime,options),shared=first.items.find(row=>row.url.endsWith('/fixture-shared'));
+ assert.equal(first.items.length,2);assert.equal(shared.publishedAt,'2026-09-30T12:05:45.000Z');assert.equal(shared.publicationPrecision,'timestamp');assert.equal(shared.summary,'RSS preview with an exact timestamp.');
+ assert.equal(first.sources.find(s=>s.id==='aj').recordCount,2);
+ clock+=301000;failed=true;
+ const next=await loadReporting(runtime,options),source=next.sources.find(s=>s.id==='aj');
+ assert.equal(source.connection,'cached');assert.equal(source.status,'retained');assert.equal(source.attention,true);assert.equal(source.retrievedAt,new Date(current).toISOString());assert.equal(source.checkedAt,new Date(clock).toISOString());
+ assert.equal(source.errorCategory,failure==='index-markup'?'schema':'upstream_http');
+ assert.deepEqual(next.items,first.items);assert.equal(source.recordCount,2);
+});
 test('aggregated reporting keeps regional context, source provenance and per-source failures',async()=>{
  const urls=[];const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>now,fetchImpl:async(url)=>{
    const u=new URL(url);urls.push(u.href);

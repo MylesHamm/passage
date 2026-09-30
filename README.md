@@ -11,6 +11,8 @@ The interface runs on GitHub Pages. A separate Cloudflare Worker and one SQLite 
 - Reporting and official maritime notices are collected on a five-minute background cycle, subject to each provider's refresh interval and retry instructions. The open dashboard checks for updates every minute.
 - Received AIS positions stream into the collector continuously when configured; the dashboard checks every ten seconds. Coverage can be incomplete. Positions expire after thirty minutes.
 - EIA daily spot observations and weekly supply statistics retain their observation dates. Rechecking them does not create a newer market observation. The separate embedded oil chart is attributed to its own provider.
+- Polymarket provides up to five relevant active prediction markets through free public snapshots. Exact questions, deadlines, liquidity and resolution rules remain visible; these are market expectations, not event confirmation.
+- The Hormuz Letter preferred-source watch rechecks explicitly tracked links through public X excerpts. It does not discover new posts automatically. Original posts and maps remain linked; satellite observations are not yet collected.
 - Weather is a dated model forecast. Geography, infrastructure locations, and possible oil-impact mechanisms are reference context.
 
 Reports, events, and market movements remain distinct. A graph connection is not proof that an actor caused an incident or that an incident moved oil prices. Provider failures show retained, unavailable, or delayed states rather than fabricated replacements.
