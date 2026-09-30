@@ -11,7 +11,7 @@
     "start": "node --env-file-if-exists=.env server.mjs",
     "dev": "node --watch --env-file-if-exists=.env server.mjs",
     "test": "node --test",
-    "check": "node --check server.mjs && node --check lib/feeds.mjs && node --check lib/eia.mjs && node --check lib/ais.mjs && node --check lib/openwaters.mjs && node --check lib/vessel-types.mjs && node --check dist/app.js && node --check dist/source-health.mjs && node --check dist/research-data.mjs && node --check dist/research.js && node --check lib/source-runtime.mjs && node --check dist/globe/controller.mjs && node --check dist/globe/renderer.mjs && node --check dist/globe/geometry.mjs && node --check lib/acled.mjs && node --check dist/connections/acled.js && node --check lib/maritime.mjs && node --check lib/diagnostics.mjs && node --check dist/situation-data.mjs && node --check dist/situation-view.mjs && node --check dist/energy-context.mjs && node --check dist/vessel-data.mjs && node --check lib/local-launch.mjs && node --check lib/discovery.mjs && node --check lib/reporting.mjs && node --check lib/aljazeera.mjs && node --check lib/report-archive.mjs && node --check dist/intelligence-data.mjs && node --check dist/intelligence-context.mjs && node --check dist/investigate.js && node --check dist/investigate-model.mjs && node --check dist/graph-view.mjs && node --check dist/reporting-view.mjs && node --check lib/market-context.mjs && node --check dist/market-view.mjs && node --check dist/monitoring-model.mjs && node --check dist/monitoring-view.mjs && node --check dist/priority-brief.mjs && node --check dist/priority-view.mjs && node --check dist/report-impact.mjs && node --check dist/oil-quotes.js && node --check lib/data-service.mjs && node --check lib/vessel-store.mjs && node --check dist/runtime-config.mjs && node --check scripts/build-pages.mjs && node --check lib/expectations.mjs && node --check lib/source-watch.mjs && node --check dist/expectations-view.mjs && node --check dist/source-watch-view.mjs",
+    "check": "node --check server.mjs && node --check lib/feeds.mjs && node --check lib/eia.mjs && node --check lib/ais.mjs && node --check lib/openwaters.mjs && node --check lib/vessel-types.mjs && node --check dist/app.js && node --check dist/source-health.mjs && node --check dist/research-data.mjs && node --check dist/research.js && node --check lib/source-runtime.mjs && node --check dist/globe/controller.mjs && node --check dist/globe/renderer.mjs && node --check dist/globe/geometry.mjs && node --check lib/acled.mjs && node --check dist/connections/acled.js && node --check lib/maritime.mjs && node --check lib/diagnostics.mjs && node --check dist/situation-data.mjs && node --check dist/situation-view.mjs && node --check dist/energy-context.mjs && node --check dist/vessel-data.mjs && node --check lib/local-launch.mjs && node --check lib/discovery.mjs && node --check lib/reporting.mjs && node --check lib/aljazeera.mjs && node --check lib/report-archive.mjs && node --check dist/intelligence-data.mjs && node --check dist/intelligence-context.mjs && node --check dist/investigate.js && node --check dist/investigate-model.mjs && node --check dist/graph-view.mjs && node --check dist/reporting-view.mjs && node --check lib/market-context.mjs && node --check dist/market-view.mjs && node --check dist/monitoring-model.mjs && node --check dist/monitoring-view.mjs && node --check dist/priority-brief.mjs && node --check dist/priority-view.mjs && node --check dist/report-impact.mjs && node --check dist/oil-quotes.js && node --check lib/data-service.mjs && node --check lib/vessel-store.mjs && node --check dist/runtime-config.mjs && node --check scripts/build-pages.mjs && node --check lib/expectations.mjs && node --check dist/expectations-view.mjs",
     "build:pages": "node scripts/build-pages.mjs",
     "cloud:check": "wrangler deploy --dry-run --config cloud/wrangler.jsonc --outdir build/worker",
     "cloud:dev": "wrangler dev --config cloud/wrangler.jsonc",
@@ -21,11 +21,6 @@
     "ws": "8.21.3"
   },
   "devDependencies": {
-    "wrangler": "4.137.0"
-  },
-  "overrides": {
-    "miniflare": {
-      "undici": "7.29.1"
-    }
+    "wrangler": "4.145.0"
   }
 }

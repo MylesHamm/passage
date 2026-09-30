@@ -1,17 +1,22 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {renderSourceWatch} from '../dist/source-watch-view.mjs';
+import {readFile} from 'node:fs/promises';
 
-test('source watch never claims automatic discovery and preserves source uncertainty',()=>{
- const html=renderSourceWatch({sourceWatch:{items:[{url:'https://x.com/HormuzLetter/status/123',summary:'Iran appears to have struck <site>',publishedAt:'2026-09-30T00:00:00Z'}],source:{connection:'connected',retrievedAt:'2026-09-30T17:00:00Z'}}});
- assert.match(html,/appears to have struck &lt;site&gt;/);assert.match(html,/New posts are not discovered automatically/);assert.match(html,/2026-09-30 17:00 UTC/);assert.match(html,/Read full post &amp; maps/);
-});
-test('source watch failure retains original clock and rejects unsafe links',()=>{
- const html=renderSourceWatch({failures:{sourceWatch:true},sourceWatch:{items:[{url:'https://x.com/HormuzLetter/status/123',summary:'Retained excerpt'},{url:'javascript:alert(1)',summary:'UNSAFE'}],source:{retrievedAt:'2026-09-29T12:00:00Z'}}});
- assert.match(html,/Update failed · retained excerpts/);assert.match(html,/2026-09-29 12:00 UTC/);assert.doesNotMatch(html,/UNSAFE|javascript:/);
+test('preferred source links to the account within the briefing and discloses no automatic collection',async()=>{
+ const html=await readFile(new URL('../dist/index.html',import.meta.url),'utf8');
+ const brief=html.match(/<section class="priority-watch"[\s\S]*?<\/section>/)?.[0];
+ assert.ok(brief,'The account reference belongs inside the live briefing.');
+ assert.match(brief,/id="priority-watch"/);
+ assert.match(brief,/Preferred source ·/);
+ assert.match(brief,/href="https:\/\/x\.com\/HormuzLetter" target="_blank" rel="noopener noreferrer"/);
+ assert.match(brief,/X account; not automatically collected/);
+ assert.doesNotMatch(html,/id="source-watch"|source-watch-shortcut|HormuzLetter\/status\//);
 });
 
-test('source watch ages the retained retrieval even when the view is paused',()=>{
- const html=renderSourceWatch({auto:false,sourceWatch:{source:{connection:'connected',status:'current',retrievedAt:'2026-09-30T10:00:00Z'},items:[]}},Date.parse('2026-09-30T10:16:00Z'));
- assert.match(html,/Tracked-post check overdue/);assert.match(html,/view refresh paused/);
+test('main dashboard neither requests nor exports the retired fixed-post watch and preserves live market requests',async()=>{
+ const app=await readFile(new URL('../dist/app.js',import.meta.url),'utf8');
+ assert.doesNotMatch(app,/sourceWatch|\/api\/source-watch|source-watch-view/);
+ assert.match(app,/\['news','\/api\/news',35000\]/);
+ assert.match(app,/\['expectations','\/api\/expectations',35000\]/);
+ assert.match(app,/expectations:state\.expectations/);
 });

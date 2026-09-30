@@ -23,7 +23,7 @@ const acled=new AcledConnection({root,runtime});await acled.initialize();
 let reportingTimer,reportingStopped=false,reportingCollectorActive=false;
 async function collectReporting() {
   if(reportingStopped)return;
-  try { await Promise.all([service.news({entryPoint:'background'}),service.expectations({entryPoint:'background'}),service.sourceWatch({entryPoint:'background'})]); }
+  try { await Promise.all([service.news({entryPoint:'background'}),service.expectations({entryPoint:'background'})]); }
   catch { console.warn('Reporting collection could not complete. Previously retained history remains available.'); }
   finally { if(!reportingStopped){reportingTimer=setTimeout(collectReporting,300000);reportingTimer.unref();} }
 }

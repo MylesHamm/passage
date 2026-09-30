@@ -21,9 +21,12 @@
 <main id="workspace" class="view-overview" tabindex="-1">
   <section class="workspace-heading">
     <div><h1 id="view-title">The maritime oil watch.</h1><p class="scope-subtitle" id="scope-subtitle">An overview of both theatres · select a chokepoint to focus.</p></div>
-    <div class="heading-controls"><a class="text-button source-watch-shortcut" href="#source-watch">The Hormuz Letter ↘</a><button class="text-button" id="brief-button">Brief me</button><button class="text-button" id="export-button">Export ↗</button></div>
+    <div class="heading-controls"><button class="text-button" id="brief-button">Brief me</button><button class="text-button" id="export-button">Export ↗</button></div>
   </section>
-  <section id="priority-watch" class="priority-watch" tabindex="-1" aria-label="Current maritime and oil developments"></section>
+  <section class="priority-watch" aria-label="Current maritime and oil developments">
+    <div id="priority-watch" tabindex="-1"></div>
+    <p class="preferred-source"><span>Preferred source · <a href="https://x.com/HormuzLetter" target="_blank" rel="noopener noreferrer">The Hormuz Letter ↗</a></span><small>X account; not automatically collected</small></p>
+  </section>
   <div class="command-grid">
     <section class="panel feed-panel" aria-labelledby="feed-heading">
       <div class="panel-heading"><div><span class="section-index">01</span><h2 id="feed-heading">Latest reporting</h2></div><span id="feed-count" class="count-badge">—</span></div>
@@ -72,7 +75,6 @@
       <section id="situation-brief" class="situation-brief" aria-label="Dated situation context"><div class="brief-kicker">SITUATION CONTEXT</div><p class="brief-copy">Checking maritime evidence and regional coverage.</p></section>
     </aside>
   </div>
-  <section id="source-watch" class="source-watch" aria-label="Preferred source watch" tabindex="-1"></section>
   <div id="monitoring-dock" aria-label="Monitoring changes and watchlist"></div>
   <nav class="secondary-nav" aria-label="Supporting evidence"><a href="#incident-section">Incident evidence</a><a href="#regional-section">Regional system</a><a href="#conditions-section">Marine conditions</a><a href="#coverage-section">Coverage</a><a href="./investigate.html">Investigate ↗</a></nav>
   <div class="supporting-evidence">
