@@ -31,7 +31,7 @@ export function createRenderer(canvas, world) {
   const landFeatures = world.type === 'FeatureCollection' ? world.features : [world];
   const lines = ROUTES.map(route => waterSafeSegments(route.coordinates, landFeatures, d3));
   let width=1,height=1,hitPoints=[];
-  const colors={ocean:'#071A2C',land:'#1D4070',coast:'#44ACE9',grid:'#1D4070',mint:'#D9FDD9',sky:'#44ACE9',text:'#C9D3E0'};
+  const colors={ocean:'#071A2C',land:'#344652',coast:'#8396A3',grid:'#243743',mint:'#D9FDD9',sky:'#44ACE9',text:'#C9D3E0'};
   function resize(w,h) {
     width=w;height=h;const ratio=Math.min(2,window.devicePixelRatio||1);
     canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);
@@ -45,10 +45,10 @@ export function createRenderer(canvas, world) {
     projection.rotate(pose.rotation).translate([cx,cy]).scale(radius);
     ctx.clearRect(0,0,width,height);ctx.save();
     // The rim remains restrained so coastlines and selected points carry emphasis.
-    ctx.beginPath();ctx.arc(cx,cy,radius+3,0,Math.PI*2);ctx.strokeStyle='#44ACE940';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,cy,radius+3,0,Math.PI*2);ctx.strokeStyle='#8BA6B633';ctx.lineWidth=1;ctx.stroke();
     ctx.beginPath();path({type:'Sphere'});ctx.fillStyle=colors.ocean;ctx.fill();ctx.clip();
     const shade=ctx.createRadialGradient(cx-radius*.3,cy-radius*.5,0,cx,cy,radius*1.2);
-    shade.addColorStop(0,'#1D4070');shade.addColorStop(1,colors.ocean);ctx.fillStyle=shade;ctx.fillRect(0,0,width,height);
+    shade.addColorStop(0,'#102939');shade.addColorStop(1,colors.ocean);ctx.fillStyle=shade;ctx.fillRect(0,0,width,height);
     stroke(grid,colors.grid,.6);
     ctx.beginPath();path(world);ctx.fillStyle=colors.land;ctx.fill();ctx.strokeStyle=colors.coast;ctx.lineWidth=.7;ctx.stroke();
     hitPoints=[];

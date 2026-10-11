@@ -2,6 +2,7 @@ import {publisherPreview} from './publisher-preview.mjs';
 import {createWorkspaceView,workspaceFor} from './workspace-view.mjs';
 import {renderMarketPulse} from './market-pulse.mjs';
 import {createOilChart} from './oil-chart-view.mjs';
+import {createOilSystemView} from './oil-system-view.mjs';
 import {createExpectationsView} from './expectations-view.mjs';
 import {collectorHealth,collectorCard} from './collector-status.mjs';
 import {apiFetch,siteUrl,runtime,LIVE_REFRESH_MS} from './runtime-config.mjs';
@@ -36,6 +37,9 @@ const money=v=>Number.isFinite(v)?'$'+v.toFixed(2):'—';
 const dateMs=d=>Date.parse(d+'T00:00:00Z');
 const expectationsView=createExpectationsView($('#market-expectations'),{getState:()=>state});
 const oilChart=createOilChart($('#oil-chart'));
+const oilSystem=createOilSystemView($('#oil-system'));
+function openOilSystem(report=null){if($('#context-inspector').open)closeInspector();setView('energy');oilSystem.open(report);}
+$$('[data-open-oil-system]').forEach(button=>button.onclick=()=>openOilSystem());
 let toastTimer, globe, monitoring, priority, workspaceView;
 let inspectorMode=null, inspectorReturn=null, selectedReport=null;
 let selectedContext=null;
@@ -121,6 +125,7 @@ function storyById(id){return state.latestNews?.items.find(x=>x.id===id)||state.
 function toggleSave(id){const story=storyById(id);if(!story)return;if(state.saved[id])delete state.saved[id];else state.saved[id]=story;storage.set('saved',state.saved);renderReports();toast(state.saved[id]?'Report saved on this device':'Report removed from saved items');}
 function showStory(id){const x=storyById(id);if(!x)return;selectedReport=x;const summary=publisherPreview(x.summary);
   openInspector(x.type,`<h2>${esc(x.title)}</h2><div class="detail-meta">${esc(x.source)}${x.type==='Independent energy analysis'?' · Analysis':''} · ${esc(reportTimeLabel(x))}: ${esc(fmtDate(reportTime(x)))}${x.publishedAt&&x.publicationPrecision!=='day'?' at '+esc(fmtTime(x.publishedAt))+' UTC':''}<br>${x.theaters.map(t=>esc(names[t])).join(' · ')}</div>${summary?`<p>${esc(summary)}</p><p class="muted">${x.sourceId==='reviewed-reporting'?'Reviewed context · checked '+esc(x.readAt):x.type==='Independent energy analysis'&&x.contentAccess?.startsWith('Public RSS preview')?'Public RSS preview':'Publisher feed summary'} · full article not imported.</p>`:''}${x.type==='Independent energy analysis'?`<p class="evidence-watch">${esc(x.evidenceStatus)}. ${esc(x.contentAccess==='discovery-metadata'?'Headline and link found by GDELT; public preview not retrieved':x.contentAccess)}.</p>`:''}${reportImpactMarkup(x,state.oil)}${x.reviewedContext?`<section class="reviewed-context"><h3>Related review · ${esc(x.reviewedContext.readAt)}</h3><p>${esc(x.reviewedContext.summary)}</p><p>${esc(x.reviewedContext.watch)}</p><p class="muted">${esc(x.reviewedContext.attributionNote)} This review keeps its original date; it is not a new source update.</p></section>`:''}${x.watch?`<p>${esc(x.watch)}</p>`:''}${x.attributionNote?`<p class="muted">${esc(x.attributionNote)}</p>`:''}${x.retainedForReading?'<p class="muted">Kept in your reading list until you apply the refreshed snapshot. This report is absent from the latest loaded results.</p>':''}${x.lastSeenAt?`<p class="muted">First retrieved ${esc(stamp(x.firstSeenAt))} · last seen in a source ${esc(stamp(x.lastSeenAt))}.${x.retainedFromHistory?' Retained from history; absent from the current source snapshot. This does not establish whether the situation has changed.':''}</p>`:''}<p>${x.sourceId==='reviewed-reporting'?'This is a dated source-linked research note.':'This record preserves the publisher’s headline.'} ${x.sourceId==='reviewed-reporting'?'The theater scope comes from the dated review; actor tags are text matches.':'Actor and theater tags are text matches in the reporting or its separately dated review.'} They do not verify responsibility, casualties, or the event’s location.</p><div class="detail-actions"><a class="primary-link" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">Read original reporting ↗</a><a class="text-button" href="${esc(siteUrl('/investigate.html'))}?source=${encodeURIComponent(x.url)}">Explore connections ↗</a><button class="text-button" id="detail-save">${state.saved[id]?'Remove from saved':'Save report'}</button></div><p class="evidence-watch">${esc(x.theaters.length?x.theaters.map(t=>names[t]).join(" · ")+" · theater context only. No precise report location is mapped.":"No report location is mapped.")}</p><label class="note-label" for="analyst-note">Analyst note <span class="muted">· stays on this device</span></label><textarea id="analyst-note" placeholder="Separate sourced facts from your assessment…">${esc(state.notes[id]||'')}</textarea><div class="detail-actions"><button class="text-button" id="save-note">Save note</button></div>`,{context:{kind:'report',id:x.id,theaters:x.theaters,description:`Reporting context · ${x.theaters.map(t=>names[t]).join(' / ')||'Location unspecified'} · precise location not mapped`}});
+  $('#inspect-report-system').onclick=()=>openOilSystem(x);
   $('#detail-save').onclick=()=>{toggleSave(id);$('#detail-save').textContent=state.saved[id]?'Remove from saved':'Save report';};$('#save-note').onclick=()=>{state.notes[id]=$('#analyst-note').value.slice(0,10000);if(storage.set('notes',state.notes))toast('Note saved on this device');};
 }
 function renderMetrics(){
@@ -136,7 +141,7 @@ function renderTheaters(){const items=reports({allTheaters:true}),received=state
 function setTheater(t){
   if(!names[t])return;state.theater=t;globe?.select(t);
   $$('[data-theater]').forEach(b=>{b.classList.toggle('active',b.dataset.theater===t);b.setAttribute('aria-pressed',String(b.dataset.theater===t));});
-  expectationsView.update();renderReports();renderVessels();renderWeather();renderScope();renderExposureBaseline();situation.update();
+  expectationsView.update();renderReports();renderVessels();renderWeather();renderScope();renderExposureBaseline();situation.update();oilSystem.update({theater:state.theater});
   $('#console-response').textContent=t==='both'?'Overview of both theatres.':`Focused on ${names[t]}. Reporting, vessels and forecasts follow this selection. Oil prices provide shared market context.`;
 }
 function showOverview(){state.actor='All';state.query='';$('#search').value='';setView('overview');setTheater('both');}
@@ -151,7 +156,7 @@ function renderScope(){
 }
 function setView(view){
   if(!['overview','reporting','energy','evidence','civilian','saved'].includes(view))return;
-  state.view=view;$('#workspace').className='view-'+view;workspaceView?.update(view);
+  state.view=view;$('#workspace').className='view-'+view;workspaceView?.update(view);oilSystem.setActive(view==='energy');
   renderScope();renderReports();renderOil();
 }
 function impactRelevantEvent(event){
@@ -174,6 +179,7 @@ function renderOil(){
   const series=state.oil?.series||[];
   $('#oil-summary').innerHTML=series.length?series.map(s=>{const p=s.observations?.at(-1);return `<div class="oil-quote"><span class="${s.id}-label">${s.id==='brent'?'━':'┄'} ${esc(s.name)}</span><strong>${money(p?.value)}</strong><small data-oil-state="${s.id}">${p?`${esc(fmtDate(p.date))} · ${esc(allSourceStates().find(x=>x.id===s.id)?.label||'daily spot')}`:'Source unavailable'}</small></div>`;}).join(''):`<p class="muted">${state.failures.oil?'Oil observations unavailable. Inspect Sources for the failed connection.':'Checking daily EIA observations…'}</p>`;
   oilChart.update(series,{period:state.period});
+  oilSystem.update({oil:state.oil,oilFailed:state.failures.oil,theater:state.theater});
 }
 function renderWeather(){const data=state.weather;if(!data){if(state.failures.weather)$('#weather').innerHTML='<div class="empty">Marine data is unavailable. Check Sources for the live-data connection.</div>';return;}const now=Date.now();
   $('#weather').innerHTML=data.theaters.filter(t=>state.theater==='both'||t.id===state.theater).map(t=>{const wind=t.wind?.current,marine=t.marine?.hourly;let i=marine?.time.findIndex(d=>Date.parse(d+'Z')>=now)??-1;if(i>0)i--;const wave=i>=0?marine.wave_height[i]:null,period=i>=0?marine.wave_period[i]:null,stamp=marine?.time[i],stale=wind&&now-Date.parse(wind.time+'Z')>7200000;const val=(v,unit)=>v!==null&&v!==undefined?`${Number(v).toFixed(1)}<small> ${unit}</small>`:'—';return `<div class="weather-row"><div class="weather-top"><strong>${esc(t.name)}</strong><span>${stale?'Older model time':stamp?fmtDate(stamp+'Z')+' · '+fmtTime(stamp+'Z')+' UTC':'Unavailable'}</span></div><div class="weather-values"><div><strong>${val(wave,'m')}</strong><span>Wave height</span></div><div><strong>${val(wind?.wind_speed_10m,'km/h')}</strong><span>Wind at 10 m</span></div><div><strong>${val(period,'s')}</strong><span>Wave period</span></div></div></div>`;}).join('');
@@ -288,8 +294,17 @@ function updateClock(){$('#utc-clock').textContent=new Date().toLocaleTimeString
 setInterval(()=>{if(state.auto&&!document.hidden){loadVessels();if(dialogMode==='sources')loadDiagnostics();}else renderVessels();refreshAges();},10000);
 $('passage-oil-quotes')?.toggleAttribute('paused',!state.auto);
 $('.oil-spot-history')?.addEventListener('toggle',event=>{if(event.target.open)renderOil();});
-if(location.hash){const target=document.getElementById(location.hash.slice(1));if(target?.matches('details.support-section')){setView('evidence');target.open=true;}else if(target?.id==='market-expectations')setView('energy');}
-renderScope();renderActors();renderTheaters();renderStatus();renderOil();loadAll();createGlobe($('#globe'),{onSelect:setTheater,onVessel:showVessel,onEvent:showAcledEvent,onInfrastructure:hit=>situation.showAsset(hit),onHover:renderGlobeHover}).then(g=>{globe=g;globe.setInfrastructure(state.showInfrastructure?INFRASTRUCTURE:[]);globe.setEvents(state.showEvents?acledEvents().filter(impactRelevantEvent):[]);if(state.theater!=='both')globe.select(state.theater);renderVessels();});
+if(location.hash){const target=document.getElementById(location.hash.slice(1));if(target?.matches('details.support-section')){setView('evidence');target.open=true;}else if(['market-expectations','oil-system'].includes(target?.id)){setView('energy');if(target.id==='oil-system')oilSystem.open();}}
+// Preserve a direct diagram link after initial data changes the height above it.
+// Any user input cancels this one-time alignment; refreshes never move the reader.
+let initialAnchorUntouched=location.hash==='#oil-system';
+const cancelInitialAnchor=()=>{initialAnchorUntouched=false;};
+const anchorInputs=['pointerdown','keydown','wheel','touchstart','click'];
+if(initialAnchorUntouched)anchorInputs.forEach(type=>window.addEventListener(type,cancelInitialAnchor,{passive:true}));
+const pageLoaded=document.readyState==='complete'?Promise.resolve():new Promise(resolve=>window.addEventListener('load',resolve,{once:true}));
+renderScope();renderActors();renderTheaters();renderStatus();renderOil();
+Promise.all([loadAll(),pageLoaded]).then(()=>{if(initialAnchorUntouched&&location.hash==='#oil-system'&&state.view==='energy')oilSystem.open();anchorInputs.forEach(type=>window.removeEventListener(type,cancelInitialAnchor));});
+createGlobe($('#globe'),{onSelect:setTheater,onVessel:showVessel,onEvent:showAcledEvent,onInfrastructure:hit=>situation.showAsset(hit),onHover:renderGlobeHover}).then(g=>{globe=g;globe.setInfrastructure(state.showInfrastructure?INFRASTRUCTURE:[]);globe.setEvents(state.showEvents?acledEvents().filter(impactRelevantEvent):[]);if(state.theater!=='both')globe.select(state.theater);renderVessels();});
 
 let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(renderOil,120);});
 

@@ -57,7 +57,7 @@ export function createWorkspaceView({ root = document, onNavigate } = {}) {
   }
   nav.addEventListener('click', event => {
     const button = event.target.closest('[data-view]');
-    if (button) navigate(button.dataset.view);
+    if (button) { navigate(button.dataset.view); nav.scrollIntoView({block:'start',behavior:'instant'}); }
   });
   // WAI-ARIA APG tabs: roving focus and automatic activation for local panels.
   nav.addEventListener('keydown', event => {
@@ -65,7 +65,7 @@ export function createWorkspaceView({ root = document, onNavigate } = {}) {
     if (!button) return;
     const next = adjacentWorkspace(button.dataset.view, event.key);
     if (!next) return;
-    event.preventDefault(); navigate(next); get(`#tab-${next}`).focus();
+    event.preventDefault(); navigate(next); get(`#tab-${next}`).focus({preventScroll:true}); nav.scrollIntoView({block:'start',behavior:'instant'});
   });
   root.addEventListener('click', event => {
     const button = event.target.closest('[data-workspace-view]');

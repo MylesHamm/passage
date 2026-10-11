@@ -1,0 +1,119 @@
+/* A single inspectable schematic. Color, motion and labels carry no live-flow claim. */
+.oil-system {
+  --system-paper: #edf2f0;
+  --system-ink: #183040;
+  --system-motion-duration: 400ms;
+  --system-motion-ease: cubic-bezier(.2, .75, .25, 1);
+  margin: 24px 0 0;
+  padding: 24px;
+  border: 1px solid var(--rule, #c9d3e026);
+  border-radius: 8px;
+  background: #091d2d;
+  color: #edf2f4;
+  min-width: 0;
+}
+.oil-system :is(button, a):focus-visible { outline: 2px solid #d9fdd9; outline-offset: 4px; }
+.oil-system .system-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 22px; }
+.oil-system .system-heading h2 { margin: 5px 0 0; font-size: clamp(20px, 2vw, 27px); line-height: 1.25; letter-spacing: -.025em; font-weight: 400; }
+.oil-system .system-heading p { margin: 9px 0 0; color: #b8c8d8; font-size: 13px; line-height: 1.6; max-width: 68ch; }
+.oil-system .system-kicker { display: block; color: #a8c1d0; font-size: 10px; line-height: 1.5; letter-spacing: .12em; text-transform: uppercase; }
+.oil-system .system-toggle { flex-shrink: 0; min-height: 44px; padding: 10px 16px; border: 1px solid #c9d3e04a; border-radius: 5px; color: #d9fdd9; background: transparent; font-size: 12px; font-weight: 500; }
+.oil-system .system-toggle:hover { background: #d9fdd90b; border-color: #d9fdd982; }
+.oil-system .system-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(290px, 1fr); align-items: stretch; gap: 26px; }
+.oil-system .system-figure { min-width: 0; margin: 0; }
+.oil-system .system-canvas { min-width: 0; position: relative; overflow: hidden; background: var(--system-paper); border: 1px solid #bac9c9; border-radius: 5px; }
+.oil-system .system-art { width: 100%; height: auto; display: block; aspect-ratio: 720 / 370; user-select: none; }
+.oil-system .system-art path, .oil-system .system-art ellipse, .oil-system .system-art circle { stroke: var(--system-ink); stroke-width: 1.05; stroke-linejoin: round; stroke-linecap: round; }
+.oil-system .system-art .system-art-guide { fill: none; stroke: #b9c7c7; stroke-width: .55; }
+.oil-system .system-art .system-art-connector { fill: none; stroke: #647c87; stroke-width: 1; stroke-dasharray: 3 5; }
+.oil-system .system-art .system-art-anchors { fill: #74878d; }
+.oil-system .system-part { cursor: pointer; transition: none; }
+.oil-system[data-motion=on] .system-part { transition: transform var(--system-motion-duration) var(--system-motion-ease); }
+.oil-system .system-art .system-art-shadow { fill: #1830400c; stroke: none; }
+.oil-system .system-art .system-art-side { fill: #b8c8cb; }
+.oil-system .system-art .system-art-base { fill: #dce5e3; stroke: #71878d; }
+.oil-system .system-art .system-art-ring { fill: none; stroke: #244d51; stroke-width: 2; opacity: 0; }
+.oil-system .system-part:is(:hover, .is-selected) .system-art-ring { opacity: 1; }
+.oil-system .system-part.is-selected .system-art-base { fill: #d9fdd9; stroke: #254b45; stroke-width: 1.6; }
+.oil-system .system-art .system-art-top { fill: #dde6e4; }
+.oil-system .system-art .system-art-white, .oil-system .system-art .system-art-paper { fill: #f9fbf8; }
+.oil-system .system-art .system-art-line { fill: none; }
+.oil-system .system-art .system-art-detail { fill: none; stroke: #647c87; stroke-width: .8; }
+.oil-system .system-art .system-art-pipe { fill: none; stroke: #647c87; stroke-width: 4; }
+.oil-system .system-art .system-art-water { fill: none; stroke: #91a9b5; stroke-width: 1; }
+.oil-system .system-art .system-art-hull { fill: #70888f; }
+.oil-system .system-art .system-art-accent { fill: #d9fdd9; stroke: #657b73; }
+.oil-system .system-art .system-art-shield { fill: #c7e0dc; }
+.oil-system .system-art .system-art-shield-seam { fill: none; stroke: #90aaa6; }
+.oil-system .system-art .system-art-instrument { fill: #e3eee9; }
+.oil-system .system-art .system-art-indicator { fill: #183040; }
+.oil-system .system-art-number circle { fill: #edf2f0; }
+.oil-system .system-art-number text { font: 500 12px 'IBM Plex Sans', sans-serif; fill: #183040; }
+.oil-system .system-part.is-selected .system-art-number circle { fill: #183040; }
+.oil-system .system-part.is-selected .system-art-number text { fill: #d9fdd9; }
+.oil-system .system-part.is-matched .system-art-number circle { stroke-width: 2.5; }
+.oil-system .system-art-label { font: 500 13px 'IBM Plex Sans', sans-serif; fill: #24424e; }
+.oil-system .system-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; margin-top: 12px; }
+.oil-system .system-controls button, .oil-system button.system-stage { min-height: 60px; width: 100%; padding: 10px 11px; background: transparent; color: #cbd7de; border: 1px solid #c9d3e033; border-radius: 5px; text-align: left; font-size: 12px; line-height: 1.4; }
+.oil-system .system-controls button:hover { background: #d9fdd909; border-color: #b8c8d883; }
+.oil-system .system-controls button[aria-pressed=true] { background: #d9fdd914; border-color: #a9cdb3; color: #d9fdd9; box-shadow: inset 0 0 0 1px #a9cdb330; }
+.oil-system .system-controls button > span:first-child { display: block; font-size: 10px; color: #9dafbc; margin-bottom: 4px; }
+.oil-system .system-controls button[aria-pressed=true] > span:first-child { color: #d9fdd9; }
+.oil-system .system-stage strong { display: block; font-size: 12px; line-height: 1.45; font-weight: 500; }
+.oil-system .system-stage small { display: block; margin-top: 7px; font-size: 11px; line-height: 1.55; color: #afc1cf; }
+.oil-system .system-stage[aria-pressed=true] small { color: #c7ddcd; }
+.oil-system .system-readout { min-width: 0; padding: 4px 0 0; }
+.oil-system .system-readout h3 { margin: 10px 0 12px; font-size: 23px; line-height: 1.3; font-weight: 400; letter-spacing: -.025em; }
+.oil-system .system-readout p { font-size: 13px; line-height: 1.75; color: #c0cdd6; margin: 12px 0; }
+.oil-system .system-selected-label { color: #d9fdd9; font-size: 11px; line-height: 1.6; }
+.oil-system .system-evidence { border-top: 1px solid #c9d3e026; margin-top: 18px; padding-top: 14px; }
+.oil-system .system-evidence :is(strong, h4) { margin: 0; display: block; color: #edf2f4; font-size: 12px; font-weight: 500; }
+.oil-system [data-system-explanation] > a { display: inline-block; padding: 9px 0; min-height: 44px; font-size: 12px; line-height: 1.6; color: #85cbf2; text-decoration: underline; text-underline-offset: 3px; }
+.oil-system .system-context { display: flex; align-items: start; justify-content: space-between; gap: 14px; margin-bottom: 20px; padding: 14px 16px; border-left: 2px solid #44ace9; background: #44ace908; overflow-wrap: anywhere; }
+.oil-system .system-context > div { min-width: 0; }
+.oil-system .system-context > div > span { display: block; font-size: 10px; line-height: 1.5; letter-spacing: .035em; color: #8ac8ea; }
+.oil-system .system-context > div > small { display: block; font-size: 11px; line-height: 1.6; color: #afc1cf; }
+.oil-system .system-context p { color: #c0cdd6; margin: 7px 0; font-size: 13px; line-height: 1.6; }
+.oil-system .system-context button { flex-shrink: 0; min-height: 44px; color: #d9fdd9; padding: 8px 0; border: 0; font-size: 12px; background: transparent; }
+.oil-system .system-prices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0; }
+.oil-system .system-price { min-width: 0; padding: 13px 12px; border: 1px solid #c9d3e02b; border-radius: 4px; }
+.oil-system .system-price > span { display: block; font-size: 11px; line-height: 1.65; color: #b8c8d8; }
+.oil-system .system-price strong { display: block; font-size: 24px; line-height: 1.5; font-weight: 400; color: #edf2f4; }
+.oil-system .system-price small, .oil-system .system-price time, .oil-system .system-status { display: block; color: #b8c8d8; font-size: 11px; line-height: 1.65; overflow-wrap: anywhere; }
+.oil-system .system-price > small:first-of-type { margin-top: 7px; color: #c9d3e0; }
+.oil-system .system-price:is([data-price-status=retained], [data-price-status=unavailable], [data-price-status=stale]) > small:first-of-type { color: #e3ba79; }
+.oil-system .system-price:is([data-price-status=loading], [data-price-status=unavailable], [data-price-status=empty]) > strong { font-size: 17px; line-height: 2.1; }
+.oil-system .system-footer { display: flex; align-items: center; justify-content: space-between; gap: 26px; margin-top: 24px; padding-top: 18px; border-top: 1px solid #c9d3e026; }
+.oil-system .system-footer p { margin: 0; max-width: 90ch; font-size: 11px; color: #aabcc9; line-height: 1.7; }
+.oil-system .system-footer a { flex-shrink: 0; color: #d9fdd9; min-height: 44px; display: inline-flex; align-items: center; font-size: 12px; text-decoration: none; }
+.oil-system .system-footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.oil-system .system-note { margin: 14px 0 0; color: #aabcc9; font-size: 11px; line-height: 1.65; }
+.oil-system .system-note:last-child { max-width: 105ch; }
+.oil-system[hidden], .oil-system [hidden] { display: none; }
+@media (min-width: 1300px) { .oil-system .system-layout { grid-template-columns: minmax(0, 1.8fr) minmax(350px, 1fr); } }
+@media (max-width: 1000px) { .oil-system .system-layout { grid-template-columns: 1fr; gap: 24px; } .oil-system .system-readout { padding-top: 20px; border-top: 1px solid #c9d3e026; } }
+@media (max-width: 600px) {
+  .oil-system { padding: 18px 14px; }
+  .oil-system .system-heading { display: block; margin-bottom: 18px; }
+  .oil-system .system-toggle { margin-top: 16px; }
+  .oil-system .system-controls { grid-template-columns: 1fr 1fr; }
+  .oil-system .system-controls button { min-height: 62px; }
+  .oil-system .system-art-label { display: none; }
+  .oil-system .system-art-number circle { r: 16px; }
+  .oil-system .system-art-number text { font-size: 17px; }
+  .oil-system .system-readout h3 { font-size: 22px; }
+  .oil-system .system-prices { gap: 8px; }
+  .oil-system .system-price { padding: 10px; }
+  .oil-system .system-price strong { font-size: 21px; }
+  .oil-system .system-context { display: block; }
+  .oil-system .system-footer { display: block; }
+  .oil-system .system-footer a { margin-top: 10px; }
+}
+@media (prefers-reduced-motion: reduce) { .oil-system[data-motion=on] .system-part { transition: none; } }
+
+.oil-system .system-context[data-report=false] { border: 0; background: transparent; padding: 0; }
+.oil-system .system-context[data-report=false] > div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; }
+.oil-system .system-context[data-report=false] p { display: none; }
+.oil-system .system-context[data-report=false] small { margin: 0; }
+
+#oil-system-heading:focus-visible, #oil-heading:focus-visible { outline: 2px solid var(--mint); outline-offset: 5px; }

@@ -10,10 +10,10 @@ The interface runs on GitHub Pages. A separate Cloudflare Worker and one SQLite 
 
 - **Watch**: orient on the globe, inspect priority developments, and check dated Brent/WTI prices.
 - **Reporting**: search and filter the source stream. New links wait in a visible notice until applied, preserving your reading position.
-- **Energy**: compare daily price history, inspect exact values by date, and read separately labelled market expectations.
+- **Energy**: compare dated daily prices, inspect the interactive oil-system diagram, and read separately labelled market expectations. Select export availability, passage/freight, security/insurance or benchmarks to see the evidence needed to connect a development to oil.
 - **Evidence**: review official records, regional infrastructure, marine/conflict context, and source coverage.
 
-Theatre and reporting filters carry across workspaces. Select a report or place to open its evidence drawer; Escape closes it. The optional **Walk me through** guide explains the same live workspaces at your pace. Keyboard users can switch workspace tabs with the arrow, Home and End keys and inspect price dates with the chart slider.
+Theatre and reporting filters carry across workspaces. Select a report or place to open its evidence drawer; Escape closes it. Reports can open the oil-system diagram with suggested channels clearly distinguished from measured effects. The optional **Walk me through** guide explains the same live workspaces at your pace. Keyboard users can switch workspace tabs and diagram parts with the arrow, Home and End keys and inspect price dates with the chart slider. Diagram motion respects reduced-motion preferences and settles when offscreen.
 
 ## What updates
 

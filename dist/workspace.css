@@ -27,8 +27,8 @@
 .scope-bar .theatre-picker button { padding: 7px 16px; min-height: 34px; font-size: 12px; }
 .workspace-filter-note { font-size: 11px; color: var(--command-dim); }
 .workspace-scene { min-width: 0; }
-.scene-enter { animation: passage-scene-in 230ms ease-out both; }
-@keyframes passage-scene-in { from { opacity: .4; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+.scene-enter { animation: passage-scene-in 150ms ease-out both; }
+@keyframes passage-scene-in { from { opacity: .6; } to { opacity: 1; } }
 .watch-layout { display: grid; grid-template-columns: minmax(0, 1.85fr) minmax(320px, 1fr); gap: 22px; align-items: start; }
 .passage-workspace .watch-layout .map-panel { display: block; height: auto; background: #061522; border: 1px solid var(--rule); border-radius: 8px; }
 .passage-workspace .map-panel .panel-heading { background: transparent; min-height: 53px; padding: 12px 20px; }
@@ -184,3 +184,9 @@
 @media(max-width:500px) { .passage-workspace .topbar { height: auto; } .passage-workspace .map-panel .globe-surface { height: 335px; } }
 
 @media (min-width:600px) { .passage-workspace .market-pulse { display: block; } .passage-workspace .pulse-rows { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 24px; } }
+
+/* Quiet geographic framing; color remains reserved for received data and selection. */
+.passage-workspace .map-panel .globe-surface { background: #091724; }
+.passage-workspace .globe-caption { font-size: 11px; letter-spacing: .02em; color: #abbac5; }
+.scene-next-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+@media(max-width:500px) { .scene-next-actions { gap: 8px; } .scene-next-actions button { min-height: 44px; } }
