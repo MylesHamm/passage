@@ -50,10 +50,6 @@
 @media(max-width:980px){.investigation-layout{min-height:0}.entity-panel,.network-panel{height:720px}.network-key{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:680px){.network-panel{height:760px}.network-key{grid-template-columns:repeat(2,minmax(0,1fr))}.entity-panel{height:560px}.graph-stage{min-height:300px}.graph-node text{font-size:12px}.graph-node .node-detail{font-size:10px}}
 
-/* On stacked layouts, read source details in the page instead of a second
-   vertical scroller. The graph and paginated library retain their viewports. */
-@media(max-width:980px){.inspector-body{max-height:none;overflow-y:visible}}
-
 /* The graph/list owns its scroll viewport. Let it yield space to wrapped
    headings, legends and evidence notes instead of clipping the panel footer. */
 .network-panel>.graph-stage,.network-panel>.connection-list{min-height:0}

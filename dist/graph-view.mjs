@@ -60,7 +60,7 @@ export class EvidenceGraph {
     this.svg = svg; this.tooltip = tooltip; this.onSelect = onSelect;
     this.layer = element('g', { class: 'graph-world' }); svg.append(this.layer);
     this.nodes = []; this.edges = []; this.positions = new Map(); this.zoom = 1; this.pan = { x: 0, y: 0 }; this.layoutHeight = 240;
-    this.resize = new ResizeObserver(() => this.fit({ resetScroll: false })); this.resize.observe(svg.parentElement);
+    this.resize = new ResizeObserver(() => this.fit({ resetScroll: false, resetView: false })); this.resize.observe(svg.parentElement);
     this.bind();
   }
   bind() {
@@ -115,7 +115,7 @@ export class EvidenceGraph {
     const focusedId = this.svg.contains(document.activeElement) ? document.activeElement?.dataset.nodeId : null;
     const resetScroll = selectedId !== this.selectedId;
     this.nodes = nodes; this.edges = edges; this.selectedId = selectedId;
-    this.fit({ resetScroll });
+    this.fit({ resetScroll, resetView: resetScroll });
     if (focusedId) [...this.layer.querySelectorAll('[data-node-id]')].find(el => el.dataset.nodeId === focusedId)?.focus({ preventScroll: true });
   }
   draw(width) {
@@ -153,15 +153,19 @@ export class EvidenceGraph {
     const rect = this.svg.getBoundingClientRect();
     this.layer.setAttribute('transform', `translate(${rect.width / 2 + this.pan.x} ${this.pan.y}) scale(${this.zoom})`);
   }
-  fit({ resetScroll = true } = {}) {
+  fit({ resetScroll = true, resetView = true } = {}) {
     const viewport = this.svg.parentElement, width = viewport.clientWidth;
-    if (!width) return;
+    // Source corrections and resizes redraw at the reader's current transform.
+    // New selections and explicit resets still start from the initial view,
+    // including when layout must wait for a hidden viewport to become visible.
+    if (resetView) { this.zoom = 1; this.pan = { x: 0, y: 0 }; }
+    if (!width) { if (resetScroll) viewport.scrollTop = 0; return; }
     const focusedId = this.svg.contains(document.activeElement) ? document.activeElement?.dataset.nodeId : null;
     this.draw(width);
     const height = Math.max(viewport.clientHeight, this.layoutHeight);
     this.svg.style.height = `${height}px`;
     this.svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-    this.zoom = 1; this.pan = { x: 0, y: 0 }; this.transform();
+    this.transform();
     if (resetScroll) viewport.scrollTop = 0;
     if (focusedId) [...this.layer.querySelectorAll('[data-node-id]')].find(el => el.dataset.nodeId === focusedId)?.focus({ preventScroll: true });
   }

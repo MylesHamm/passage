@@ -1,5 +1,5 @@
 import {apiFetch,runtime,LIVE_REFRESH_MS} from './runtime-config.mjs';
-import {buildEvidenceGraph,buildTimeline,normalizeAnnotation,normalizeProfile,vesselMatches} from './research-data.mjs';
+import {buildEvidenceGraph,buildTimeline,normalizeAnnotation,normalizeProfile,reportPublication,vesselMatches} from './research-data.mjs';
 
 const $=selector=>document.querySelector(selector),$$=selector=>[...document.querySelectorAll(selector)];
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -26,19 +26,28 @@ function renderEvents(){
 }
 function shortLabel(label,max=23){return label.length>max?label.slice(0,max-1)+'…':label;}
 function renderGraph(){
-  const cutoff=Date.now()-state.days*86400000,records=(state.news?.items||[]).filter(report=>Date.parse(report.publishedAt)>=cutoff&&report.theaters?.length>0&&(state.theater==='both'||report.theaters?.includes(state.theater))&&(state.actor==='All'||report.actors?.includes(state.actor))&&(!state.query||`${report.title} ${report.source}`.toLowerCase().includes(state.query.toLowerCase()))),graph=buildEvidenceGraph(records,{limit:12,offset:state.graphOffset,entityId:state.graphEntity});
+  const cutoff=Date.now()-state.days*86400000;
+  const records=(state.news?.items||[]).filter(report=>{
+    const publication=reportPublication(report);
+    return publication&&publication.at>=cutoff&&report.theaters?.length>0&&(state.theater==='both'||report.theaters?.includes(state.theater))&&(state.actor==='All'||report.actors?.includes(state.actor))&&(!state.query||`${report.title} ${report.source}`.toLowerCase().includes(state.query.toLowerCase()));
+  });
+  const graph=buildEvidenceGraph(records,{limit:12,offset:state.graphOffset,entityId:state.graphEntity});
   $('#graph-entities').innerHTML=[{id:null,label:'All entities'},...graph.allEntities.filter(entity=>entity.type!=='theater').slice(0,14)].map(entity=>`<button class="${state.graphEntity===entity.id?'active':''}" data-graph-entity="${esc(entity.id||'')}">${esc(entity.label)}</button>`).join('');
   $$('[data-graph-entity]').forEach(button=>button.onclick=()=>{state.graphEntity=button.dataset.graphEntity||null;state.graphOffset=0;renderGraph();});
   const svg=$('#graph-svg'),width=900,height=260,reports=graph.reports.slice(0,12),entities=graph.entities.slice(0,16),reportY=index=>26+index*(reports.length>1?208/(reports.length-1):0),entityY=index=>24+index*(212/(entities.length>1?entities.length-1:1));
   svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.innerHTML=reports.length?`${graph.edges.map(edge=>{const ri=reports.findIndex(report=>'report:'+report.url===edge.from),ei=entities.findIndex(entity=>entity.id===edge.to);return ri>=0&&ei>=0?`<line class="graph-line" x1="255" y1="${reportY(ri)}" x2="640" y2="${entityY(ei)}"></line>`:'';}).join('')}${reports.map((report,index)=>`<g><title>${esc(report.title)}</title><circle class="graph-report" cx="245" cy="${reportY(index)}" r="8"></circle><text class="graph-label" x="260" y="${reportY(index)+3}">${esc(shortLabel(report.source||'Source',22))}</text></g>`).join('')}${entities.map((entity,index)=>`<g><circle class="graph-entity ${entity.type==='theater'?'graph-theater':''}" cx="650" cy="${entityY(index)}" r="7"></circle><text class="graph-label entity" x="666" y="${entityY(index)+3}">${esc(shortLabel(entity.label,26))}</text></g>`).join('')}`:'<text class="graph-label" x="30" y="130">No source-linked headlines are available for this graph.</text>';
-  $('#graph-list').innerHTML=graph.reports.length?graph.reports.map(report=>{const edges=graph.edges.filter(edge=>edge.reportId===report.id);return `<article class="evidence-card"><h3><a href="${esc(report.url)}" target="_blank" rel="noopener noreferrer">${esc(report.title)} ↗</a></h3><div class="evidence-meta">${esc(report.source||'Source')} · published ${esc(fmtDate(report.publishedAt))} at ${esc(fmtTime(report.publishedAt))} UTC · ${edges.length} linked ${edges.length===1?'entity':'entities'}</div><div>${edges.slice(0,5).map(edge=>`<span class="evidence-basis">${esc(edge.relation==='TAGGED_TO_THEATER'?'theatre tag':edge.basis)}${edge.matchedText?' · '+esc(edge.matchedText):''}</span>`).join(' ')}</div><div class="evidence-meta">Source URL: <a href="${esc(report.url)}" target="_blank" rel="noopener noreferrer">${esc(new URL(report.url).hostname)} ↗</a></div></article>`;}).join(''):'<p class="empty">No source-linked headlines match this entity and date scope.</p>';
+  $('#graph-list').innerHTML=graph.reports.length?graph.reports.map(report=>{const edges=graph.edges.filter(edge=>edge.reportId===report.id),publication=reportPublication(report);return `<article class="evidence-card"><h3><a href="${esc(report.url)}" target="_blank" rel="noopener noreferrer">${esc(report.title)} ↗</a></h3><div class="evidence-meta">${esc(report.source||'Source')} · published ${esc(fmtDate(publication.value))}${publication.precision==='timestamp'?' at '+esc(fmtTime(publication.value))+' UTC':' · time not supplied'} · ${edges.length} linked ${edges.length===1?'entity':'entities'}</div><div>${edges.slice(0,5).map(edge=>`<span class="evidence-basis">${esc(edge.relation==='TAGGED_TO_THEATER'?'theatre tag':edge.basis)}${edge.matchedText?' · '+esc(edge.matchedText):''}</span>`).join(' ')}</div><div class="evidence-meta">Source URL: <a href="${esc(report.url)}" target="_blank" rel="noopener noreferrer">${esc(new URL(report.url).hostname)} ↗</a></div></article>`;}).join(''):'<p class="empty">No source-linked headlines match this entity and date scope.</p>';
   const page=graph.totalReports?Math.floor(graph.offset/12)+1:1;$('#graph-page').textContent=`Page ${page} · ${graph.totalReports} reports`;$('#graph-prev').disabled=graph.offset===0;$('#graph-next').disabled=graph.offset+12>=graph.totalReports;$('#graph-prev').onclick=()=>{state.graphOffset=Math.max(0,graph.offset-12);renderGraph();};$('#graph-next').onclick=()=>{state.graphOffset=graph.offset+12;renderGraph();};
 }
 function timelineRows(){return buildTimeline(state.news?.items||[],state.oil?.series||[],{days:state.days,theater:state.theater,actor:state.actor,query:state.query,onlyDisruptions:state.onlyDisruptions,basis:state.basis,annotations:state.annotations,now:Date.now()});}
 function annotate(report){
   const eventDate=window.prompt('Event date (YYYY-MM-DD). Leave blank to use publication date.',state.annotations[report.id]?.eventDate||'');if(eventDate===null)return;
-  const note=window.prompt('Optional analyst note.',state.annotations[report.id]?.note||'')??'';
-  try{state.annotations[report.id]=normalizeAnnotation({eventDate:eventDate.trim(),note},report,Date.now());local.set('timeline-annotations',state.annotations);renderTimeline();}catch(error){window.alert(error.message);}
+  const note=window.prompt('Optional analyst note.',state.annotations[report.id]?.note||'');if(note===null)return;
+  try{
+    const annotations={...state.annotations,[report.id]:normalizeAnnotation({eventDate:eventDate.trim(),note},report,Date.now())};
+    if(!local.set('timeline-annotations',annotations))throw Error('Could not save the annotation on this device. Browser storage may be full or unavailable. Existing annotations are unchanged.');
+    state.annotations=annotations;renderTimeline();
+  }catch(error){window.alert(error.message);}
 }
 function renderTimeline(){
   const timeline=timelineRows(),rows=timeline.rows,prices=rows.flatMap(row=>Object.values(row.prices).filter(Number.isFinite)),svg=$('#timeline-svg'),width=1000,height=270,pad={l:46,r:20,t:22,b:31};svg.setAttribute('viewBox',`0 0 ${width} ${height}`);
@@ -51,7 +60,11 @@ function renderTimeline(){
 }
 function renderProfiles(){
   const profiles=Object.values(state.profiles);$('#profile-list').innerHTML=profiles.length?profiles.map(profile=>{const matches=vesselMatches(profile,state.news?.items||[]),snapshot=profile.snapshot;return `<article class="profile-card"><h3>${esc(profile.name||'Unnamed vessel')} <span class="muted">· MMSI ${esc(profile.mmsi)}</span></h3><p>${esc(names[profile.theater]||'Both theatres')}${profile.imo?' · IMO '+esc(profile.imo):''}<br>${snapshot?`Snapshot ${esc(fmtDate(snapshot.positionTime))} · ${esc(snapshot.latitude.toFixed(3))}, ${esc(snapshot.longitude.toFixed(3))}`:'No retained AIS snapshot'}<br>${matches.length} source headline ${matches.length===1?'match':'matches'} · review needed</p><p>${esc(profile.notes||'No analyst note')}</p><div class="profile-actions"><button class="text-button" data-delete-profile="${esc(profile.mmsi)}">Delete card</button>${matches.slice(0,2).map(match=>`<a class="profile-link" href="${esc(match.report.url)}" target="_blank" rel="noopener noreferrer">${esc(match.basis)} ↗</a>`).join('')}</div></article>`;}).join(''):'<p class="empty">No vessel research cards saved on this device.</p>';
-  $$('[data-delete-profile]').forEach(button=>button.onclick=()=>{delete state.profiles[button.dataset.deleteProfile];local.set('vessel-profiles',state.profiles);renderProfiles();});
+  $$('[data-delete-profile]').forEach(button=>button.onclick=()=>{
+    const profiles={...state.profiles};delete profiles[button.dataset.deleteProfile];
+    if(!local.set('vessel-profiles',profiles)){$('#profile-feedback').textContent='Could not delete this card on this device. Browser storage may be unavailable. The saved card is unchanged.';return;}
+    state.profiles=profiles;$('#profile-feedback').textContent='Deleted from this device';renderProfiles();
+  });
 }
 function renderAll(){renderEvents();renderGraph();renderTimeline();renderProfiles();}
 async function fetchJSON(key,url){try{const response=await apiFetch(url,{signal:AbortSignal.timeout(35000)});if(!response.ok)throw Error('request failed');const data=await response.json();state[key]=data;delete state.errors[key];return data;}catch{state.errors[key]=true;return null;}}
@@ -70,7 +83,16 @@ $('#research-query').oninput=event=>{state.query=event.target.value;state.graphO
 $('#timeline-basis').onchange=event=>{state.basis=event.target.value;renderTimeline();};
 $('#only-disruptions').onchange=event=>{state.onlyDisruptions=event.target.checked;renderTimeline();};
 $('#refresh-research').onclick=()=>{load();};
-$('#profile-form').onsubmit=event=>{event.preventDefault();const mmsi=$('#profile-mmsi').value.trim();try{const current=state.vessels?.vessels?.find(v=>v.mmsi===mmsi),matches=vesselMatches({mmsi,name:$('#profile-name').value},state.news?.items||[]);const profile=normalizeProfile({mmsi,name:$('#profile-name').value,imo:$('#profile-imo').value,theater:$('#profile-theatre').value,notes:$('#profile-notes').value,links:matches.slice(0,10).map(match=>({url:match.report.url,title:match.report.title,reportId:match.report.id})),snapshot:current},new Date().toISOString());state.profiles[mmsi]=profile;local.set('vessel-profiles',state.profiles);$('#profile-form').reset();$('#profile-feedback').textContent='Saved on this device';renderProfiles();}catch(error){$('#profile-feedback').textContent=error.message;}};
+$('#profile-form').onsubmit=event=>{
+  event.preventDefault();const mmsi=$('#profile-mmsi').value.trim();
+  try{
+    const current=state.vessels?.vessels?.find(v=>v.mmsi===mmsi),matches=vesselMatches({mmsi,name:$('#profile-name').value},state.news?.items||[]);
+    const profile=normalizeProfile({mmsi,name:$('#profile-name').value,imo:$('#profile-imo').value,theater:$('#profile-theatre').value,notes:$('#profile-notes').value,links:matches.slice(0,10).map(match=>({url:match.report.url,title:match.report.title,reportId:match.report.id})),snapshot:current},new Date().toISOString());
+    const profiles={...state.profiles,[mmsi]:profile};
+    if(!local.set('vessel-profiles',profiles))throw Error('Could not save on this device. Browser storage may be full or unavailable. Your entries are still in the form.');
+    state.profiles=profiles;$('#profile-form').reset();$('#profile-feedback').textContent='Saved on this device';renderProfiles();
+  }catch(error){$('#profile-feedback').textContent=error.message;}
+};
 
 updateClock();setInterval(updateClock,1000);renderAll();load();
 

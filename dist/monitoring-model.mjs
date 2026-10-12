@@ -1,5 +1,6 @@
 import {canonicalReportUrl} from './intelligence-data.mjs';
 import {inReportingWindow,matchesTheater,reportRelevant,sortReports} from './reporting-view.mjs';
+import {SOURCE_DEFINITIONS,sourceHealth} from './source-health.mjs';
 
 export const MONITORING_STORAGE_KEY='passage-monitoring-v1';
 export const THEATER_NAMES={both:'Both theatres',bab:'Bab el-Mandeb',hormuz:'Strait of Hormuz'};
@@ -114,10 +115,11 @@ export function buildBrief(state={},now=Date.now()){
   const prices=(state.oil?.series||[]).slice(0,4).map(series=>{
     const observations=(series.observations||[]).filter(p=>day(p.date)&&Date.parse(p.date)<=now&&Number.isFinite(p.value)).sort((a,b)=>a.date.localeCompare(b.date));
     const latest=observations.at(-1),previous=observations.at(-2);if(!latest)return null;
-    return {id:series.id,name:series.name||series.id,...latest,change:previous?latest.value-previous.value:null,previousDate:previous?.date||null,url:canonicalReportUrl(series.url),status:series.label||series.connection||'Source status unavailable'};
+    const health=sourceHealth({...SOURCE_DEFINITIONS.find(source=>source.id===series.id),...series,group:'oil',recordCount:observations.length,latest:latest.date,localFailure:Boolean(state.failures?.oil||series.localFailure)},now);
+    return {id:series.id,name:series.name||series.id,...latest,change:previous?latest.value-previous.value:null,previousDate:previous?.date||null,url:canonicalReportUrl(series.url),status:health.label};
   }).filter(Boolean);
   const scope=THEATER_NAMES[state.theater]||THEATER_NAMES.both;
-  const speech=[`${scope}. Source-linked brief.`,...reports.map(row=>`${row.source||'Publisher'} ${row.type==='Independent energy analysis'?'analysis':'reports'}: ${row.title}.`),...prices.map(p=>`${p.name} daily spot observation: ${p.value.toFixed(2)} US dollars per barrel, for ${p.date}.`),'These are retrieved headlines and delayed daily observations, not independently verified events or live market quotes.'].join(' ');
+  const speech=[`${scope}. Source-linked brief.`,...reports.map(row=>`${row.source||'Publisher'} ${row.type==='Independent energy analysis'?'analysis':'reports'}: ${row.title}.`),...prices.map(p=>`${p.name} daily spot observation: ${p.value.toFixed(2)} US dollars per barrel, for ${p.date}. ${p.status}.`),'These are retrieved headlines and delayed daily observations, not independently verified events or live market quotes.'].join(' ');
   return {scope,reports,prices,speech,generatedAt:new Date(now).toISOString()};
 }
 

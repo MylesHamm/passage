@@ -88,6 +88,16 @@ test('brief uses linked headlines and latest valid daily oil observations withou
   const brief=buildBrief({news:{items:[row('a')]},oil:{series:[{id:'brent',name:'Brent',url:'https://www.eia.gov/dnav/pet/hist/RBRTEd.htm',observations:[{date:'2026-09-21',value:70},{date:'2026-09-19',value:68},{date:'2026-09-23',value:999}]}]},theater:'hormuz',actor:'All',hours:'all'},NOW);
   assert.equal(brief.reports.length,1);assert.equal(brief.prices[0].date,'2026-09-21');assert.equal(brief.prices[0].value,70);assert.equal(brief.prices[0].change,2);assert.match(brief.speech,/daily spot/);assert.ok(!brief.speech.includes('999'));assert.equal(brief.reports[0].url,row('a').url);
 });
+test('brief price health reflects failed refreshes and advancing age without changing source records',()=>{
+  const state={oil:{series:[{id:'brent',name:'Brent',url:'https://www.eia.gov/',connection:'connected',label:'Data available',retrievedAt:'2026-09-22T11:00:00Z',observations:[{date:'2026-09-21',value:70}]}]}},before=structuredClone(state);
+  const current=buildBrief(state,NOW);assert.equal(current.prices[0].status,'Data available');
+  const failed=buildBrief({...state,failures:{oil:true}},NOW);
+  assert.equal(failed.prices[0].status,'Cached data · update failed');
+  assert.match(failed.speech,/update failed/);assert.equal(failed.prices[0].value,70);assert.equal(failed.prices[0].date,'2026-09-21');
+  const stale=buildBrief(state,Date.parse('2026-10-01T00:01:00Z'));
+  assert.equal(stale.prices[0].status,'Older observations available');assert.match(stale.speech,/Older observations/);
+  assert.deepEqual(state,before);assert.equal(buildBrief(state,NOW).prices[0].status,'Data available');
+});
 test('energy filters keep tagged energy and market context while excluding other regional reporting',()=>{
   const reports=[row('direct',{energy:true}),row('global',{theaters:[],relevanceScopes:['global-energy']}),row('regional',{theaters:[],relevanceScopes:['regional-energy']}),row('other')];
   const state={view:'energy',theater:'hormuz',actor:'All',hours:'all'};
