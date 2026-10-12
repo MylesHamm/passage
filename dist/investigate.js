@@ -116,7 +116,9 @@ function selectNode(id) {
   history.replaceState(null, '', url);
   render();
   $('#inspector-body').scrollTop = 0;
-  if (fromInspector) $('#inspector-heading').focus({ preventScroll: true });
+  // Stacked inspectors scroll with the page, so a new selection must reveal
+  // its heading. Desktop keeps the surrounding workspace in place.
+  if (fromInspector) $('#inspector-heading').focus({ preventScroll: matchMedia('(min-width:981px)').matches });
 }
 function fact(label, value) { return `<div><dt>${esc(label)}</dt><dd>${esc(value || 'Not supplied')}</dd></div>`; }
 function renderInspector(node, graph) {

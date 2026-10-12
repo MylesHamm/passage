@@ -22,7 +22,7 @@ export function createOilSystemView(root, {motionPreference = matchMedia('(prefe
   observer.observe(root);
   document.addEventListener('visibilitychange', motion);
   reduced.addEventListener('change', motion);
-  function render({announce=false}={}) {
+  function render() {
     model = buildOilSystemState(input);
     for (const stage of model.stages) {
       const part = q(`[data-system-part="${stage.id}"]`);
@@ -51,13 +51,17 @@ export function createOilSystemView(root, {motionPreference = matchMedia('(prefe
     q('[data-price-note]').hidden = model.selected !== 'benchmarks';
     q('[data-price-note]').textContent = model.priceNote;
     replace(q('.system-prices'), model.prices.map(price => `<div class="system-price" data-price-status="${price.status}"><span>${price.name} · daily spot</span><strong>${price.value === null ? ({loading:'Checking…',empty:'No data'}[price.status] || 'Unavailable') : '$' + price.value.toFixed(2)}</strong><span>${price.date ? date(price.date) + ' · USD/barrel' : 'No observation date'}</span><small>${escape(price.statusLabel)}</small><small>Retrieved ${time(price.retrievedAt)}</small></div>`).join(''));
-    if (announce) q('.system-status').textContent = `${model.activeStage.title}. ${model.expanded ? 'Layers separated.' : 'Assembled view.'}`;
+    // Every entry point shares the same accessible state. Refreshing observations
+    // must not repeat an unchanged selection or expansion announcement.
+    const status = q('.system-status');
+    const announcement = `${model.activeStage.title}. ${model.expanded ? 'Layers separated.' : 'Assembled view.'}`;
+    if (status.textContent !== announcement) status.textContent = announcement;
   }
-  function select(id) { input.selected = id; render({announce:true}); }
+  function select(id) { input.selected = id; render(); }
   function onClick(event) {
     const selection = event.target.closest('[data-system-select], [data-system-part]');
     if (selection) select(selection.dataset.systemSelect || selection.dataset.systemPart);
-    else if (event.target.closest('.system-toggle')) { input.expanded = !model.expanded; render({announce:true}); }
+    else if (event.target.closest('.system-toggle')) { input.expanded = !model.expanded; render(); }
     else if (event.target.closest('[data-system-clear]')) { input.report = null; render(); controls.find(b=>b.dataset.systemSelect===model.selected).focus(); }
     else if (event.target.closest('[data-system-chart]')) {
       event.preventDefault(); document.querySelector('#oil-heading').focus({preventScroll:true}); document.querySelector('#oil-heading').scrollIntoView({block:'start',behavior:'instant'});
