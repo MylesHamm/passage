@@ -1,0 +1,55 @@
+/* Motion tokens. Every animation explains a change and settles; none loops. Resting
+   states live in the ordinary stylesheets, so reduced motion lands on them at once. */
+:root {
+  --motion-press: 90ms;
+  --motion-hover-in: 80ms;
+  --motion-hover-out: 160ms;
+  --motion-short: 200ms;
+  --motion-exit: 140ms;
+  --motion-medium: 280ms;
+  --motion-long: 450ms;
+  --ease-standard: cubic-bezier(.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(.16, 1, .3, 1);
+  --ease-exit: cubic-bezier(.3, 0, 1, 1);
+  --ease-move: cubic-bezier(.65, 0, .35, 1);
+  /* Critically damped spring, visual duration 300 ms, sampled over 400 ms (motion.mjs). */
+  --ease-settle: linear(0, 0.072, 0.218, 0.376, 0.521, 0.641, 0.736, 0.809, 0.863, 0.903, 0.932, 0.952, 0.967, 0.977, 0.984, 0.989, 1);
+}
+
+/* Hover answers quickly and releases slowly; a press gives brief physical feedback.
+   :where() keeps these as defaults beneath component-specific transitions. */
+:where(.text-button, .icon-button, .status-pill, .segmented button, .workspace-tabs > button, .workspace-utilities button, .system-stage, .system-toggle) {
+  transition: background-color var(--motion-hover-out) var(--ease-standard), border-color var(--motion-hover-out) var(--ease-standard), color var(--motion-hover-out) var(--ease-standard), scale var(--motion-press) var(--ease-standard);
+}
+:where(.text-button, .icon-button, .status-pill, .segmented button, .workspace-tabs > button, .workspace-utilities button, .system-stage, .system-toggle):hover { transition-duration: var(--motion-hover-in), var(--motion-hover-in), var(--motion-hover-in), var(--motion-press); }
+:where(.text-button, .icon-button, .status-pill, .segmented button, .workspace-tabs > button, .workspace-utilities button, .system-stage, .system-toggle):active:not(:disabled) { scale: .97; }
+
+/* Workspace tabs: one bar travels between tabs, then the selected tab's own border
+   takes over again. Tab borders never fade, so only one bar is ever visible. */
+.workspace-tabs > button { transition: background-color var(--motion-hover-out) var(--ease-standard), color var(--motion-hover-out) var(--ease-standard), scale var(--motion-press) var(--ease-standard); }
+.workspace-tabs > button:hover { transition-duration: var(--motion-hover-in), var(--motion-hover-in), var(--motion-press); }
+.workspace-tabs { position: relative; }
+.workspace-tab-indicator { position: absolute; left: 0; bottom: 0; width: 1px; height: 2px; background: var(--mint); transform-origin: 0 0; opacity: 0; pointer-events: none; }
+.workspace-tabs.is-indicating > button[aria-selected=true] { border-bottom-color: transparent; }
+
+/* Workspace scenes arrive from the side of the tab that was chosen. */
+.passage-workspace .workspace-scene.scene-enter { animation: none; transition: opacity var(--motion-medium) var(--ease-enter), translate var(--motion-medium) var(--ease-enter); }
+.passage-workspace .workspace-scene[data-enter-from=right] { --scene-shift: 14px; }
+.passage-workspace .workspace-scene[data-enter-from=left] { --scene-shift: -14px; }
+@starting-style { .passage-workspace .workspace-scene.scene-enter { opacity: 0; translate: var(--scene-shift, 0) 0; } }
+
+/* The evidence drawer slides in from the edge it is attached to. Closing is immediate
+   so focus returns without waiting on an animation. */
+.passage-workspace .context-inspector[open] { transition: opacity var(--motion-medium) var(--ease-enter), translate var(--motion-medium) var(--ease-enter); }
+@starting-style { .passage-workspace .context-inspector[open] { opacity: 0; translate: 24px 0; } }
+
+/* Notices rise into place and leave faster than they arrived. */
+.toast { translate: 0 8px; transition: opacity var(--motion-exit) var(--ease-exit), translate var(--motion-exit) var(--ease-exit); }
+.toast.visible { translate: 0 0; transition-duration: var(--motion-short); transition-timing-function: var(--ease-enter); }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-press: 0ms; --motion-hover-in: 0ms; --motion-hover-out: 0ms; --motion-short: 0ms; --motion-exit: 0ms; --motion-medium: 0ms; --motion-long: 0ms; }
+  .toast { translate: none; }
+  :where(.text-button, .icon-button, .status-pill, .segmented button, .workspace-tabs > button, .workspace-utilities button, .system-stage, .system-toggle):active:not(:disabled) { scale: none; }
+  .workspace-tab-indicator { display: none; }
+}

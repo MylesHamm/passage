@@ -8,7 +8,7 @@ const replace = (node, html) => { if (node.innerHTML !== html) node.innerHTML = 
 
 /** Selection is local; source refreshes never reset the selected part or report. */
 export function createOilSystemView(root, {motionPreference = matchMedia('(prefers-reduced-motion: reduce)')} = {}) {
-  let input = {}, model = buildOilSystemState(), active = false, visible = false, renderedStage = null;
+  let input = {}, model = buildOilSystemState(), active = false, visible = false, renderedStage = null, renderedExpanded = model.expanded;
   const reduced = motionPreference;
   root.innerHTML = `<header class="system-heading"><div><span class="system-kicker">THE OIL SYSTEM / INTERACTIVE EXPLAINER</span><h2 id="oil-system-heading" tabindex="-1">How disruption can reach oil</h2><p>Explore a channel. Inspect the evidence. Then compare the observations.</p></div><button type="button" class="system-toggle" aria-pressed="false">Separate layers</button></header>
     <div class="system-context"><div><span data-context-scope></span><p data-context-title></p><small data-context-note></small></div><button type="button" class="text-button" data-system-clear hidden>Clear report</button></div>
@@ -24,8 +24,13 @@ export function createOilSystemView(root, {motionPreference = matchMedia('(prefe
   reduced.addEventListener('change', motion);
   function render() {
     model = buildOilSystemState(input);
-    for (const stage of model.stages) {
+    // Separating or reassembling moves the layers in reading order (reverse on return);
+    // a selection lift stays immediate.
+    const regrouped = renderedExpanded !== model.expanded, count = model.stages.length;
+    renderedExpanded = model.expanded;
+    for (const [index, stage] of model.stages.entries()) {
       const part = q(`[data-system-part="${stage.id}"]`);
+      part.style.transitionDelay = regrouped ? `${(model.expanded ? index : count - 1 - index) * 40}ms` : '0ms';
       part.style.transform = `translate(${stage.position.x}px, ${stage.position.y}px)`;
       part.classList.toggle('is-selected', stage.selected);
       part.classList.toggle('is-matched', stage.matched);
