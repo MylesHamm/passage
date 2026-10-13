@@ -42,6 +42,25 @@
 .oil-system .system-art .system-art-pipe { fill: none; stroke: #647c87; stroke-width: 4; }
 .oil-system .system-art .system-art-water { fill: none; stroke: #91a9b5; stroke-width: 1; }
 .oil-system .system-art .system-art-hull { fill: #70888f; }
+.oil-system .system-object path { stroke-width: .65; }
+.oil-system .system-object .system-object-hull { fill: #526c79; stroke: #304c5c; stroke-width: .35; }
+.oil-system .system-object .system-object-deck { fill: #d5e1dd; stroke-width: 1; }
+.oil-system .system-object .system-object-waterline { fill: none; stroke: #c2d3d4; stroke-width: .75; }
+.oil-system .system-object .system-object-top { fill: #f9fbf8; }
+.oil-system .system-object .system-object-side { fill: #bfced0; }
+.oil-system .system-object .system-object-end { fill: #dce5e3; }
+.oil-system .system-object .system-object-fitting { fill: #acbfbe; stroke: #617b82; stroke-width: .45; }
+.oil-system .system-object .system-object-hatch { fill: #e9efeb; stroke: #617b82; stroke-width: .45; }
+.oil-system .system-object .system-object-pipe { fill: #a0b9b4; stroke: #537674; stroke-width: .45; }
+.oil-system .system-object .system-object-funnel { fill: #718b8f; }
+.oil-system .system-object .system-object-window { fill: #254959; stroke: none; }
+.oil-system .system-object .system-object-detail { fill: none; stroke: #73898f; stroke-width: .45; }
+.oil-system .system-object .system-object-rail { fill: none; stroke: #647f88; stroke-width: .5; }
+.oil-system .system-object .system-object-mast { fill: none; stroke: #284752; stroke-width: .8; }
+.oil-system .system-object .system-facility-pipe { fill: none; stroke: #537674; stroke-width: 2.8; }
+.oil-system .system-object .system-facility-pipe-highlight { fill: none; stroke: #adc4c0; stroke-width: 1.2; }
+.oil-system .system-object .system-market-vent { fill: none; stroke: #8ca7b0; stroke-width: .6; }
+.oil-system .system-object .system-market-reflection { fill: #547381; stroke: none; opacity: .55; }
 .oil-system .system-art .system-art-accent { fill: #d9fdd9; stroke: #657b73; }
 .oil-system .system-art .system-art-shield { fill: #c7e0dc; }
 .oil-system .system-art .system-art-shield-seam { fill: none; stroke: #90aaa6; }
