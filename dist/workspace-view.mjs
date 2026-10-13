@@ -1,4 +1,6 @@
 // Navigation is independent of source refreshes; changing views never resets filters.
+import { moveIndicator, indicatorBox } from './motion.mjs';
+
 export const WORKSPACES = ['overview', 'reporting', 'energy', 'evidence'];
 export function workspaceFor(view) {
   return ['saved', 'civilian'].includes(view) ? 'reporting' : WORKSPACES.includes(view) ? view : 'overview';
@@ -32,14 +34,30 @@ export function createWorkspaceView({ root = document, onNavigate } = {}) {
     get('#walkthrough-back').disabled = index === 0;
     get('#walkthrough-next').textContent = index === 3 ? 'Finish walkthrough ✓' : 'Next →';
   }
+  let indicator = null;
+  function slideTab(fromTab, toTab) {
+    if (!fromTab || !toTab || fromTab === toTab) return;
+    if (!indicator) {
+      indicator = document.createElement('span');
+      indicator.className = 'workspace-tab-indicator';
+      indicator.setAttribute('aria-hidden', 'true');
+    }
+    if (!indicator.isConnected) nav.append(indicator);
+    const box = tab => ({ left: tab.offsetLeft, width: tab.offsetWidth });
+    nav.classList.add('is-indicating');
+    moveIndicator(indicator, indicatorBox(indicator) || box(fromTab), box(toTab), { onDone: () => nav.classList.remove('is-indicating') });
+  }
   function update(next) {
     const scene = workspaceFor(next), previous = workspaceFor(view);
+    const direction = WORKSPACES.indexOf(scene) > WORKSPACES.indexOf(previous) ? 'right' : 'left';
     view = next;
     for (const panel of all('.workspace-scene')) {
-      const visible = panel.id === `scene-${scene}`;
+      const visible = panel.id === `scene-${scene}`, entering = visible && previous !== scene;
+      if (entering) panel.dataset.enterFrom = direction; else delete panel.dataset.enterFrom;
       panel.hidden = !visible;
-      panel.classList.toggle('scene-enter', visible && previous !== scene);
+      panel.classList.toggle('scene-enter', entering);
     }
+    if (previous !== scene) slideTab(get(`#tab-${previous}`), get(`#tab-${scene}`));
     for (const button of all('.workspace-tabs [data-view]')) {
       const selected = button.dataset.view === scene;
       button.setAttribute('aria-selected', String(selected));

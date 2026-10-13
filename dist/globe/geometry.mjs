@@ -22,10 +22,29 @@ export function visiblePoint([lon, lat], rotation) {
   return Math.sin(b) * Math.sin(c) + Math.cos(b) * Math.cos(c) * Math.cos(a) > 0.015;
 }
 export function shortestAngle(from, to) { return from + (((to - from) % 360 + 540) % 360) - 180; }
+// Zoom is interpolated in log space: equal time covers an equal perceived change in
+// scale, so a focus push neither crawls at first nor lurches at the end.
+const zoomBetween = (from, to, k) => k <= 0 ? from : k >= 1 ? to : from > 0 && to > 0 ? Math.exp(Math.log(from) + (Math.log(to) - Math.log(from)) * k) : from + (to - from) * k;
 export function poseBetween(from, to, t) {
   const p = Math.max(0, Math.min(1, t)), k = p * p * (3 - 2 * p);
   return { rotation: [from.rotation[0] + (shortestAngle(from.rotation[0],to.rotation[0])-from.rotation[0])*k,
-    from.rotation[1]+(to.rotation[1]-from.rotation[1])*k,0], zoom: from.zoom+(to.zoom-from.zoom)*k };
+    from.rotation[1]+(to.rotation[1]-from.rotation[1])*k,0], zoom: zoomBetween(from.zoom, to.zoom, k) };
+}
+// Overview rotation: 4°/s (one turn every 90 s) is visible at a glance and calm enough
+// to read beside. After exploring, rotation eases back in over 0.8 s instead of
+// jumping to full speed; exploring itself still stops it at once.
+export const SPIN_DEGREES_PER_SECOND = 4;
+export const SPIN_RAMP_MS = 800;
+export function spinStep(longitude, elapsed, warmth = 1) {
+  const ms = Number.isFinite(elapsed) ? Math.max(0, Math.min(50, elapsed)) : 0;
+  const before = Number.isFinite(warmth) ? Math.max(0, Math.min(1, warmth)) : 1;
+  const after = Math.min(1, before + ms / SPIN_RAMP_MS);
+  // Distance is the integral of a smoothstep speed ramp, so the start has no jolt.
+  const travelled = r => r * r * r - r * r * r * r / 2;
+  const degrees = after < 1 || before < 1
+    ? SPIN_DEGREES_PER_SECOND * SPIN_RAMP_MS / 1000 * (travelled(after) - travelled(before)) + SPIN_DEGREES_PER_SECOND * Math.max(0, ms - (after - before) * SPIN_RAMP_MS) / 1000
+    : SPIN_DEGREES_PER_SECOND * ms / 1000;
+  return { longitude: ((longitude + degrees + 180) % 360 + 360) % 360 - 180, warmth: after };
 }
 export function eligibleVessels(vessels, theatre, now = Date.now()) {
   return vessels.filter(v => Number.isFinite(v.latitude) && Number.isFinite(v.longitude)

@@ -1,3 +1,5 @@
+import { MOTION, motionAllowed } from './motion.mjs';
+
 const DAY = 86400000;
 const GAP_DAYS = 4;
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -78,6 +80,35 @@ export function nearestOilDate(model, ms) {
 }
 
 /**
+ * The chart animates only to explain a change a person can see: its first appearance
+ * with data, or a new history window. Refreshes, resizes and date inspection redraw
+ * in place so a reading position never moves.
+ */
+export function chartRevealReason(previous, next, { revealed = false, visible = false } = {}) {
+  if (!next?.hasData || !visible) return null;
+  if (!revealed) return 'intro';
+  return previous?.hasData && previous.period !== next.period ? 'period' : null;
+}
+
+/**
+ * Axes first, then each series drawn in date order, then the endpoint labels once
+ * their line has arrived. Prices are never counted up through unobserved values.
+ */
+export function revealChart(svg, reason, { scope = globalThis } = {}) {
+  if (!svg || !reason || typeof svg.animate !== 'function' || !motionAllowed(scope)) return [];
+  const timing = (duration, delay, easing = MOTION.ease.standard) => ({ duration, delay, easing, fill: 'backwards', iterations: 1 });
+  const series = [...svg.querySelectorAll('[data-chart-series]')], lead = reason === 'intro' ? 80 : 0, each = 60;
+  const animations = [];
+  if (reason === 'intro') animations.push(svg.querySelector('[data-chart-grid]')?.animate([{ opacity: 0 }, { opacity: 1 }], timing(120, 0)));
+  series.forEach((group, index) => animations.push(group.animate([{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], timing(MOTION.long, lead + index * each))));
+  const arrived = lead + MOTION.long + Math.max(0, series.length - 1) * each;
+  animations.push(svg.querySelector('[data-chart-endpoints]')?.animate([{ opacity: 0, translate: '-4px 0' }, { opacity: 1, translate: '0 0' }], timing(MOTION.short, arrived, MOTION.ease.enter)));
+  // The date readout appears with the values it reads, not ahead of the drawn line.
+  animations.push(svg.querySelector('[data-chart-focus]')?.animate([{ opacity: 0 }, { opacity: 1 }], timing(MOTION.short, arrived, MOTION.ease.enter)));
+  return animations.filter(Boolean);
+}
+
+/**
  * Native SVG plus a native range input: the same observed-date readout works with
  * pointer, touch and keyboard. W3C complex-image guidance calls for accessible
  * values and descriptions: https://www.w3.org/WAI/tutorials/images/complex/
@@ -92,6 +123,8 @@ export function createOilChart(mount, { onReadout } = {}) {
   let width = 0;
   let geometry = null;
   let destroyed = false;
+  let revealed = false;
+  let visible = false;
   mount.classList.add('oil-history-chart');
   mount.innerHTML = `<figure class="oil-history-figure">
     <figcaption class="oil-history-caption"><span>DAILY SPOT · USD / BARREL</span><span data-chart-window></span></figcaption>
@@ -161,9 +194,9 @@ export function createOilChart(mount, { onReadout } = {}) {
     }).join('');
     const lines = model.series.map(s => {
       const type = s.id === 'wti' ? 'wti' : 'brent';
-      return s.segments.map(segment => segment.length === 1
+      return `<g data-chart-series="${type}">` + s.segments.map(segment => segment.length === 1
         ? `<circle cx="${x(segment[0].ms)}" cy="${y(segment[0].value)}" r="3" class="oil-chart-observation oil-series-${type}"/>`
-        : `<path d="${segment.map((p, i) => `${i ? 'L' : 'M'}${x(p.ms).toFixed(2)},${y(p.value).toFixed(2)}`).join(' ')}" class="oil-chart-line oil-series-${type}"/>`).join('');
+        : `<path d="${segment.map((p, i) => `${i ? 'L' : 'M'}${x(p.ms).toFixed(2)},${y(p.value).toFixed(2)}`).join(' ')}" class="oil-chart-line oil-series-${type}"/>`).join('') + '</g>';
     }).join('');
     const endpoints = model.series.filter(s => s.points.length).map(s => ({ ...s, point: s.points.at(-1), labelY: y(s.points.at(-1).value) })).sort((a, b) => a.labelY - b.labelY);
     // Give endpoint labels separate lanes when prices converge; leaders are annotations, not observations.
@@ -178,7 +211,7 @@ export function createOilChart(mount, { onReadout } = {}) {
     plot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="${id}-title ${id}-description" data-oil-svg>
       <title id="${id}-title">Daily Brent and WTI spot prices, U.S. dollars per barrel</title>
       <desc id="${id}-description">${esc(dateRange)}. Brent is a solid mint line; WTI is a dashed blue line. ${model.dates.length} observed dates. Lines stop across missing values or gaps longer than four calendar days. Use the date control below for exact observations. Shared timing with news does not establish causation.</desc>
-      ${grid}${ticks}${lines}${labels}<g data-chart-focus aria-hidden="true"></g>
+      <g data-chart-grid>${grid}${ticks}</g>${lines}<g data-chart-endpoints>${labels}</g><g data-chart-focus aria-hidden="true"></g>
       <rect x="${left}" y="${top}" width="${Math.max(1, right - left)}" height="${bottom - top}" fill="transparent" data-chart-hit/>
     </svg>`;
     const sourceNote = sourceState.failed ? 'Update failed · showing retained observations. Inspect Sources for the EIA connection. '
@@ -189,9 +222,12 @@ export function createOilChart(mount, { onReadout } = {}) {
     select(selectedDate && model.dates.includes(selectedDate) ? selectedDate : model.dates.at(-1), false);
   }
 
-  function onInput() { select(model.dates[Number(input.value)]); }
+  // Direct manipulation ends any reveal at once: the reading is never delayed.
+  const settle = () => plot.querySelector('[data-oil-svg]')?.getAnimations?.({ subtree: true }).forEach(animation => animation.finish());
+  function onInput() { settle(); select(model.dates[Number(input.value)]); }
   function onPointer(event) {
     if (!geometry || !model.hasData) return;
+    settle();
     const svg = plot.querySelector('svg');
     const box = svg?.getBoundingClientRect();
     if (!box?.width) return;
@@ -206,17 +242,31 @@ export function createOilChart(mount, { onReadout } = {}) {
     if (Math.abs((plot.clientWidth || width) - width) > 1) draw();
   }) : null;
   observer?.observe(plot);
+  function reveal(previous) {
+    const reason = chartRevealReason(previous, model, { revealed, visible });
+    if (!reason) return;
+    revealed = true;
+    revealChart(plot.querySelector('[data-oil-svg]'), reason);
+  }
+  const viewport = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => {
+    visible = entries.at(-1)?.isIntersecting === true;
+    reveal(model);
+  }, { threshold: .35 }) : null;
+  viewport?.observe(mount);
   draw();
   return {
     update(series, { loading = false, failed = false, ...options } = {}) {
+      const previous = model;
       sourceState = { loading: Boolean(loading), failed: Boolean(failed) };
       model = buildOilChartModel(series, options);
       if (selectedLatest || !model.dates.includes(selectedDate)) selectedDate = model.dates.at(-1) || null;
       draw();
+      reveal(previous);
     },
     destroy() {
       destroyed = true;
       observer?.disconnect();
+      viewport?.disconnect();
       input.removeEventListener('input', onInput);
       plot.removeEventListener('pointermove', onPointer);
       plot.removeEventListener('pointerdown', onPointer);

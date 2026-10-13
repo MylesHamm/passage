@@ -1,4 +1,4 @@
-import { THEATRES, poseBetween, eligibleVessels } from './geometry.mjs';
+import { THEATRES, poseBetween, eligibleVessels, spinStep } from './geometry.mjs';
 import { createRenderer } from './renderer.mjs';
 
 export async function createGlobe(root, { onSelect, onVessel, onEvent, onInfrastructure, onHover }) {
@@ -6,7 +6,7 @@ export async function createGlobe(root, { onSelect, onVessel, onEvent, onInfrast
   const motion=root.querySelector('#globe-motion'), zoomIn=root.querySelector('#zoom-in'), zoomOut=root.querySelector('#zoom-out');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   let renderer,pose={rotation:[...THEATRES.both.rotation],zoom:1},theatre='both',paused=false;
-  let hovering=false,focused=false,drag=null,moved=false,transition=null,frame=0,last=0,phase=0,inView=true;
+  let hovering=false,focused=false,drag=null,moved=false,transition=null,frame=0,last=0,phase=0,inView=true,spin=0;
   let vessels=[],events=[],infrastructure=[],showVessels=true,failed=false;
   let lastHoverKey=null;
   const markers=[...root.querySelectorAll('[data-globe-theatre]')];
@@ -32,10 +32,10 @@ export async function createGlobe(root, { onSelect, onVessel, onEvent, onInfrast
   function tick(now){
     frame=0;const elapsed=last?Math.min(50,now-last):0;last=now;
     if(transition){const t=(now-transition.start)/850;pose=poseBetween(transition.from,transition.to,t);if(t>=1)transition=null;}
-    else if(theatre==='both'&&wantsMotion()&&!hovering&&!focused&&!drag){pose.rotation[0]=(pose.rotation[0]+elapsed*.0003+180)%360-180;}
+    else if(theatre==='both'&&wantsMotion()&&!hovering&&!focused&&!drag){const next=spinStep(pose.rotation[0],elapsed,spin);pose.rotation[0]=next.longitude;spin=next.warmth;}
     draw();schedule();
   }
-  function restart(){last=0;if(frame){cancelAnimationFrame(frame);frame=0;}draw();schedule();}
+  function restart(){last=0;spin=0;if(frame){cancelAnimationFrame(frame);frame=0;}draw();schedule();}
   function select(id){
     if(!THEATRES[id])return;theatre=id;
     const target={rotation:[...THEATRES[id].rotation],zoom:THEATRES[id].zoom};

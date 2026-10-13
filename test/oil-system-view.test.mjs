@@ -95,6 +95,17 @@ test('source refreshes retain selection and report without repeating the live an
   assert.equal(status.textWrites, writes, 'unchanged selection must not mutate the live region during refresh');
 });
 
+test('separating layers staggers parts in reading order and reassembles in reverse; selection lifts at once', t => {
+  const h = harness(t);
+  const delays = () => ['supply', 'transport', 'risk', 'benchmarks'].map(id => h.q(`[data-system-part="${id}"]`).style.transitionDelay);
+  h.click(h.q('.system-toggle'));
+  assert.deepEqual(delays(), ['0ms', '40ms', '80ms', '120ms']);
+  h.click(h.controls[2]);
+  assert.deepEqual(delays(), ['0ms', '0ms', '0ms', '0ms']);
+  h.click(h.q('.system-toggle'));
+  assert.deepEqual(delays(), ['120ms', '80ms', '40ms', '0ms']);
+});
+
 test('keyboard selection and layer changes keep one status without repeating unchanged selections', t => {
   const h = harness(t);
   assert.equal(h.key(h.controls[1], 'ArrowRight').defaultPrevented, true);

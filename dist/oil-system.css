@@ -3,7 +3,7 @@
   --system-paper: #edf2f0;
   --system-ink: #183040;
   --system-motion-duration: 400ms;
-  --system-motion-ease: cubic-bezier(.2, .75, .25, 1);
+  --system-motion-ease: var(--ease-settle, cubic-bezier(.2, .75, .25, 1));
   margin: 24px 0 0;
   padding: 24px;
   border: 1px solid var(--rule, #c9d3e026);
