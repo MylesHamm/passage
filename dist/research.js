@@ -1,5 +1,6 @@
 import {apiFetch,runtime,LIVE_REFRESH_MS} from './runtime-config.mjs';
 import {buildEvidenceGraph,buildTimeline,normalizeAnnotation,normalizeProfile,reportPublication,vesselMatches} from './research-data.mjs';
+import {buildResearchGraphSvg,buildResearchTimelineSvg} from './research-charts.mjs';
 
 const $=selector=>document.querySelector(selector),$$=selector=>[...document.querySelectorAll(selector)];
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -24,7 +25,33 @@ function renderEvents(){
   $('#event-summary').innerHTML=runtime.configurationError?esc(runtime.configurationNotice):state.errors.acled?'<strong>ACLED update failed.</strong> The previous event layer, if present, is retained. Check Sources for the connection state.':!state.acled?'<strong>Waiting for ACLED.</strong>':state.acled.configured===false?(runtime.privateConnectionsAllowed?'<strong>ACLED is not connected.</strong> <a href="./connections/acled.html">Manage the local connection →</a>':'<strong>Private ACLED access is local only.</strong> Personal account records are not published here.'):`<strong>${esc(source?.label||'ACLED')}</strong> · ${esc(names[state.theater])} · event dates in the last ${state.days} days. ${state.acled.truncated?'The result is capped; narrow the date window.':''} Country scope supplies context; records are not maritime geocoding.`;
   $('#event-list').innerHTML=events.length?events.map(event=>`<details class="event-card"><summary><h3>${esc(event.title)}</h3><div class="event-meta">${esc(fmtDate(event.eventDate+'T00:00:00Z'))} · ${esc(event.country)} · ${esc(event.actors?.join(' · ')||'No classified actor')} · ${Number.isFinite(event.latitude)?'map-ready coordinates':'country scope'}</div></summary><dl class="event-facts"><div><dt>Event type</dt><dd>${esc(event.eventType||'Not reported')}${event.subEventType?' · '+esc(event.subEventType):''}</dd></div><div><dt>Civilian targeting</dt><dd>${esc(event.civilianTargeting||'Not reported')}</dd></div><div><dt>Location</dt><dd>${esc([event.location,event.admin1,event.admin2].filter(Boolean).join(' · ')||'Not reported')}</dd></div><div><dt>Coordinates</dt><dd>${Number.isFinite(event.latitude)?esc(`${event.latitude.toFixed(4)}, ${event.longitude.toFixed(4)}`):'Not returned'} · precision ${esc(event.geoPrecision??'not reported')}</dd></div><div><dt>Source update</dt><dd>${event.updatedAt?esc(fmtDate(event.updatedAt)+' · '+fmtTime(event.updatedAt)+' UTC'):'Not reported'}</dd></div><div><dt>Fatalities field</dt><dd>${event.fatalities==null?'Not reported':esc(event.fatalities)}</dd></div></dl><p class="event-note">${event.notes?esc(event.notes):'No event note returned.'}</p><p class="event-note"><a href="${esc(event.url)}" target="_blank" rel="noopener noreferrer">Open ACLED record ↗</a> · <a href="${esc(event.sourceUrl)}" target="_blank" rel="noopener noreferrer">Field documentation ↗</a></p></details>`).join(''):'<p class="empty">No structured records match this theatre, actor, or date window. This does not establish that no conflict event occurred.</p>';
 }
-function shortLabel(label,max=23){return label.length>max?label.slice(0,max-1)+'…':label;}
+let displayedGraph=null,displayedTimeline=null,graphWidth=0,timelineSize='';
+function setChart(svg,chart){
+  svg.setAttribute('viewBox',`0 0 ${chart.width} ${chart.height}`);
+  svg.style.width=chart.width+'px';svg.style.height=chart.height+'px';
+  svg.innerHTML=chart.markup;
+}
+function renderGraphSvg(){
+  const viewport=$('#graph-viewport'),width=viewport.clientWidth;
+  if(!displayedGraph||!width){graphWidth=0;return;}
+  graphWidth=width;
+  const chart=buildResearchGraphSvg(displayedGraph,width),scrollable=chart.width>width;
+  setChart($('#graph-svg'),chart);
+  viewport.tabIndex=scrollable?0:-1;
+  $('#graph-scroll-hint').hidden=!scrollable;
+  if(scrollable)viewport.setAttribute('aria-describedby','graph-scroll-hint');else viewport.removeAttribute('aria-describedby');
+}
+function renderTimelineSvg(){
+  const viewport=$('#timeline-viewport'),width=viewport.clientWidth,height=viewport.clientHeight;
+  if(!displayedTimeline||!width||!height){timelineSize='';return;}
+  timelineSize=width+'x'+height;
+  setChart($('#timeline-svg'),buildResearchTimelineSvg(displayedTimeline,width,height));
+}
+function resizeCharts(){
+  const graphViewport=$('#graph-viewport'),timelineViewport=$('#timeline-viewport');
+  if(graphViewport.clientWidth!==graphWidth)renderGraphSvg();
+  if(timelineViewport.clientWidth+'x'+timelineViewport.clientHeight!==timelineSize)renderTimelineSvg();
+}
 function renderGraph(){
   const cutoff=Date.now()-state.days*86400000;
   const records=(state.news?.items||[]).filter(report=>{
@@ -34,8 +61,7 @@ function renderGraph(){
   const graph=buildEvidenceGraph(records,{limit:12,offset:state.graphOffset,entityId:state.graphEntity});
   $('#graph-entities').innerHTML=[{id:null,label:'All entities'},...graph.allEntities.filter(entity=>entity.type!=='theater').slice(0,14)].map(entity=>`<button class="${state.graphEntity===entity.id?'active':''}" data-graph-entity="${esc(entity.id||'')}">${esc(entity.label)}</button>`).join('');
   $$('[data-graph-entity]').forEach(button=>button.onclick=()=>{state.graphEntity=button.dataset.graphEntity||null;state.graphOffset=0;renderGraph();});
-  const svg=$('#graph-svg'),width=900,height=260,reports=graph.reports.slice(0,12),entities=graph.entities.slice(0,16),reportY=index=>26+index*(reports.length>1?208/(reports.length-1):0),entityY=index=>24+index*(212/(entities.length>1?entities.length-1:1));
-  svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.innerHTML=reports.length?`${graph.edges.map(edge=>{const ri=reports.findIndex(report=>'report:'+report.url===edge.from),ei=entities.findIndex(entity=>entity.id===edge.to);return ri>=0&&ei>=0?`<line class="graph-line" x1="255" y1="${reportY(ri)}" x2="640" y2="${entityY(ei)}"></line>`:'';}).join('')}${reports.map((report,index)=>`<g><title>${esc(report.title)}</title><circle class="graph-report" cx="245" cy="${reportY(index)}" r="8"></circle><text class="graph-label" x="260" y="${reportY(index)+3}">${esc(shortLabel(report.source||'Source',22))}</text></g>`).join('')}${entities.map((entity,index)=>`<g><circle class="graph-entity ${entity.type==='theater'?'graph-theater':''}" cx="650" cy="${entityY(index)}" r="7"></circle><text class="graph-label entity" x="666" y="${entityY(index)+3}">${esc(shortLabel(entity.label,26))}</text></g>`).join('')}`:'<text class="graph-label" x="30" y="130">No source-linked headlines are available for this graph.</text>';
+  displayedGraph=graph;renderGraphSvg();
   $('#graph-list').innerHTML=graph.reports.length?graph.reports.map(report=>{const edges=graph.edges.filter(edge=>edge.reportId===report.id),publication=reportPublication(report);return `<article class="evidence-card"><h3><a href="${esc(report.url)}" target="_blank" rel="noopener noreferrer">${esc(report.title)} ↗</a></h3><div class="evidence-meta">${esc(report.source||'Source')} · published ${esc(fmtDate(publication.value))}${publication.precision==='timestamp'?' at '+esc(fmtTime(publication.value))+' UTC':' · time not supplied'} · ${edges.length} linked ${edges.length===1?'entity':'entities'}</div><div>${edges.slice(0,5).map(edge=>`<span class="evidence-basis">${esc(edge.relation==='TAGGED_TO_THEATER'?'theatre tag':edge.basis)}${edge.matchedText?' · '+esc(edge.matchedText):''}</span>`).join(' ')}</div><div class="evidence-meta">Source URL: <a href="${esc(report.url)}" target="_blank" rel="noopener noreferrer">${esc(new URL(report.url).hostname)} ↗</a></div></article>`;}).join(''):'<p class="empty">No source-linked headlines match this entity and date scope.</p>';
   const page=graph.totalReports?Math.floor(graph.offset/12)+1:1;$('#graph-page').textContent=`Page ${page} · ${graph.totalReports} reports`;$('#graph-prev').disabled=graph.offset===0;$('#graph-next').disabled=graph.offset+12>=graph.totalReports;$('#graph-prev').onclick=()=>{state.graphOffset=Math.max(0,graph.offset-12);renderGraph();};$('#graph-next').onclick=()=>{state.graphOffset=graph.offset+12;renderGraph();};
 }
@@ -50,10 +76,8 @@ function annotate(report){
   }catch(error){window.alert(error.message);}
 }
 function renderTimeline(){
-  const timeline=timelineRows(),rows=timeline.rows,prices=rows.flatMap(row=>Object.values(row.prices).filter(Number.isFinite)),svg=$('#timeline-svg'),width=1000,height=270,pad={l:46,r:20,t:22,b:31};svg.setAttribute('viewBox',`0 0 ${width} ${height}`);
-  if(!prices.length){svg.innerHTML='<text class="timeline-label" x="30" y="130">No EIA observations are available for this window.</text>';}else{
-    const min=Math.floor(Math.min(...prices)/10)*10,max=Math.max(min+10,Math.ceil(Math.max(...prices)/10)*10),x=index=>pad.l+(rows.length<2?0:index/(rows.length-1))*(width-pad.l-pad.r),y=value=>pad.t+(max-value)/(max-min)*(height-pad.t-pad.b),pathFor=id=>rows.map((row,index)=>Number.isFinite(row.prices[id])?`${index?'L':'M'}${x(index).toFixed(1)},${y(row.prices[id]).toFixed(1)}`: '').filter(Boolean).join(' '),reportPoints=rows.map((row,index)=>row.reports.length?`<circle class="timeline-report" cx="${x(index)}" cy="${y(min)}" r="4"><title>${esc(row.date)} · ${row.reports.length} disruption ${row.reports.length===1?'mention':'mentions'}</title></circle>`:'').join(''),ticks=[0,.33,.66,1].map(ratio=>{const index=Math.round((rows.length-1)*ratio);return `<line class="timeline-grid" x1="${x(index)}" x2="${x(index)}" y1="${pad.t}" y2="${height-pad.b}"></line><text class="timeline-label" x="${x(index)}" y="${height-9}" text-anchor="${ratio===0?'start':ratio===1?'end':'middle'}">${esc(fmtDate(rows[index].date+'T00:00:00Z'))}</text>`;}).join('');svg.innerHTML=`${ticks}<line class="timeline-axis" x1="${pad.l}" x2="${width-pad.r}" y1="${y(min)}" y2="${y(min)}"></line><path class="timeline-price-brent" d="${pathFor('brent')}"></path><path class="timeline-price-wti" d="${pathFor('wti')}"></path>${reportPoints}<text class="timeline-label" x="8" y="${y(max)+3}">$${max}</text><text class="timeline-label" x="8" y="${y(min)+3}">$${min}</text>`;
-  }
+  const timeline=timelineRows(),rows=timeline.rows;
+  displayedTimeline=timeline;renderTimelineSvg();
   const content=rows.filter(row=>row.reports.length||Number.isFinite(row.prices.brent)||Number.isFinite(row.prices.wti));
   $('#timeline-table').innerHTML=content.length?content.reverse().map(row=>`<div class="timeline-row"><time datetime="${esc(row.date)}">${esc(fmtDate(row.date+'T00:00:00Z'))}</time><div class="timeline-reports">${row.reports.map(item=>`<div><a href="${esc(item.report.url)}" target="_blank" rel="noopener noreferrer">${esc(item.report.title)} ↗</a><button class="annotation-button" data-annotate="${esc(item.report.id)}">${state.annotations[item.report.id]?'Edit date':'Add event date'}</button><small class="evidence-meta">${esc(item.basis)}${item.terms.length?' · '+esc(item.terms.join(', ')):''}</small></div>`).join('')||'<span class="muted">No disruption headline</span>'}</div><div class="timeline-prices">${Number.isFinite(row.prices.brent)?'Brent '+money(row.prices.brent):''}${Number.isFinite(row.prices.brent)&&Number.isFinite(row.prices.wti)?' · ':''}${Number.isFinite(row.prices.wti)?'WTI '+money(row.prices.wti):''}</div></div>`).join(''):`<p class="empty">No disruption terms or daily price observations are available for this window. Missing observations remain gaps.</p>`;
   $$('[data-annotate]').forEach(button=>button.onclick=()=>{const report=(state.news?.items||[]).find(item=>item.id===button.dataset.annotate);if(report)annotate(report);});
@@ -95,6 +119,10 @@ $('#profile-form').onsubmit=event=>{
 };
 
 updateClock();setInterval(updateClock,1000);renderAll();load();
+if(typeof ResizeObserver==='function'){
+  const chartObserver=new ResizeObserver(resizeCharts);
+  chartObserver.observe($('#graph-viewport'));chartObserver.observe($('#timeline-viewport'));
+}else window.addEventListener('resize',resizeCharts);
 
 setInterval(()=>{if(!document.hidden)load();},LIVE_REFRESH_MS);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)load();});
