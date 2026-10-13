@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildOilChartModel, oilReadout, nearestOilDate } from '../dist/oil-chart-view.mjs';
+import { buildOilChartModel, oilReadout, nearestOilDate, createOilChart } from '../dist/oil-chart-view.mjs';
 
 const series = (id, observations) => ({ id, name: id === 'brent' ? 'Brent' : 'WTI', observations });
 
@@ -91,4 +91,74 @@ test('future observations cannot change the latest date, price domain or history
   assert.ok(model.yMax < 100);
   assert.equal(oilReadout(model, '2026-10-01'), null);
   assert.equal(buildOilChartModel([series('brent', [{ date: '2026-10-01', value: 1000 }])], { now }).hasData, false);
+});
+
+function chartHarness(t) {
+  const nodes = new Map();
+  class Node extends EventTarget {
+    innerHTML = ''; textContent = ''; hidden = false; clientWidth = 620;
+    attributes = new Map();
+    classList = { add() {}, remove() {} };
+    setAttribute(name, value) { this.attributes.set(name, String(value)); }
+    getAttribute(name) { return this.attributes.get(name) ?? null; }
+    querySelector(selector) {
+      if (selector === '[data-chart-focus]') return this.innerHTML.includes('<svg') ? nodes.get(selector) : null;
+      return nodes.get(selector) ?? null;
+    }
+    replaceChildren() { this.innerHTML = ''; }
+  }
+  for (const selector of ['[data-chart-plot]', '[data-chart-readout]', 'input', '[data-chart-controls]', '[data-chart-note]', '[data-chart-window]', '[data-chart-focus]']) nodes.set(selector, new Node());
+  const mount = new Node(), readouts = [];
+  const view = createOilChart(mount, { onReadout: detail => readouts.push(detail) });
+  t.after(() => view.destroy());
+  return { view, mount, readouts, q: selector => nodes.get(selector) };
+}
+
+test('the oil chart distinguishes initial loading, a successful empty response and a failed request', t => {
+  const h = chartHarness(t), plot = h.q('[data-chart-plot]'), window = h.q('[data-chart-window]');
+  assert.match(plot.innerHTML, /Checking daily EIA observations/);
+  assert.doesNotMatch(plot.innerHTML, /No daily oil observations|could not be loaded/);
+  assert.equal(h.mount.getAttribute('aria-busy'), 'true');
+  assert.equal(h.q('[data-chart-controls]').hidden, true);
+
+  h.view.update([], { loading: false, failed: false });
+  assert.match(plot.innerHTML, /No daily oil observations.*current response/);
+  assert.equal(window.textContent, 'No observations');
+  assert.equal(h.mount.getAttribute('aria-busy'), 'false');
+
+  h.view.update([], { failed: true });
+  assert.match(plot.innerHTML, /could not be loaded/);
+  assert.match(plot.innerHTML, /Inspect Sources/);
+  assert.equal(window.textContent, 'Observations unavailable');
+  assert.equal(h.q('[data-chart-controls]').hidden, true);
+  assert.equal(h.q('[data-chart-readout]').innerHTML, '');
+  assert.match(h.q('[data-chart-note]').textContent, /Missing prices are not zero/);
+
+  h.view.update([], { loading: true });
+  assert.match(plot.innerHTML, /Checking daily EIA observations/);
+  assert.equal(h.mount.getAttribute('aria-busy'), 'true');
+});
+
+test('failed or pending updates retain supplied observations, their selected date and keyboard control', t => {
+  const h = chartHarness(t), input = h.q('input');
+  const observations = [series('brent', [{ date: '2026-09-28', value: 76 }, { date: '2026-09-29', value: 77 }])];
+  h.view.update(observations);
+  input.value = '0'; input.dispatchEvent(new Event('input'));
+  assert.match(input.getAttribute('aria-valuetext'), /Sep 28, 2026.*76\.00/);
+
+  for (const state of [{ failed: true }, { loading: true }]) {
+    h.view.update(observations, state);
+    assert.match(h.q('[data-chart-plot]').innerHTML, /<svg/);
+    assert.equal(h.q('[data-chart-controls]').hidden, false);
+    assert.equal(h.q('input'), input, 'the same native date control must survive the update');
+    assert.equal(input.value, '0');
+    assert.match(input.getAttribute('aria-valuetext'), /Sep 28, 2026.*76\.00/);
+    assert.match(h.q('[data-chart-note]').textContent, state.failed ? /Update failed.*retained observations/ : /Checking for updates.*retained observations/);
+  }
+  input.value = '1'; input.dispatchEvent(new Event('input'));
+  assert.equal(h.readouts.at(-1).date, '2026-09-29');
+  assert.match(h.q('[data-chart-readout]').innerHTML, /77\.00/);
+  h.view.update(observations);
+  assert.doesNotMatch(h.q('[data-chart-note]').textContent, /Update failed|Checking for updates|retained observations/);
+  assert.equal(h.mount.getAttribute('aria-busy'), 'false');
 });

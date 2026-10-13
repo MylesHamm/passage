@@ -41,6 +41,16 @@ export function dateOnly(value) {
   if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))return null;
   const ms=Date.parse(value+'T00:00:00Z');return Number.isFinite(ms)&&new Date(ms).toISOString().slice(0,10)===value?value:null;
 }
+// A day-precision clock has a UTC comparison anchor, not a known publication time.
+// Discovery timestamps never substitute for a publisher's publication date.
+export function reportPublication(report) {
+  if(!report||typeof report!=='object')return null;
+  const value=report.publishedAt;
+  const exact=typeof value==='string'&&/^\d{4}-\d\d-\d\dT\d\d:\d\d(?::\d\d(?:\.\d+)?)?(?:Z|[+-]\d\d:\d\d)$/.test(value)&&dateOnly(value.slice(0,10))&&Number.isFinite(Date.parse(value));
+  if(exact&&report.publicationPrecision!=='day')return {value,precision:'timestamp',at:Date.parse(value),date:new Date(value).toISOString().slice(0,10)};
+  const date=dateOnly(report.publishedDate)||dateOnly(report.publicationDate)||dateOnly(value)||(exact?value.slice(0,10):null);
+  return date?{value:date,precision:'day',at:Date.parse(date+'T00:00:00Z'),date}:null;
+}
 export function deriveContext(title='',description='') {
   const mentions=[];
   for(const entity of [...ACTORS.map(a=>({...a,type:'actor'})),...PLACES]) {
@@ -67,22 +77,23 @@ export function reportMentions(report) {
 export function uniqueReports(records,now=Date.now()) {
   const byUrl=new Map();
   for(const r of records) {
-    const url=publicUrl(r?.url), time=Date.parse(r?.publishedAt);
-    if(!url||!r.id||!cleanText(r.title)||!Number.isFinite(time)||time>now+300000)continue;
+    const url=publicUrl(r?.url), publication=reportPublication(r);
+    if(!url||!r.id||!cleanText(r.title)||!publication||publication.at>now+300000)continue;
     if(!byUrl.has(url))byUrl.set(url,{...r,url});
   }
-  return [...byUrl.values()].sort((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt));
+  return [...byUrl.values()].sort((a,b)=>reportPublication(b).at-reportPublication(a).at);
 }
 export function buildEvidenceGraph(records,{limit=12,offset=0,entityId=null}={}) {
   const all=uniqueReports(records), entities=new Map(), allEdges=[];
   for(const report of all) {
+    const publication=reportPublication(report),clock={publishedAt:report.publishedAt??null,publishedDate:publication.date,publicationPrecision:publication.precision};
     for(const mention of reportMentions(report)) {
       entities.set(mention.entityId,{id:mention.entityId,type:mention.type,label:mention.label});
-      allEdges.push({id:report.url+'::'+mention.entityId,from:'report:'+report.url,to:mention.entityId,relation:'MENTIONS',reportId:report.id,sourceUrl:report.url,publishedAt:report.publishedAt,basis:mention.field,matchedText:mention.matchedText});
+      allEdges.push({id:report.url+'::'+mention.entityId,from:'report:'+report.url,to:mention.entityId,relation:'MENTIONS',reportId:report.id,sourceUrl:report.url,...clock,basis:mention.field,matchedText:mention.matchedText});
     }
     for(const theater of report.theaters||[])if(THEATER_NAMES[theater]&&theater!=='both') {
       const id='theater:'+theater;entities.set(id,{id,type:'theater',label:THEATER_NAMES[theater]});
-      allEdges.push({id:report.url+'::'+id,from:'report:'+report.url,to:id,relation:'TAGGED_TO_THEATER',reportId:report.id,sourceUrl:report.url,publishedAt:report.publishedAt,basis:'feed classification',matchedText:null});
+      allEdges.push({id:report.url+'::'+id,from:'report:'+report.url,to:id,relation:'TAGGED_TO_THEATER',reportId:report.id,sourceUrl:report.url,...clock,basis:'feed classification',matchedText:null});
     }
   }
   const matching=entityId?all.filter(r=>allEdges.some(e=>e.reportId===r.id&&e.to===entityId)):all;
@@ -120,7 +131,7 @@ export function vesselMatches(profile,records) {
 }
 export function disruptionMatches(report) {return [...new Set([...(Array.isArray(report.disruptionMatches)?report.disruptionMatches:[]),...deriveContext(report.title).disruptionMatches])];}
 export function buildTimeline(records,series,{days=30,theater='both',actor='All',query='',onlyDisruptions=true,basis='publication',annotations={},now=Date.now()}={}) {
-  days=[7,30,90,180].includes(Number(days))?Number(days):30;
+  days=[7,30,90,180,365].includes(Number(days))?Number(days):30;
   const end=Date.parse(new Date(now).toISOString().slice(0,10)+'T00:00:00Z');
   const rows=Array.from({length:days},(_,i)=>({date:new Date(end-(days-1-i)*86400000).toISOString().slice(0,10),prices:{brent:null,wti:null},reports:[]}));
   const map=new Map(rows.map(r=>[r.date,r]));let missingEventDates=0;
@@ -131,7 +142,7 @@ export function buildTimeline(records,series,{days=30,theater='both',actor='All'
     if(query&&!(`${report.title} ${report.source}`).toLowerCase().includes(query.toLowerCase()))continue;
     const terms=disruptionMatches(report);if(onlyDisruptions&&!terms.length)continue;
     const annotation=annotations[report.id];
-    const day=basis==='event'?dateOnly(annotation?.eventDate):report.publishedAt.slice(0,10);
+    const day=basis==='event'?dateOnly(annotation?.eventDate):reportPublication(report).date;
     if(!day){missingEventDates++;continue;}
     if(map.has(day))map.get(day).reports.push({report,terms,basis:basis==='event'?'Analyst-entered event date':'Publication date',eventDate:annotation?.eventDate||null});
   }

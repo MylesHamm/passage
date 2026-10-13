@@ -221,3 +221,76 @@ test('relationship basis corrections redraw displayed evidence while unchanged l
   assert.equal(redraws.length,2);assert.equal(view.nodes,latest.nodes);assert.equal(view.edges,latest.edges);
  }finally{if(previousDocument===undefined)delete globalThis.document;else globalThis.document=previousDocument;}
 });
+
+function withGraphViewport(run){
+ const previousDocument=globalThis.document,previousResizeObserver=globalThis.ResizeObserver;
+ const viewport={clientWidth:620,clientHeight:480,scrollTop:0},attributes={},transforms=[],draws=[];
+ let onResize;
+ const layer={setAttribute(name,value){if(name==='transform')transforms.push(value);},querySelectorAll:()=>[]};
+ const svg={parentElement:viewport,style:{},append(){},addEventListener(){},contains:()=>false,
+  setAttribute(name,value){attributes[name]=value;},getBoundingClientRect:()=>({width:viewport.clientWidth})};
+ globalThis.document={activeElement:null,createElementNS:()=>layer};
+ globalThis.ResizeObserver=class{constructor(callback){onResize=callback;}observe(){}};
+ try{
+  const view=new EvidenceGraph(svg,{hidden:true},()=>{});
+  // The viewport behavior uses the real update, fit and transform methods;
+  // card layout is already covered above and needs no browser DOM here.
+  view.draw=function(width){draws.push({width,basis:this.edges[0]?.basis});this.layoutHeight=800;};
+  const evidence={nodes:[node('actor:a','actor','Iran'),report('r')],edges:[edge('r','actor:a')]};
+  run({view,viewport,attributes,transforms,draws,evidence,resize:()=>onResize()});
+ }finally{
+  if(previousDocument===undefined)delete globalThis.document;else globalThis.document=previousDocument;
+  if(previousResizeObserver===undefined)delete globalThis.ResizeObserver;else globalThis.ResizeObserver=previousResizeObserver;
+ }
+}
+
+test('a source correction preserves graph zoom, pan and reading scroll for the same selection',()=>{
+ withGraphViewport(({view,viewport,transforms,draws,evidence})=>{
+  view.update(evidence,'actor:a');
+  view.zoom=1.75;view.pan={x:42,y:-18};viewport.scrollTop=260;
+  const corrected={nodes:evidence.nodes,edges:[{...evidence.edges[0],basis:'Corrected source attribution'}]};
+  view.update(corrected,'actor:a');
+  assert.equal(draws.length,2);assert.equal(draws.at(-1).basis,'Corrected source attribution');
+  assert.equal(view.zoom,1.75);assert.deepEqual(view.pan,{x:42,y:-18});assert.equal(viewport.scrollTop,260);
+  assert.equal(transforms.at(-1),'translate(352 -18) scale(1.75)');
+  view.update(structuredClone(corrected),'actor:a');assert.equal(draws.length,2,'unchanged content must not redraw');
+ });
+});
+
+test('resizing the graph preserves the current exploration while updating its viewport',()=>{
+ withGraphViewport(({view,viewport,attributes,transforms,evidence,resize})=>{
+  view.update(evidence,'actor:a');view.zoom=2;view.pan={x:-35,y:20};viewport.scrollTop=190;
+  viewport.clientWidth=420;resize();
+  assert.equal(attributes.viewBox,'0 0 420 800');
+  assert.equal(view.zoom,2);assert.deepEqual(view.pan,{x:-35,y:20});assert.equal(viewport.scrollTop,190);
+  assert.equal(transforms.at(-1),'translate(175 20) scale(2)');
+ });
+});
+
+test('changing selection and explicitly resetting the graph still restore its initial view',()=>{
+ withGraphViewport(({view,viewport,evidence})=>{
+  view.update(evidence,'actor:a');view.zoom=2;view.pan={x:30,y:10};viewport.scrollTop=190;
+  view.update(evidence,'r');
+  assert.equal(view.zoom,1);assert.deepEqual(view.pan,{x:0,y:0});assert.equal(viewport.scrollTop,0);
+  view.zoom=1.5;view.pan={x:-20,y:45};viewport.scrollTop=90;view.fit();
+  assert.equal(view.zoom,1);assert.deepEqual(view.pan,{x:0,y:0});assert.equal(viewport.scrollTop,0);
+ });
+});
+
+test('a graph initialized while hidden lays out when its viewport becomes available',()=>{
+ withGraphViewport(({view,viewport,draws,attributes,evidence,resize})=>{
+  viewport.clientWidth=0;view.update(evidence,'actor:a');assert.equal(draws.length,0);
+  viewport.clientWidth=420;resize();
+  assert.equal(draws.length,1);assert.equal(attributes.viewBox,'0 0 420 800');
+  assert.equal(view.zoom,1);assert.deepEqual(view.pan,{x:0,y:0});
+ });
+});
+
+test('a selection changed while hidden does not restore the previous exploration on resize',()=>{
+ withGraphViewport(({view,viewport,evidence,resize})=>{
+  view.update(evidence,'actor:a');view.zoom=2;view.pan={x:30,y:10};viewport.scrollTop=190;
+  viewport.clientWidth=0;view.update(evidence,'r');
+  viewport.clientWidth=420;resize();
+  assert.equal(view.zoom,1);assert.deepEqual(view.pan,{x:0,y:0});assert.equal(viewport.scrollTop,0);
+ });
+});

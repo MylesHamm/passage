@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {buildEvidenceGraph,buildTimeline,dateOnly,deriveContext,normalizeAnnotation,normalizeProfile,publicUrl,vesselMatches} from '../dist/research-data.mjs';
+import * as researchData from '../dist/research-data.mjs';
 
 const NOW=Date.parse('2026-09-13T18:00:00Z');
 const report=(id,title,publishedAt='2026-09-12T10:00:00Z',extra={})=>({id,title,url:`https://example.test/${id}`,source:'Fixture',publishedAt,theaters:['bab'],actors:[],...extra});
@@ -27,4 +28,33 @@ test('vessel profile validation preserves safe links and snapshots',()=>{
 });
 test('vessel name matches are review leads and identifier matches are explicit',()=>{
   const records=[report('one','MV Example rerouted'),report('two','MMSI 123456789 appears')];const matches=vesselMatches({mmsi:'123456789',name:'MV Example'},records);assert.equal(matches.length,2);assert.ok(matches.some(match=>match.basis==='MMSI mention'));assert.ok(matches.some(match=>match.basis.includes('Name match')));
+});
+test('publication clocks preserve day precision and never substitute discovery dates',()=>{
+  const publication=researchData.reportPublication;
+  assert.equal(typeof publication,'function');
+  for(const row of [
+    {publishedDate:'2026-09-12',publishedAt:null},
+    {publicationDate:'2026-09-12',publishedAt:'2026-09-12T00:00:00.000Z',publicationPrecision:'day'},
+    {publishedAt:'2026-09-12',publicationPrecision:'day'},
+  ])assert.deepEqual(publication(row),{value:'2026-09-12',precision:'day',at:Date.parse('2026-09-12T00:00:00Z'),date:'2026-09-12'});
+  const exact='2026-09-12T01:00:00+03:00';
+  assert.deepEqual(publication({publishedAt:exact}),{value:exact,precision:'timestamp',at:Date.parse(exact),date:'2026-09-11'});
+  for(const row of [{discoveredAt:'2026-09-12T10:00:00Z'},{publishedAt:'2026-02-30T10:00:00Z'},{publishedDate:'2026-02-30'},{publishedAt:'2026-09-12T10:00:00'}])assert.equal(publication(row),null);
+});
+test('date-only reports remain in research and annotations without invented publication timestamps',()=>{
+  const day=report('day','Houthi shipping attack',null,{publishedDate:'2026-09-12',publicationPrecision:'day',discoveredAt:'2026-09-13T10:00:00Z'}),before=structuredClone(day);
+  const unknown=report('unknown','Houthi shipping attack',null,{discoveredAt:'2026-09-13T10:00:00Z'});
+  const future=report('future','Houthi shipping attack',null,{publishedDate:'2026-09-14',publicationPrecision:'day'});
+  assert.deepEqual(researchData.uniqueReports([day,unknown,future],NOW),[day]);
+  const graph=buildEvidenceGraph([day]);assert.equal(graph.reports.length,1);assert.equal(graph.reports[0].publishedAt,null);
+  assert.ok(graph.edges.every(edge=>edge.publishedAt===null&&edge.publishedDate==='2026-09-12'&&edge.publicationPrecision==='day'));
+  const timeline=buildTimeline([day,unknown,future],[],{days:7,now:NOW});assert.equal(timeline.reportCount,1);assert.equal(timeline.rows.find(row=>row.reports.length).date,'2026-09-12');
+  assert.equal(normalizeAnnotation({eventDate:'2026-09-11',note:'Dated source'},day,NOW).report.publishedAt,null);
+  assert.deepEqual(day,before);
+});
+test('every offered timeline window is honored, including 365 days',()=>{
+  const old=report('old','Shipping attack','2026-03-01T10:00:00Z');
+  for(const days of [7,30,90,180,365])assert.equal(buildTimeline([old],[],{days,now:NOW}).rows.length,days);
+  assert.equal(buildTimeline([old],[],{days:365,now:NOW}).reportCount,1);
+  assert.equal(buildTimeline([old],[],{days:30,now:NOW}).reportCount,0);
 });

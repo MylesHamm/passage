@@ -86,6 +86,7 @@ export function nearestOilDate(model, ms) {
 export function createOilChart(mount, { onReadout } = {}) {
   const id = `oil-history-${++chartSequence}`;
   let model = buildOilChartModel();
+  let sourceState = { loading: true, failed: false };
   let selectedDate = null;
   let selectedLatest = true;
   let width = 0;
@@ -127,13 +128,19 @@ export function createOilChart(mount, { onReadout } = {}) {
 
   function draw() {
     if (destroyed) return;
+    mount.setAttribute('aria-busy', String(sourceState.loading && !sourceState.failed));
     width = Math.max(240, Math.round(plot.clientWidth || mount.clientWidth || 600));
     if (!model.hasData) {
       geometry = null;
-      plot.innerHTML = '<p class="oil-history-empty">No daily oil observations are available. Inspect Sources for the EIA connection and last successful retrieval.</p>';
+      const message = sourceState.failed
+        ? 'Daily oil observations could not be loaded. Inspect Sources for the failed EIA connection and last successful retrieval.'
+        : sourceState.loading
+          ? 'Checking daily EIA observations…'
+          : 'No daily oil observations are available in the current response. Inspect Sources for EIA coverage.';
+      plot.innerHTML = `<p class="oil-history-empty">${message}</p>`;
       readout.replaceChildren();
       controls.hidden = true;
-      windowLabel.textContent = 'No observations';
+      windowLabel.textContent = sourceState.failed ? 'Observations unavailable' : sourceState.loading ? 'Checking observations' : 'No observations';
       note.textContent = 'Missing prices are not zero. EIA daily spot prices are published with a lag.';
       return;
     }
@@ -174,7 +181,9 @@ export function createOilChart(mount, { onReadout } = {}) {
       ${grid}${ticks}${lines}${labels}<g data-chart-focus aria-hidden="true"></g>
       <rect x="${left}" y="${top}" width="${Math.max(1, right - left)}" height="${bottom - top}" fill="transparent" data-chart-hit/>
     </svg>`;
-    note.textContent = `${model.dates.length} observed dates · Daily spot prices, published with a lag. ${model.breakCount ? `${model.breakCount} line break${model.breakCount === 1 ? '' : 's'} for missing values or gaps over 4 days.` : 'Gaps over 4 days and missing values are not connected.'}`;
+    const sourceNote = sourceState.failed ? 'Update failed · showing retained observations. Inspect Sources for the EIA connection. '
+      : sourceState.loading ? 'Checking for updates · showing retained observations. ' : '';
+    note.textContent = `${sourceNote}${model.dates.length} observed dates · Daily spot prices, published with a lag. ${model.breakCount ? `${model.breakCount} line break${model.breakCount === 1 ? '' : 's'} for missing values or gaps over 4 days.` : 'Gaps over 4 days and missing values are not connected.'}`;
     input.max = String(model.dates.length - 1);
     input.disabled = model.dates.length < 2;
     select(selectedDate && model.dates.includes(selectedDate) ? selectedDate : model.dates.at(-1), false);
@@ -199,7 +208,8 @@ export function createOilChart(mount, { onReadout } = {}) {
   observer?.observe(plot);
   draw();
   return {
-    update(series, options) {
+    update(series, { loading = false, failed = false, ...options } = {}) {
+      sourceState = { loading: Boolean(loading), failed: Boolean(failed) };
       model = buildOilChartModel(series, options);
       if (selectedLatest || !model.dates.includes(selectedDate)) selectedDate = model.dates.at(-1) || null;
       draw();

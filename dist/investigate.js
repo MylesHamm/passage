@@ -5,6 +5,7 @@ import { normalizeManualReport, mergeManualEvidence, canonicalReportUrl } from '
 import { evidenceDate as dateFor, evidenceOrder as nodeOrder, filterEvidence, resolveFocus, GRAPH_TYPES } from './investigate-model.mjs';
 import { reportingCoverageText } from './reporting-view.mjs';
 import { SOURCE_DEFINITIONS, sourceHealth, statusSummary } from './source-health.mjs';
+import { preserveViewFocus } from './view-focus.mjs';
 
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -30,10 +31,10 @@ function sourceLink(url, label, className = '') { const safe = safeUrl(url); ret
 function message(text) { clearTimeout(toastTimer); $('#toast').textContent = text; $('#toast').classList.add('visible'); toastTimer = setTimeout(() => $('#toast').classList.remove('visible'), 4500); }
 function setMarkup(container, html) {
   if (container._markup === html) return;
-  const focused = container.contains(document.activeElement) ? document.activeElement?.dataset?.selectNode : null;
+  const restoreFocus = preserveViewFocus(container, container.id === 'inspector-body' ? $('#inspector-heading') : null);
   const scroll = container.scrollTop;
   container.innerHTML = html; container._markup = html; container.scrollTop = scroll;
-  if (focused) [...container.querySelectorAll('[data-select-node]')].find(el => el.dataset.selectNode === focused)?.focus({ preventScroll: true });
+  restoreFocus();
 }
 function filteredEvidence() { return filterEvidence(state.graph, state); }
 function handleInitialFocus() {
@@ -110,13 +111,17 @@ function selectNode(id) {
   const node = state.graph.nodes.find(node => node.id === id);
   if (!node) return;
   const fromInspector = $('#inspector-body').contains(document.activeElement);
+  const fromActorReturn = document.activeElement === $('#return-to-actor');
   state.selected = id; state.expanded = false;
   if (node.type === 'actor') state.actor = id;
   const url = new URL(location.href); url.searchParams.delete('source'); url.searchParams.delete('actor'); url.searchParams.set('focus', id);
   history.replaceState(null, '', url);
   render();
   $('#inspector-body').scrollTop = 0;
-  if (fromInspector) $('#inspector-heading').focus({ preventScroll: true });
+  // Returning to the actor hides its button. Inspector connections instead land
+  // on the details heading, revealing that panel on stacked layouts.
+  if (fromActorReturn) $('#actor-select').focus({ preventScroll: true });
+  else if (fromInspector) $('#inspector-heading').focus({ preventScroll: matchMedia('(min-width:981px)').matches });
 }
 function fact(label, value) { return `<div><dt>${esc(label)}</dt><dd>${esc(value || 'Not supplied')}</dd></div>`; }
 function renderInspector(node, graph) {

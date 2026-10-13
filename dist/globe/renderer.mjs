@@ -1,7 +1,42 @@
 import {vesselTypeLabel} from '../vessel-data.mjs';
 import { THEATRES, ROUTES, LANDMARKS, visiblePoint } from './geometry.mjs';
 
-export function waterSafeSegments(route, landFeatures, d3) {
+// Keep near-boundary samples in the exact check despite floating-point noise.
+const BOUNDS_MARGIN = 1e-4;
+
+function usableBounds(bounds) {
+  return Array.isArray(bounds) && bounds.length === 2
+    && bounds.every(point => Array.isArray(point) && point.length === 2 && point.every(Number.isFinite))
+    && bounds.every(([longitude, latitude]) => Math.abs(longitude) <= 180 && Math.abs(latitude) <= 90)
+    && bounds[0][1] <= bounds[1][1];
+}
+
+function withinLandBounds(bounds, [longitude, latitude]) {
+  if (!bounds) return true;
+  const [[west, south], [east, north]] = bounds;
+  if (latitude < south - BOUNDS_MARGIN || latitude > north + BOUNDS_MARGIN) return false;
+  if (west > east) return longitude >= west - BOUNDS_MARGIN || longitude <= east + BOUNDS_MARGIN;
+  return longitude >= west - BOUNDS_MARGIN && longitude <= east + BOUNDS_MARGIN
+    || longitude >= 180 - BOUNDS_MARGIN && west <= -180 + BOUNDS_MARGIN
+    || longitude <= -180 + BOUNDS_MARGIN && east >= 180 - BOUNDS_MARGIN;
+}
+
+export function createLandTester(landFeatures, d3) {
+  const entries = landFeatures.map(feature => {
+    const type = feature.type === 'Feature' ? feature.geometry?.type : feature.type;
+    let bounds = null;
+    // Spherical bounds include curved edges, poles and antimeridian crossings.
+    // They only reject distant samples; geoContains still decides land contact.
+    // Unknown geometry or unusable bounds retain the original exact check.
+    if (['Polygon', 'MultiPolygon'].includes(type) && typeof d3.geoBounds === 'function') {
+      try { const candidate = d3.geoBounds(feature); if (usableBounds(candidate)) bounds = candidate; } catch {}
+    }
+    return {feature, bounds};
+  });
+  return point => entries.some(({feature, bounds}) => withinLandBounds(bounds, point) && d3.geoContains(feature, point));
+}
+
+export function waterSafeSegments(route, landFeatures, d3, containsLand = createLandTester(landFeatures, d3)) {
   const segments = [];
   for (let i = 0; i < route.length - 1; i++) {
     const start = route[i], end = route[i + 1], interpolate = d3.geoInterpolate(start, end);
@@ -13,7 +48,7 @@ export function waterSafeSegments(route, landFeatures, d3) {
     // Use enough samples to catch narrow coastal projections and island
     // crossings before geoPath adds its own adaptive resampling.
     for (let sample = 1; sample < 129; sample++) {
-      if (landFeatures.some(feature => d3.geoContains(feature, interpolate(sample / 128)))) {
+      if (containsLand(interpolate(sample / 128))) {
         clear = false;
         break;
       }
@@ -29,7 +64,8 @@ export function createRenderer(canvas, world) {
   const projection = d3.geoOrthographic().clipAngle(90).precision(0.7);
   const path = d3.geoPath(projection, ctx), grid = d3.geoGraticule().step([15,15])();
   const landFeatures = world.type === 'FeatureCollection' ? world.features : [world];
-  const lines = ROUTES.map(route => waterSafeSegments(route.coordinates, landFeatures, d3));
+  const containsLand = createLandTester(landFeatures, d3);
+  const lines = ROUTES.map(route => waterSafeSegments(route.coordinates, landFeatures, d3, containsLand));
   let width=1,height=1,hitPoints=[];
   const colors={ocean:'#071A2C',land:'#344652',coast:'#8396A3',grid:'#243743',mint:'#D9FDD9',sky:'#44ACE9',text:'#C9D3E0'};
   function resize(w,h) {
