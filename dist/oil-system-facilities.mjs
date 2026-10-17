@@ -11,19 +11,13 @@ function circle(x, y, radius, start = 0, sweep = Math.PI * 2, steps = 48) {
 
 function storageTank(g, x, y, radius, height) {
   const out = [], bottom = 2, top = bottom + height;
-  const near = circle(x, y, radius, -Math.PI / 4, Math.PI, 32);
   const footing = circle(x, y, radius + 1.4, -Math.PI / 4, Math.PI, 32);
   out.push(g.face([...g.plan(footing, bottom), ...g.plan([...footing].reverse(), 0)], 'system-object-fitting'));
   out.push(g.face(g.plan(circle(x, y, radius + 1.4), bottom), 'system-object-hatch'));
-  // The two visible wall quarters share the same curved silhouette and roof.
-  for (let side = 0; side < 2; side++) {
-    const arc = circle(x, y, radius, -Math.PI / 4 + side * Math.PI / 2, Math.PI / 2, 24);
-    out.push(g.face([...g.plan(arc, top), ...g.plan([...arc].reverse(), bottom)], side ? 'system-object-end' : 'system-object-side'));
-  }
-  for (const z of [bottom + height / 3, bottom + 2 * height / 3]) {
-    out.push(g.line(g.plan(near, z)));
-  }
-  out.push(g.face(g.plan(circle(x, y, radius), top), 'system-object-top'));
+  // The kit owns the cylinder's volume and four-tone facing, with seams drawn
+  // under its outline so they terminate on the true silhouette.
+  out.push(g.cylinder(x, y, radius, bottom, height,
+    [bottom + height / 3, bottom + 2 * height / 3].map(z => g.seam(x, y, radius, z)).join('')));
   out.push(g.line(g.plan(circle(x, y, radius - 1), top + .2)));
   out.push(g.hatch(x - 2, y - 1, 3.3, top, 1.2));
   out.push(g.hatch(x + 3.5, y - 2, 1.2, top, 2.2));
@@ -60,6 +54,7 @@ export function exportTerminal(g) {
     out.push(g.line([g.point(x - 2.3, 23, 10.5), g.point(x + 2.3, 23, 10.5)], 'system-object-rail'));
     out.push(g.line([g.point(x, 20.7, 10.5), g.point(x, 25.3, 10.5)], 'system-object-rail'));
   }
+  out.push('<g class="system-mechanism-focus">');
   // A mounted pump and motor terminate the pipes; the outlet faces the apron.
   out.push(g.box(6, 16, 18, 15, 0, 1.6, 'system-object-fitting'));
   out.push(g.box(8, 18, 14, 10, 1.6, 7.3, 'system-object-fitting'));
@@ -70,6 +65,7 @@ export function exportTerminal(g) {
   for (const [x, y] of [[7.2, 17.3], [22.8, 17.3], [7.2, 29.7], [22.8, 29.7]]) out.push(g.hatch(x, y, .55, 1.6, .4));
   out.push(pipe(g, [[18, 28, 6], [18, 35, 6]]));
   out.push(g.box(16, 34, 4, 2.4, 4, 4, 'system-object-fitting'));
+  out.push('</g>');
   // The blank service cabinet has a recessed door and grille, not a status screen.
   out.push(g.box(-31, 26, 9, 8, 0, 14));
   out.push(g.face([g.point(-29.7, 34.1, 2), g.point(-23.3, 34.1, 2), g.point(-23.3, 34.1, 12), g.point(-29.7, 34.1, 12)], 'system-object-fitting'));
@@ -93,10 +89,12 @@ export function insuranceOffice(g) {
   out.push(g.box(-18, 12, 14, 1.2, 21.5, 1.4, 'system-object-fitting'));
   out.push(g.line([g.point(-7, 12.5, 9), g.point(-7, 12.5, 13)], 'system-object-rail'));
   out.push(g.line([g.point(-17, 12.4, 7), g.point(-5, 12.4, 7)], 'system-object-rail'));
-  // A paper notice in a physical frame supplies office detail without data glyphs.
+  out.push('<g class="system-mechanism-focus">');
+  // A cover document in a physical frame: printed terms, never a live premium.
   out.push(g.box(4, 12, 12, 1.2, 7, 14, 'system-object-fitting'));
-  out.push(g.face([g.point(5, 13.25, 8), g.point(15, 13.25, 8), g.point(15, 13.25, 20), g.point(5, 13.25, 20)], 'system-object-top'));
+  out.push(g.face([g.point(5, 13.25, 8), g.point(15, 13.25, 8), g.point(15, 13.25, 20), g.point(5, 13.25, 20)], 'system-record-page'));
   for (const z of [11, 14, 17]) out.push(g.line([g.point(7, 13.4, z), g.point(13, 13.4, z)]));
+  out.push('</g>');
   // Roof overhang, parapet and vent are seated on the building, not floating icons.
   out.push(g.box(-26, -24, 48, 38, 40, 2));
   out.push(g.box(-25, -23, 46, 1, 42, 2));

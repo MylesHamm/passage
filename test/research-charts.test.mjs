@@ -56,3 +56,53 @@ test('empty charts use a fitting native canvas and wrapped copy without inventin
     assert.ok(lines.length>1);assert.ok(lines.every(line=>line.length*7.2<=249-32));
   }
 });
+
+const rawTimeline=(values,wti=[])=>({rows:values.map((value,index)=>({date:`2026-10-${String(index+1).padStart(2,'0')}`,prices:{brent:value,wti:wti[index]??null},reports:[]}))});
+const pricePaths=(markup,id='brent')=>[...markup.matchAll(new RegExp(`<path class="timeline-price-${id}" d="([^"]+)"`,'g'))].map(match=>match[1]);
+
+test('leading and interior explicit nulls start separate valid paths and never bridge missing prices',()=>{
+  const svg=buildResearchTimelineSvg(rawTimeline([null,80,81,null,84,85]),800,280),paths=pricePaths(svg.markup);
+  assert.equal(paths.length,2);
+  assert.ok(paths.every(path=>/^M[^ML]+ L[^ML]+$/.test(path)));
+  assert.equal(pricePaths(svg.markup,'wti').length,0);
+  assert.doesNotMatch(svg.markup,/NaN|undefined|d="L/);
+  const singles=buildResearchTimelineSvg(rawTimeline([null,80,null,84]),800,280);
+  assert.equal(pricePaths(singles.markup).length,0);
+  assert.equal((singles.markup.match(/data-price-observation="brent"/g)||[]).length,2,'isolated observations are visible circles');
+});
+
+test('unequal series dates and a single observation remain visible without supplying missing prices',()=>{
+  const svg=buildResearchTimelineSvg(rawTimeline([80,null,82],[null,75,null]),800,280);
+  assert.equal((svg.markup.match(/data-price-observation="brent"/g)||[]).length,2);
+  assert.equal((svg.markup.match(/data-price-observation="wti"/g)||[]).length,1);
+  assert.equal(pricePaths(svg.markup).length,0);
+  const single=buildResearchTimelineSvg(rawTimeline([80]),249,228);
+  assert.equal((single.markup.match(/data-price-observation="brent"/g)||[]).length,1);
+  assert.equal(dateLabels(single.markup).length,1);
+  assert.doesNotMatch(single.markup,/NaN|undefined/);
+});
+
+test('Research uses the shared four-day gap policy and preserves explicit nulls across ordinary weekends',()=>{
+  const base=[{date:'2026-10-02',value:80},{date:'2026-10-05',value:81},{date:'2026-10-09',value:82},{date:'2026-10-14',value:83}];
+  const options={days:30,now:Date.parse('2026-10-15T12:00:00Z')};
+  const render=observations=>buildResearchTimelineSvg(buildTimeline([],[{id:'brent',observations}],options),800,280);
+  const bridged=render(base),paths=pricePaths(bridged.markup);
+  assert.equal(paths.length,1);
+  assert.equal((paths[0].match(/L/g)||[]).length,2,'three- and four-day omitted intervals connect observed endpoints');
+  assert.equal((bridged.markup.match(/data-price-observation="brent"/g)||[]).length,1,'the five-day outage isolates its next point');
+  const explicit=render([...base,{date:'2026-10-04',value:null}]);
+  assert.equal(pricePaths(explicit.markup)[0].match(/L/g).length,1);
+  assert.equal((explicit.markup.match(/data-price-observation="brent"/g)||[]).length,2);
+});
+
+test('report-only timeline keeps dated points and calendar labels while identifying the unavailable price layer',()=>{
+  const item={id:'one',title:'Shipping attack reported',url:'https://example.test/one',publishedAt:'2026-10-12T12:00:00Z'};
+  const svg=buildResearchTimelineSvg(buildTimeline([item],[],{days:7,now:dateNow}),319,228);
+  assert.equal(svg.priceLayerAvailable,false);
+  assert.equal(svg.reportLayerAvailable,true);
+  assert.match(svg.markup,/class="timeline-report"/);
+  assert.match(svg.markup,/1 source report/);
+  assert.match(svg.markup,/EIA price layer unavailable/);
+  assert.equal(dateLabels(svg.markup).length,2);
+  assert.doesNotMatch(svg.markup,/timeline-price-|\$0|NaN|undefined/);
+});

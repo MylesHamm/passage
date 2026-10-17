@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,rm} from 'node:fs/promises';
+import {mkdtemp,rm,readFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {createDataService,PUBLIC_API_PATHS} from '../lib/data-service.mjs';
 import {SourceRuntime} from '../lib/source-runtime.mjs';
 import {ReportArchive} from '../lib/report-archive.mjs';
+import {SOURCE_CAPABILITIES} from '../dist/source-policy.mjs';
 import {DISCOVERY_SOURCES} from '../lib/discovery.mjs';
 
 const NOW=Date.parse('2026-09-22T12:00:00Z');
@@ -49,7 +50,7 @@ test('hosted service isolates private account adapters and secrets across every 
     settings:{hosted:true,eiaApiKey:secret,reliefwebAppname:secret,aisstream:secret,acledPassword:secret,unexpectedSecret:secret},version:'service-test'});
   const outputs={};
   for(const endpoint of PUBLIC_API_PATHS)outputs[endpoint]=await service.get(endpoint);
-  assert.deepEqual({...outputs['/api/config']},{reliefweb:true,aisstream:true,eia:true,acled:false,version:'service-test',hosted:true});
+  assert.deepEqual({...outputs['/api/config']},{reliefweb:true,aisstream:true,eia:true,acled:false,version:'service-test',hosted:true,capabilities:SOURCE_CAPABILITIES});
   assert.equal(privateCalls,0);
   assert.equal(outputs['/api/acled'].configured,false);
   assert.deepEqual(outputs['/api/acled/events'].events,[]);
@@ -152,4 +153,14 @@ test('oil responses retain observations and success clocks during failure and re
   assert.equal(requests,6);
   assert.ok(recovered.series.every(series=>series.connection==='connected'&&series.error===null&&series.observations[0].value===75));
   assert.equal(JSON.stringify({initial,failed,recovered,logs:f.logs}).includes(secret),false);
+});
+
+test('official advisory metadata remains separate from incidents through cache failure and expiry',async t=>{
+ const index=await readFile(new URL('./fixtures/marad/index.html',import.meta.url),'utf8'),hormuz=await readFile(new URL('./fixtures/marad/2026-011.html',import.meta.url),'utf8'),redsea=await readFile(new URL('./fixtures/marad/2026-013.html',import.meta.url),'utf8');
+ let fail=false;const f=await fixture(t,async input=>{const url=new URL(input);if(url.hostname!=='www.maritime.dot.gov'||fail)return new Response('Unavailable',{status:503});return new Response(url.pathname==='/msci-advisories'?index:url.pathname.includes('2026-011')?hormuz:redsea);});
+ f.setTime(Date.parse('2026-10-17T04:00:00Z'));
+ const first=await f.service.get('/api/maritime');assert.equal(first.events.length,0);assert.equal(first.advisories.length,5);assert.equal(first.advisories.filter(record=>record.validityState==='active').length,2);
+ assert.ok(first.advisories.every(record=>record.recordType==='advisory'&&record.eventDate===null&&record.publishedDate===null&&!record.summary));
+ const source=first.sources.find(source=>source.id==='marad-advisories');assert.equal(source.connection,'connected');assert.equal(source.activeAdvisoryCount,2);assert.equal(source.coverageStatus,'limited');assert.equal(source.advisories,undefined);
+ fail=true;f.setTime(Date.parse('2027-03-23T04:00:00Z'));const failed=await f.service.get('/api/maritime');const retained=failed.sources.find(source=>source.id==='marad-advisories');assert.equal(retained.status,'retained');assert.equal(retained.retrievedAt,source.retrievedAt);assert.equal(retained.activeAdvisoryCount,0);assert.ok(failed.advisories.filter(record=>record.sourceStatus==='active').every(record=>record.validityState==='expired'));assert.equal(failed.events.length,0);
 });

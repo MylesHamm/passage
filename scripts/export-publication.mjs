@@ -8,6 +8,8 @@ const rootFiles=['package.json','package-lock.json','server.mjs','start.command'
 const directories=['lib','dist','cloud','test','scripts','.github','licenses'];
 const excluded=new Set(['.git','.cache','.private','.wrangler','node_modules','build','coverage','test-results','playwright-report','.sites-runtime']);
 const extensions=new Set(['.mjs','.js','.cjs','.html','.css','.json','.jsonc','.svg','.txt','.md','.ttf','.woff','.woff2','.png','.jpg','.jpeg','.webp','.ico','.yml','.yaml','.sh','.command']);
+const terrainBinaryFiles=new Set(['dist/terrain/assets/hormuz-dem.bin','dist/terrain/assets/bab-dem.bin']);
+const terrainSourceFiles=new Set(['scripts/terrain/build_assets.py']);
 const binaryExtensions=new Set(['.ttf','.woff','.woff2','.png','.jpg','.jpeg','.webp','.ico']);
 const MAX_FILE=32*1024*1024,MAX_TOTAL=128*1024*1024;
 const inside=(parent,child)=>parent===child||child.startsWith(parent+sep);
@@ -81,7 +83,7 @@ export async function exportPublication({sourceDir=root,outputDir}={}) {
       data=await handle.readFile();
       if(data.length!==info.size)throw Error('Publication source changed during inspection; retry after edits finish.');
     }finally{await handle.close();}
-    if(!binaryExtensions.has(extname(name).toLowerCase())){
+    if(!binaryExtensions.has(extname(name).toLowerCase())&&!terrainBinaryFiles.has(name)){
       let text=data.toString('utf8');
       if(name==='THIRD-PARTY-NOTICES.md')text=notices(text);
       validatePublicText(name,text);data=Buffer.from(text);
@@ -97,12 +99,13 @@ export async function exportPublication({sourceDir=root,outputDir}={}) {
       const child=name+'/'+entry.name;
       if(entry.isSymbolicLink())throw Error(`Refusing to publish a symbolic link: ${child}`);
       if(entry.isDirectory())await inventory(child);
-      else if(entry.isFile()&&extensions.has(extname(entry.name).toLowerCase()))await include(child);
+      else if(entry.isFile()&&(extensions.has(extname(entry.name).toLowerCase())||terrainBinaryFiles.has(child)||terrainSourceFiles.has(child)))await include(child);
       else throw Error(`Unexpected public source file: ${child}`);
     }
   }
   for(const name of rootFiles)await include(name);
   for(const name of directories)await inventory(name);
+  for(const name of ['docs/REGIONAL-TERRAIN.md','docs/ANATOMY-GRAPHICS.md','docs/EVIDENCE-CONTRACTS.md','docs/source-advisories.md']){try{await lstat(resolve(source,name));await include(name);}catch(error){if(error.code!=='ENOENT')throw error;}}
   await include('docs/HOSTING.md');await include('docs/PUBLIC-README.md');await include('docs/PUBLIC-README.md','README.md');
   // Recheck immediately before creation. mkdir is exclusive at the output root;
   // wx writes also refuse existing files and final-component symbolic links.

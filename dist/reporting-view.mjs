@@ -13,11 +13,14 @@ export function sortReports(a,b){return (reportTime(b)||'').localeCompare(report
 // Keep the difference between indexed links and a direct publisher feed visible.
 export function reportingCoverageText(coverage,{hosted=false,now=Date.now()}={}) {
   if (!coverage) return 'Checking reporting coverage…';
-  const parts = ['Reuters: public discovery. Direct Reuters delivery and your Reuters topic preferences are not connected.'];
+  const parts = [coverage.reuters?.mode==='retained-links-only'?'Reuters: retained or source-linked reporting only. Reuters-specific discovery is retired; direct Reuters delivery is not connected.':'Reuters: public discovery. Direct Reuters delivery and your Reuters topic preferences are not connected.'];
+  if(coverage.publicationUnknown)parts.push(`${coverage.publicationUnknown} links have unknown publication dates; discovery time is not publication time.`);
+  if(coverage.possiblyTruncatedFamilies?.length)parts.push('Discovery results are bounded and may omit relevant links.');
   if(hosted)parts.push(collectorHealth(coverage.collection,now).notice);
   const archive = coverage.archive;
   if (archive) {
     parts.push(`Local history: ${archive.recordCount} reports; up to ${archive.retentionDays} days since last retrieval, limited to ${archive.maxRecords.toLocaleString()} records.`);
+    if(archive.retainedCount)parts.push(`${archive.retainedCount} links are retained from earlier retrievals.`);
     if (archive.truncated) parts.push('Some older records were dropped at the storage limit.');
     if (archive.storageStatus !== 'ready') parts.push(archive.error || 'History could not be saved to disk.');
   }

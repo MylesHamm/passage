@@ -5,7 +5,8 @@ import { normalizeApiBase } from '../dist/runtime-config.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const staticExtensions = new Set(['.html', '.css', '.js', '.mjs', '.json', '.svg', '.ttf', '.woff', '.woff2', '.png', '.jpg', '.webp', '.ico', '.txt']);
-const geography = new Set(['assets/region.json', 'assets/world-land.json']);
+const geography = new Set(['assets/region.json', 'assets/world-land.json', 'terrain/assets/provenance.json']);
+const terrainGrids = new Set(['terrain/assets/hormuz-dem.bin', 'terrain/assets/bab-dem.bin']);
 const escapeAttribute = text => text.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const inside = (parent, child) => child === parent || child.startsWith(parent + sep);
 
@@ -26,7 +27,7 @@ export async function buildPages({ sourceDir = resolve(root, 'dist'), outputDir 
       if (item.isSymbolicLink()) throw new Error(`Refusing to publish a symbolic link: ${name}`);
       if (name === 'connections') continue; // Personal account forms and mutation code are local only.
       if (item.isDirectory()) { await inventory(resolve(directory, item.name), name + '/'); continue; }
-      if (!item.isFile() || item.name.startsWith('.') || !staticExtensions.has(extname(name))) throw new Error(`Unexpected public asset: ${name}`);
+      if (!item.isFile() || item.name.startsWith('.') || (!staticExtensions.has(extname(name)) && !terrainGrids.has(name))) throw new Error(`Unexpected public asset: ${name}`);
       if (extname(name) === '.json' && !geography.has(name)) throw new Error(`Only reference geography JSON may be bundled: ${name}`);
       files.push(name);
     }

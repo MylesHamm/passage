@@ -2,24 +2,28 @@
 
 [Open Passage](https://myleshamm.github.io/passage/)
 
-A globe-led watch for maritime security, regional oil supply, and the relationship between reporting and energy markets. Covers Bab el-Mandeb, Hormuz, and related regional infrastructure.
+An evidence-first regional watch for maritime security, regional oil supply, and the relationship between reporting and energy markets. Covers Bab el-Mandeb, Hormuz, and related regional infrastructure.
 
 The interface runs on GitHub Pages. A separate Cloudflare Worker and one SQLite Durable Object collect public-source metadata in the background, retain source timestamps, and provide a read-only API. Pages does not run a server or contain API keys.
 
 ## Explore the watch
 
-- **Watch**: orient on the globe, inspect priority developments, and check dated Brent/WTI prices.
+- **Watch**: orient on regional terrain, inspect priority developments, and check dated Brent/WTI prices.
 - **Reporting**: search and filter the source stream. New links wait in a visible notice until applied, preserving your reading position.
 - **Energy**: compare dated daily prices, inspect the interactive oil-system diagram, and read separately labelled market expectations. Select export availability, passage/freight, security/insurance or benchmarks to see the evidence needed to connect a development to oil.
 - **Evidence**: review official records, regional infrastructure, marine/conflict context, and source coverage.
 
-Theatre and reporting filters carry across workspaces. Select a report or place to open its evidence drawer; Escape closes it. Reports can open the oil-system diagram with suggested channels clearly distinguished from measured effects. The optional **Walk me through** guide explains the same live workspaces at your pace. Keyboard users can switch workspace tabs and diagram parts with the arrow, Home and End keys and inspect price dates with the chart slider. Motion explains a change and then settles: workspace views arrive from the side of the tab you chose, the evidence drawer slides in from its edge, the oil chart draws its lines in date order when it first appears or when you change the history window, and the overview globe turns once every 90 seconds until you explore it. Nothing loops, refreshes never replay an animation, and reduced-motion preferences remove movement.
+Theatre and reporting filters carry across workspaces. Select a report or place to open one evidence inspector; Escape closes it. A report keeps its original headline and source link before three progressive views: Claim, Confirm, and Oil connection. Publication, event, discovery and retrieval dates remain separate. Reports can open the oil-system anatomy with possible channels clearly distinguished from measured effects, and stay attached while you explore.
+
+The terrain focuses on Hormuz and Bab el-Mandeb, with static elevation and a derived coastline from attributed Mapzen Terrain Tiles. Relief is exaggerated 4×; lighting and colors are designed rather than satellite imagery. It is not a navigation chart or current-conditions layer. Controlled camera moves explain selection and then stop. WebGL provides the 3D view where available, with a truthful 2D reference fallback. There is no idle rotation, animated traffic simulation or invented incident coordinate. See [terrain sources and limits](docs/REGIONAL-TERRAIN.md).
+
+Keyboard users can switch workspaces, inspector tabs and diagram parts with arrow, Home and End keys, and inspect price dates with the chart slider. The optional Quick tour explains the same workspaces at your pace. Refreshes preserve reading state and do not replay entrance motion; reduced-motion preferences remove animated transitions.
 
 ## What updates
 
 - Reporting and official maritime notices are collected on a five-minute background cycle, subject to each provider's refresh interval and retry instructions. The open dashboard checks for updates every minute.
 - Received AIS positions stream into the collector continuously when configured; the dashboard checks every ten seconds. Coverage can be incomplete. Positions expire after thirty minutes.
-- EIA daily spot observations and weekly supply statistics retain their observation dates. Rechecking them does not create a newer market observation. The separate embedded oil chart is attributed to its own provider.
+- EIA daily spot observations and weekly supply statistics retain their observation dates. Rechecking them does not create a newer market observation. The Watch pulse and Energy chart share the same dated-observation contract; they never imply intraday or event-driven price changes.
 - Polymarket provides up to five relevant active prediction markets through free public snapshots. Exact questions, deadlines, liquidity and resolution rules remain visible; these are market expectations, not event confirmation.
 - The live briefing links to The Hormuz Letter as a preferred source. Its X account is not automatically collected; examples shared for context are not pinned as a fixed watchlist.
 - Weather is a dated model forecast. Geography, infrastructure locations, and possible oil-impact mechanisms are reference context.

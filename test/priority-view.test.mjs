@@ -11,7 +11,7 @@ test('recent failed attempts and a healthy collector never replace source succes
     {id:'reliefweb',configured:false},
   ]};
   const result=briefCoverage(news,{now});
-  assert.deepEqual(result.delayed.map(source=>source.id),['gdelt-hormuz','centcom']);
+  assert.deepEqual(result.delayed.map(source=>source.id),['gdelt-hormuz']);
   assert.equal(result.direct.length,1);assert.equal(result.truncated,true);
   assert.equal(briefCoverage(null,{now,failed:true}).checking,false);
 });

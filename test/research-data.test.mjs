@@ -45,7 +45,7 @@ test('date-only reports remain in research and annotations without invented publ
   const day=report('day','Houthi shipping attack',null,{publishedDate:'2026-09-12',publicationPrecision:'day',discoveredAt:'2026-09-13T10:00:00Z'}),before=structuredClone(day);
   const unknown=report('unknown','Houthi shipping attack',null,{discoveredAt:'2026-09-13T10:00:00Z'});
   const future=report('future','Houthi shipping attack',null,{publishedDate:'2026-09-14',publicationPrecision:'day'});
-  assert.deepEqual(researchData.uniqueReports([day,unknown,future],NOW),[day]);
+  assert.deepEqual(researchData.uniqueReports([day,unknown,future],NOW),[day,unknown]);
   const graph=buildEvidenceGraph([day]);assert.equal(graph.reports.length,1);assert.equal(graph.reports[0].publishedAt,null);
   assert.ok(graph.edges.every(edge=>edge.publishedAt===null&&edge.publishedDate==='2026-09-12'&&edge.publicationPrecision==='day'));
   const timeline=buildTimeline([day,unknown,future],[],{days:7,now:NOW});assert.equal(timeline.reportCount,1);assert.equal(timeline.rows.find(row=>row.reports.length).date,'2026-09-12');
@@ -57,4 +57,95 @@ test('every offered timeline window is honored, including 365 days',()=>{
   for(const days of [7,30,90,180,365])assert.equal(buildTimeline([old],[],{days,now:NOW}).rows.length,days);
   assert.equal(buildTimeline([old],[],{days:365,now:NOW}).reportCount,1);
   assert.equal(buildTimeline([old],[],{days:30,now:NOW}).reportCount,0);
+});
+
+test('undated evidence remains browsable, linkable and eligible for vessel matching without borrowing discovery time',()=>{
+  const unknown=report('undated','MV Example Houthi shipping report',null,{discoveredAt:'2026-09-13T11:00:00Z'});
+  const dated=report('dated','MV Example Iran shipping report');
+  const before=structuredClone(unknown);
+  const graph=buildEvidenceGraph([unknown,dated],{now:NOW});
+  assert.deepEqual(graph.reports.map(item=>item.id),['dated','undated']);
+  assert.equal(graph.unknownPublicationCount,1);
+  assert.ok(graph.edges.some(edge=>edge.reportId==='undated'));
+  assert.ok(graph.edges.filter(edge=>edge.reportId==='undated').every(edge=>edge.publishedAt===null&&edge.publishedDate===null&&edge.publicationPrecision==='unknown'));
+  assert.equal(vesselMatches({mmsi:'123456789',name:'MV Example'},[unknown]).length,1);
+  assert.equal(normalizeAnnotation({eventDate:'2026-09-10'},unknown,NOW).report.publishedAt,null);
+  const timeline=buildTimeline([unknown],[],{days:7,now:NOW,onlyDisruptions:false});
+  assert.equal(timeline.reportCount,0);
+  assert.equal(timeline.missingPublicationDates,1);
+  assert.equal(timeline.missingEventDates,0);
+  assert.deepEqual(timeline.omittedReports,[{report:unknown,reason:'publication-date-unknown',label:'Publication date unknown',date:null}]);
+  assert.ok(timeline.rows.every(row=>!row.reports.length));
+  assert.deepEqual(unknown,before);
+});
+
+test('timeline accounting reconciles source input, eligibility, placed reports and reasoned omissions',()=>{
+  const dated=report('dated','Ship attack reported'),undated=report('unknown','Ship attack reported',null,{discoveredAt:'2026-09-12T10:00:00Z'});
+  const old=report('old','Ship attack reported','2026-08-01T10:00:00Z'),filtered=report('filtered','Routine shipping update',null);
+  const future=report('future','Ship attack reported','2026-09-15T10:00:00Z');
+  const timeline=buildTimeline([dated,undated,old,filtered,future,{...dated,id:'duplicate'},{id:'invalid',title:'Ship attack reported',url:'javascript:alert(1)'},null],[],{days:7,now:NOW});
+  assert.equal(timeline.inputReportCount,8);
+  assert.equal(timeline.invalidReportCount,2);
+  assert.equal(timeline.futurePublicationCount,1);
+  assert.equal(timeline.duplicateReportCount,1);
+  assert.equal(timeline.uniqueReportCount,4);
+  assert.equal(timeline.filteredOutCount,1);
+  assert.equal(timeline.eligibleReportCount,3);
+  assert.equal(timeline.reportCount,1);
+  assert.equal(timeline.unplacedReportCount,1);
+  assert.equal(timeline.outsideWindowCount,1);
+  assert.equal(timeline.omittedReportCount,2);
+  assert.equal(timeline.inputReportCount,timeline.invalidReportCount+timeline.futurePublicationCount+timeline.duplicateReportCount+timeline.uniqueReportCount);
+  assert.equal(timeline.uniqueReportCount,timeline.filteredOutCount+timeline.eligibleReportCount);
+  assert.equal(timeline.eligibleReportCount,timeline.reportCount+timeline.omittedReportCount);
+  assert.equal(Object.values(timeline.omissionCounts).reduce((sum,count)=>sum+count,0),timeline.omittedReportCount);
+  assert.deepEqual(timeline.omittedReports.map(item=>[item.report.id,item.reason]),[['old','outside-window'],['unknown','publication-date-unknown']]);
+});
+
+test('event timeline accepts an analyst event date on undated evidence and distinguishes missing, invalid and future dates',()=>{
+  const records=['placed','missing','invalid','future'].map(id=>report(id,'Ship attack reported',null,{discoveredAt:'2026-09-12T10:00:00Z'}));
+  const timeline=buildTimeline(records,[],{days:7,now:NOW,basis:'event',annotations:{placed:{eventDate:'2026-09-10'},invalid:{eventDate:'2026-02-30'},future:{eventDate:'2026-09-14'}}});
+  assert.equal(timeline.reportCount,1);
+  assert.equal(timeline.rows.find(row=>row.reports.length).date,'2026-09-10');
+  assert.equal(timeline.rows.find(row=>row.reports.length).reports[0].report.publishedAt,null);
+  assert.equal(timeline.unknownPublicationCount,4);
+  assert.equal(timeline.missingPublicationDates,0,'publication is not the selected time axis');
+  assert.equal(timeline.missingEventDates,2);
+  assert.equal(timeline.unplacedReportCount,3);
+  assert.deepEqual(timeline.omittedReports.map(item=>item.reason),['event-date-missing','event-date-invalid','event-date-future']);
+});
+
+test('price rows retain provider missingness separately from omitted dates, with last duplicate winning',()=>{
+  const observations=[{date:'2026-09-09',value:80},{date:'2026-09-10',value:null},{date:'2026-09-12',value:81},{date:'2026-09-12',value:null},{date:'2026-09-13',value:0}];
+  const timeline=buildTimeline([],[{id:'brent',observations}],{days:7,now:NOW});
+  const row=date=>timeline.rows.find(row=>row.date===date);
+  assert.equal(row('2026-09-09').priceStatus.brent,'observed');
+  assert.equal(row('2026-09-10').priceStatus.brent,'missing');
+  assert.equal(row('2026-09-11').priceStatus.brent,'omitted');
+  assert.equal(row('2026-09-12').prices.brent,null);
+  assert.equal(row('2026-09-12').priceStatus.brent,'missing');
+  assert.equal(row('2026-09-13').prices.brent,0);
+  assert.equal(row('2026-09-13').priceStatus.brent,'observed');
+  assert.ok(timeline.rows.every(row=>row.priceStatus.wti==='omitted'));
+});
+
+test('a dated duplicate can resolve an undated link without using its discovery clock',()=>{
+  const unknown=report('unknown','Houthi shipping report',null,{discoveredAt:'2026-09-13T11:00:00Z'});
+  const dated={...unknown,id:'dated',publishedDate:'2026-09-12',publicationPrecision:'day'};
+  for(const records of [[unknown,dated],[dated,unknown]]){
+    const graph=buildEvidenceGraph(records,{now:NOW});
+    assert.equal(graph.totalReports,1);
+    assert.equal(graph.duplicateReportCount,1);
+    assert.equal(graph.unknownPublicationCount,0);
+    assert.equal(researchData.reportPublication(graph.reports[0]).date,'2026-09-12');
+  }
+});
+
+test('audited financial metaphor is not a disruption keyword, including stale cached keyword tags',()=>{
+ const title='U . S . stocks sink amid tech sell - off , surging oil prices';
+ assert.deepEqual(deriveContext(title).disruptionMatches,[]);
+ const row={id:'stock-sink',title,url:'https://example.com/stock-sink',publishedAt:'2026-09-13T10:00:00Z',disruptionMatches:['sink']};
+ assert.equal(buildTimeline([row],[],{days:7,now:NOW}).reportCount,0);
+ assert.equal(buildTimeline([row],[],{days:7,now:NOW,onlyDisruptions:false}).reportCount,1);
+ assert.ok(deriveContext('Stocks sink after a tanker sinks in Hormuz').disruptionMatches.includes('sinks'));
 });

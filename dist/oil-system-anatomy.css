@@ -1,0 +1,54 @@
+/* Anatomy geometry, scoped to the existing evidence-led figure. */
+.oil-system .system-art {
+  --anatomy-face: #dbe6e2;
+  --anatomy-top: #f8fbf7;
+  --anatomy-shade-0: #aabfc3;
+  --anatomy-shade-1: #bcced0;
+  --anatomy-shade-2: #cfdddb;
+  --anatomy-shade-3: #e3ebe5;
+  --anatomy-line: #466570;
+  --anatomy-faint: #8ba0a5;
+}
+.oil-system .system-art .iso-fill { fill: var(--anatomy-face); stroke: none; }
+.oil-system .system-art .iso-top { fill: var(--anatomy-top); stroke: none; }
+.oil-system .system-art .iso-shade { stroke: none; }
+.oil-system .system-art .iso-shade[data-shade="0"] { fill: var(--anatomy-shade-0); }
+.oil-system .system-art .iso-shade[data-shade="1"] { fill: var(--anatomy-shade-1); }
+.oil-system .system-art .iso-shade[data-shade="2"] { fill: var(--anatomy-shade-2); }
+.oil-system .system-art .iso-shade[data-shade="3"] { fill: var(--anatomy-shade-3); }
+.oil-system .system-art .iso-line { fill: none; stroke: var(--anatomy-line); stroke-width: .5; }
+.oil-system .system-art .iso-line[data-tone="faint"] { stroke: var(--anatomy-faint); stroke-width: .35; }
+.oil-system .system-art .iso-solid.system-object-fitting {
+  --anatomy-top: #d8e5df; --anatomy-face: #a8bfbd;
+  --anatomy-shade-0: #8fa9ad; --anatomy-shade-1: #a0b9b9;
+  --anatomy-shade-2: #b6cbc5; --anatomy-shade-3: #cadbd3;
+}
+.oil-system .system-art .iso-solid.system-object-pipe {
+  --anatomy-top: #b7cec4; --anatomy-face: #8eaaa7;
+  --anatomy-shade-0: #779899; --anatomy-shade-1: #8aa9a6;
+  --anatomy-shade-2: #9ebbb3; --anatomy-shade-3: #b2cabe;
+}
+.oil-system .system-art .iso-solid.system-object-funnel { --anatomy-top: #a7bfbd; --anatomy-face: #718b8f; }
+.oil-system .system-art .system-cargo-cell { fill: #c1d1d0; stroke: #56737d; stroke-width: .65; }
+.oil-system .system-art .system-cargo-floor { fill: #829da3; stroke: #56737d; stroke-width: .5; }
+.oil-system .system-art .system-cargo-bulkhead { fill: #e2ebe4; stroke: #779093; stroke-width: .4; }
+.oil-system .system-art .system-record-page { fill: #f8fbf7; stroke: #617d85; stroke-width: .4; }
+.oil-system .system-art .system-record-rule { fill: none; stroke: #8ca2a5; stroke-width: .45; }
+.oil-system .system-art .system-inspection-deck { transform: translate(0, 0); }
+.oil-system .system-art .system-cargo-inside { opacity: 0; }
+.oil-system:has(.system-toggle[aria-pressed="true"]) .system-part[data-system-part="transport"] .system-inspection-deck { transform: translate(0, -19px); }
+.oil-system:has(.system-toggle[aria-pressed="true"]) .system-part[data-system-part="transport"] .system-cargo-inside { opacity: 1; }
+.oil-system[data-motion="on"] .system-inspection-deck { transition: transform 440ms var(--system-motion-ease, ease); }
+.oil-system[data-motion="on"] .system-cargo-inside { transition: opacity 280ms ease; }
+.oil-system .system-part.is-selected .system-mechanism-focus {
+  --anatomy-top: #e0f4dc; --anatomy-face: #bad6c3;
+  --anatomy-shade-0: #8ba99c; --anatomy-shade-1: #a5c2ad;
+  --anatomy-shade-2: #bfd7bc; --anatomy-shade-3: #d8ead1;
+}
+.oil-system .system-part.is-selected .system-mechanism-focus .iso-solid { --anatomy-top: #e0f4dc; }
+.oil-system .system-part.is-selected .system-mechanism-focus .system-record-page { fill: #e0f4dc; }
+.oil-system .system-art .system-benchmark-boundary { fill: none; stroke: #b7c6c7; stroke-width: .6; }
+@media (prefers-reduced-motion: reduce) {
+  .oil-system[data-motion="on"] .system-inspection-deck,
+  .oil-system[data-motion="on"] .system-cargo-inside { transition: none; }
+}

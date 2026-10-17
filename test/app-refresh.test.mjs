@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
+import {normalizeOilObservations} from '../dist/oil-chart-view.mjs';
 import {renderMarketPulse} from '../dist/market-pulse.mjs';
 import {renderMarketContext} from '../dist/market-view.mjs';
 import {buildOilSystemState} from '../dist/oil-system-model.mjs';
@@ -16,7 +17,7 @@ function harness(){
   const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{innerHTML:'',scrollTop:90,contains:()=>false});return nodes.get(selector);};
   const state={auto:false,period:90,theater:'both',failures:{},oil:{series:[{id:'brent',name:'Brent',connection:'connected',retrievedAt:'2026-10-11T20:00:00Z',observations:[{date:'2026-10-02',value:100}]}]},market:{series:[{id:'crude-stocks',name:'Crude stocks',connection:'connected',retrievedAt:'2026-10-11T20:00:00Z',observations:[{date:'2026-09-28',value:420000}],scale:.001,units:'MBBL',displayUnit:'million barrels',url:'https://www.eia.gov/'}]}};
   class Clock extends Date {static now(){return now;}}
-  const context=vm.createContext({state,document,$,$$:()=>[],Date:Clock,renderMarketPulse,renderMarketContext,reportTime,reportTimeLabel,
+  const context=vm.createContext({state,document,$,$$:()=>[],Date:Clock,normalizeOilObservations,renderMarketPulse,renderMarketContext,reportTime,reportTimeLabel,
     preserveViewFocus:()=>()=>{},oilChart:{update:(...args)=>chartUpdates.push(args)},oilSystem:{update:input=>systemUpdates.push(buildOilSystemState({...input,selected:'transport',expanded:true}))},
     esc:String,money:value=>String(value),fmtDate:value=>value,relative:value=>`${Math.floor((now-Date.parse(value))/86400000)}d ago`,allSourceStates:()=>[],
     renderExposureBaseline(){},renderReports(){},renderWeather(){},renderStatus(){},inspectorMode:null,selectedMmsi:null});
@@ -71,4 +72,9 @@ test('publication dates never acquire a discovery label or an invented clock pre
   assert.equal(h.context.reportAge({publishedDate:'2026-10-09',publicationPrecision:'day',discoveredAt:'2026-10-11T12:00:00Z'}),'2026-10-09');
   assert.equal(h.context.reportAge({publishedAt:'2026-10-09T12:00:00Z',discoveredAt:'2026-10-11T12:00:00Z'}),'2d ago');
   assert.equal(h.context.reportAge({discoveredAt:'2026-10-09T12:00:00Z'}),'Discovered 2d ago');
+});
+
+test('Energy quote header shares future and missing-observation filtering with the chart',()=>{
+ const h=harness();h.state.oil.series[0].observations.push({date:'2026-10-10',value:null},{date:'2026-10-20',value:999});h.context.renderOil();
+ assert.match(h.$('#oil-summary').innerHTML,/>100</);assert.match(h.$('#oil-summary').innerHTML,/2026-10-02/);assert.doesNotMatch(h.$('#oil-summary').innerHTML,/999|2026-10-20/);
 });

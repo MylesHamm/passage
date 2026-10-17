@@ -3,8 +3,8 @@ import {collectSources,coverage,statusSummary,panelNotice,sourceHealth,ageSecond
 const now=Date.parse('2026-09-13T18:00:00Z');
 const connected={connection:'connected',retrievedAt:'2026-09-13T17:00:00Z'};
 test('source inventory stays stable through first load and configuration',()=>{
- const loading=collectSources({},now);assert.equal(loading.length,27);assert.equal(statusSummary(loading),'Checking source coverage');
- const configured=collectSources({config:{aisstream:true,reliefweb:false}},now);assert.equal(configured.length,27);assert.equal(statusSummary(configured),'Checking source coverage');assert.equal(configured.find(s=>s.id==='reliefweb').label,'Not configured');
+ const loading=collectSources({},now);assert.equal(loading.length,28);assert.equal(statusSummary(loading),'Checking source coverage');
+ const configured=collectSources({config:{aisstream:true,reliefweb:false}},now);assert.equal(configured.length,28);assert.equal(statusSummary(configured),'Checking source coverage');assert.equal(configured.find(s=>s.id==='reliefweb').label,'Not configured');
 });
 test('free regional publisher sources have unique public health identities',()=>{
  assert.equal(new Set(SOURCE_DEFINITIONS.map(source=>source.id)).size,SOURCE_DEFINITIONS.length);
@@ -160,3 +160,5 @@ test('expectations preserve the original snapshot when refresh fails',()=>{
  const failed=collectSources({...state,failures:{expectations:true}},now).find(s=>s.id==='polymarket');
  assert.equal(failed.status,'retained');assert.equal(failed.recordCount,5);assert.equal(failed.retrievedAt,'2026-09-13T17:59:00Z');
 });
+
+test('impossible source calendar dates cannot claim a successful or current check',()=>{const s=sourceHealth({id:'bbc',group:'news',configured:true,connection:'connected',retrievedAt:'2026-02-30T12:00:00Z',recordCount:0},Date.parse('2026-03-02T12:00:00Z'));assert.equal(s.successfulCheck,false);assert.equal(s.status,'unavailable');assert.equal(coverage([s]).empty,false);});

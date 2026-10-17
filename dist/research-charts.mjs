@@ -1,3 +1,5 @@
+import {normalizeOilObservations,segmentOilObservations,OIL_GAP_POLICY} from './oil-chart-view.mjs';
+
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const shortLabel=(value,max)=>value.length>max?value.slice(0,max-1)+'…':value;
 const fmtDate=value=>new Date(value).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
@@ -32,19 +34,32 @@ export function buildResearchGraphSvg(graph,viewportWidth){
 
 export function buildResearchTimelineSvg(timeline,viewportWidth,viewportHeight){
   const width=Math.max(1,Math.floor(viewportWidth)),height=Math.max(1,Math.floor(viewportHeight));
-  const rows=timeline.rows,prices=rows.flatMap(row=>Object.values(row.prices).filter(Number.isFinite));
-  if(!prices.length)return{width,height,markup:emptyText('No EIA observations are available for this window.',width,height,'timeline-label')};
+  const rows=timeline.rows||[],prices=rows.flatMap(row=>Object.values(row.prices).filter(Number.isFinite));
+  const reportCount=rows.reduce((count,row)=>count+row.reports.length,0),hasPrices=prices.length>0;
+  const availability={priceLayerAvailable:hasPrices,reportLayerAvailable:reportCount>0};
+  if(!rows.length||(!hasPrices&&!reportCount))return{width,height,...availability,markup:emptyText('No EIA observations or dated reports are available for this window.',width,height,'timeline-label')};
   const pad={l:46,r:20,t:22,b:31};
-  const min=Math.floor(Math.min(...prices)/10)*10,max=Math.max(min+10,Math.ceil(Math.max(...prices)/10)*10);
-  const x=index=>pad.l+(rows.length<2?0:index/(rows.length-1))*(width-pad.l-pad.r);
+  const min=hasPrices?Math.floor(Math.min(...prices)/10)*10:0,max=hasPrices?Math.max(min+10,Math.ceil(Math.max(...prices)/10)*10):1;
+  const begin=Date.parse(rows[0].date+'T00:00:00Z'),end=Date.parse(rows.at(-1).date+'T00:00:00Z');
+  const xDate=ms=>pad.l+(end===begin?0:(ms-begin)/(end-begin))*(width-pad.l-pad.r);
+  const x=index=>xDate(Date.parse(rows[index].date+'T00:00:00Z'));
   const y=value=>pad.t+(max-value)/(max-min)*(height-pad.t-pad.b);
-  // Preserve the existing observation/path semantics; only the chart layout changes.
-  const pathFor=id=>rows.map((row,index)=>Number.isFinite(row.prices[id])?`${index?'L':'M'}${x(index).toFixed(1)},${y(row.prices[id]).toFixed(1)}`:'').filter(Boolean).join(' ');
-  const reportPoints=rows.map((row,index)=>row.reports.length?`<circle class="timeline-report" cx="${x(index)}" cy="${y(min)}" r="4"><title>${esc(row.date)} · ${row.reports.length} disruption ${row.reports.length===1?'mention':'mentions'}</title></circle>`:'').join('');
-  const ratios=width<480?[0,1]:[0,.33,.66,1];
+  // Generated calendar rows mark omitted dates separately. Legacy callers without
+  // this metadata retain explicit-null semantics, never silently bridging a null.
+  const priceLines=['brent','wti'].map(id=>{
+    const observations=rows.filter(row=>row.priceStatus?.[id]!=='omitted').map(row=>({date:row.date,value:row.prices[id]}));
+    const segments=segmentOilObservations(normalizeOilObservations(observations,{now:end}),{begin,end});
+    return segments.map(segment=>segment.length===1
+      ?`<circle class="timeline-price-${id}" data-price-observation="${id}" cx="${xDate(segment[0].ms).toFixed(1)}" cy="${y(segment[0].value).toFixed(1)}" r="3"><title>${esc(id==='brent'?'Brent':'WTI')} · ${esc(segment[0].date)} · $${segment[0].value.toFixed(2)} per barrel</title></circle>`
+      :`<path class="timeline-price-${id}" d="${segment.map((point,index)=>`${index?'L':'M'}${xDate(point.ms).toFixed(1)},${y(point.value).toFixed(1)}`).join(' ')}"></path>`).join('');
+  }).join('');
+  const reportPoints=rows.map((row,index)=>row.reports.length?`<circle class="timeline-report" cx="${x(index)}" cy="${y(min)}" r="4"><title>${esc(row.date)} · ${row.reports.length} source ${row.reports.length===1?'report':'reports'}</title></circle>`:'').join('');
+  const ratios=rows.length===1?[0]:width<480?[0,1]:[0,.33,.66,1];
   const ticks=ratios.map(ratio=>{
     const index=Math.round((rows.length-1)*ratio);
     return `<line class="timeline-grid" x1="${x(index)}" x2="${x(index)}" y1="${pad.t}" y2="${height-pad.b}"></line><text class="timeline-label timeline-date" x="${x(index)}" y="${height-9}" text-anchor="${ratio===0?'start':ratio===1?'end':'middle'}">${esc(fmtDate(rows[index].date+'T00:00:00Z'))}</text>`;
   }).join('');
-  return{width,height,markup:`${ticks}<line class="timeline-axis" x1="${pad.l}" x2="${width-pad.r}" y1="${y(min)}" y2="${y(min)}"></line><path class="timeline-price-brent" d="${pathFor('brent')}"></path><path class="timeline-price-wti" d="${pathFor('wti')}"></path>${reportPoints}<text class="timeline-label" x="8" y="${y(max)+3}">$${max}</text><text class="timeline-label" x="8" y="${y(min)+3}">$${min}</text>`};
+  const priceLabels=hasPrices?`<text class="timeline-label" x="8" y="${y(max)+3}">$${max}</text><text class="timeline-label" x="8" y="${y(min)+3}">$${min}</text>`:emptyText('EIA price layer unavailable. Dated reporting remains shown below.',width,height-45,'timeline-label');
+  const description=`${reportCount} dated source reports. ${timeline.unplacedReportCount||0} reports lack a usable date for this axis. ${OIL_GAP_POLICY} Shared timing does not establish causation.`;
+  return{width,height,...availability,markup:`<desc>${esc(description)}</desc>${ticks}<line class="timeline-axis" x1="${pad.l}" x2="${width-pad.r}" y1="${y(min)}" y2="${y(min)}"></line>${priceLines}${reportPoints}${priceLabels}`};
 }

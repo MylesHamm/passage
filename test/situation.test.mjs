@@ -28,3 +28,10 @@ test('reporting wording cannot create a port match and shut-ins expose a supply 
  assert.equal(oilMechanisms({title:'Peaceful protest reported in Tehran'}).length,0);
  assert.ok(oilMechanisms({title:'Supply losses meet shrinking buffers',summary:'Gulf output shut-ins and inventory draws'}).some(m=>m.id==='supply'));
 });
+
+test('equity stocks and price sinking do not become petroleum inventory or security mechanisms',()=>{
+ const title='U . S . stocks sink amid tech sell - off , surging oil prices';
+ assert.deepEqual(oilMechanisms({title}),[]);
+ assert.ok(oilMechanisms({title:'U.S. crude oil stocks fall as demand increases'}).some(channel=>channel.id==='buffers'));
+ assert.ok(oilMechanisms({title:'Strategic petroleum reserves will be replenished'}).some(channel=>channel.id==='buffers'));
+});

@@ -4,6 +4,7 @@ import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 import * as researchData from '../dist/research-data.mjs';
 import * as researchCharts from '../dist/research-charts.mjs';
+import {OIL_GAP_POLICY} from '../dist/oil-chart-view.mjs';
 
 // Run the actual page handlers with isolated browser storage and the small DOM
 // surface they use. Data normalization and rendering remain the real modules.
@@ -58,7 +59,7 @@ async function page(localStorage=storage(),{reports=[report],series=[],width=900
   const responses={'/api/news':{items:reports},'/api/acled/events?days=365':{events:[],configured:false},'/api/oil':{series},'/api/vessels':{vessels:[]}};
   class Clock extends Date {constructor(...args){super(...(args.length?args:[now]));}static now(){return now;}}
   vm.runInNewContext(source,{
-    ...researchData,...researchCharts,document,localStorage,Date:Clock,URL,AbortSignal,setInterval(){},
+    ...researchData,...researchCharts,OIL_GAP_POLICY,document,localStorage,Date:Clock,URL,AbortSignal,setInterval(){},
     ResizeObserver:class{constructor(callback){observers.push(callback);}observe(){}},
     runtime:{},LIVE_REFRESH_MS:60000,
     apiFetch:async url=>{requests.push(url);return{ok:true,json:async()=>responses[url]};},
@@ -233,4 +234,83 @@ test('data changes while charts are hidden redraw when their previous width retu
   assert.match(h.q('#graph-svg').innerHTML,/No source-linked headlines/);
   assert.match(h.q('#timeline-svg').innerHTML,/Sep 29, 2025/);
   assert.equal(h.q('#graph-scroll-hint').hidden,true);
+});
+
+test('unknown-publication reports stay in the graph and omission list without discovery-date placement',async()=>{
+  const unknown={...report,id:'undated',publishedAt:null,discoveredAt:'2026-09-28T11:00:00Z'};
+  const h=await page(storage(),{reports:[unknown]});
+  const graph=h.q('#graph-list').innerHTML,table=h.q('#timeline-table').innerHTML;
+  assert.match(graph,/Tanker attack in the Strait of Hormuz/);
+  assert.match(graph,/Publication date unknown · date filter cannot be applied/);
+  assert.doesNotMatch(graph,/published Sep 28|at 11:00 UTC/);
+  assert.match(h.q('#graph-page').textContent,/1 publication date unknown/);
+  assert.match(table,/1 report cannot be placed: publication date unknown/);
+  assert.match(table,/Review 1 report not plotted/);
+  assert.match(table,/href="https:\/\/example.com\/report"/);
+  assert.doesNotMatch(table,/datetime="2026-09-28"/);
+  assert.equal(h.all('[data-annotate]').length,1,'an unplaced source can still receive an analyst date');
+  assert.match(h.q('.graph-panel .panel-intro').textContent,/unknown publication dates remain included/);
+});
+
+test('an undated report can be annotated from the omission list and placed only on the selected analyst event axis',async()=>{
+  const unknown={...report,id:'undated',publishedAt:null,discoveredAt:'2026-09-28T11:00:00Z'};
+  const h=await page(storage(),{reports:[unknown]});
+  h.answers.push('2026-09-25','Explicit date from source text');h.all('[data-annotate]')[0].onclick();
+  assert.equal(h.localStorage.read('timeline-annotations').undated.report.publishedAt,null);
+  assert.match(h.q('#timeline-table').innerHTML,/publication date unknown/,'adding an event date does not create a publication date');
+  h.eventDates();
+  assert.match(h.q('#timeline-table').innerHTML,/datetime="2026-09-25"/);
+  assert.match(h.q('#timeline-table').innerHTML,/Analyst-entered event date/);
+  assert.doesNotMatch(h.q('#timeline-table').innerHTML,/Review 1 report not plotted|datetime="2026-09-28"/);
+  assert.match(h.q('#timeline-svg').innerHTML,/class="timeline-report"/);
+});
+
+test('timeline reports missing analyst dates explicitly and retains those source links for review',async()=>{
+  const h=await page();h.eventDates();
+  const html=h.q('#timeline-table').innerHTML;
+  assert.match(html,/1 report lacks an analyst event date/);
+  assert.match(html,/Analyst event date missing/);
+  assert.match(html,/Tanker attack in the Strait of Hormuz/);
+  assert.equal(h.all('[data-annotate]').length,1);
+  assert.doesNotMatch(html,/datetime="2026-09-27"/);
+});
+
+test('reporting-only, prices-only and wholly empty Research timelines disclose each missing layer independently',async()=>{
+  const prices=[{id:'brent',observations:[{date:'2026-09-27',value:80}]}];
+  const reporting=await page(storage(),{reports:[report],series:[]});
+  assert.match(reporting.q('#timeline-svg').innerHTML,/class="timeline-report"/);
+  assert.match(reporting.q('#timeline-table').innerHTML,/data-price-layer-status/);
+  assert.doesNotMatch(reporting.q('#timeline-table').innerHTML,/data-report-layer-status/);
+  assert.match(reporting.q('#timeline-table').innerHTML,/Tanker attack in the Strait of Hormuz/);
+  const oil=await page(storage(),{reports:[],series:prices});
+  assert.match(oil.q('#timeline-svg').innerHTML,/data-price-observation="brent"/);
+  assert.match(oil.q('#timeline-table').innerHTML,/data-report-layer-status/);
+  assert.doesNotMatch(oil.q('#timeline-table').innerHTML,/data-price-layer-status/);
+  assert.match(oil.q('#timeline-table').innerHTML,/Brent \$80\.00/);
+  const empty=await page(storage(),{reports:[],series:[]});
+  assert.match(empty.q('#timeline-table').innerHTML,/data-report-layer-status/);
+  assert.match(empty.q('#timeline-table').innerHTML,/data-price-layer-status/);
+  assert.match(empty.q('#timeline-table').innerHTML,/0 filter-matching reports · 0 placed/);
+});
+
+test('outside-window omissions remain source-linked and counted separately from unknown clocks',async()=>{
+  const old={...report,id:'old',url:'https://example.com/old',publishedAt:'2026-06-01T10:00:00Z'};
+  const h=await page(storage(),{reports:[report,old]});
+  const html=h.q('#timeline-table').innerHTML;
+  assert.match(html,/2 filter-matching reports · 1 placed on this timeline · 1 outside the window/);
+  assert.match(html,/Selected date is outside this window · Jun 1, 2026/);
+  assert.match(html,/href="https:\/\/example.com\/old"/);
+  assert.doesNotMatch(html,/publication date unknown/);
+});
+
+
+test('keyword timeline includes denied claims only with a point-of-use qualification',async()=>{
+ const denied={...report,title:'Iran denies closure of shipping routes'};
+ const view=await page(storage(),{reports:[denied]});
+ assert.match(view.q('#timeline-table').innerHTML,/Iran denies closure of shipping routes/);
+ assert.match(view.q('#timeline-table').innerHTML,/Keyword matches can include denials, rumors and hypothetical claims/);
+ assert.match(view.q('#timeline-table').innerHTML,/do not establish an actual disruption or an oil-price effect/);
+ const html=await readFile(new URL('../dist/research.html',import.meta.url),'utf8');
+ assert.match(html,/Reporting and oil timeline/);assert.match(html,/aria-describedby="keyword-filter-note"/);
+ assert.doesNotMatch(html,/Disruption and oil timeline/);
 });

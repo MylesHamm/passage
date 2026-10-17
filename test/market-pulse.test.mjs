@@ -68,3 +68,22 @@ test('each known series appears once, duplicate dates do not add synthetic point
   assert.equal((html.match(/class="pulse-point"/g)||[]).length,2);
   assert.doesNotMatch(html,/<img|<script|onerror/);
 });
+
+test('pulse bridges omitted weekends only within the shared four-day limit, and explicit nulls always break',()=>{
+  const observations=[row('2026-09-18',70),row('2026-09-21',71),row('2026-09-25',72),row('2026-09-30',73)];
+  const path=html=>html.match(/<path[^>]+d="([^"]+)"/)[1];
+  const shared=path(render(observations));
+  assert.equal((shared.match(/M/g)||[]).length,2);
+  assert.equal((shared.match(/L/g)||[]).length,2);
+  const missing=path(render([...observations,row('2026-09-20',null)]));
+  assert.equal((missing.match(/M/g)||[]).length,3);
+  assert.equal((missing.match(/L/g)||[]).length,1);
+  assert.match(render(observations),/Explicit missing values and gaps longer than four calendar days break/);
+});
+
+test('a duplicate explicit missing value replaces an earlier price instead of reviving it',()=>{
+  const html=render([row('2026-09-28',90),row('2026-09-29',100),row('2026-09-29',null)]);
+  assert.match(html,/datetime="2026-09-28"/);
+  assert.doesNotMatch(html,/\$100\.00/);
+  assert.equal((html.match(/class="pulse-point"/g)||[]).length,1);
+});
