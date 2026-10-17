@@ -8,6 +8,7 @@ import {SourceRuntime} from '../lib/source-runtime.mjs';
 import {ReportArchive} from '../lib/report-archive.mjs';
 import {SOURCE_CAPABILITIES} from '../dist/source-policy.mjs';
 import {DISCOVERY_SOURCES} from '../lib/discovery.mjs';
+import {assessBackendReadiness} from '../lib/backend-readiness.mjs';
 
 const NOW=Date.parse('2026-09-22T12:00:00Z');
 const secret='PRIVATE_TEST_KEY_NEVER_PUBLIC';
@@ -51,6 +52,10 @@ test('hosted service isolates private account adapters and secrets across every 
   const outputs={};
   for(const endpoint of PUBLIC_API_PATHS)outputs[endpoint]=await service.get(endpoint);
   assert.deepEqual({...outputs['/api/config']},{reliefweb:true,aisstream:true,eia:true,acled:false,version:'service-test',hosted:true,capabilities:SOURCE_CAPABILITIES});
+  const backend=assessBackendReadiness({config:outputs['/api/config'],diagnostics:outputs['/api/diagnostics'],news:outputs['/api/news'],maritime:outputs['/api/maritime'],now:NOW});
+  assert.equal(backend.compatible,true,'actual service schemas align even when supporting providers are unavailable');
+  assert.equal(backend.coverageEstablished,false,'a failed MARAD first retrieval must block initial coverage establishment');
+  assert.ok(backend.warnings.some(warning=>warning.id==='marad-advisories'));
   assert.equal(privateCalls,0);
   assert.equal(outputs['/api/acled'].configured,false);
   assert.deepEqual(outputs['/api/acled/events'].events,[]);
@@ -162,5 +167,8 @@ test('official advisory metadata remains separate from incidents through cache f
  const first=await f.service.get('/api/maritime');assert.equal(first.events.length,0);assert.equal(first.advisories.length,5);assert.equal(first.advisories.filter(record=>record.validityState==='active').length,2);
  assert.ok(first.advisories.every(record=>record.recordType==='advisory'&&record.eventDate===null&&record.publishedDate===null&&!record.summary));
  const source=first.sources.find(source=>source.id==='marad-advisories');assert.equal(source.connection,'connected');assert.equal(source.activeAdvisoryCount,2);assert.equal(source.coverageStatus,'limited');assert.equal(source.advisories,undefined);
+ const backend=assessBackendReadiness({config:await f.service.get('/api/config'),diagnostics:await f.service.get('/api/diagnostics'),news:await f.service.get('/api/news'),maritime:first,now:Date.parse('2026-10-17T04:00:00Z')});
+ assert.equal(backend.ready,true,'real parsed MARAD records establish compatible bounded coverage');
+ assert.ok(backend.warnings.some(warning=>warning.id.startsWith('gdelt-')),'unavailable discovery remains disclosed');
  fail=true;f.setTime(Date.parse('2027-03-23T04:00:00Z'));const failed=await f.service.get('/api/maritime');const retained=failed.sources.find(source=>source.id==='marad-advisories');assert.equal(retained.status,'retained');assert.equal(retained.retrievedAt,source.retrievedAt);assert.equal(retained.activeAdvisoryCount,0);assert.ok(failed.advisories.filter(record=>record.sourceStatus==='active').every(record=>record.validityState==='expired'));assert.equal(failed.events.length,0);
 });
