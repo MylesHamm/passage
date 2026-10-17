@@ -1,7 +1,8 @@
 import { MOTION, motionAllowed } from './motion.mjs';
 
 const DAY = 86400000;
-const GAP_DAYS = 4;
+export const OIL_GAP_DAYS = 4;
+export const OIL_GAP_POLICY = 'Explicit missing values and gaps longer than four calendar days break the line. Short omitted intervals, including ordinary weekends, may connect observed endpoints; no intermediate price is supplied.';
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const dateFormat = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 const shortDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
@@ -12,6 +13,32 @@ function dateMillis(date) {
   if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
   const ms = Date.parse(date + 'T00:00:00Z');
   return Number.isFinite(ms) && new Date(ms).toISOString().slice(0, 10) === date ? ms : null;
+}
+
+/** Preserve explicit missing values so all price surfaces use the same gap policy. */
+export function normalizeOilObservations(observations = [], { now = Date.now() } = {}) {
+  const cutoff = Number.isFinite(now) ? now : Date.now(), byDate = new Map();
+  for (const point of Array.isArray(observations) ? observations : []) {
+    const ms = dateMillis(point?.date);
+    if (ms !== null && ms <= cutoff) byDate.set(point.date, { date: point.date, ms, value: Number.isFinite(point.value) ? point.value : null });
+  }
+  return [...byDate.values()].sort((a, b) => a.ms - b.ms);
+}
+
+/** Input is normalized dated rows. Omitted dates are absent; explicit nulls break. */
+export function segmentOilObservations(rows, { begin = null, end = null } = {}) {
+  const segments = [];
+  let segment = [];
+  for (const point of rows) {
+    if ((begin !== null && point.ms < begin) || (end !== null && point.ms > end)) continue;
+    if (!Number.isFinite(point.value) || (segment.length && point.ms - segment.at(-1).ms > OIL_GAP_DAYS * DAY)) {
+      if (segment.length) segments.push(segment);
+      segment = [];
+    }
+    if (Number.isFinite(point.value)) segment.push(point);
+  }
+  if (segment.length) segments.push(segment);
+  return segments;
 }
 
 function priceScale(min, max) {
@@ -30,28 +57,14 @@ function priceScale(min, max) {
 export function buildOilChartModel(series = [], { period = 90, now = Date.now() } = {}) {
   const days = Number.isFinite(period) && period >= 1 ? Math.floor(period) : 90;
   const observationCutoff = Number.isFinite(now) ? now : Date.now();
-  const normalized = (Array.isArray(series) ? series : []).map(item => {
-    const byDate = new Map();
-    for (const point of item.observations || []) {
-      const ms = dateMillis(point?.date);
-      if (ms !== null && ms <= observationCutoff) byDate.set(point.date, { date: point.date, ms, value: Number.isFinite(point.value) ? point.value : null });
-    }
-    return { id: item.id, name: item.name || item.id || 'Oil', rows: [...byDate.values()].sort((a, b) => a.ms - b.ms) };
-  });
+  const normalized = (Array.isArray(series) ? series : []).filter(item => item && typeof item === 'object').map(item => ({
+    id: item.id, name: item.name || item.id || 'Oil', rows: normalizeOilObservations(item.observations, { now: observationCutoff }),
+  }));
   const valid = normalized.flatMap(s => s.rows.filter(p => p.value !== null));
   const latest = valid.length ? Math.max(...valid.map(p => p.ms)) : null;
   const begin = latest === null ? null : latest - (days - 1) * DAY;
   const sets = normalized.map(s => {
-    const segments = [];
-    let segment = [];
-    for (const point of s.rows.filter(p => p.ms >= begin && p.ms <= latest)) {
-      if (point.value === null || (segment.length && point.ms - segment.at(-1).ms > GAP_DAYS * DAY)) {
-        if (segment.length) segments.push(segment);
-        segment = [];
-      }
-      if (point.value !== null) segment.push(point);
-    }
-    if (segment.length) segments.push(segment);
+    const segments = segmentOilObservations(s.rows, { begin, end: latest });
     const points = segments.flat();
     return { id: s.id, name: s.name, points, segments };
   });
@@ -210,7 +223,7 @@ export function createOilChart(mount, { onReadout } = {}) {
     windowLabel.textContent = dateRange;
     plot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="${id}-title ${id}-description" data-oil-svg>
       <title id="${id}-title">Daily Brent and WTI spot prices, U.S. dollars per barrel</title>
-      <desc id="${id}-description">${esc(dateRange)}. Brent is a solid mint line; WTI is a dashed blue line. ${model.dates.length} observed dates. Lines stop across missing values or gaps longer than four calendar days. Use the date control below for exact observations. Shared timing with news does not establish causation.</desc>
+      <desc id="${id}-description">${esc(dateRange)}. Brent is a solid mint line; WTI is a dashed blue line. ${model.dates.length} observed dates. ${esc(OIL_GAP_POLICY)} Use the date control below for exact observations. Shared timing with news does not establish causation.</desc>
       <g data-chart-grid>${grid}${ticks}</g>${lines}<g data-chart-endpoints>${labels}</g><g data-chart-focus aria-hidden="true"></g>
       <rect x="${left}" y="${top}" width="${Math.max(1, right - left)}" height="${bottom - top}" fill="transparent" data-chart-hit/>
     </svg>`;

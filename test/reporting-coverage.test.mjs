@@ -72,8 +72,8 @@ test('the September 21 Reuters note is dated, attributed oil context on Watch an
   assert.match(node.record.attributionNote,/syndicated|StreetInsider/i);assert.ok(!node.record.retrievedAt);
   assert.ok(graph.edges.some(edge=>edge.from===node.id&&edge.relation==='POTENTIAL_CHANNEL'));
   assert.equal(graph.nodes.filter(row=>row.sourceUrl===ARTICLE).length,1);
-  assert.equal(news.coverage.reuters.mode,'public-discovery');assert.equal(news.coverage.reuters.directFeedConnected,false);assert.equal(news.coverage.reuters.topicPreferencesConnected,false);
-  assert.equal(news.coverage.discoveryFamilies,5);assert.equal(news.coverage.discoveryLimitPerFamily,250);
+  assert.equal(news.coverage.reuters.mode,'retained-links-only');assert.equal(news.coverage.reuters.directFeedConnected,false);assert.equal(news.coverage.reuters.topicPreferencesConnected,false);
+  assert.equal(news.coverage.discoveryFamilies,2);assert.equal(news.coverage.discoveryLimitPerFamily,250);
 });
 
 test('reviewed reports are excluded before their publication or review date',async t=>{

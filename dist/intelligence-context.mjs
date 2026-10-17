@@ -35,7 +35,7 @@ export const COVERAGE_NOTES = [
     dateBasis:'Publication date; forecast completed September 3',theaters:['bab','hormuz'],relevanceScope:'regional-energy',energy:true,
     summary:'EIA describes reduced Yanbu exports, longer Suez routes, constrained passage and inventory draws. Its August crude shut-in estimate is 6.7 million barrels per day.',
     watch:'This is a dated estimate and forecast. The IEA uses a different assessment; the figures must not be added or treated as live output losses.',
-    evidenceStatus:'Agency assessment',contentAccess:'Short reviewed assessment; source-linked',
+    recordKind:'agency-assessment',evidenceStatus:'Agency assessment',contentAccess:'Short reviewed assessment; source-linked',
   },
   {
     id:'review:ap-pipeline-2026-09-14',title:'AP: Saudi pipeline repair timeline remains a reported estimate',
@@ -53,7 +53,7 @@ export const COVERAGE_NOTES = [
     theaters:['bab','hormuz'],relevanceScope:'global-energy',energy:true,
     summary:'The IEA describes tighter refined-product markets, reduced Gulf diesel exports and pressure on refining. Its September assessment also identifies Russian disruptions as a contributor.',
     watch:'Crude prices, diesel prices, refinery margins and export volumes are different measures. This assessment is dated; live product prices and margins are not connected.',
-    evidenceStatus:'Agency assessment',contentAccess:'Short reviewed assessment; source-linked',
+    recordKind:'agency-assessment',evidenceStatus:'Agency assessment',contentAccess:'Short reviewed assessment; source-linked',
   },
 ];
 

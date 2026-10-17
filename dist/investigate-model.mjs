@@ -1,4 +1,5 @@
 import { reportClock } from './intelligence-data.mjs';
+import {physicalClaimText,petroleumInventoryMention} from './report-semantics.mjs';
 
 const DAY = 86400000;
 const datedRecord = node => ['report', 'event'].includes(node.type);
@@ -41,10 +42,11 @@ export function summarizeGraphNode(node, graph = { nodes: [], edges: [] }) {
       [/\bpipeline|petroline\b/i, 'Pipeline operations'], [/\brefin|diesel|gasoil|gasoline|jet fuel\b/i, 'Fuel & refining'],
       [/\bsanction|diploma|negotiat|ceasefire|talks|agreement\b/i, 'Diplomacy & restrictions'],
       [/\bexports?\b/i, 'Oil exports'], [/\bproduction|output|supply\b/i, 'Oil supply'], [/\bship|vessel|tanker|transit|strait|rerout|freight\b/i, 'Shipping & transit'],
-      [/\battack|strike|missile|drone|seiz|explos\b/i, 'Security reporting'], [/\binventor|stocks|demand\b/i, 'Stocks & demand'],
+      [/\battack|strike|missile|drone|seiz|explos\b/i, 'Security reporting'], [/\binventor|demand\b/i, 'Inventories & demand'],
       [/\bprice|brent|wti|crude|oil\b/i, 'Oil-market reporting'],
     ];
-    const topic = topics.find(([pattern]) => pattern.test(fullTitle))?.[1] || (node.type === 'event' ? 'Recorded event' : 'Source reporting');
+    const claimText=physicalClaimText(fullTitle);
+    const topic = topics.find(([pattern,label]) => pattern.test(claimText)||(label==='Inventories & demand'&&petroleumInventoryMention(fullTitle)))?.[1] || (node.type === 'event' ? 'Recorded event' : 'Source reporting');
     title = 'Topic: ' + [actor?.label, asset?.label, topic].filter(Boolean).join(' · ');
     if (!qualification && cues.length) qualification = 'Headline wording: ' + [...new Set(cues)].map(cue => '“' + cue + '”').join(', ');
   }

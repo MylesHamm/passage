@@ -1,3 +1,4 @@
+import {physicalClaimText,petroleumInventoryMention} from './report-semantics.mjs';
 const DAY = 86400000;
 const dayMs = value => /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? Date.parse(value+'T00:00:00Z') : NaN;
 export const evidenceDate = record => record.eventDate || record.publishedDate || null;
@@ -20,12 +21,12 @@ export const MECHANISMS = [
   {id:'supply',name:'Export availability',pattern:/\b(?:pipelines?|terminals?|refiner\w*|exports?|production|oil facilit\w*|storage|supply|output|shut[- ]?ins?)\b/i,explanation:'Damage or restrictions can reduce loadings. Confirm the affected volume, duration, available stocks, and alternative outlets before estimating an oil effect.'},
   {id:'transport',name:'Transit & freight',pattern:/\b(?:ships?|vessels?|tankers?|shipping|ports?|straits?|red sea|hormuz|rerout\w*|transit)\b/i,explanation:'Avoidance, waiting time and detours can tie up ships and raise delivered costs. A received AIS point does not establish cargo volume or completed transit.'},
   {id:'risk',name:'Security & insurance',pattern:/attack|strike|drone|missile|seiz|explos|damage|hostilit/i,explanation:'Perceived exposure may affect insurance terms and willingness to sail. This watch has no live war-risk premium or freight assessment.'},
-  {id:'buffers',name:'Inventories & demand',pattern:/\b(?:inventor\w*|stocks?|demand|consumption|buffers?)\b/i,explanation:'Inventories and changes in demand can absorb or amplify a supply disruption. Monthly agency estimates have their own vintage and are not current tank measurements.'},
+  {id:'buffers',name:'Inventories & demand',pattern:/\b(?:inventor\w*|demand|consumption|buffers?)\b/i,explanation:'Inventories and changes in demand can absorb or amplify a supply disruption. Monthly agency estimates have their own vintage and are not current tank measurements.'},
   {id:'people',name:'Crew & port safety',pattern:/seafarer|crew|fatal|injur|killed|missing|evacuat|civilian|humanitarian/i,explanation:'Harm to seafarers and port workers is a direct consequence. It can also interrupt operations; casualty reports alone do not quantify lost oil supply.'}
 ];
 export function oilMechanisms(record) {
-  const text=[record.title,record.summary,record.locationText].filter(Boolean).join(' ');
-  return MECHANISMS.filter(m=>m.pattern.test(text)||(m.id==='transport'&&record.recordType==='incident')).map(({pattern,...m})=>({...m,basis:'Potential channel; effect not measured'}));
+  const text=[record.title,record.summary,record.locationText].filter(Boolean).join(' '),physical=physicalClaimText(text);
+  return MECHANISMS.filter(m=>m.pattern.test(physical)||(m.id==='buffers'&&petroleumInventoryMention(text))||(m.id==='transport'&&record.recordType==='incident')).map(({pattern,...m})=>({...m,basis:'Potential channel; effect not measured'}));
 }
 export function contextAge(reviewDate,now=Date.now()) {
   const time=dayMs(reviewDate);if(!Number.isFinite(time))return {needsReview:true,label:'Review date unknown'};

@@ -1,3 +1,4 @@
+import {evidenceKindLabel} from './evidence-kind.mjs';
 import {canonicalReportUrl} from './intelligence-data.mjs';
 import {inReportingWindow,matchesTheater,reportRelevant,sortReports} from './reporting-view.mjs';
 import {SOURCE_DEFINITIONS,sourceHealth} from './source-health.mjs';
@@ -119,7 +120,7 @@ export function buildBrief(state={},now=Date.now()){
     return {id:series.id,name:series.name||series.id,...latest,change:previous?latest.value-previous.value:null,previousDate:previous?.date||null,url:canonicalReportUrl(series.url),status:health.label};
   }).filter(Boolean);
   const scope=THEATER_NAMES[state.theater]||THEATER_NAMES.both;
-  const speech=[`${scope}. Source-linked brief.`,...reports.map(row=>`${row.source||'Publisher'} ${row.type==='Independent energy analysis'?'analysis':'reports'}: ${row.title}.`),...prices.map(p=>`${p.name} daily spot observation: ${p.value.toFixed(2)} US dollars per barrel, for ${p.date}. ${p.status}.`),'These are retrieved headlines and delayed daily observations, not independently verified events or live market quotes.'].join(' ');
+  const speech=[`${scope}. Source-linked brief.`,...reports.map(row=>`${evidenceKindLabel(row)} from ${row.source||'Publisher'}: ${row.title}.${row.retainedFromHistory?' Retained from earlier retrieval.':''}`),...prices.map(p=>`${p.name} daily spot observation: ${p.value.toFixed(2)} US dollars per barrel, for ${p.date}. ${p.status}.`),'These are retrieved headlines and delayed daily observations, not independently verified events or live market quotes.'].join(' ');
   return {scope,reports,prices,speech,generatedAt:new Date(now).toISOString()};
 }
 

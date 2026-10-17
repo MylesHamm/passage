@@ -162,3 +162,24 @@ test('failed or pending updates retain supplied observations, their selected dat
   assert.doesNotMatch(h.q('[data-chart-note]').textContent, /Update failed|Checking for updates|retained observations/);
   assert.equal(h.mount.getAttribute('aria-busy'), 'false');
 });
+
+test('four-day omitted intervals connect, five-day gaps and a last duplicate null break across every price surface',()=>{
+  const model=buildOilChartModel([series('brent',[
+    {date:'2026-09-17',value:70},{date:'2026-09-21',value:71},
+    {date:'2026-09-22',value:72},{date:'2026-09-22',value:null},
+    {date:'2026-09-23',value:73},{date:'2026-09-28',value:74},
+  ])]);
+  assert.deepEqual(model.series[0].segments.map(segment=>segment.map(point=>point.date)),[
+    ['2026-09-17','2026-09-21'],['2026-09-23'],['2026-09-28'],
+  ]);
+  assert.equal(model.breakCount,2);
+  assert.equal(oilReadout(model,'2026-09-22'),null);
+});
+
+test('isolated oil observations render as visible circles without an invalid path',t=>{
+  const h=chartHarness(t);
+  h.view.update([series('brent',[{date:'2026-09-28',value:null},{date:'2026-09-29',value:80}])]);
+  const html=h.q('[data-chart-plot]').innerHTML;
+  assert.match(html,/<circle[^>]+class="oil-chart-observation oil-series-brent"/);
+  assert.doesNotMatch(html,/<path[^>]+class="oil-chart-line|d="L|NaN|undefined/);
+});

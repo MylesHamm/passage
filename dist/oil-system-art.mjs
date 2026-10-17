@@ -1,4 +1,5 @@
 import { exportTerminal, insuranceOffice } from './oil-system-facilities.mjs';
+import { systemGeometry } from './oil-system-geometry.mjs';
 
 const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 
@@ -9,28 +10,8 @@ const base = `<path class="system-art-shadow" d="M-85 12 0-27 85 12 0 51Z"/>
   <path class="system-art-base" d="M-76 0 0-35 76 0 0 35Z"/>
   <path class="system-art-ring" d="M-84 1 0-38 84 1 0 40Z"/>`;
 
-// Anatomy craft: a long hull silhouette and purposeful fittings, all projected
-// from the same coordinates. Drawing units are not a particular ship's specs.
-function systemGeometry() {
-  const point = (x, y, z = 0) => [0.9 * (x - y), 0.42 * (x + y) - z - 6];
-  const path = points => points.map((p, i) => `${i ? 'L' : 'M'}${p.map(n => Number(n.toFixed(2))).join(' ')}`).join('');
-  const face = (points, style) => `<path class="${style}" d="${path(points)}Z"/>`;
-  const line = (points, style = 'system-object-detail') => `<path class="${style}" d="${path(points)}"/>`;
-  const plan = (points, z) => points.map(([x, y]) => point(x, y, z));
-  const box = (x, y, w, d, z, h, style = 'system-object-cabin') => {
-    const a = point(x, y, z + h), b = point(x + w, y, z + h);
-    const c = point(x + w, y + d, z + h), e = point(x, y + d, z + h);
-    return face([b, c, point(x + w, y + d, z), point(x + w, y, z)], `${style} system-object-side`)
-      + face([c, e, point(x, y + d, z), point(x + w, y + d, z)], `${style} system-object-end`)
-      + face([a, b, c, e], `${style} system-object-top`);
-  };
-  const hatch = (x, y, r, z, h) => {
-    const ring = Array.from({ length: 16 }, (_, i) => [x + r * Math.cos(i * Math.PI / 8), y + r * Math.sin(i * Math.PI / 8)]);
-    return face([...plan(ring.slice(0, 9), z + h), ...plan(ring.slice(0, 9).reverse(), z)], 'system-object-fitting')
-      + face(plan(ring, z + h), 'system-object-hatch');
-  };
-  return { point, path, face, line, plan, box, hatch };
-}
+// Geometry is precomputed once with the actual Anatomy kit. Selection only
+// changes presentation; no schematic component is a measured flow or value.
 
 function tanker() {
   const { point, face, line, plan, box, hatch } = systemGeometry();
@@ -50,8 +31,22 @@ function tanker() {
   // The visible hull faces and flush deck share one outline, with no inset well.
   for (let i = 0; i < 7; i++) out.push(face([point(...hull[i], 12), point(...hull[i + 1], 12), point(...bottom[i + 1], 0), point(...bottom[i], 0)], 'system-object-hull'));
   out.push(face(plan(hull, 12), 'system-object-deck'));
+  // The removable section is an inspection cutaway, not an operating hatch.
+  // Empty schematic compartments deliberately have no fill-level or cargo data.
+  const inspectionPlate = [[-14, -59], [14, -59], [15, -42], [15, 39], [-15, 39], [-15, -42]];
+  out.push('<g class="system-cargo-inside" aria-hidden="true">');
+  const cells = [-54, -38, -22, -6, 10, 26].flatMap(y => [-13, 1].map(x => ({ x, y })));
+  cells.sort((a, b) => a.x + a.y - b.x - b.y);
+  for (const { x, y } of cells) {
+    out.push(face(plan([[x, y], [x + 12, y], [x + 12, y + 11], [x, y + 11]], 10.5), 'system-cargo-cell'));
+    out.push(face(plan([[x + 1.2, y + 1.2], [x + 10.8, y + 1.2], [x + 10.8, y + 9.8], [x + 1.2, y + 9.8]], 8), 'system-cargo-floor'));
+    out.push(face([point(x, y + 11, 10.5), point(x + 12, y + 11, 10.5), point(x + 10.8, y + 9.8, 8), point(x + 1.2, y + 9.8, 8)], 'system-cargo-bulkhead'));
+  }
+  out.push('</g>');
   const waterline = hull.slice(0, 8).map(([x, y], i) => [bottom[i][0] * .75 + x * .25, bottom[i][1] * .75 + y * .25]);
   out.push(line(plan(waterline, 3), 'system-object-waterline'));
+  out.push('<g class="system-inspection-deck system-mechanism-focus">');
+  out.push(face(plan(inspectionPlate, 12.15), 'system-object-deck'));
   // Low cargo-tank covers leave an open working deck rather than container stacks.
   for (const y of [-48, -32, -16, 0, 16, 32]) for (const x of [-10, 10]) {
     out.push(hatch(x, y, 3.4, 12, 1), hatch(x, y, 2.7, 13, 0.5));
@@ -60,6 +55,7 @@ function tanker() {
   out.push(box(-15, -7, 30, 2, 12, 1.4, 'system-object-fitting'));
   for (const x of [-15, 13]) for (const y of [-7, -3]) out.push(box(x, y, 2, 2, 13.4, 1.3, 'system-object-pipe'));
   for (const x of [-3, 2]) out.push(box(x, -57, 1, 94, 13.4, 1, 'system-object-pipe'));
+  out.push('</g>');
   out.push(box(-5, -69, 10, 7, 12, 1.3, 'system-object-fitting'));
   for (const x of [-3, 3]) out.push(hatch(x, -66, 1, 13.3, 1.8));
   const rail = [[-14, -55], [-10, -68], [0, -84], [10, -68], [14, -55]];
@@ -118,9 +114,15 @@ function marketStation() {
   for (const y of [6, 9, 12]) for (const x of [-23, -18, -13, -8, -3, 2]) out.push(box(x, y, 3.5, 1.8, 32.4, .45));
   out.push(box(16, 6, 7, 11, 31.4, 1.5));
   out.push(line([point(19.5, 6, 32.9), point(19.5, 10, 32.9)]));
-  out.push(box(-31, -5, 12, 7, 31.4, 1.4, 'system-object-fitting'));
-  out.push(face(plan([[-30, -4], [-20, -4], [-20, 1], [-30, 1]], 33), 'system-object-top'));
-  out.push('</g>');
+  // Two physical folios support the idea of like-for-like dated records. Their
+  // rules are printed paper, not a chart, timeline, live quote or numerical data.
+  out.push('<g class="system-mechanism-focus">');
+  for (const x of [-29, -17]) {
+    out.push(box(x, -7, 9, 9, 31.4, .8, 'system-object-fitting'));
+    out.push(face(plan([[x + .5, -6.5], [x + 8.5, -6.5], [x + 8.5, 1.5], [x + .5, 1.5]], 32.3), 'system-record-page'));
+    for (const y of [-4.8, -2.8, -.8]) out.push(line(plan([[x + 1.8, y], [x + 6.9, y]], 32.35), 'system-record-rule'));
+  }
+  out.push('</g></g>');
   return out.join('');
 }
 
@@ -135,15 +137,13 @@ const shortLabels = { supply: 'Exports', transport: 'Passage & freight', risk: '
 
 export function oilSystemArt(stages) {
   const parts = stages.map((stage, index) => `<g class="system-part${stage.selected ? ' is-selected' : ''}${stage.matched ? ' is-matched' : ''}" data-system-part="${escape(stage.id)}" style="transform:translate(${stage.position.x}px,${stage.position.y}px)">
-    <title>${escape(stage.title)}. Select to inspect this conceptual part of the oil system.</title>
+    <title>${escape(stage.title)}. Select to inspect the mechanism and evidence needed. This object does not show current operating status.</title>
     ${stage.id === 'transport' ? '' : base}${drawings[stage.id] || ''}
     <g class="system-art-number" transform="translate(-62 -68)"><circle r="13"/><text text-anchor="middle" y="4">${index + 1}</text></g>
     <text class="system-art-label" x="0" y="68" text-anchor="middle">${escape(shortLabels[stage.id] || stage.title)}</text>
   </g>`).join('');
-  return `<svg class="system-art" viewBox="0 0 720 370" role="img" aria-label="Conceptual oil system: export availability, passage and freight, security and insurance, and oil benchmarks. Select a part using the diagram or the numbered controls. The drawing is not live flow, a map, or a price forecast.">
-    <path class="system-art-guide" d="M56 294 368 150 665 12M55 308 367 164 665 26"/>
-    <path class="system-art-connector" d="M135 188 285 250 435 188 585 126"/>
-    <g class="system-art-anchors"><circle cx="135" cy="188" r="3"/><circle cx="285" cy="250" r="3"/><circle cx="435" cy="188" r="3"/><circle cx="585" cy="126" r="3"/></g>
+  return `<svg class="system-art" viewBox="0 0 720 370" role="img" aria-label="Four separate conceptual oil-system objects: export terminal, tanker, cover office and price-record desk. Select an object with the numbered controls to inspect its evidence. Separate layers reveals a schematic tanker cutaway. No connection proves a price effect; this is not live flow or a price forecast.">
+    <desc>The terminal shows storage and a loading outlet. The tanker shows cargo handling and schematic compartments. The office represents terms of cover and operator decisions. The desk represents separate dated price observations. Highlighting follows the reader's selection, not source verification.</desc>
     ${parts}
   </svg>`;
 }

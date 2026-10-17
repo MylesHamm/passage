@@ -1,3 +1,4 @@
+import {physicalClaimText} from './report-semantics.mjs';
 // Shared, dependency-free research records. Also used by the server and integrity tests.
 export const ACTORS = [
   {id:'houthis',label:'Houthis',pattern:/houthi\w*|ansar.?allah/ig},
@@ -59,7 +60,7 @@ export function deriveContext(title='',description='') {
       if(match){mentions.push({entityId:entity.id,label:entity.label,type:entity.type,field,matchedText:match});break;}
     }
   }
-  const disruptionMatches=[...new Set((title+' '+description).match(DISRUPTION)||[])].map(s=>s.toLowerCase());
+  const disruptionMatches=[...new Set(physicalClaimText(title+' '+description).match(DISRUPTION)||[])].map(s=>s.toLowerCase());
   return {mentions,disruptionMatches};
 }
 export function reportMentions(report) {
@@ -74,19 +75,35 @@ export function reportMentions(report) {
   }
   return mentions;
 }
-export function uniqueReports(records,now=Date.now()) {
-  const byUrl=new Map();
-  for(const r of records) {
+function reportInventory(records,now=Date.now()) {
+  const input=Array.isArray(records)?records:[],byUrl=new Map();
+  let invalidReportCount=0,futurePublicationCount=0,duplicateReportCount=0;
+  for(const r of input) {
     const url=publicUrl(r?.url), publication=reportPublication(r);
-    if(!url||!r.id||!cleanText(r.title)||!publication||publication.at>now+300000)continue;
-    if(!byUrl.has(url))byUrl.set(url,{...r,url});
+    if(!url||!r?.id||!cleanText(r.title)){invalidReportCount++;continue;}
+    if(publication&&publication.at>now+300000){futurePublicationCount++;continue;}
+    if(byUrl.has(url)){
+      duplicateReportCount++;
+      // A duplicate with an actual publication clock can resolve an undated link.
+      if(publication&&!reportPublication(byUrl.get(url)))byUrl.set(url,{...r,url});
+      continue;
+    }
+    byUrl.set(url,{...r,url});
   }
-  return [...byUrl.values()].sort((a,b)=>reportPublication(b).at-reportPublication(a).at);
+  // Undated evidence remains browsable. Its position in this list is not a time claim.
+  const reports=[...byUrl.values()].sort((a,b)=>{
+    const aTime=reportPublication(a)?.at,bTime=reportPublication(b)?.at;
+    return aTime===undefined?(bTime===undefined?0:1):bTime===undefined?-1:bTime-aTime;
+  });
+  return {reports,inputReportCount:input.length,invalidReportCount,futurePublicationCount,duplicateReportCount,uniqueReportCount:reports.length};
 }
-export function buildEvidenceGraph(records,{limit=12,offset=0,entityId=null}={}) {
-  const all=uniqueReports(records), entities=new Map(), allEdges=[];
+export function uniqueReports(records,now=Date.now()) {
+  return reportInventory(records,now).reports;
+}
+export function buildEvidenceGraph(records,{limit=12,offset=0,entityId=null,now=Date.now()}={}) {
+  const {reports:all,...inventory}=reportInventory(records,now), entities=new Map(), allEdges=[];
   for(const report of all) {
-    const publication=reportPublication(report),clock={publishedAt:report.publishedAt??null,publishedDate:publication.date,publicationPrecision:publication.precision};
+    const publication=reportPublication(report),clock={publishedAt:publication?.precision==='timestamp'?publication.value:null,publishedDate:publication?.date??null,publicationPrecision:publication?.precision??'unknown'};
     for(const mention of reportMentions(report)) {
       entities.set(mention.entityId,{id:mention.entityId,type:mention.type,label:mention.label});
       allEdges.push({id:report.url+'::'+mention.entityId,from:'report:'+report.url,to:mention.entityId,relation:'MENTIONS',reportId:report.id,sourceUrl:report.url,...clock,basis:mention.field,matchedText:mention.matchedText});
@@ -100,7 +117,7 @@ export function buildEvidenceGraph(records,{limit=12,offset=0,entityId=null}={})
   const start=Math.max(0,Math.min(offset,Math.max(0,Math.ceil(matching.length/limit)-1)*limit));
   const page=matching.slice(start,start+limit), urls=new Set(page.map(r=>'report:'+r.url));
   const edges=allEdges.filter(e=>urls.has(e.from)), ids=new Set(edges.map(e=>e.to));
-  return {reports:page,totalReports:matching.length,offset:start,entities:[...entities.values()].filter(e=>ids.has(e.id)),allEntities:[...entities.values()],edges};
+  return {...inventory,reports:page,totalReports:matching.length,unknownPublicationCount:matching.filter(report=>!reportPublication(report)).length,offset:start,entities:[...entities.values()].filter(e=>ids.has(e.id)),allEntities:[...entities.values()],edges};
 }
 export function normalizeProfile(input,now=new Date().toISOString()) {
   const mmsi=cleanText(String(input?.mmsi??''),20);
@@ -129,24 +146,42 @@ export function vesselMatches(profile,records) {
     return basis?[{report,basis}]:[];
   });
 }
-export function disruptionMatches(report) {return [...new Set([...(Array.isArray(report.disruptionMatches)?report.disruptionMatches:[]),...deriveContext(report.title).disruptionMatches])];}
+export function disruptionMatches(report) {return deriveContext(report.title,report.summary||'').disruptionMatches;}
 export function buildTimeline(records,series,{days=30,theater='both',actor='All',query='',onlyDisruptions=true,basis='publication',annotations={},now=Date.now()}={}) {
   days=[7,30,90,180,365].includes(Number(days))?Number(days):30;
+  basis=basis==='event'?'event':'publication';
   const end=Date.parse(new Date(now).toISOString().slice(0,10)+'T00:00:00Z');
-  const rows=Array.from({length:days},(_,i)=>({date:new Date(end-(days-1-i)*86400000).toISOString().slice(0,10),prices:{brent:null,wti:null},reports:[]}));
-  const map=new Map(rows.map(r=>[r.date,r]));let missingEventDates=0;
-  for(const s of series||[])if(['brent','wti'].includes(s.id))for(const p of s.observations||[])if(Number.isFinite(p.value)&&map.has(p.date))map.get(p.date).prices[s.id]=p.value;
-  for(const report of uniqueReports(records,now)) {
+  // Null remains the table's missing value. priceStatus distinguishes provider-null
+  // observations from omitted calendar days for the shared four-day line policy.
+  const rows=Array.from({length:days},(_,i)=>({date:new Date(end-(days-1-i)*86400000).toISOString().slice(0,10),prices:{brent:null,wti:null},priceStatus:{brent:'omitted',wti:'omitted'},reports:[]}));
+  const map=new Map(rows.map(r=>[r.date,r]));
+  for(const s of Array.isArray(series)?series:[])if(['brent','wti'].includes(s?.id))for(const p of Array.isArray(s.observations)?s.observations:[])if(map.has(p?.date)) {
+    const row=map.get(p.date),observed=Number.isFinite(p.value);
+    row.prices[s.id]=observed?p.value:null;
+    row.priceStatus[s.id]=observed?'observed':'missing';
+  }
+  const {reports,...inventory}=reportInventory(records,now),omittedReports=[];
+  const omissionCounts={'publication-date-unknown':0,'event-date-missing':0,'event-date-invalid':0,'event-date-future':0,'outside-window':0};
+  let eligibleReportCount=0,unknownPublicationCount=0;
+  const labels={'publication-date-unknown':'Publication date unknown','event-date-missing':'Analyst event date missing','event-date-invalid':'Analyst event date invalid','event-date-future':'Analyst event date is in the future','outside-window':'Selected date is outside this window'};
+  for(const report of reports) {
     if(theater!=='both'&&!report.theaters?.includes(theater))continue;
     if(actor!=='All'&&!report.actors?.includes(actor))continue;
     if(query&&!(`${report.title} ${report.source}`).toLowerCase().includes(query.toLowerCase()))continue;
     const terms=disruptionMatches(report);if(onlyDisruptions&&!terms.length)continue;
-    const annotation=annotations[report.id];
-    const day=basis==='event'?dateOnly(annotation?.eventDate):reportPublication(report).date;
-    if(!day){missingEventDates++;continue;}
-    if(map.has(day))map.get(day).reports.push({report,terms,basis:basis==='event'?'Analyst-entered event date':'Publication date',eventDate:annotation?.eventDate||null});
+    eligibleReportCount++;
+    const publication=reportPublication(report),annotation=annotations?.[report.id];
+    if(!publication)unknownPublicationCount++;
+    const day=basis==='event'?dateOnly(annotation?.eventDate):publication?.date??null;
+    const reason=!day?(basis==='publication'?'publication-date-unknown':annotation?.eventDate?'event-date-invalid':'event-date-missing')
+      :basis==='event'&&Date.parse(day+'T00:00:00Z')>now?'event-date-future':!map.has(day)?'outside-window':null;
+    if(reason){omissionCounts[reason]++;omittedReports.push({report,reason,label:labels[reason],date:day});continue;}
+    map.get(day).reports.push({report,terms,basis:basis==='event'?'Analyst-entered event date':'Publication date',eventDate:annotation?.eventDate||null});
   }
-  return {rows,missingEventDates,reportCount:rows.reduce((n,r)=>n+r.reports.length,0),start:rows[0].date,end:rows.at(-1).date};
+  const reportCount=rows.reduce((n,r)=>n+r.reports.length,0),outsideWindowCount=omissionCounts['outside-window'];
+  return {...inventory,rows,basis,missingEventDates:omissionCounts['event-date-missing']+omissionCounts['event-date-invalid'],missingPublicationDates:omissionCounts['publication-date-unknown'],unknownPublicationCount,
+    omittedReports,omissionCounts,omittedReportCount:omittedReports.length,unplacedReportCount:omittedReports.length-outsideWindowCount,outsideWindowCount,
+    eligibleReportCount,filteredOutCount:reports.length-eligibleReportCount,reportCount,start:rows[0].date,end:rows.at(-1).date};
 }
 export function normalizeAnnotation(input,report,now=Date.now()) {
   const eventDate=input.eventDate?dateOnly(input.eventDate):null;

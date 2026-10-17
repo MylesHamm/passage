@@ -4,6 +4,7 @@ import {mkdtemp,readFile,writeFile,mkdir,stat,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {ReportArchive} from '../lib/report-archive.mjs';
+import {evidenceKind} from '../dist/evidence-kind.mjs';
 
 const DAY=86400000,START=Date.parse('2026-09-01T12:00:00Z');
 const stamp=time=>new Date(time).toISOString();
@@ -198,4 +199,47 @@ test('legacy archived Doomberg metadata is relabeled without invalidating the st
  const stored=JSON.parse(await readFile(f.file,'utf8'));stored.items[0].type='Discovered reporting';delete stored.items[0].evidenceStatus;await writeFile(f.file,JSON.stringify(stored));
  const result=await f.create().merge([]),row=result.items[0];
  assert.equal(result.archive.storageStatus,'ready');assert.equal(row.type,'Independent energy analysis');assert.equal(row.summary,null);assert.equal(row.publishedAt,null);assert.equal(row.contentAccess,'discovery-metadata');
+});
+
+test('retired snapshots obey retention and capacity without becoming current or gaining a provenance clock',async t=>{
+ const f=await fixture(t,{retentionDays:2,maxRecords:1}),archive=f.create();
+ const old=report('expired',{sourceId:'gdelt-energy',provenance:[{sourceId:'bbc',url:'https://example.com/expired'}]});
+ let result=await archive.merge([],{historicalItems:[old],observedAtBySource:{'gdelt-energy':stamp(START-3*DAY),bbc:stamp(START)}});
+ assert.equal(result.items.length,0);assert.equal(result.archive.recordCount,0);assert.equal(result.archive.retainedCount,0);
+ const recent=report('retired-recent',{sourceId:'gdelt-energy'});
+ result=await archive.merge([],{historicalItems:[recent],observedAtBySource:{'gdelt-energy':stamp(START-DAY)}});
+ assert.equal(result.items[0].retainedFromHistory,true);assert.equal(result.items[0].lastSeenAt,stamp(START-DAY));assert.equal(result.archive.retainedCount,1);
+ result=await archive.merge([report('current')],{historicalItems:[recent],observedAtBySource:{'gdelt-energy':stamp(START-DAY),bbc:stamp(START)}});
+ assert.deepEqual(result.items.map(row=>row.id),['current']);assert.equal(result.archive.truncated,true);assert.equal(result.archive.retainedCount,0);
+ result=await f.create().merge([],{historicalItems:[recent,old],observedAtBySource:{'gdelt-energy':stamp(START-3*DAY),bbc:stamp(START)}});
+ assert.deepEqual(result.items.map(row=>row.id),['current']);assert.equal(result.items[0].lastSeenAt,stamp(START));
+});
+test('historical snapshots with unknown retrieval dates do not invent archive clocks or current membership',async t=>{
+ const f=await fixture(t),result=await f.create().merge([],{historicalItems:[report('undated-retired')]});
+ assert.equal(result.items.length,0);assert.equal(result.archive.recordCount,0);assert.equal(result.archive.retainedCount,0);
+});
+test('explicit evidence kinds and forecast clocks survive actual archive persistence and restart',async t=>{
+ const f=await fixture(t),archive=f.create(),forecastCompleted='2026-08-31';
+ await archive.merge([report('forecast',{type:'Reporting',recordKind:'forecast',forecastCompleted}),report('agency',{type:'Reporting',recordKind:'agency-assessment'})],f.observation());
+ const stored=JSON.parse(await readFile(f.file,'utf8'));
+ assert.equal(stored.items.find(row=>row.id==='forecast').recordKind,'forecast');
+ assert.equal(stored.items.find(row=>row.id==='forecast').forecastCompleted,forecastCompleted);
+ let result=await f.create().merge([]),row=result.items.find(row=>row.id==='forecast');
+ assert.equal(result.archive.storageStatus,'ready');assert.equal(evidenceKind(row),'forecast');assert.equal(row.forecastCompleted,forecastCompleted);assert.equal(row.retainedFromHistory,true);
+ assert.equal(evidenceKind(result.items.find(row=>row.id==='agency')),'agency-assessment');
+ f.setTime(START+DAY);
+ result=await f.create().merge([report('forecast',{type:'Reporting'})],f.observation());
+ row=result.items.find(row=>row.id==='forecast');assert.equal(row.recordKind,'forecast');assert.equal(row.forecastCompleted,forecastCompleted);
+ const legacy=stored.items.find(row=>row.id==='agency');delete legacy.recordKind;
+ await writeFile(f.file,JSON.stringify({...stored,items:[legacy]}));
+ result=await f.create().merge([]);assert.equal(result.archive.storageStatus,'ready');assert.equal(result.items.length,1);assert.equal(evidenceKind(result.items[0]),'publisher-report');
+});
+test('invalid or future optional forecast metadata is not admitted to the archive',async t=>{
+ const f=await fixture(t),result=await f.create().merge([
+  report('invalid',{recordKind:'confirmed-intelligence',forecastCompleted:'2026-02-30'}),
+  report('future',{recordKind:'forecast',forecastCompleted:'2027-01-01'}),
+ ],f.observation());
+ assert.equal(result.items.find(row=>row.id==='invalid').recordKind,undefined);
+ assert.ok(result.items.every(row=>row.forecastCompleted===undefined));
+ assert.equal((await f.create().merge([])).archive.storageStatus,'ready');
 });

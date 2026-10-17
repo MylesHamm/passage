@@ -42,8 +42,8 @@ test('39 matching headlines collapse without adding corroboration or ranking wei
   const headline='Iran must stop arming Houthis in Yemen, G7 says';
   const copies=Array.from({length:39},(_,i)=>report(`copy-${i}`,i%2?'Iran must stop arming Houthis in Yemen , G7 says':headline,{publishedAt:null,publicationPrecision:'unknown',discoveredAt:'2026-09-28T11:00:00Z',sourceId:'gdelt-redsea',contentAccess:'discovery-metadata',source:`Outlet ${i}`,provenance:[{sourceId:'gdelt-redsea',url:`https://example.com/copy-${i}`}]}));
   const strike=report('strike','Houthis claim attack on Red Sea tanker');
-  const single=buildPriorityBrief({items:[copies[0],strike]},{now:NOW});
-  const many=buildPriorityBrief({items:[...copies,strike]},{now:NOW});
+  const single=buildPriorityBrief({items:[copies[0],strike]},{now:NOW,includeDiscovery:true});
+  const many=buildPriorityBrief({items:[...copies,strike]},{now:NOW,includeDiscovery:true});
   assert.deepEqual(card(single,'bab').items.map(item=>item.title),card(many,'bab').items.map(item=>item.title));
   const group=card(many,'bab').items.find(item=>item.copies.length===39);
   assert.equal(group.sourceUrls.length,39);
@@ -56,7 +56,7 @@ test('39 matching headlines collapse without adding corroboration or ranking wei
 test('discovery clock never becomes publication and direct publisher metadata wins equal importance',()=>{
   const discovery=report('discovery','Houthis report missile launch toward Israel',{publishedAt:null,publicationPrecision:'unknown',discoveredAt:'2026-09-28T11:55:00Z',sourceId:'gdelt-redsea',dateBasis:'discovery',contentAccess:'discovery-metadata'});
   const direct=report('publisher','Israel reports strike on Houthi positions in Yemen',{publishedAt:'2026-09-28T08:00:00Z'});
-  const brief=buildPriorityBrief({items:[discovery,direct]},{now:NOW});
+  const brief=buildPriorityBrief({items:[discovery,direct]},{now:NOW,includeDiscovery:true});
   assert.equal(card(brief,'bab').items[0].report.id,'publisher');
   const item=card(brief,'bab').items.find(item=>item.report.id==='discovery');
   assert.equal(item.clock.kind,'discovery');
@@ -69,7 +69,7 @@ test('discovery clock never becomes publication and direct publisher metadata wi
 test('a direct publisher copy supplies the display headline but preserves every original copy',()=>{
   const direct=report('publisher','Houthis claim attack on Red Sea tanker');
   const discovery=report('copy',direct.title,{publishedAt:null,publicationPrecision:'unknown',discoveredAt:'2026-09-28T11:00:00Z',sourceId:'gdelt-redsea',contentAccess:'discovery-metadata'});
-  const brief=buildPriorityBrief({items:[discovery,direct]},{now:NOW});
+  const brief=buildPriorityBrief({items:[discovery,direct]},{now:NOW,includeDiscovery:true});
   const item=card(brief,'bab').items[0];
   assert.equal(item.url,direct.url);
   assert.equal(item.clock.kind,'publication');
@@ -194,13 +194,13 @@ test('matching headlines on different known publication days stay distinct and u
   const unknown=report('unknown',title,{publishedAt:null,publicationPrecision:'unknown',discoveredAt:'2026-09-28T11:00:00Z',sourceId:'gdelt-redsea',contentAccess:'discovery-metadata'});
   const anotherUnknown={...unknown,id:'other-unknown',url:'https://example.com/other-unknown'};
   const items=[older,newer,unknown,anotherUnknown];
-  const brief=buildPriorityBrief({items},{now:NOW});
+  const brief=buildPriorityBrief({items},{now:NOW,includeDiscovery:true});
   const groups=card(brief,'bab').items;
   assert.equal(groups.length,3);
   assert.equal(new Set(groups.map(item=>item.id)).size,3);
   assert.deepEqual(groups.map(item=>item.copies.map(copy=>copy.id)),[['newer'],['older'],['other-unknown','unknown']]);
   assert.equal(groups.find(item=>item.report.id==='unknown'||item.report.id==='other-unknown').clock.kind,'discovery');
-  const reordered=buildPriorityBrief({items:[...items].reverse()},{now:NOW});
+  const reordered=buildPriorityBrief({items:[...items].reverse()},{now:NOW,includeDiscovery:true});
   assert.deepEqual(card(reordered,'bab').items.map(item=>item.id),groups.map(item=>item.id));
 });
 
@@ -246,7 +246,7 @@ test('recent Yemen mobilization, conflict casualties and mediation reach Bab wit
   for(const row of rows){
     const selected=card(brief,'bab').items.find(item=>item.report.id===row.id);
     assert.equal(selected.title,row.title);assert.equal(selected.clock.value,row.publishedAt);assert.equal(selected.report,row);assert.equal(selected.independentConfirmation,false);
-    assert.equal(selected.category,['mobilisation','casualties'].includes(row.id)?'Military & security':'Conflict policy');
+    assert.equal(selected.category,['mobilisation','casualties'].includes(row.id)?'Military & security reporting':'Conflict policy reporting');
     assert.equal(selected.report.eventDate,undefined);assert.equal(selected.report.oilImpact,undefined);
   }
   assert.equal(card(brief,'energy'),undefined);

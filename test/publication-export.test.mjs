@@ -109,3 +109,22 @@ test('public export fails before writing when safe-template credentials, machine
     await assert.rejects(stat(f.output),{code:'ENOENT'});
   }
 });
+
+test('terrain publication permits only exact elevation grids and the reproducible source processor',async t=>{
+  const f=await fixture(t),grid=Buffer.from([0,255,128,1,0,254]);
+  await f.put('dist/terrain/assets/hormuz-dem.bin',grid);
+  await f.put('dist/terrain/assets/bab-dem.bin',grid);
+  await f.put('scripts/terrain/build_assets.py','# Reproducible public terrain processor\n');
+  await f.put('docs/REGIONAL-TERRAIN.md','# Source and limits\n');
+  await f.put('test-results/ui/recorded-api/news.json','PRIVATE_FIXTURE_CONTENT');
+  await exportPublication({sourceDir:f.source,outputDir:f.output});
+  assert.deepEqual(await readFile(resolve(f.output,'dist/terrain/assets/hormuz-dem.bin')),grid);
+  assert.deepEqual(await readFile(resolve(f.output,'dist/terrain/assets/bab-dem.bin')),grid);
+  assert.ok((await list(f.output)).includes('docs/REGIONAL-TERRAIN.md'));
+  assert.ok(!(await list(f.output)).some(x=>x.includes('test-results')));
+  for(const name of ['dist/terrain/assets/private.bin','scripts/terrain/private.py']){
+    const other=await fixture(t);await other.put(name,'PRIVATE_FIXTURE_CONTENT');
+    await assert.rejects(exportPublication({sourceDir:other.source,outputDir:other.output}),/Unexpected public source file/);
+    await assert.rejects(stat(other.output),{code:'ENOENT'});
+  }
+});

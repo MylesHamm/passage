@@ -1,0 +1,20 @@
+# Regional reference terrain
+
+Mapzen Terrain Tiles. SRTM and GMTED2010 terrain data courtesy of the U.S. Geological Survey. Global ETOPO1 terrain data: U.S. National Oceanic and Atmospheric Administration.
+
+- Dataset: https://registry.opendata.aws/terrain-tiles/
+- Source rights: https://github.com/tilezen/joerd/blob/master/docs/attribution.md
+- Terrarium encoding: https://github.com/tilezen/joerd/blob/master/docs/formats.md
+- Exact source URLs, SHA-256 hashes, tile response metadata and processing: [assets/provenance.json](assets/provenance.json)
+
+Downloaded 17 October 2026. These tiles were modified in 2017; their modification dates are not survey dates. Regional source metadata identifies SRTM, GMTED2010 and ETOPO1. They are static geographic context and do not measure current conditions.
+
+## Transformations
+
+Each region uses a 4 × 4 mosaic of 256-pixel zoom-8 source tiles. Terrarium values are decoded as R × 256 + G + B/256 − 32768 metres. Nonpositive elevations are displayed at sea level. A 256 × 256 mesh uses source-grid samples; 1024 × 1024 elevation/coast and derived normal textures retain source detail. Lighting normals use a 0.65-source-pixel Gaussian filter. Relief is exaggerated 4×. Colors and illumination are designed; this is not satellite imagery. The 2D fallback uses the same source elevation mosaic.
+
+Source spacing is approximately 547 m at the Hormuz scene center and 597 m at Bab el-Mandeb. Display mesh spacing is approximately 2.2 km and 2.4 km respectively. Encoding precision does not establish elevation accuracy. Coastlines are the displayed zero-elevation boundary of this DEM, not an independently surveyed chart coastline. Source artifacts can remain; the Bab mosaic includes one isolated 6,803 m source sample, outside the focused strait, which is not a validated terrain measurement. No new elevation claims are made from source extrema.
+
+The app fetches no remote terrain or imagery at runtime. Assets are served locally and lazy-loaded per region. The static plan remains available if WebGL or detailed assets fail. Water has no bathymetry or depth meaning. Not for navigation, clearance, flood assessment, or safety decisions.
+
+The renderer contains no third-party JavaScript dependency. Its geographic labels are approximate static reference labels. Optional vessel and event coordinates come only from passed source records; the renderer does not derive locations from headlines.

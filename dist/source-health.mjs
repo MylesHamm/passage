@@ -1,4 +1,5 @@
 import {isCurrentVesselPosition} from './vessel-data.mjs';
+import {RETIRED_SOURCE_IDS,CORE_REPORTING_IDS} from './source-policy.mjs';
 // Shared display policy. Transport success is separate from content availability.
 export const SOURCE_DEFINITIONS = [
   {id:'polymarket',name:'Polymarket · expectations',group:'expectations',interval:60,freshnessBasis:'retrieval',freshnessAfterSeconds:600,home:'https://polymarket.com/',limitations:'Public market snapshots; probabilities express market expectations, not confirmation. Background checks run every five minutes; the open view checks each minute.'},
@@ -11,7 +12,7 @@ export const SOURCE_DEFINITIONS = [
   {id:'centcom',name:'CENTCOM',group:'news',interval:900,home:'https://www.centcom.mil/MEDIA/PRESS-RELEASES/'},
   {id:'eia-news',name:'EIA · Today in Energy',group:'news',interval:900,home:'https://www.eia.gov/todayinenergy/'},
   {id:'doomberg',name:'Doomberg · energy analysis',group:'news',interval:3600,freshnessAfterSeconds:1209600,home:'https://newsletter.doomberg.com/',limitations:'Independent analysis · public previews only; full articles may require payment. Publisher expects 6–8 articles per month; this is not a breaking-news feed.'},
-  ...[['gdelt-hormuz','Hormuz discovery'],['gdelt-redsea','Red Sea discovery'],['gdelt-exports','Regional exports'],['gdelt-energy','Energy and diplomacy'],['gdelt-reuters','Reuters topic discovery']].map(([id,name])=>({id,name:'GDELT · '+name,group:'discovery',interval:900,freshnessBasis:'retrieval',freshnessAfterSeconds:3600,home:'https://www.gdeltproject.org/'})),
+  ...[['gdelt-hormuz','Hormuz discovery'],['gdelt-redsea','Red Sea discovery'],['gdelt-exports','Regional exports'],['gdelt-energy','Energy and diplomacy'],['gdelt-reuters','Reuters topic discovery']].map(([id,name])=>({id,name:'GDELT · '+name,group:'discovery',interval:1800,freshnessBasis:'retrieval',freshnessAfterSeconds:7200,home:'https://www.gdeltproject.org/'})),
   {id:'reliefweb',name:'ReliefWeb',group:'news',interval:900,optional:'reliefweb',home:'https://reliefweb.int/'},
   {id:'brent',name:'EIA Brent',group:'oil',interval:3600,home:'https://www.eia.gov/dnav/pet/hist/RBRTEd.htm'},
   {id:'wti',name:'EIA WTI',group:'oil',interval:3600,home:'https://www.eia.gov/dnav/pet/hist/RWTCd.htm'},
@@ -23,9 +24,10 @@ export const SOURCE_DEFINITIONS = [
   {id:'openwaters',name:'Open Waters aiscast',group:'vessels',interval:10,home:'https://openwaters.io/api/ais/'},
   {id:'imo-hormuz',name:'IMO · Hormuz & Middle East',group:'maritime',interval:1800,freshnessAfterSeconds:86400,freshnessBasis:'retrieval',home:'https://www.imo.org/en/mediacentre/hottopics/pages/middle-east-highlighted-incidents.aspx'},
   {id:'imo-redsea',name:'IMO · Red Sea statements',group:'maritime',interval:1800,freshnessAfterSeconds:86400,freshnessBasis:'retrieval',home:'https://www.imo.org/en/mediacentre/hottopics/pages/red-sea.aspx'},
+  {id:'marad-advisories',name:'U.S. Maritime Advisories · MARAD host',group:'maritime',interval:3600,freshnessAfterSeconds:86400,freshnessBasis:'retrieval',home:'https://www.maritime.dot.gov/msci-advisories',limitations:'Bounded official advisory metadata and validity, not an incident feed. Cancelled history is incomplete.'},
   {id:'acled',name:'ACLED',group:'acled',interval:3600,optional:'acled',home:'https://acleddata.com/'},
-];
-const date = v => typeof v === 'string' && Number.isFinite(Date.parse(v)) ? v : null;
+].map(definition=>({...definition,capability:CORE_REPORTING_IDS.includes(definition.id)||['brent','wti','imo-hormuz','imo-redsea'].includes(definition.id)?'core':'supporting',...(RETIRED_SOURCE_IDS.includes(definition.id)?{defaultEnabled:false,retired:true,retirementReason:definition.id==='centcom'?'Collector retired after repeated schema failures; original evidence remains in the archive.':'Broad discovery family retired; retained metadata remains available in the archive.'}:{})}));
+const date = value => {if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}(?:T|$)/.test(value)||!Number.isFinite(Date.parse(value)))return null;const calendar=value.slice(0,10);return new Date(calendar+'T00:00:00Z').toISOString().slice(0,10)===calendar?value:null;};
 export function ageSeconds(value, now=Date.now()) { const d=date(value); return d && Date.parse(d)<=now+60000 ? Math.max(0,Math.floor((now-Date.parse(d))/1000)) : null; }
 export function sourceHealth(input, now=Date.now()) {
   const s={...input};
@@ -34,11 +36,13 @@ export function sourceHealth(input, now=Date.now()) {
   s.latestDiscoveredAt=date(s.latestDiscoveredAt);
   s.discoveryAgeSeconds=ageSeconds(s.latestDiscoveredAt,now);
   s.retrievalAgeSeconds=ageSeconds(s.retrievedAt,now);
+  s.lastAttemptAt=date(s.checkedAt);
+  s.successfulCheck=s.connection==='connected'&&s.retrievalAgeSeconds!==null&&!s.localFailure&&!s.error&&!s.errorCategory;
   s.contentAgeSeconds=ageSeconds(s.group==='news'?s.latestRelevant:s.latest,now);
   const enabled=s.configured!==false && s.configured!==null;
   const count=Number.isInteger(s.recordCount)?s.recordCount:null;
   s.hasData=enabled && count!==null && count>0;
-  const failed=['cached','unavailable','disconnected'].includes(s.connection) || !!s.localFailure;
+  const failed=['cached','unavailable','disconnected'].includes(s.connection) || !!s.localFailure || !!s.error || !!s.errorCategory;
   const checkAfter=Math.max(3600,(Number.isFinite(s.interval)&&s.interval>0?s.interval:s.group==='acled'?3600:300)*3);
   s.checkOverdue=enabled&&['news','acled'].includes(s.group)&&s.connection==='connected'&&s.retrievalAgeSeconds!==null&&s.retrievalAgeSeconds>=checkAfter;
   // Incident registers are fresh when checked recently; event age describes
@@ -48,13 +52,13 @@ export function sourceHealth(input, now=Date.now()) {
   const freshnessAfter=s.freshnessAfterSeconds??(s.group==='vessels'?600:s.group==='oil'?864000:s.group==='maritime'?86400:259200);
   s.freshness=freshnessAge===null?'unknown':freshnessAge>=freshnessAfter?'stale':'current';
   if(s.id==='aisstream' && s.timestampBasis!=='provider')s.freshness='unknown';
-  s.status=!enabled?'disabled':s.connection==='loading'?'loading':failed?(s.hasData?'retained':'unavailable'):['maritime','discovery'].includes(s.group)&&s.freshness==='stale'?'stale':count===0?'empty':s.freshness==='stale'?'stale':s.freshness==='unknown'?'unknown':'current';
+  s.status=!enabled?'disabled':s.connection==='loading'?'loading':failed?(s.hasData?'retained':'unavailable'):['maritime','discovery'].includes(s.group)&&s.freshness==='stale'?'stale':count===0?(s.connection==='connected'?'empty':'unknown'):s.freshness==='stale'?'stale':s.freshness==='unknown'?'unknown':'current';
   if(s.checkOverdue)s.status='stale';
   if(enabled && !s.retrievedAt && s.group!=='vessels' && s.connection!=='loading')s.status='unavailable';
   if(s.group==='vessels' && ['idle','connecting'].includes(s.connection))s.status=s.connection==='idle'?'paused':'loading';
   const emptyLabel=s.group==='vessels'?(s.id==='aisstream'&&s.positionFrames===0?'Connected · no vessel positions received':'No usable positions received'):s.group==='maritime'?'Source checked · no listed records':s.group==='discovery'?'Discovery checked · no matching metadata':s.group==='news'?'Source checked · no relevant reports':s.group==='oil'?'No usable price observations':s.group==='expectations'?'No eligible active markets':s.group==='market'?'No usable market observations':s.group==='acled'?'No matching structured events':'No usable forecast data';
   const staleLabel=s.checkOverdue?'Source check overdue':s.group==='vessels'?'Position data over 10 minutes old':s.group==='maritime'?'Source check over 24 hours old':s.group==='discovery'?'Discovery check over one hour old':s.group==='news'?'Source responding · older relevant reports':'Older observations available';
-  s.label=({disabled:s.configured===null?'Checking configuration':'Not configured',loading:s.group==='discovery'?'Checking discovery index':'Checking source',paused:s.hasData?'Live reception paused · retained positions':'Live reception paused while view is closed',unavailable:s.group==='discovery'?'Discovery unavailable':'Unavailable',retained:s.group==='discovery'?'Retained discovery · update failed':'Cached data · update failed',empty:emptyLabel,stale:staleLabel,unknown:s.group==='weather'?'Model-run age unknown':'Observation age unknown',current:s.group==='maritime'?'Official source available':s.group==='discovery'?'Discovery checked · publication dates unknown':'Data available'})[s.status];
+  s.label=({disabled:s.retired?'Collection retired · archive retained':s.configured===null?'Checking configuration':'Not configured',loading:s.group==='discovery'?'Checking discovery index':'Checking source',paused:s.hasData?'Live reception paused · retained positions':'Live reception paused while view is closed',unavailable:s.group==='discovery'?'Discovery unavailable':'Unavailable',retained:s.group==='discovery'?'Retained discovery · update failed':'Cached data · update failed',empty:emptyLabel,stale:staleLabel,unknown:s.group==='weather'?'Model-run age unknown':'Observation age unknown',current:s.group==='maritime'?'Official source available':s.group==='discovery'?'Discovery checked · publication dates unknown':'Data available'})[s.status];
   if(s.id==='acled'&&s.connection==='connected'&&enabled){
     const latest=s.latest?' · latest '+new Date(s.latest).toISOString().slice(0,10):'';
     s.label=s.checkOverdue?'Source check overdue'+latest:s.sampleOnly===false?(s.hasData?(s.status==='stale'?'Older structured events':'Structured events available')+latest:'No matching structured events'):s.hasData?'Access verified · sample only':'Access verified · empty sample';
@@ -64,7 +68,12 @@ export function sourceHealth(input, now=Date.now()) {
   const olderContent=['news','acled'].includes(s.group)&&s.connection==='connected'&&s.status==='stale'&&!s.checkOverdue;
   s.attentionReason=!enabled?null:s.cacheIssue?'cache':['unavailable','retained'].includes(s.status)?'update':s.group==='vessels'&&['empty','unknown'].includes(s.status)?'reception':s.checkOverdue?'check':s.group==='vessels'&&s.freshness==='stale'?'observation':s.status==='stale'&&!olderContent?(['maritime','discovery'].includes(s.group)?'check':'observation'):null;
   s.attention=s.attentionReason!==null;
-  s.coverageStatus=!enabled?'disabled':s.status==='loading'?'checking':s.status==='unavailable'?'unavailable':s.attention||['stale','paused'].includes(s.status)||s.possiblyTruncated?'limited':s.hasData?'available':'no-matches';
+  // Clocks, transport and bounds are independent. A successful fetch cannot
+  // make unknown publication dates current or prove a complete result set.
+  s.clockCompleteness=count===0?'not-applicable':Number.isInteger(s.publicationUnknown)&&s.publicationUnknown>0?(s.publicationKnown>0?'partial':'unknown'):s.group==='discovery'||s.hasData&&s.contentAgeSeconds===null&&!['expectations'].includes(s.group)?'unknown':s.hasData?'known':'unknown';
+  s.checkStatus=!enabled?'disabled':s.connection==='loading'?'checking':!s.retrievedAt||s.retrievalAgeSeconds===null?'missing':failed?'failed':s.checkOverdue||['maritime','discovery'].includes(s.group)&&s.freshness==='stale'?'overdue':'successful';
+  s.scopeStatus=s.possiblyTruncated||s.truncated||s.archiveTruncated?'bounded':'retrieved-only';
+  s.coverageStatus=!enabled?'disabled':s.status==='loading'?'checking':s.status==='unavailable'?'unavailable':s.attention||['stale','paused'].includes(s.status)||s.scopeStatus==='bounded'||s.clockCompleteness==='partial'||s.delayed?'limited':s.status==='unknown'||s.hasData&&s.clockCompleteness==='unknown'?'unknown':s.hasData?'available':s.successfulCheck&&count===0?'no-matches':'unknown';
   return s;
 }
 export function collectSources(state,now=Date.now()) {
@@ -73,10 +82,11 @@ export function collectSources(state,now=Date.now()) {
     const value=raw.find(s=>s.id===def.id);
     let configured=def.optional?(state.config?!!state.config[def.optional]:null):true;
     if(value?.configured!==undefined)configured=value.configured;
+    if(def.defaultEnabled===false)configured=false;
     if(def.id==='aisstream' && state.vessels)configured=state.vessels.configured;
-    const s={...def,...value,name:def.name,configured,connection:value?.connection||(configured===false?'not configured':'loading')};
+    const s={...def,...value,...(['news','discovery'].includes(def.group)&&state.news?.coverage?.archive?.truncated?{archiveTruncated:true}:{}),name:def.name,configured,connection:value?.connection||(configured===false?'not configured':'loading')};
     // Compatibility for a cache written before the source-health metadata existed.
-    if(def.group==='news' && value&&!Number.isInteger(value.recordCount)){const matches=(state.news?.items||[]).filter(x=>x.sourceId===def.id);s.recordCount=matches.length;s.latestRelevant=matches.map(x=>x.publishedAt).filter(Boolean).sort().at(-1)||null;}
+    if(def.group==='news' && value&&!Number.isInteger(value.recordCount)){const matches=(state.news?.items||[]).filter(x=>x.sourceId===def.id);s.recordCount=matches.length;s.latestRelevant=matches.map(x=>x.publishedAt||x.publishedDate).filter(Boolean).sort().at(-1)||null;s.publicationKnown=matches.filter(x=>x.publishedAt||x.publishedDate).length;s.publicationUnknown=matches.length-s.publicationKnown;}
     if(def.group==='weather' && value)s.recordCount=state.weather.theaters?.filter(t=>t[def.id==='marine'?'marine':'wind']).length||0;
     if(def.group==='vessels' && state.vessels){
       const positions=(state.vessels.vessels||[]).filter(v=>(def.id==='openwaters'?v.provider==='Open Waters':v.provider!=='Open Waters')&&isCurrentVesselPosition(v,now));
@@ -89,14 +99,18 @@ export function collectSources(state,now=Date.now()) {
     return sourceHealth(s,now);
   });
 }
-export function coverage(sources,group='news') {
+export function coverage(sources=[],group='news') {
   const list=sources.filter(s=>(s.group===group||group==='news'&&s.group==='discovery') && s.configured!==false && s.configured!==null);
-  const usable=list.some(s=>s.hasData);
-  const pending=list.some(s=>s.status==='loading');
-  const incomplete=list.some(s=>['unavailable','retained','stale','loading'].includes(s.status));
-  const successful=list.some(s=>s.connection==='connected');
-  return {usable,pending,incomplete,unknown:!usable&&!successful,empty:!usable&&successful&&!incomplete,
-    label:!usable&&!successful?(pending?'Checking reporting sources':'Reporting unavailable'):incomplete?(usable?'Incomplete coverage · retrieved reports only':'Coverage incomplete · no usable reporting'):'Retrieved reports only'};
+  const usable=list.some(s=>s.hasData),pending=list.some(s=>s.status==='loading');
+  const successful=list.filter(s=>s.successfulCheck===true||s.connection==='connected'&&date(s.retrievedAt)&&!s.localFailure);
+  const clockUnknown=list.some(s=>s.hasData&&['unknown','partial'].includes(s.clockCompleteness)||s.coverageStatus==='unknown'||s.status==='unknown');
+  const truncated=list.some(s=>s.possiblyTruncated||s.truncated||s.scopeStatus==='bounded');
+  const retained=list.some(s=>s.status==='retained');
+  const incomplete=!list.length||clockUnknown||truncated||list.some(s=>['unavailable','retained','stale','loading','paused'].includes(s.status)||['limited','unknown','unavailable','checking'].includes(s.coverageStatus));
+  const unknown=!list.length||!usable&&!successful.length;
+  const empty=!usable&&successful.length>0&&!incomplete&&list.every(s=>s.coverageStatus==='no-matches'||s.recordCount===0);
+  return {usable,pending,incomplete,unknown,empty,clockUnknown,truncated,retained,sourceCount:list.length,successfulCount:successful.length,complete:false,
+    label:!list.length?'Coverage unknown · no source status received':!usable&&!successful.length?(pending?'Checking reporting sources':'Reporting unavailable'):incomplete?(usable?'Incomplete coverage · retrieved reports only':'Coverage incomplete · no usable reporting'):'Retrieved reports only'};
 }
 export function statusSummary(sources) {
   const enabled=sources.filter(s=>s.configured===true),checking=enabled.some(s=>s.status==='loading')||sources.some(s=>s.configured===null);
@@ -112,11 +126,13 @@ export function statusSummary(sources) {
   if(!enabled.length)return 'No sources configured';
   if(enabled.some(s=>s.status==='paused'))return 'Vessel reception paused';
   if(enabled.some(s=>s.status==='stale'))return 'Sources responding · older material available';
+  if(enabled.some(s=>s.possiblyTruncated||s.scopeStatus==='bounded'))return 'Source coverage limited · bounded results';
+  if(enabled.some(s=>s.coverageStatus==='unknown'||s.clockCompleteness==='partial'))return 'Sources responding · evidence dates incomplete';
   return enabled.some(s=>s.hasData)?'Sources responding':'Sources checked · no usable records';
 }
 export function panelNotice(sources,group) {
   const list=sources.filter(s=>(s.group===group||group==='news'&&s.group==='discovery')&&s.configured===true);
-  if(!list.length)return '';
+  if(!list.length)return 'Coverage unknown · no active source status received.';
   const failed=list.filter(s=>['retained','unavailable'].includes(s.status));
   if(failed.length){
     const isDiscovery=s=>s.group==='discovery'&&s.id?.startsWith('gdelt-');
@@ -129,5 +145,7 @@ export function panelNotice(sources,group) {
   if(group==='vessels'&&list.some(s=>s.status==='paused'))return 'Live vessel reception is paused while the view is closed. Retained positions keep their original observation times.';
   if(list.some(s=>s.status==='stale'))return 'Some sources contain older material. Check publication and observation dates in Sources.';
   if(list.some(s=>s.cacheIssue))return 'Data retrieved, but the local cache could not be saved. Open Sources for details.';
+  if(list.some(s=>s.possiblyTruncated||s.scopeStatus==='bounded'))return 'Retrieved results are bounded and may omit relevant records. Inspect source limits and archive coverage.';
+  if(list.some(s=>s.coverageStatus==='unknown'||s.clockCompleteness==='partial'))return 'Some publication or observation dates are unknown. Successful retrieval does not establish current evidence.';
   return group==='weather'?'Forecast valid times are shown below. Original model-run age is unknown.':'';
 }

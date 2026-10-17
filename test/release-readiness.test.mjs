@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {SOURCES} from '../lib/feeds.mjs';
-import {assessReportingReadiness} from '../lib/release-readiness.mjs';
+import {assessReportingReadiness,assessPassageReadiness} from '../lib/release-readiness.mjs';
 import {checkHostedApi} from '../scripts/check-hosted-api.mjs';
 
 const NOW=Date.parse('2026-09-28T19:00:00Z');
@@ -81,7 +81,7 @@ test('wrong service, malformed diagnostics and an empty required set cannot pass
 });
 
 test('hosted check requests only public health and diagnostics with the Pages origin and no refresh',async()=>{
-  const requests=[],input=fixture();
+  const requests=[],input=coreFixture();
   const result=await checkHostedApi({base:'https://live.example.com/',now:()=>NOW,fetchImpl:async(url,options)=>{
     requests.push({url:String(url),options});
     return Response.json(requests.length===1?input.health:input.diagnostics,{headers:{'Access-Control-Allow-Origin':'https://myleshamm.github.io'}});
@@ -100,4 +100,15 @@ test('hosted check blocks publishing on actual diagnostics failure or core rejec
       return Response.json(isHealth?health:input.diagnostics,{headers:{'Access-Control-Allow-Origin':!isHealth&&mode==='cors'?'https://other.example':'https://myleshamm.github.io'}});
     }}),mode==='http'?/diagnostics.*503/i:mode==='cors'?/origin/i:/reporting.*not ready/i);
   }
+});
+
+function coreFixture(){const input=fixture();input.diagnostics.sources.push(...['imo-hormuz','imo-redsea','brent','wti'].map(id=>({id,configured:true,connection:'connected',retrievedAt:'2026-09-28T18:59:00Z',recordCount:2,latest:id.startsWith('imo')?'2026-08-01':'2026-09-25'})));return input;}
+test('core release checks official registers and prices while respecting event and weekend lag',()=>{
+ const input=coreFixture();assert.equal(assessPassageReadiness(input).ready,true);
+ for(const id of ['imo-hormuz','imo-redsea','brent','wti']){const failed=structuredClone(input);failed.diagnostics.sources.find(source=>source.id===id).connection='cached';assert.equal(assessPassageReadiness(failed).ready,false,id);}
+ input.diagnostics.sources.push({id:'marad-advisories',configured:true,connection:'unavailable'});assert.equal(assessPassageReadiness(input).ready,true,'supporting advisory gap remains disclosed without claiming core shutdown');
+});
+test('core gate refuses missing timestamps and old price observations without requiring new incident dates',()=>{
+ const input=coreFixture();const price=input.diagnostics.sources.find(source=>source.id==='brent');price.latest='2026-09-18';assert.equal(assessPassageReadiness(input).ready,false);price.latest='2026-09-25';price.retrievedAt=null;assert.equal(assessPassageReadiness(input).ready,false);
+ const emptyOfficial=coreFixture();emptyOfficial.diagnostics.sources.find(source=>source.id==='imo-redsea').recordCount=0;assert.equal(assessPassageReadiness(emptyOfficial).ready,true);
 });

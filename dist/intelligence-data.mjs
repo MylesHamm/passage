@@ -1,3 +1,4 @@
+import {evidenceKind,withEvidenceKind} from './evidence-kind.mjs';
 import {ACTORS,cleanText,dateOnly,publicUrl} from './research-data.mjs';
 import {MECHANISMS,oilMechanisms} from './situation-data.mjs';
 import {MARKET_CONTEXT} from './energy-context.mjs';
@@ -62,7 +63,7 @@ export function normalizeManualReport(input,now=Date.now()) {
   return {id:'manual:'+url,url,title,source:cleanText(input.publisher||input.source,100)||new URL(url).hostname,
     publishedAt:null,publishedDate,discoveredAt:null,addedAt:validInstant(input.addedAt,now)||new Date(now).toISOString(),
     summary:cleanText(input.note||input.summary,1000),contentAccess:'User-supplied link and note; article not fetched',
-    dateBasis:publishedDate?'User-entered publication date':'Publication date unknown',evidenceStatus:'User-supplied context',
+    dateBasis:publishedDate?'User-entered publication date':'Publication date unknown',recordKind:'user-note',evidenceStatus:'User-supplied context',
     relevanceScope:'analyst-included',theaters:[],manual:true};
 }
 
@@ -71,7 +72,7 @@ function normalizeReport(input,now) {
   const publishedAt=validInstant(input.publishedAt,now),publishedDate=validDay(input.publishedDate||input.publicationDate,now),discoveredAt=validInstant(input.discoveredAt,now);
   if(input.publishedAt&&!publishedAt||input.publishedDate&&!publishedDate||input.discoveredAt&&!discoveredAt)return null;
   return {id:cleanText(input.id,600)||url,url,title,source:cleanText(input.source||input.publisher,120)||new URL(url).hostname,
-    sourceId:cleanText(input.sourceId,100),type:cleanText(input.type,100),publishedAt,publishedDate,discoveredAt,publicationPrecision:cleanText(input.publicationPrecision,30)|| (publishedAt?'timestamp':publishedDate?'day':'unknown'),
+    recordKind:evidenceKind(input),...(evidenceKind(input)==='official-advisory'?{advisoryId:cleanText(input.advisoryId,20),sourceStatus:cleanText(input.sourceStatus,30),effectiveDate:dateOnly(input.effectiveDate),expiresDate:dateOnly(input.expiresDate),validityState:cleanText(input.validityState,40),supersedes:(input.supersedes||[]).filter(value=>/^\d{4}-\d{3}$/.test(value)),supersededBy:(input.supersededBy||[]).filter(value=>/^\d{4}-\d{3}$/.test(value))}:{}),sourceId:cleanText(input.sourceId,100),type:cleanText(input.type,100),publishedAt,publishedDate,discoveredAt,publicationPrecision:cleanText(input.publicationPrecision,30)|| (publishedAt?'timestamp':publishedDate?'day':'unknown'),
     provenance:(input.provenance||[]).slice(0,12).map(p=>({sourceId:cleanText(p.sourceId,100),publisher:cleanText(p.publisher,120),url:canonicalReportUrl(p.url),publishedAt:validInstant(p.publishedAt,now),discoveredAt:validInstant(p.discoveredAt,now),dateBasis:cleanText(p.dateBasis,100)})).filter(p=>p.url),
     matchEvidence:(input.matchEvidence||[]).slice(0,40).map(m=>({kind:cleanText(m.kind,50),value:cleanText(m.value,100),field:cleanText(m.field,50),basis:cleanText(m.basis,200)})),
     updatedAt:validInstant(input.updatedAt,now),retrievedAt:validInstant(input.retrievedAt,now),addedAt:validInstant(input.addedAt,now),
@@ -176,7 +177,7 @@ export function buildIntelligence({news,maritime,acled,oil,now=Date.now(),includ
     const eventDate=validDay(event.eventDate,now),url=canonicalReportUrl(event.url);
     if(!url||!event.id||!eventDate)continue; // Statements without event dates become reports below.
     const id=`event:${provider}:${event.id}`,record={
-      id:event.id,title:cleanText(event.title,500),summary:cleanText(event.summary||event.notes,1000),url,
+      id:event.id,recordKind:provider==='acled'?'structured-event':evidenceKind(event),title:cleanText(event.title,500),summary:cleanText(event.summary||event.notes,1000),url,
       source:event.source|| (provider==='acled'?'ACLED':'IMO'),eventDate,eventDatePrecision:event.eventDatePrecision|| (event.timePrecision===1?'day':'Provider precision; see source'),
       evidenceStatus:event.evidenceStatus||'Structured source record',locationText:cleanText(event.locationText||[event.location,event.country].filter(Boolean).join(', '),600),
       locationPrecision:event.locationPrecision||'ACLED country context; not maritime geocoding',contentAccess:provider==='imo'?'Official source register':'Account-accessible structured record',
@@ -187,14 +188,15 @@ export function buildIntelligence({news,maritime,acled,oil,now=Date.now(),includ
     g.edge(source.id,n.id,'REPORTS_EVENT',{sourceUrl:url,basis:'Structured source record',eventDate,evidenceStatus:record.evidenceStatus});
   }
   for(const statement of maritime?.events||[])if(!statement.eventDate)g.report({...statement,publishedAt:null,contentAccess:'Official statement index; open source for details'});
+  for(const advisory of maritime?.advisories||[])g.report({...advisory,publishedAt:null,publishedDate:null,contentAccess:'Official advisory metadata; validity dates are not publication or event dates'});
   for(const series of oil?.series||[]) {
     const p=(series.observations||[]).filter(p=>validDay(p.date,now)&&Number.isFinite(p.value)).sort((a,b)=>a.date.localeCompare(b.date)).at(-1);
     if(!p||!['brent','wti'].includes(series.id))continue;
     const id=`market:eia:${series.id}:${p.date}`;
-    g.node({id,type:'market',label:`${series.name||series.id} daily spot`,sourceUrl:series.url,record:{provider:'EIA',seriesId:series.id,observationDate:p.date,value:p.value,units:'USD/barrel',basis:'Daily spot observation; not intraday futures',summary:'Shared market context. Connections do not estimate the effect of an event.'}});
+    g.node({id,type:'market',label:`${series.name||series.id} daily spot`,sourceUrl:series.url,record:{recordKind:'market-observation',provider:'EIA',seriesId:series.id,observationDate:p.date,value:p.value,units:'USD/barrel',basis:'Daily spot observation; not intraday futures',summary:'Shared market context. Connections do not estimate the effect of an event.'}});
     for(const channel of [...MECHANISMS,DIPLOMACY])if(g.nodes.has('channel:'+channel.id))g.edge('channel:'+channel.id,id,'CONTEXT_FOR',{sourceUrl:series.url,basis:'Shared market context only; no causal attribution',evidenceStatus:'Observed daily price'});
   }
-  return finishGraph(g,{sources,now,review:includeReviewedContext?undefined:null,coverage:{...news?.coverage,reportLimit:1200,omittedReports,eventLimitPerProvider:500,acledCountryScope:['Yemen','Iran'],omittedNonOilContextEvents:(acled?.events?.length||0)-conflict.length,bounded:omittedReports>0||conflict.length>500||!!acled?.truncated}});
+  return finishGraph(g,{sources,now,review:includeReviewedContext?undefined:null,coverage:{...news?.coverage,maritime:maritime?.coverage||null,reportLimit:1200,omittedReports,eventLimitPerProvider:500,acledCountryScope:['Yemen','Iran'],omittedNonOilContextEvents:(acled?.events?.length||0)-conflict.length,omittedMaritimeEvents:Math.max(0,(maritime?.events?.length||0)-500),bounded:omittedReports>0||(maritime?.events?.length||0)>500||conflict.length>500||!!acled?.truncated||!!news?.coverage?.truncated||!!news?.coverage?.archive?.truncated}});
 }
 
 function finishGraph(g,{sources=[],now=Date.now(),coverage,review=COVERAGE_REVIEW_DATE?{date:COVERAGE_REVIEW_DATE,needsReview:now-Date.parse(COVERAGE_REVIEW_DATE+'T00:00:00Z')>3*DAY}:null}={}) {

@@ -47,8 +47,13 @@ test('Pages artifact resolves its real assets, imports and navigation under /pas
     }
   }
   assert.ok(files.includes('.nojekyll'));
+  assert.equal(await readFile(resolve(output,'vendor/d3-ISC.txt'),'utf8'),await readFile(new URL('../licenses/d3-ISC.txt',import.meta.url),'utf8'));
+  assert.match(await readFile(resolve(output,'vendor/d3-ISC.txt'),'utf8'),/Permission to use, copy, modify/);
+  assert.deepEqual(files.filter(name => name.endsWith('.bin')).sort(), ['terrain/assets/bab-dem.bin', 'terrain/assets/hormuz-dem.bin']);
+  assert.ok(!files.some(name => name.startsWith('terrain/source/') || name.startsWith('terrain/test/') || /\.(py|headers)$/.test(name)));
+  for(const name of ['terrain/assets/bab-dem.bin','terrain/assets/hormuz-dem.bin'])assert.equal((await stat(resolve(output,name))).size,256*256*2);
   assert.ok(!files.some(name => name.startsWith('connections/') || /(?:\.env|server\.mjs|cache|node_modules)/.test(name)));
-  assert.deepEqual(files.filter(name => name.endsWith('.json')).sort(), ['assets/region.json', 'assets/world-land.json']);
+  assert.deepEqual(files.filter(name => name.endsWith('.json')).sort(), ['assets/region.json', 'assets/world-land.json', 'terrain/assets/provenance.json']);
   const notes = await import(pathToFileURL(resolve(output, 'intelligence-context.mjs')));
   const energy = await import(pathToFileURL(resolve(output, 'energy-context.mjs')));
   const graph = await import(pathToFileURL(resolve(output, 'intelligence-data.mjs')));
@@ -95,4 +100,12 @@ test('build cannot overwrite source/existing output, include fake snapshots or a
   await mkdir(existing); await writeFile(resolve(existing, 'keep.txt'), 'keep');
   await assert.rejects(buildPages({ outputDir: existing }), /already exists/);
   assert.equal(await readFile(resolve(existing, 'keep.txt'), 'utf8'), 'keep');
+}));
+
+test('terrain allowlist does not permit unrelated binary or JSON payloads', async()=>withDirectory(async directory=>{
+ const sourceDir=resolve(directory,'source');await mkdir(resolve(sourceDir,'terrain/assets'),{recursive:true});
+ await writeFile(resolve(sourceDir,'terrain/assets/private.bin'),'private');
+ await assert.rejects(buildPages({sourceDir,outputDir:resolve(directory,'binary')}),/Unexpected public asset/);
+ await rm(resolve(sourceDir,'terrain/assets/private.bin'));await writeFile(resolve(sourceDir,'terrain/assets/session.json'),'{}');
+ await assert.rejects(buildPages({sourceDir,outputDir:resolve(directory,'json')}),/reference geography/);
 }));
