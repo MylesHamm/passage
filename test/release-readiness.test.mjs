@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {SOURCES} from '../lib/feeds.mjs';
 import {assessReportingReadiness,assessPassageReadiness} from '../lib/release-readiness.mjs';
 import {checkHostedApi} from '../scripts/check-hosted-api.mjs';
+import {backendFixture} from './fixtures/release-backend.mjs';
 
 const NOW=Date.parse('2026-09-28T19:00:00Z');
 const health={application:'passage-maritime-watch',status:'ready'};
@@ -80,14 +81,16 @@ test('wrong service, malformed diagnostics and an empty required set cannot pass
   }
 });
 
-test('hosted check requests only public health and diagnostics with the Pages origin and no refresh',async()=>{
-  const requests=[],input=coreFixture();
+test('hosted check reads existing public source contracts with the Pages origin and no forced refresh',async()=>{
+  const requests=[],input=coreFixture(),backend=backendFixture(NOW);
+  input.diagnostics.sources.push(...backend.diagnostics.sources);
+  const payloads={...backend,...input};
   const result=await checkHostedApi({base:'https://live.example.com/',now:()=>NOW,fetchImpl:async(url,options)=>{
     requests.push({url:String(url),options});
-    return Response.json(requests.length===1?input.health:input.diagnostics,{headers:{'Access-Control-Allow-Origin':'https://myleshamm.github.io'}});
+    return Response.json(payloads[new URL(url).pathname.split('/').at(-1)],{headers:{'Access-Control-Allow-Origin':'https://myleshamm.github.io'}});
   }});
   assert.equal(result.ready,true);
-  assert.deepEqual(requests.map(request=>request.url),['https://live.example.com/api/health','https://live.example.com/api/diagnostics']);
+  assert.deepEqual(requests.map(request=>request.url),['health','config','news','maritime','diagnostics'].map(endpoint=>'https://live.example.com/api/'+endpoint));
   assert.ok(requests.every(({options})=>options.headers.Origin==='https://myleshamm.github.io'&&options.redirect==='error'));
 });
 
@@ -98,7 +101,7 @@ test('hosted check blocks publishing on actual diagnostics failure or core rejec
       const isHealth=new URL(url).pathname==='/api/health';
       if(!isHealth&&mode==='http')return new Response('Unavailable',{status:503});
       return Response.json(isHealth?health:input.diagnostics,{headers:{'Access-Control-Allow-Origin':!isHealth&&mode==='cors'?'https://other.example':'https://myleshamm.github.io'}});
-    }}),mode==='http'?/diagnostics.*503/i:mode==='cors'?/origin/i:/reporting.*not ready/i);
+    }}),mode==='http'?/config.*503/i:mode==='cors'?/origin/i:/not ready for publication/i);
   }
 });
 
@@ -111,4 +114,33 @@ test('core release checks official registers and prices while respecting event a
 test('core gate refuses missing timestamps and old price observations without requiring new incident dates',()=>{
  const input=coreFixture();const price=input.diagnostics.sources.find(source=>source.id==='brent');price.latest='2026-09-18';assert.equal(assessPassageReadiness(input).ready,false);price.latest='2026-09-25';price.retrievedAt=null;assert.equal(assessPassageReadiness(input).ready,false);
  const emptyOfficial=coreFixture();emptyOfficial.diagnostics.sources.find(source=>source.id==='imo-redsea').recordCount=0;assert.equal(assessPassageReadiness(emptyOfficial).ready,true);
+});
+
+
+test('hosted gate rejects the previous source rollout even when all nine core checks pass',async()=>{
+  const input=coreFixture(),backend=backendFixture(NOW);delete backend.config.capabilities;delete backend.news.capabilities;
+  delete backend.maritime.advisories;delete backend.maritime.coverage;
+  input.diagnostics.sources.push(...backend.diagnostics.sources.filter(source=>source.id!=='marad-advisories'));
+  for(const payload of [input.diagnostics,backend.news])for(const source of payload.sources)if(['centcom','gdelt-exports','gdelt-energy','gdelt-reuters'].includes(source.id))source.configured=true;
+  assert.equal(assessPassageReadiness(input).ready,true,'this is the exact blind spot in the old core-only gate');
+  const payloads={...backend,...input};
+  await assert.rejects(checkHostedApi({base:'https://live.example.com/',now:()=>NOW,fetchImpl:async url=>Response.json(payloads[new URL(url).pathname.split('/').at(-1)],{headers:{'Access-Control-Allow-Origin':'https://myleshamm.github.io'}})}),error=>{
+    assert.equal(error.result.verifiedCount,9);
+    assert.equal(error.result.backend.compatible,false);
+    assert.ok(error.result.failures.some(failure=>failure.id==='marad-advisories'&&failure.category==='capability'));
+    assert.ok(error.result.failures.some(failure=>failure.id==='centcom'&&failure.category==='capability'));
+    return true;
+  });
+});
+
+test('every additional public contract endpoint retains HTTP and CORS enforcement',async()=>{
+  const input=coreFixture(),backend=backendFixture(NOW);input.diagnostics.sources.push(...backend.diagnostics.sources);
+  const payloads={...backend,...input};
+  for(const endpoint of ['config','news','maritime','diagnostics'])for(const mode of ['http','cors']){
+    await assert.rejects(checkHostedApi({base:'https://live.example.com/',now:()=>NOW,fetchImpl:async url=>{
+      const route=new URL(url).pathname.split('/').at(-1),failed=route===endpoint;
+      if(failed&&mode==='http')return new Response('Unavailable',{status:503});
+      return Response.json(payloads[route],{headers:{'Access-Control-Allow-Origin':failed&&mode==='cors'?'https://other.example':'https://myleshamm.github.io'}});
+    }}),new RegExp(endpoint+'.*'+(mode==='http'?'503':'origin'),'i'));
+  }
 });
