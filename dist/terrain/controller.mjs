@@ -35,7 +35,7 @@ export async function createRegionalTerrain(root,callbacks={}){
   if(wider){wider.textContent=pose.zoom<.92?'Focused':'Wider';wider.setAttribute('aria-pressed',String(pose.zoom<.92));}
   if(zoomIn)zoomIn.disabled=pose.zoom>=2.4;if(zoomOut)zoomOut.disabled=pose.zoom<=.76;
   root.querySelectorAll('[data-terrain-region]').forEach(node=>node.setAttribute('aria-pressed',String(node.dataset.terrainRegion===scene.id)));
-  if(status)status.textContent=`${scene.shortName} · ${fallback?'2D reference fallback':pose.topDown?'plan view':'3D reference'}${scope==='both'?' · reporting: both':''}`;
+  if(status)status.textContent=`${scene.shortName} · ${fallback?'2D reference fallback':pose.topDown?'plan view':'3D reference'}`;
   if(heading)heading.textContent=scene.name;
   if(north)north.style.transform=`rotate(${fallback?0:-pose.yaw*180/Math.PI}deg)`;
   if(caption)caption.textContent=fallback||pose.topDown?'Drag to pan · + / − zoom · R to reset':'Drag to tilt · Shift-drag to pan · R to reset';
@@ -117,7 +117,7 @@ export async function createRegionalTerrain(root,callbacks={}){
  try{renderer=createWebGLRenderer(canvas);}catch(error){useFallback(error.message);}
  bindCanvas();layoutLabels();
  listen(motion,'click',togglePlan);listen(wider,'click',()=>move({zoom:pose.zoom<.92?1:.76,panX:0,panZ:0}));listen(zoomIn,'click',()=>zoom(1.15));listen(zoomOut,'click',()=>zoom(1/1.15));
- root.querySelectorAll('[data-terrain-region]').forEach(node=>listen(node,'click',()=>{select(node.dataset.terrainRegion);callbacks.onSelect?.(node.dataset.terrainRegion);}));
+ root.querySelectorAll('[data-terrain-region]').forEach(node=>listen(node,'click',()=>select(node.dataset.terrainRegion)));
  listen(document,'visibilitychange',()=>{if(document.hidden){if(frame)cancelAnimationFrame(frame);frame=0;if(transition){pose=transition.to;transition=null;}}else requestDraw();});
  listen(reduced,'change',()=>{if(reduced.matches&&transition){pose=transition.to;transition=null;}requestDraw();});
  const observer=new ResizeObserver(resize);observer.observe(surface);

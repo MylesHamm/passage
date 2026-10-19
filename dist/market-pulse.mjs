@@ -28,7 +28,7 @@ function sparkline(rows,observations,name){
 /** Daily EIA observations only. This summary has no provider calls or motion. */
 export function renderMarketPulse(oil,{failed=false,now=Date.now()}={}){
   const series=Array.isArray(oil?.series)?oil.series:[];
-  return `<section class="market-pulse" aria-label="Daily oil market pulse"><header class="pulse-heading"><div><h2>Oil market pulse</h2><p>Daily spot · USD/barrel · publication lag</p></div><button type="button" class="pulse-open" data-workspace-view="energy" aria-label="Open full energy comparison">Compare <span aria-hidden="true">↗</span></button></header><div class="pulse-rows">${[['brent','Brent'],['wti','WTI']].map(([id,name])=>{
+  return `<section class="market-pulse" aria-label="Daily oil market pulse"><header class="pulse-heading"><div><h2>Oil price observations</h2><p>Daily spot · USD/barrel · publication lag</p></div><button type="button" class="pulse-open" data-workspace-view="energy" aria-label="Open full energy comparison">Compare <span aria-hidden="true">↗</span></button></header><div class="pulse-rows">${[['brent','Brent'],['wti','WTI']].map(([id,name])=>{
     const source=series.find(row=>row?.id===id),rows=normalizeOilObservations(source?.observations,{now}),observations=rows.filter(point=>point.value!==null),latest=observations.at(-1),previous=observations.at(-2);
     const status=observationState(source,observations,{failed,now,loading:!oil}),delta=latest&&previous?latest.value-previous.value:null;
     const difference=delta===null?'No prior observation':`${delta>0?'+':''}${money(delta)} vs ${date(previous.date)}`;

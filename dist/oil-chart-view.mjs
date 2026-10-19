@@ -223,7 +223,7 @@ export function createOilChart(mount, { onReadout } = {}) {
     windowLabel.textContent = dateRange;
     plot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="${id}-title ${id}-description" data-oil-svg>
       <title id="${id}-title">Daily Brent and WTI spot prices, U.S. dollars per barrel</title>
-      <desc id="${id}-description">${esc(dateRange)}. Brent is a solid mint line; WTI is a dashed blue line. ${model.dates.length} observed dates. ${esc(OIL_GAP_POLICY)} Use the date control below for exact observations. Shared timing with news does not establish causation.</desc>
+      <desc id="${id}-description">${esc(dateRange)}. Brent is a solid blue line; WTI is a dashed slate line. ${model.dates.length} observed dates. ${esc(OIL_GAP_POLICY)} Use the date control below for exact observations. Shared timing with news does not establish causation.</desc>
       <g data-chart-grid>${grid}${ticks}</g>${lines}<g data-chart-endpoints>${labels}</g><g data-chart-focus aria-hidden="true"></g>
       <rect x="${left}" y="${top}" width="${Math.max(1, right - left)}" height="${bottom - top}" fill="transparent" data-chart-hit/>
     </svg>`;

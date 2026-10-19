@@ -1,3 +1,4 @@
+import {renderExposureBaselineMarkup} from './exposure-view.mjs';
 import {createWorkspaceView,workspaceFor} from './workspace-view.mjs';
 import {enterSequence,bindDisclosures} from './motion.mjs';
 import {renderMarketPulse} from './market-pulse.mjs';
@@ -15,7 +16,7 @@ import {buildPriorityBrief} from './priority-brief.mjs';
 import {createPriorityView} from './priority-view.mjs';
 import {renderMarketContext} from './market-view.mjs';
 import {createSituationView} from './situation-view.mjs';
-import {EXPOSURE_BASELINE,INFRASTRUCTURE} from './energy-context.mjs';
+import {INFRASTRUCTURE} from './energy-context.mjs';
 import {vesselTypeLabel} from './vessel-data.mjs';
 import {createRegionalTerrain} from './terrain/controller.mjs';
 import {reportInspectorMarkup,bindInspectorTabs} from './report-inspector.mjs';
@@ -184,8 +185,8 @@ function setTheater(t){
 function showOverview(){state.actor='All';state.query='';$('#search').value='';setView('overview');setTheater('both');}
 function renderScope(){
   const overview=state.theater==='both',scene=workspaceFor(state.view);
-  const titles={overview:overview?'The passage, in context.':names[state.theater],reporting:state.view==='saved'?'Your saved reporting':state.view==='civilian'?'Supply & crew impacts':'Follow the reporting',energy:'Read the energy market',evidence:'Understand the evidence'};
-  const descriptions={overview:'Two chokepoints. Follow the source before the signal.',reporting:'A single stream of source-linked reporting. Search, filter and inspect.',energy:'Measured prices, historical exposure and market expectations — separately dated.',evidence:'Official records, regional connections and the limits of this watch.'};
+  const titles={overview:overview?'Maritime watch':names[state.theater]+' watch',reporting:state.view==='saved'?'Your saved reporting':state.view==='civilian'?'Supply & crew impacts':'Reporting library',energy:'Oil & energy',evidence:'Evidence & coverage'};
+  const descriptions={overview:'Recent reporting, official records and oil observations. Each with its own date.',reporting:'A single stream of source-linked reporting. Search, filter and inspect.',energy:'Dated price observations, historical flows and the possible connections to maritime reporting.',evidence:'Official records, regional connections and the limits of this watch.'};
   $('#view-title').textContent=titles[scene];$('#scope-subtitle').textContent=descriptions[scene];
   $('#workspace-filter-note').textContent=state.actor==='All'?'':`Reporting actor: ${state.actor}`;
   $('#oil-heading').textContent='Brent & WTI · daily spot';
@@ -200,7 +201,7 @@ function impactRelevantEvent(event){
   return !/peaceful protest|protest with intervention|protest without intervention|protest\b/i.test(text)&&(/violence against civilians|battle|armed clash|attack|explosion|abduction|maritime|port|pipeline|oil|tanker|missile|drone|civilian|fatal/i.test(text)||event.civilianTargeting);
 }
 function renderCivilianSummary(){}
-function renderExposureBaseline(){const target=$('#oil-exposure');if(!target)return;const items=EXPOSURE_BASELINE.filter(x=>state.theater==='both'||x.scope.includes(state.theater));target.innerHTML=`<div class="exposure-heading"><span class="eyebrow">CHOKEPOINT EXPOSURE · EIA BASELINE</span><a href="https://www.eia.gov/international/content/analysis/special_topics/World_Oil_Transit_Chokepoints/" target="_blank" rel="noopener noreferrer">EIA chokepoints ↗</a></div><div class="exposure-grid">${items.map(x=>`<article class="exposure-card"><span>${esc(x.label)}</span><strong>${esc(x.value)}</strong><small>${esc(x.detail)}</small></article>`).join('')}</div><p class="exposure-note">Historical flows are exposure baselines, not current throughput. Bypass operating status is separately dated in the situation evidence.</p>`;}
+function renderExposureBaseline(){const target=$('#oil-exposure');if(target)target.innerHTML=renderExposureBaselineMarkup({theater:state.theater});}
 function renderOilContext(){
   const now=Date.now(),pulse=$('#market-pulse'),html=renderMarketPulse(state.oil,{failed:state.failures.oil,now});
   if(pulse.innerHTML!==html){const focused=pulse.contains(document.activeElement);pulse.innerHTML=html;if(focused)pulse.querySelector('button')?.focus({preventScroll:true});}
@@ -359,7 +360,7 @@ if(initialAnchorUntouched)anchorInputs.forEach(type=>window.addEventListener(typ
 const pageLoaded=document.readyState==='complete'?Promise.resolve():new Promise(resolve=>window.addEventListener('load',resolve,{once:true}));
 renderScope();renderActors();renderTheaters();renderStatus();renderOil();
 Promise.all([loadAll(),pageLoaded]).then(()=>{if(initialAnchorUntouched&&location.hash==='#oil-system'&&state.view==='energy')oilSystem.open();anchorInputs.forEach(type=>window.removeEventListener(type,cancelInitialAnchor));});
-createRegionalTerrain($('#globe'),{onSelect:setTheater,onVessel:showVessel,onEvent:showAcledEvent,onInfrastructure:hit=>situation.showAsset(hit),onHover:renderGlobeHover}).then(g=>{globe=g;globe.setInfrastructure(state.showInfrastructure?INFRASTRUCTURE:[]);globe.setEvents(state.showEvents?acledEvents().filter(impactRelevantEvent):[]);if(state.theater!=='both')globe.select(state.theater);renderVessels();});
+createRegionalTerrain($('#globe'),{onVessel:showVessel,onEvent:showAcledEvent,onInfrastructure:hit=>situation.showAsset(hit),onHover:renderGlobeHover}).then(g=>{globe=g;globe.setInfrastructure(state.showInfrastructure?INFRASTRUCTURE:[]);globe.setEvents(state.showEvents?acledEvents().filter(impactRelevantEvent):[]);if(state.theater!=='both')globe.select(state.theater);renderVessels();});
 
 let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(renderOil,120);});
 
