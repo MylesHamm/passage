@@ -17,15 +17,16 @@ test('Al Jazeera regional index supplies current reports after the global feed r
  const current=Date.parse('2026-09-30T18:00:00Z'),requests=[];
  const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>current,fetchImpl:async url=>{
   const address=new URL(url).href;requests.push(address);
-  if(address===AL_JAZEERA_INDEX)return new Response(ajIndex([{title:'Iran reviews oil tanker access through Hormuz',excerpt:'Officials discuss shipping access.',link:'/news/2026/9/30/fixture-index',date:'2026-09-30T12:05:45'}]));
+  if(address===AL_JAZEERA_INDEX)return new Response(ajIndex([{title:'Iran reviews oil tanker access through Hormuz',excerpt:'Officials discuss shipping access.',link:'/news/2026/9/30/fixture-index',date:'2026-09-30T12:05:45'},{title:'Gaza hospital conditions',excerpt:'Public interactive preview.',link:'https://interactive.aljazeera.com/aje/2026/gaza-hospitals/',date:'2026-09-30T11:00:00'}]));
   if(address===SOURCES.find(source=>source.id==='aj').url)return new Response('<rss><channel><item><title>Local gardening exhibition opens</title><link>https://www.aljazeera.com/news/2026/9/30/fixture-gardens</link><pubDate>Wed, 30 Sep 2026 17:00:00 GMT</pubDate></item></channel></rss>');
   return new Response('Unavailable',{status:503});
  }});
  const result=await loadReporting(runtime,{includeReviewedContext:false,discoveryWaitMs:30000,discoverySpacingMs:0}),source=result.sources.find(s=>s.id==='aj');
  assert.equal(result.items.length,1);assert.equal(result.items[0].sourceId,'aj');assert.equal(result.items[0].publicationPrecision,'day');
- assert.equal(source.status,'current');assert.equal(source.recordCount,1);assert.equal(source.parsedCount,2);assert.equal(source.latestRelevant,'2026-09-30T00:00:00.000Z');
+ assert.equal(source.status,'current');assert.equal(source.recordCount,1);assert.equal(source.parsedCount,3);assert.equal(source.latestRelevant,'2026-09-30T00:00:00.000Z');
  assert.equal(source.access,'Publisher RSS + public regional index');assert.equal(source.publicationPrecision,'mixed');assert.equal(result.coverage.complete,false);
  assert.equal(requests.filter(url=>new URL(url).hostname==='www.aljazeera.com').length,2);
+ assert.ok(!requests.some(url=>new URL(url).hostname==='interactive.aljazeera.com'));
 });
 for(const failure of ['index-http','index-markup','rss-http'])test(`Al Jazeera ${failure} failure retains the complete dated source snapshot`,async()=>{
  const current=Date.parse('2026-09-30T18:00:00Z');let clock=current,failed=false;

@@ -27,6 +27,31 @@ test('regional index does not widen relevance or read unrelated embedded state',
  const rows=parseAlJazeeraIndex(page([post({title:'Local gardening exhibition opens',excerpt:'Community gardens.'})],{'Post:unlisted':post()}),now);
  assert.equal(rows.length,1);assert.equal(reportRelevant(rows[0]),false);
 });
+test('official interactive links retain public index metadata and publication date precision',()=>{
+ // The public Middle East index included this publisher-hosted URL on 2026-10-19.
+ const link='https://interactive.aljazeera.com/aje/2026/gaza-hospitals/';
+ const rows=parseAlJazeeraIndex(page([post(),post({title:'Inside Gaza’s hospital horror',excerpt:'Public index preview.',link,date:'2026-10-19T07:23:53'})]),Date.parse('2026-10-19T15:10:08Z'));
+ assert.equal(rows.length,2);const row=rows.find(item=>item.url===link);
+ assert.equal(row.title,'Inside Gaza’s hospital horror');assert.equal(row.summary,'Public index preview.');
+ assert.equal(row.publisher,'Al Jazeera');assert.equal(row.sourceId,'aj');assert.equal(row.contentAccess,'publisher-summary');
+ assert.equal(row.publishedAt,'2026-10-19T00:00:00.000Z');assert.equal(row.publishedDate,'2026-10-19');
+ assert.equal(row.publicationPrecision,'day');assert.equal(row.dateBasis,'publisher-date');assert.match(row.dateNote,/timezone/);
+ assert.equal(row.eventDate,null);assert.equal(row.discoveredAt,null);assert.equal(reportRelevant(row),false);
+});
+test('interactive metadata support does not admit unsafe origins, arbitrary paths or invalid dates',()=>{
+ for(const link of [
+  'https://interactive.aljazeera.com.evil.test/aje/2026/gaza-hospitals/',
+  'https://other.aljazeera.com/aje/2026/gaza-hospitals/',
+  'http://interactive.aljazeera.com/aje/2026/gaza-hospitals/',
+  'https://interactive.aljazeera.com:8443/aje/2026/gaza-hospitals/',
+  'https://user:password@interactive.aljazeera.com/aje/2026/gaza-hospitals/',
+  'https://interactive.aljazeera.com/aje/2026/gaza-hospitals/?token=private',
+  'https://interactive.aljazeera.com/',
+  'https://interactive.aljazeera.com/other/2026/gaza-hospitals/',
+  'https://interactive.aljazeera.com/aje/2026/gaza-hospitals/embed.js',
+ ])assert.throws(()=>parseAlJazeeraIndex(page([post(),post({link})]),now),/metadata/);
+ assert.throws(()=>parseAlJazeeraIndex(page([post({link:'https://interactive.aljazeera.com/aje/2026/gaza-hospitals/',date:'2026-02-30T12:00:00'})]),now),/date metadata/);
+});
 test('missing or changed regional index markup fails visibly instead of succeeding empty',()=>{
  for(const html of ['<html>Blocked</html>','<script>window.__APOLLO_STATE__="e30=";</script>',page([]),page([post()],{ROOT_QUERY:{'posts({"category":"sports","categoryType":"where"})':[{__ref:'Post:0'}]}})])assert.throws(()=>parseAlJazeeraIndex(html,now),/index|metadata/);
  const missing=page([post()],{'Post:0':null});assert.throws(()=>parseAlJazeeraIndex(missing,now),/metadata/);
