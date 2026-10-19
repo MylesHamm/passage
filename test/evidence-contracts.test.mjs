@@ -85,7 +85,7 @@ test('audit 11 · evidence kinds survive graph, ledger label, export JSON and sp
  for(const [recordKind,label] of Object.entries({'official-statement':'Official statement','agency-assessment':'Agency assessment','independent-analysis':'Independent analysis','forecast':'Forecast','user-note':'User note'})){
   const report=row(recordKind,{recordKind,forecastCompleted:'2026-10-01'}),graph=buildIntelligence({news:{items:[report]},now:NOW,includeReviewedContext:false});
   const retained=JSON.parse(JSON.stringify(graph)).nodes.find(node=>node.type==='report').record;assert.equal(evidenceKind(retained),recordKind);assert.equal(evidenceKindLabel(retained),label);assert.equal(retained.forecastCompleted,'2026-10-01');
-  assert.match(buildBrief({news:{items:[report]},hours:'all',theater:'both'},NOW).speech,new RegExp(label));
+  assert.match(buildBrief({news:{items:[report],sources:[source({})]},hours:'all',theater:'both'},NOW).speech,new RegExp(label));
  }
  assert.equal(evidenceKindLabel({evidenceStatus:'Agency assessment'}),'Agency assessment');
 });

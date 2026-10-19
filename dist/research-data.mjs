@@ -3,16 +3,16 @@ import {physicalClaimText} from './report-semantics.mjs';
 export const ACTORS = [
   {id:'houthis',label:'Houthis',pattern:/houthi\w*|ansar.?allah/ig},
   {id:'iran',label:'Iran',pattern:/iran\w*|irgc|tehran/ig},
-  {id:'irgc',label:'IRGC',pattern:/irgc|islamic revolutionary guard|revolutionary guard/ig},
+  {id:'irgc',label:'IRGC',pattern:/irgc|islamic revolutionary guards?|revolutionary guards?/ig},
   {id:'us-military',label:'U.S. military',pattern:/u\.?s\.? (?:navy|military|forces|army|air force)|american (?:military|forces)|centcom|pentagon|united states (?:military|forces)|uss\s+\w+/ig},
-  {id:'saudi-arabia',label:'Saudi Arabia',pattern:/saudi(?: arabia|an)?|aramco|east-west pipeline|yanbu/ig},
-  {id:'uae',label:'UAE',pattern:/uae|united arab emirates|emirati|fujairah/ig},
-  {id:'oman',label:'Oman',pattern:/oman(?:i)?|duqm/ig},
+  {id:'saudi-arabia',label:'Saudi Arabia',pattern:/saudi(?: arabia(?:ns?)?|s)?|aramco|east-west pipeline|yanbu/ig},
+  {id:'uae',label:'UAE',pattern:/uae|united arab emirates|emiratis?|fujairah/ig},
+  {id:'oman',label:'Oman',pattern:/oman(?:is?)?|duqm/ig},
   {id:'israel',label:'Israel',pattern:/israel\w*|israeli/ig},
-  {id:'maritime-coalitions',label:'Maritime coalitions',pattern:/eunavfor|aspides|combined maritime forces|coalition|royal navy|jmic|ukmto|mscio/ig},
-  {id:'merchant-shipping',label:'Merchant shipping',pattern:/merchant ship\w*|commercial ship\w*|cargo ship\w*|tanker\w*|vessel\w*|seafarer\w*|mariner\w*|crew/ig},
-  {id:'civilians',label:'Civilians',pattern:/civilian\w*|seafarer\w*|crew|humanitarian|\baid\b|displace\w*|refugee\w*|hunger|hospital\w*|children|killed|injur\w*/ig},
-  {id:'other-forces',label:'Other forces',pattern:/hezbollah|pakistan|bahrain|egypt|somalia|djibouti/ig},
+  {id:'maritime-coalitions',label:'Maritime coalitions',pattern:/eunavfor|aspides|combined maritime forces|coalitions?|royal navy|jmic|ukmto|mscio/ig},
+  {id:'merchant-shipping',label:'Merchant shipping',pattern:/merchant ship\w*|commercial ship\w*|cargo ship\w*|tanker\w*|vessel\w*|seafarer\w*|mariner\w*|crews?/ig},
+  {id:'civilians',label:'Civilians',pattern:/civilian\w*|seafarer\w*|crews?|humanitarians?|\baid\b|displace\w*|refugee\w*|hunger|hospital\w*|children/ig},
+  {id:'other-forces',label:'Other forces',pattern:/hezbollah|pakistan(?:is?)?|bahrain(?:is?)?|egypt(?:ians?)?|somali(?:a|ans?|s)?|djibouti(?:ans?)?/ig},
 ];
 export const THEATER_NAMES = {both:'Both theaters',bab:'Bab el-Mandeb',hormuz:'Strait of Hormuz'};
 export const PLACES = [
@@ -30,6 +30,8 @@ export const PLACES = [
   {id:'fujairah',label:'Fujairah',type:'maritime-port',theater:'hormuz',lat:25.13,lon:56.36,pattern:/\bfujairah\b/ig},
   {id:'bandar-abbas',label:'Bandar Abbas',type:'maritime-port',theater:'hormuz',lat:27.18,lon:56.28,pattern:/\bbandar abbas\b/ig},
 ];
+// Actor names must be complete words: "woman" and "Romania" do not mention Oman.
+const CONTEXT_ENTITIES = [...ACTORS.map(actor=>({...actor,type:'actor',pattern:new RegExp('\\b(?:'+actor.pattern.source+')\\b',actor.pattern.flags)})),...PLACES];
 const DISRUPTION = /attack\w*|strike\w*|seiz\w*|closure\w*|closed|rerout\w*|disrupt\w*|blockad\w*|sink\w*|sunk|damag\w*|hijack\w*|missile\w*|drone\w*|shipping warning\w*|pipeline/ig;
 export const cleanText = (value,max=1000) => typeof value==='string'?value.replace(/[\x00-\x1f]/g,' ').trim().slice(0,max):'';
 export function publicUrl(value) {
@@ -54,7 +56,7 @@ export function reportPublication(report) {
 }
 export function deriveContext(title='',description='') {
   const mentions=[];
-  for(const entity of [...ACTORS.map(a=>({...a,type:'actor'})),...PLACES]) {
+  for(const entity of CONTEXT_ENTITIES) {
     for(const [field,body] of [['headline',title],['feed text',description]]) {
       const match=cleanText(body,20000).match(entity.pattern)?.[0];
       if(match){mentions.push({entityId:entity.id,label:entity.label,type:entity.type,field,matchedText:match});break;}
@@ -64,7 +66,7 @@ export function deriveContext(title='',description='') {
   return {mentions,disruptionMatches};
 }
 export function reportMentions(report) {
-  const known=new Map([...ACTORS.map(a=>({...a,type:'actor'})),...PLACES].map(e=>[e.id,e]));
+  const known=new Map(CONTEXT_ENTITIES.map(e=>[e.id,e]));
   const mentions=deriveContext(report.title).mentions;
   for(const m of Array.isArray(report.mentions)?report.mentions:[]) {
     const entity=known.get(m.entityId);if(!entity||mentions.some(x=>x.entityId===m.entityId))continue;

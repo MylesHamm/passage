@@ -209,3 +209,17 @@ test('retired source cache cannot resurrect records outside archive retention or
  const restored=await new ReportArchive({file:path.join(dir,'reports.json'),now:()=>current,maxRecords:1,retentionDays:30}).merge([]);
  assert.equal(restored.items.length,1);assert.equal(restored.items[0].id,result.items[0].id);
 });
+
+test('same publisher tracking aliases collapse to the exact RSS publication clock in either input order',()=>{
+  const url='https://www.aljazeera.com/news/2026/10/19/shabwa',precise={id:'rss',url:url+'?traffic_source=rss',sourceId:'aj',source:'Al Jazeera',title:'Houthi attack kills at least 53: reports',publishedAt:'2026-10-19T12:51:46.000Z',publicationPrecision:'timestamp',dateBasis:'publisher-publication',summary:'Publisher RSS preview.',eventDate:null};
+  const day={...precise,id:'index',url,title:'Houthi attack reportedly kills at least 53',publishedAt:'2026-10-19T00:00:00.000Z',publishedDate:'2026-10-19',publicationPrecision:'day',dateBasis:'publisher-date',summary:'Index preview.'};
+  for(const records of [[precise,day],[day,precise]]){
+    const rows=deduplicateReports(records),row=rows[0];assert.equal(rows.length,1);assert.equal(row.url,url);assert.equal(row.id,'rss');assert.equal(row.title,precise.title);assert.equal(row.publishedAt,precise.publishedAt);assert.equal(row.publicationPrecision,'timestamp');assert.equal(row.summary,precise.summary);assert.equal(row.eventDate,null);assert.equal(row.provenance.length,1);assert.equal(row.provenance[0].publishedAt,precise.publishedAt);
+  }
+});
+test('cached and archived publisher markup is cleaned without inventing missing excerpt text or new clocks',async()=>{
+  const savedAt='2026-09-16T10:00:00Z',base={id:'old',title:'Houthi shipping report',url:'https://example.com/old',sourceId:'bbc',source:'BBC',type:'Reporting',publishedAt:'2026-09-16T09:00:00Z',summary:'<article data-id="1"><a href="https://example.com/truncated…'};
+  const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>now,fetchImpl:async()=>new Response('Unavailable',{status:503})});runtime.memory.set('bbc',{items:[base],retrievedAt:savedAt,checkedAt:savedAt,connection:'cached'});
+  const result=await loadReporting(runtime,{includeReviewedContext:false,reportArchive:{merge:async items=>({items:[...items,{...base,id:'archive',url:'https://example.com/archive',summary:'&lt;p&gt;Older publisher text.&lt;/p&gt;',lastSeenAt:savedAt,retainedFromHistory:true}],archive:{}})}});
+  const cached=result.items.find(row=>row.id==='old'),archived=result.items.find(row=>row.id==='archive');assert.equal(cached.summary,null);assert.equal(cached.publishedAt,base.publishedAt);assert.equal(result.sources.find(source=>source.id==='bbc').retrievedAt,savedAt);assert.equal(archived.summary,'Older publisher text.');assert.equal(archived.lastSeenAt,savedAt);
+});

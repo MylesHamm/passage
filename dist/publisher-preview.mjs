@@ -1,4 +1,4 @@
-// Display-only cleanup of retained feed excerpts. Never insert provider markup.
+// Plain-text cleanup of publisher feed excerpts. Never insert provider markup.
 // Old archived excerpts can contain escaped or truncated HTML; do not display it as prose.
 export function publisherPreview(value) {
   if (typeof value !== 'string') return '';
@@ -13,7 +13,9 @@ export function publisherPreview(value) {
   }
   return text.replace(/<(script|style)\b[^>]*>[\s\S]*?(?:<\/\1>|$)/gi, '')
     .replace(/<!--[\s\S]*?(?:-->|$)/g, '')
-    .replace(/<\/?[a-z!][^>]*>/gi, ' ')
-    .replace(/<\/?[a-z!][^>]*$/gi, '')
+    // A quoted > belongs to an attribute, not to the end of the tag. Otherwise
+    // decoded image captions/attributes could become false reporting evidence.
+    .replace(/<\/?[a-z!](?:"[^"]*"|'[^']*'|[^'">])*?>/gi, ' ')
+    .replace(/<\/?[a-z!][\s\S]*$/gi, '')
     .replace(/\s+/g, ' ').trim();
 }

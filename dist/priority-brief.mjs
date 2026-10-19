@@ -1,12 +1,14 @@
 import {physicalClaimText} from './report-semantics.mjs';
 import {canonicalReportUrl} from './intelligence-data.mjs';
+import {reportContextLabel} from './reporting-view.mjs';
 
 const WINDOW_HOURS=72,MAX_RECORDS=2000,MAX_PER_CARD=4;
-const THEATRES=[{id:'hormuz',title:'Strait of Hormuz'},{id:'bab',title:'Bab el-Mandeb'}];
+const THEATRES=['hormuz','bab'].map(id=>({id,title:reportContextLabel(id)}));
 const HORMUZ=/\b(?:hormuz|iran|iranian|tehran|irgc|(?:islamic )?revolutionary guards?|persian gulf|arabian gulf|gulf of oman|fujairah|bandar)\b/i;
 const BAB=/\b(?:bab[ -]?(?:el|al)[ -]?mand[ae]b|red sea|yemen|yemeni|houthis?|ansar[ -]?allah|aden|djibouti|suez)\b/i;
 const REGION=/\b(?:saudi|aramco|yanbu|uae|emirati|united arab emirates|oman|omani|duqm|iraq|iraqi|basra|kuwait|qatar|bahrain|egypt|sumed|gulf|middle east)\b/i;
-const MARITIME=/\b(?:ships?|shipping|vessels?|tankers?|maritime|seafarers?|crew|freight|navigation|transits?|chokepoints?|ports?|terminals?)\b/i;
+const MARITIME=/\b(?:ships?|shipping|vessels?|tankers?|maritime|seafarers?|crew|freight|navigation|transits?|chokepoints?|ports?|terminals?|naval (?:drills?|exercises?|operations?))\b/i;
+const WATERWAY=/\b(?:hormuz|bab[ -]?(?:el|al)[ -]?mand[ae]b|red sea|persian gulf|arabian gulf|gulf of oman|suez)\b/i;
 const ENERGY=/\b(?:oil|crude|petroleum|brent|wti|opec|lng|diesel|gasoil|gasoline|natural gas|refiner\w*|pipeline\w*)\b/i;
 const INFRASTRUCTURE=/\b(?:ports?|terminals?|pipeline\w*|refiner\w*|exports?|production|suppl\w*|loadings?|output|storage|inventor\w*)\b/i;
 const DISRUPTION=/\b(?:halt\w*|suspend\w*|clos(?:e[ds]?|ure)|block(?:ed|ade|ades|ading)|disrupt\w*|outage\w*|damag\w*|rerout\w*|divert\w*|delay\w*|seiz\w*|seized|hijack\w*|sink\w*|sunk|sank|stranded)\b/i;
@@ -47,6 +49,9 @@ function clockFor(report){
 // A topic tag supplied by a discovery query or RSS footer is never sufficient.
 function headlineContext(title){
   const text=petroleumText(title),physical=physicalClaimText(text),maritime=MARITIME.test(text),energy=ENERGY.test(text);
+  // Broad Iran/Yemen relevance alone cannot turn diplomacy or land conflict
+  // into a maritime development. Those reports remain in the reading library.
+  if(!maritime&&!energy&&!WATERWAY.test(text))return null;
   const conflictContext=!NON_OPERATIONAL.test(text);
   const mobilization=conflictContext&&MOBILIZATION.test(text)&&ARMED_CONTEXT.test(text);
   const casualties=conflictContext&&CASUALTIES.test(text)&&CONFLICT.test(text);

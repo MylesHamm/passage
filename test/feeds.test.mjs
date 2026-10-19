@@ -118,3 +118,32 @@ test('analysis relevance uses the displayed preview without pulling unrelated or
  const xml='<rss><channel><item><title>Perspective</title><link>https://newsletter.doomberg.com/p/example</link><description>Public subtitle.</description><content:encoded><![CDATA['+'Filler words. '.repeat(80)+' Iran oil supplies.]]></content:encoded></item></channel></rss>';
  const [row]=parseRSS(xml,SOURCES.find(s=>s.id==='doomberg'));assert.equal(reportRelevant(row),false);assert.deepEqual(row.actors,[]);
 });
+
+test('publisher summaries decode escaped markup before truncation and exclude attribute captions and scripts',()=>{
+  const encoded='&lt;article data-id="1"&gt;&lt;h2&gt;Headline&lt;/h2&gt;&lt;p&gt;Saudi organisers postponed the event, the Financial Times reported.&amp;nbsp;&lt;/p&gt;&lt;script&gt;Iran secretScript()&lt;/script&gt;&lt;/article&gt;';
+  assert.equal(publisherSummary(encoded),'Headline Saudi organisers postponed the event, the Financial Times reported.');
+  assert.equal(publisherSummary('<img alt="ignored" data-caption="&lt;p&gt;Unrelated Iran caption&lt;/p&gt;"><p>Shipping report.</p>'),'Shipping report.');
+  assert.equal(publisherSummary('<article data-id="1"><a href="https://example.com/truncated…'),'');
+  assert.equal(publisherSummary('Oil exports < 5 million b/d.'),'Oil exports < 5 million b/d.');
+  const attributed='&lt;p title=&quot;Iran &gt; oil tanker attack&quot;&gt;A public culture preview.&lt;/p&gt;';
+  for(const value of [attributed,attributed.replaceAll('&','&amp;')]){
+    const summary=publisherSummary(value);assert.equal(summary,'A public culture preview.');
+    const record={title:'Culture preview',summary,...classifyReport({title:'Culture preview',summary})};
+    assert.equal(record.energy,false);assert.deepEqual(record.actors,[]);assert.deepEqual(record.theaters,[]);assert.equal(reportRelevant(record),false);
+  }
+});
+test('public RSS genre categories identify publisher opinion and analysis without headline guessing',()=>{
+  const source=SOURCES.find(s=>s.id==='memo'),wrap=(category,title='Trump can strike Iran again. He cannot bomb Hormuz open')=>`<rss><channel><item><title>${title}</title><link>https://www.middleeastmonitor.com/20261019-fixture/</link><pubDate>Mon, 19 Oct 2026 14:32:27 +0000</pubDate>${category}</item></channel></rss>`;
+  const opinion=parseRSS(wrap('<category><![CDATA[Middle East]]></category><category><![CDATA[Opinion]]></category>'),source,Date.parse('2026-10-19T16:00:00Z'))[0];
+  assert.equal(opinion.type,'Publisher opinion');assert.equal(opinion.publisherGenre,'opinion');assert.deepEqual(opinion.publisherCategories,['Middle East','Opinion']);assert.match(opinion.evidenceStatus,/opinion; not independently verified/);assert.equal(opinion.eventDate,null);assert.equal(opinion.source,source.name);
+  const analysis=parseRSS(wrap('<category>Analysis</category>'),source,Date.parse('2026-10-19T16:00:00Z'))[0];assert.equal(analysis.type,'Publisher analysis');assert.equal(analysis.publisherGenre,'analysis');
+  const ordinary=parseRSS(wrap('<category>Opinion polls</category>'),source,Date.parse('2026-10-19T16:00:00Z'))[0];assert.equal(ordinary.type,'Reporting');assert.equal(ordinary.publisherGenre,undefined);
+});
+test('generic casualty wording never establishes civilian status',()=>{
+  for(const title of ['Dozens killed after Houthi strike on military camp in Shabwa','At least 40 killed, wounded in Houthi strike on Yemen camp','Iran says 20 soldiers injured'])assert.ok(!classify(title).actors.includes('Civilians'),title);
+  for(const title of ['Civilian families injured in Yemen','Seafarers killed aboard Red Sea ship','Children displaced by Houthi attacks'])assert.ok(classify(title).actors.includes('Civilians'),title);
+});
+test('known feed tracking aliases are removed without collapsing meaningful query identities',()=>{
+  assert.equal(safeUrl('https://www.aljazeera.com/news/2026/10/19/story?traffic_source=rss'),'https://www.aljazeera.com/news/2026/10/19/story');
+  assert.notEqual(safeUrl('https://www.eia.gov/todayinenergy/detail.php?id=1'),safeUrl('https://www.eia.gov/todayinenergy/detail.php?id=2'));
+});

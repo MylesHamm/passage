@@ -1,4 +1,5 @@
 import {evidenceKind,withEvidenceKind} from './evidence-kind.mjs';
+import {publisherPreview} from './publisher-preview.mjs';
 import {ACTORS,cleanText,dateOnly,publicUrl} from './research-data.mjs';
 import {MECHANISMS,oilMechanisms} from './situation-data.mjs';
 import {MARKET_CONTEXT} from './energy-context.mjs';
@@ -23,7 +24,7 @@ export function canonicalReportUrl(value) {
   const url=new URL(safe);
   if(!url.hostname.includes('.')||/^(?:localhost|127\.|0\.|10\.|192\.168\.|169\.254\.|\[)/i.test(url.hostname))return null;
   if(/^172\.(?:1[6-9]|2\d|3[01])\./.test(url.hostname)||[...url.searchParams.keys()].some(k=>/^(api[_-]?key|access[_-]?token|token|password|secret|authorization|signature|key)$/i.test(k)))return null;
-  url.hash='';for(const key of [...url.searchParams.keys()])if(/^utm_|^(?:fbclid|gclid|mc_cid|mc_eid|lctg|user_email)$/i.test(key))url.searchParams.delete(key);
+  url.hash='';for(const key of [...url.searchParams.keys()])if(/^utm_|^(?:fbclid|gclid|mc_cid|mc_eid|lctg|user_email|traffic_source)$/i.test(key))url.searchParams.delete(key);
   return url.href;
 }
 
@@ -77,7 +78,7 @@ function normalizeReport(input,now) {
     matchEvidence:(input.matchEvidence||[]).slice(0,40).map(m=>({kind:cleanText(m.kind,50),value:cleanText(m.value,100),field:cleanText(m.field,50),basis:cleanText(m.basis,200)})),
     updatedAt:validInstant(input.updatedAt,now),retrievedAt:validInstant(input.retrievedAt,now),addedAt:validInstant(input.addedAt,now),
     firstSeenAt:validInstant(input.firstSeenAt,now),lastSeenAt:validInstant(input.lastSeenAt,now),retainedFromHistory:input.retainedFromHistory===true,
-    summary:cleanText(input.summary,1000),watch:cleanText(input.watch,600),
+    summary:cleanText(publisherPreview(input.summary),1000),...(Array.isArray(input.publisherCategories)?{publisherCategories:input.publisherCategories.slice(0,24).map(value=>cleanText(value,100)).filter(Boolean)}:{}),...(['opinion','analysis'].includes(input.publisherGenre)?{publisherGenre:input.publisherGenre}:{}),watch:cleanText(input.watch,600),
     discoveryProvider:cleanText(input.discoveryProvider,80),discoveryUrl:canonicalReportUrl(input.discoveryUrl),
     contentAccess:cleanText(input.contentAccess,200)||'Headline metadata only',
     evidenceStatus:cleanText(input.evidenceStatus,160)||'Publisher reporting; not independently verified',...analysisLabels(input),
@@ -145,14 +146,14 @@ function collectGraph(now) {
         Object.assign(existing.record,{firstSeenAt,lastSeenAt,retainedFromHistory},labels);
         if(labels.type)existing.record.discoveredAt=firstDiscovery;
         existing.discoveredAt=existing.record.discoveredAt;
-        if(labels.type){
-          // Keep text matches and clocks attached to the retained preview, not
-          // to a different headline supplied by a generic discovery index.
+        {
+          // Rebuild text-derived relationships from the selected record. Older
+          // headlines and summaries must not leave stale actors/assets/channels.
           const oldTargets=new Set();
           for(const [edgeId,connection] of edges)if(connection.from===existing.id&&['MENTIONS','POTENTIAL_CHANNEL'].includes(connection.relation)){oldTargets.add(connection.to);edges.delete(edgeId);}
           context(existing,existing.record);
           for(const target of oldTargets)if(![...edges.values()].some(connection=>connection.to===target||connection.from===target))nodes.delete(target);
-        }else context(existing,record);
+        }
       }
       return existing;
     }

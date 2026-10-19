@@ -1,7 +1,7 @@
 import {evidenceKindLabel} from './evidence-kind.mjs';
 import {canonicalReportUrl} from './intelligence-data.mjs';
-import {inReportingWindow,matchesTheater,reportRelevant,sortReports} from './reporting-view.mjs';
-import {SOURCE_DEFINITIONS,sourceHealth} from './source-health.mjs';
+import {inReportingWindow,matchesTheater,reportRelevant,sortReports,isActivePublisherReport} from './reporting-view.mjs';
+import {SOURCE_DEFINITIONS,sourceHealth,collectSources} from './source-health.mjs';
 
 export const MONITORING_STORAGE_KEY='passage-monitoring-v1';
 export const THEATER_NAMES={both:'Both theatres',bab:'Bab el-Mandeb',hormuz:'Strait of Hormuz'};
@@ -14,7 +14,7 @@ const IMPACT_RULES=[
   ['pipeline bypass',/pipeline|east-west|sumed/i],
   ['insurance & freight',/insurance|premium|freight|war risk|shipping cost/i],
   ['production / exports',/production|export\w*|supply|outage|opec|crude|tanker|oil price|brent|wti/i],
-  ['crew & civilian safety',/civilian|seafarer|crew|mariner|humanitarian|aid|injur\w*|killed|fatalit\w*/i],
+  ['crew & civilian safety',/\b(?:civilians?|seafarers?|crew|mariners?|port workers?|humanitarian|aid)\b/i],
 ];
 export function impactTags(text=''){return IMPACT_RULES.filter(([,pattern])=>pattern.test(text)).map(([label])=>label);}
 const LIMIT=1200,SEEN_LIMIT=5000;
@@ -99,8 +99,14 @@ export function watchMatches(rows,watch,settings={}){
   const baseline=new Set(watch.knownUrls||[]);
   return cleanRows(rows).filter(row=>!baseline.has(row.url)&&!settings.seen?.[row.url]&&(watch.type==='theater'?row.theaters?.includes(watch.value):row.actors?.includes(watch.value)));
 }
+export function eligibleMonitoringReports(rows,state={},now=Date.now()){
+  if(state.view==='saved')return cleanRows(rows).filter(report=>state.saved?.[report.id]);
+  if(state.includeArchive)return cleanRows(rows);
+  const sources=collectSources(state,now);
+  return cleanRows(rows).filter(report=>isActivePublisherReport(report,sources));
+}
 export function filterMonitoringReports(rows,state={},now=Date.now()){
-  return cleanRows(rows).filter(row=>
+  return eligibleMonitoringReports(rows,state,now).filter(row=>
     (state.view==='saved'||reportRelevant(row))&&
     matchesTheater(row,state.theater||'both')&&
     (state.actor==='All'||!state.actor||row.actors?.includes(state.actor))&&

@@ -54,3 +54,22 @@ test('advisories are exported separately from incidents and retain inspector pro
  assert.match(inspected,/Source retrieval/);
  assert.match(inspected,/Sep 28/);
 });
+
+test('failed refresh across expiry recomputes archived validity without changing source status or retrieval',()=>{
+ const cached={...advisory,expiresDate:'2026-10-19',validityState:'active',retrievedAt:retired.retrievedAt};
+ const original=structuredClone(cached);
+ const state={theater:'both',failures:{maritime:true},maritime:{advisories:[cached]}};
+ let tick=Date.parse('2026-10-19T23:59:59Z'),inspected='';
+ const view=createSituationView({getState:()=>state,getSources:()=>[retired],now:()=>tick,openDialog:(_label,copy)=>{inspected=copy;}});
+ assert.match(advisoryCoverageMarkup(state,[retired],tick),/Validity from archived dates: active/);
+ tick=Date.parse('2026-10-20T00:00:00Z');
+ const html=advisoryCoverageMarkup(state,[retired],tick);
+ assert.match(html,/Validity from archived dates: expired/);
+ assert.match(html,/Source status at retrieval: active/);
+ assert.match(html,/Retrieved Sep 28, 2026, 17:58 UTC/);
+ assert.match(html,/Current maritime advisories are unavailable/);
+ view.showEvidence(cached.id);
+ assert.match(inspected,/<dt>Validity from archived dates<\/dt><dd>expired<\/dd>/);
+ assert.match(inspected,/<dt>Source status at retrieval<\/dt><dd>active<\/dd>/);
+ assert.deepEqual(cached,original);
+});

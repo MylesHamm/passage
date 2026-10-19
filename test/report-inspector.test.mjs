@@ -24,3 +24,24 @@ test('inspector exposes keyboard tabs and possible mechanisms without duplicated
  assert.equal((html.match(/role="tab"/g)||[]).length,3);assert.equal((html.match(/role="tabpanel"/g)||[]).length,3);
  assert.match(html,/POSSIBLE CONNECTION \/ NOT A MEASURED EFFECT/);assert.match(html,/id="inspect-report-system"/);assert.doesNotMatch(html,/Latest available \$|price-comparison/);
 });
+
+test('regional report tags never present Tehran or Yemen text matches as waterway locations',()=>{
+ const iran=reportInspectorMarkup({...report,title:'Pakistan suspends Iran border trade, amid violence on both sides'});
+ assert.match(iran,/Iran &amp; Gulf context/);
+ assert.doesNotMatch(iran,/<span>Hormuz<\/span>|<span>Strait of Hormuz<\/span>/);
+ const yemen=reportInspectorMarkup({...report,title:'Yemen ceasefire talks resume',theaters:['bab']});
+ assert.match(yemen,/Yemen &amp; Red Sea context/);
+ assert.match(yemen,/do not verify a location or responsibility/);
+});
+
+test('archived record retrieval never advances to the publisher latest successful check',()=>{
+ for(const flag of ['retainedFromHistory','collectionRetired','retainedForReading']){
+  const archived={...report,[flag]:true,lastSeenAt:'2026-10-18T08:00:00Z'},source={lastSuccessAt:'2026-10-19T10:00:00Z'};
+  const rows=reportClockRows(archived,source);
+  assert.equal(rows[3].label,'Record retrieval');assert.equal(rows[3].value,archived.lastSeenAt);
+  const html=reportInspectorMarkup(archived,{source});
+  assert.match(html,/<dt>Record retrieval<\/dt><dd>18 Oct 2026 · 08:00 UTC/);
+  assert.match(html,/Latest successful source check: 19 Oct 2026 · 10:00 UTC/);
+  assert.equal(reportClockRows({...archived,lastSeenAt:null},source)[3].value,null);
+ }
+});

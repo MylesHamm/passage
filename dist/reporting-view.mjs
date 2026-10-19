@@ -11,6 +11,9 @@ export function inReportingWindow(item,hours,now=Date.now()) {
 }
 export function sortReports(a,b){return (reportTime(b)||'').localeCompare(reportTime(a)||'')||a.title.localeCompare(b.title);}
 
+// These are broad monitoring topics, not locations established by the record.
+export const reportContextLabel = theater => ({hormuz:'Iran & Gulf context',bab:'Yemen & Red Sea context'})[theater]||'Regional context';
+
 export function isActivePublisherReport(item,sources=[]) {
   return !item.retainedFromHistory&&!item.collectionRetired&&!item.retainedForReading&&isActiveReportingSource(sources.find(source=>source.id===item.sourceId))&&item.dateBasis!=='discovery'&&item.type!=='Discovered reporting'&&!item.discoveryProvider&&item.contentAccess!=='discovery-metadata';
 }

@@ -103,6 +103,17 @@ test('all publisher checks overdue means current reporting is unavailable, not a
  assert.doesNotMatch(mount.innerHTML,/No recent matching headline from active publishers/);
 });
 
+test('Watch preserves publisher opinion and analysis labels and regional context limits',()=>{
+ for(const type of ['Publisher opinion','Publisher analysis','Independent energy analysis']){
+  const report={id:'genre',sourceId:'bbc',source:'BBC',type,title:'Iran oil exports need a new strategy',url:'https://example.com/genre',publishedAt:'2026-09-28T17:00:00Z'};
+  const mount={innerHTML:'',ownerDocument:{activeElement:null},contains:()=>false,querySelectorAll:()=>[],addEventListener:()=>{}};
+  createPriorityView({mount,getState:()=>({news:{items:[report],sources:[healthySource()]},actor:'All',theater:'both'}),now:()=>now}).update();
+  assert.ok(mount.innerHTML.includes('BBC · '+type+' · Published'));
+  assert.match(mount.innerHTML,/Iran &amp; Gulf context/);
+  assert.match(mount.innerHTML,/Regional labels describe headline context, not incident locations/);
+ }
+});
+
 test('Watch discloses missing advisory coverage once and links to Evidence',()=>{
  const news={items:[],sources:['bbc','aj','mee','memo','france24'].map(healthySource)};
  const mount={innerHTML:'',ownerDocument:{activeElement:null},contains:()=>false,querySelectorAll:()=>[],addEventListener:()=>{}};

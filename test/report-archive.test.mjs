@@ -243,3 +243,34 @@ test('invalid or future optional forecast metadata is not admitted to the archiv
  assert.ok(result.items.every(row=>row.forecastCompleted===undefined));
  assert.equal((await f.create().merge([])).archive.storageStatus,'ready');
 });
+
+test('explicit publisher opinion metadata survives persistence and restart',async t=>{
+  const f=await fixture(t),archive=f.create();
+  const item=report('opinion',{type:'Publisher opinion',publisherGenre:'opinion',publisherCategories:['Article','Opinion','Middle East'],evidenceStatus:'Publisher opinion; not independently verified'});
+  await archive.merge([item],f.observation());
+  const restored=await f.create().merge([]),row=restored.items[0];assert.equal(restored.archive.storageStatus,'ready');assert.equal(row.type,item.type);assert.equal(row.publisherGenre,'opinion');assert.deepEqual(row.publisherCategories,item.publisherCategories);assert.equal(row.evidenceStatus,item.evidenceStatus);assert.equal(row.lastSeenAt,stamp(START));
+});
+test('legacy tracking aliases migrate and merge without losing precise RSS dates or archive clocks',async t=>{
+  const f=await fixture(t),archive=f.create(),url='https://www.aljazeera.com/news/2026/9/1/story',publishedAt=stamp(START-1000);
+  await archive.merge([report('rss',{publishedAt,publicationPrecision:'timestamp',dateBasis:'publisher-publication',summary:'Exact RSS preview.'})],f.observation());
+  f.setTime(START+DAY);await archive.merge([report('index',{publishedAt:'2026-09-01T00:00:00.000Z',publishedDate:'2026-09-01',publicationPrecision:'day',dateBasis:'publisher-date',summary:'Day-only index preview.'})],f.observation());
+  const saved=JSON.parse(await readFile(f.file,'utf8'));
+  for(const row of saved.items){row.url=url+(row.id==='rss'?'?traffic_source=rss':'');for(const entry of row.provenance)entry.url=row.url;}
+  // Exercise both disk orders: the index was retrieved more recently than RSS.
+  for(const items of [saved.items,[...saved.items].reverse()]){
+    await writeFile(f.file,JSON.stringify({...saved,items}));
+    const result=await f.create().merge([]),row=result.items[0];assert.equal(result.archive.storageStatus,'ready');assert.equal(result.items.length,1);assert.equal(row.url,url);assert.equal(row.id,'rss');assert.equal(row.publishedAt,publishedAt);assert.equal(row.publicationPrecision,'timestamp');assert.equal(row.publishedDate,null);assert.equal(row.summary,'Exact RSS preview.');assert.equal(row.firstSeenAt,stamp(START));assert.equal(row.lastSeenAt,stamp(START+DAY));assert.equal(row.provenance[0].publishedAt,publishedAt);assert.equal(row.retainedFromHistory,true);
+    const restarted=await f.create().merge([]);assert.equal(restarted.archive.storageStatus,'ready');assert.equal(restarted.items[0].publishedAt,publishedAt);
+  }
+});
+test('legacy provenance aliases migrate only after every original entry passes validation',async t=>{
+  const f=await fixture(t),url='https://www.aljazeera.com/news/2026/9/1/story';
+  await f.create().merge([report('legacy',{url,publishedAt:stamp(START-1000)})],f.observation());
+  const saved=JSON.parse(await readFile(f.file,'utf8')),row=saved.items[0];
+  row.provenance.unshift({...row.provenance[0],url:url+'?traffic_source=rss'});
+  await writeFile(f.file,JSON.stringify(saved));
+  const restored=await f.create().merge([]);assert.equal(restored.archive.storageStatus,'ready');assert.equal(restored.items[0].provenance.length,1);assert.equal(restored.items[0].provenance[0].url,url);
+  row.provenance[0].publisher='x'.repeat(121);
+  const invalid=JSON.stringify(saved);await writeFile(f.file,invalid);
+  const blocked=await f.create().merge([]);assert.equal(blocked.archive.storageStatus,'memory-only');assert.equal(await readFile(f.file,'utf8'),invalid);
+});
