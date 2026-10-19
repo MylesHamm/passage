@@ -2,7 +2,6 @@ import {randomUUID} from 'node:crypto';
 import {SourceRuntime} from '../lib/source-runtime.mjs';
 import {ReportArchive} from '../lib/report-archive.mjs';
 import {createDataService} from '../lib/data-service.mjs';
-import {waitForDiscovery} from '../lib/discovery.mjs';
 import {SqliteFiles} from './sqlite-files.mjs';
 import {sourceStorage} from './source-storage.mjs';
 import {WorkerAisFeed} from './ais.mjs';
@@ -102,9 +101,6 @@ export class Collector {
         const context={entryPoint:url.pathname.split('/')[2],requestId:randomUUID()};
         const data=await this.service.get(url.pathname,url.searchParams,context);
         if(data===null)return null;
-        // Retain metadata on scheduled alarms even with no viewers. This extra
-        // request lifetime is only a best-effort bridge to the next alarm.
-        this.state.waitUntil(waitForDiscovery(this.runtime).catch(()=>{}));
         this.responses.set(key,{at:this.now(),data});return data;
       })();
       this.pending.set(key,operation);operation.finally(()=>this.pending.delete(key)).catch(()=>{});

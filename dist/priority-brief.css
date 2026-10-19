@@ -28,6 +28,8 @@
 .priority-coverage-body .text-button { font-size: 11px; }
 .priority-scope { font-size: 9px; color: var(--command-dim); padding: 12px 0; }
 .priority-arrivals { font: inherit; font-size: 11px; border: 0; padding: 10px 0; background: none; color: var(--mint); text-align: right; cursor: pointer; }
+.priority-coverage-gap { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 8px 16px; border-top: 1px solid var(--rule); color: var(--command-dim); font-size: 11px; line-height: 1.6; }
+.priority-coverage-gap .text-button { font-size: inherit; }
 .feed-group-button { display: block; margin: 9px 0 0; border: 0; padding: 3px 0; color: var(--mint); background: none; font: inherit; font-size: 10px; text-align: left; cursor: pointer; min-height: 26px; }
 .priority-watch button:focus-visible,.priority-watch summary:focus-visible,.feed-group-button:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
 @media(min-width:1200px) { .command-center .command-grid { height: calc(100svh - 400px); min-height: 510px; } }

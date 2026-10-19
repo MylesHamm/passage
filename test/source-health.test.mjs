@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {collectSources,coverage,statusSummary,panelNotice,sourceHealth,ageSeconds,SOURCE_DEFINITIONS} from '../dist/source-health.mjs';
+import {collectSources,coverage,statusSummary,panelNotice,sourceHealth,ageSeconds,SOURCE_DEFINITIONS,isActiveReportingSource} from '../dist/source-health.mjs';
 const now=Date.parse('2026-09-13T18:00:00Z');
 const connected={connection:'connected',retrievedAt:'2026-09-13T17:00:00Z'};
 test('source inventory stays stable through first load and configuration',()=>{
@@ -15,11 +15,11 @@ test('free regional publisher sources have unique public health identities',()=>
  }
 });
 test('cold failures are unknown coverage, not successful empty reporting',()=>{
- const sources=collectSources({config:{aisstream:false,reliefweb:false},failures:{news:true}},now);const c=coverage(sources);assert.equal(c.unknown,true);assert.equal(c.empty,false);assert.equal(c.label,'Reporting unavailable');assert.match(panelNotice(sources,'news'),/No usable data/);
+ const sources=collectSources({config:{aisstream:false,reliefweb:false},failures:{news:true}},now);const c=coverage(sources);assert.equal(c.unknown,true);assert.equal(c.empty,false);assert.equal(c.label,'Reporting unavailable');assert.match(panelNotice(sources,'news'),/Current reporting is unavailable/);
 });
 test('warm failures preserve readable data and identify incomplete coverage',()=>{
  const state={config:{reliefweb:false},news:{items:[{sourceId:'bbc',publishedAt:'2026-09-13T17:00:00Z'}],sources:[{id:'bbc',...connected}]},failures:{news:true}};
- const sources=collectSources(state,now),bbc=sources.find(s=>s.id==='bbc');assert.equal(bbc.status,'retained');assert.equal(bbc.hasData,true);assert.equal(coverage(sources).unknown,false);assert.equal(coverage(sources).incomplete,true);assert.match(panelNotice(sources,'news'),/Previously retrieved/);
+ const sources=collectSources(state,now),bbc=sources.find(s=>s.id==='bbc');assert.equal(bbc.status,'retained');assert.equal(bbc.hasData,true);assert.equal(coverage(sources).unknown,false);assert.equal(coverage(sources).incomplete,true);assert.match(panelNotice(sources,'news'),/Historical records remain in the archive/);
 });
 test('successful empty feeds and all-empty outage have distinct states',()=>{
  const news={items:[],sources:SOURCE_DEFINITIONS.filter(s=>['news','discovery'].includes(s.group)&&s.id!=='reliefweb').map(({id})=>({id,...connected,recordCount:0,latest:'2026-09-13T17:00:00Z',retrievedAt:'2026-09-13T17:59:00Z'}))};const sources=collectSources({config:{reliefweb:false},news},now);assert.equal(coverage(sources).empty,true);assert.equal(coverage(sources).unknown,false);
@@ -44,7 +44,7 @@ test('ages advance from the clock without refreshing retained source objects',()
  const s={id:'bbc',group:'news',configured:true,...connected,retrievedAt:'2026-09-13T17:59:00Z',recordCount:1,latestRelevant:'2026-09-10T18:00:01Z'};assert.equal(sourceHealth(s,now).status,'current');assert.equal(sourceHealth(s,now+2000).status,'stale');assert.equal(s.freshness,undefined);
 });
 test('a partial failure does not describe other fresh sources as cached',()=>{
- const state={config:{reliefweb:false},news:{items:[{sourceId:'aj',publishedAt:'2026-09-13T17:00:00Z'}],sources:[{id:'bbc',connection:'unavailable'},{id:'aj',...connected}]}};const message=panelNotice(collectSources(state,now),'news');assert.match(message,/Available source data/);assert.ok(!message.includes('Previously retrieved'));
+ const state={config:{reliefweb:false},news:{items:[{sourceId:'aj',publishedAt:'2026-09-13T17:00:00Z'}],sources:[{id:'bbc',connection:'unavailable'},{id:'aj',...connected,retrievedAt:'2026-09-13T17:59:00Z'}]}};const message=panelNotice(collectSources(state,now),'news');assert.match(message,/Showing available publisher reporting/);assert.ok(!message.includes('Previously retrieved'));
 });
 
 test('both vessel sources become stale after ten minutes and always have a label',()=>{
@@ -139,11 +139,19 @@ test('ACLED health explicitly names the date of its latest accessible event',()=
  assert.match(s.label,/Older structured events/);assert.match(s.label,/2025-09-22/);assert.equal(s.attention,false);
  const overdue=sourceHealth({...s,retrievedAt:'2026-09-13T14:00:00Z'},now);assert.equal(overdue.attentionReason,'check');assert.match(overdue.label,/check.*overdue/i);assert.match(overdue.label,/2025-09-22/);
 });
-test('shared discovery pause is one brief provider notice while other failures keep their names',()=>{
+test('primary notices describe category impact while provider failures remain in diagnostics',()=>{
  const delayed=SOURCE_DEFINITIONS.filter(s=>s.group==='discovery').map(s=>sourceHealth({...s,configured:true,connection:'cached',errorCategory:'rate_limit',recordCount:3,retrievedAt:'2026-09-13T17:59:00Z'},now));
- const notice=panelNotice(delayed,'news');assert.equal(notice,'GDELT discovery: update delayed. Retained reporting is shown. Inspect Sources.');assert.ok(!notice.includes('Hormuz'));
- const failed=sourceHealth({id:'bbc',name:'BBC Middle East',group:'news',configured:true,connection:'unavailable',recordCount:0},now);
- const mixed=panelNotice([...delayed,failed],'news');assert.match(mixed,/GDELT discovery, BBC Middle East/);assert.ok(!mixed.includes('Red Sea discovery'));
+ const notice=panelNotice(delayed,'news');assert.match(notice,/Current reporting is unavailable/);assert.doesNotMatch(notice,/GDELT|HTTP|retry/i);
+ const available=sourceHealth({id:'aj',name:'Al Jazeera',group:'news',configured:true,connection:'connected',recordCount:1,retrievedAt:'2026-09-13T17:59:00Z',latestRelevant:'2026-09-13T17:00:00Z'},now);
+ assert.match(panelNotice([...delayed,available],'news'),/Showing available publisher reporting/);
+ assert.equal(delayed[0].errorCategory,'rate_limit');
+});
+test('active reporting accepts a checked publisher with older stories but excludes failed and retired sources',()=>{
+ const older=sourceHealth({id:'bbc',group:'news',configured:true,connection:'connected',recordCount:1,retrievedAt:'2026-09-13T17:59:00Z',latestRelevant:'2026-09-01'},now);
+ assert.equal(isActiveReportingSource(older),true);assert.equal(panelNotice([older],'news'),'');
+ assert.equal(isActiveReportingSource({...older,retired:true}),false);
+ assert.equal(isActiveReportingSource(sourceHealth({...older,connection:'cached',errorCategory:'network'},now)),false);
+ assert.equal(isActiveReportingSource(sourceHealth({...older,retrievedAt:'2026-09-13T16:00:00Z'},now)),false);
 });
 test('Doomberg publishing cadence is separate from source checks and failed transport',()=>{
  const def=SOURCE_DEFINITIONS.find(s=>s.id==='doomberg');

@@ -656,6 +656,7 @@ dialog p, dialog li { font-size: 14px; line-height: 1.75; }
 .ledger-source-notes { padding: 0 18px 14px; color: var(--text-secondary); font-size: 10px; line-height: 1.65; }
 .ledger-source-notes summary { min-height: 30px; padding: 6px 0; cursor: pointer; }
 .ledger-source-notes p { margin: 8px 0 0; }
+.advisory-archive .advisory-row { display: block; padding-left: 0; padding-right: 0; border-right: 0; }
 .regional-basis { margin: -8px 0 16px; color: var(--text-secondary); font-size: 11px; line-height: 1.7; }
 .regional-card > strong { display: flex; justify-content: space-between; width: 100%; gap: 12px; }
 .regional-card > strong > span { color: var(--accent-secondary); font-size: 16px; flex-shrink: 0; margin-top: 2px; }

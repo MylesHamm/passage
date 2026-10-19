@@ -31,11 +31,12 @@ test('audit 01 · cold failure and absent inventory never claim checked-empty or
   assert.doesNotMatch(target.innerHTML,/Source headlines refreshed/);
  }
 });
-test('audit 02 · warm failure retains separate success and attempt clocks in coverage and brief',()=>{
+test('audit 02 · warm failure retains original clocks but is not promoted on Watch',()=>{
  const old='2026-10-16T02:00:00Z',news={items:[row()],sources:[source({connection:'cached',retrievedAt:old,checkedAt:STAMP})]};
  assert.equal(news.sources[0].status,'retained');assert.equal(news.sources[0].retrievedAt,old);assert.equal(news.sources[0].lastAttemptAt,STAMP);
  assert.equal(coverage(news.sources).retained,true);const target=mount();
- createPriorityView({mount:target,getState:()=>({news,actor:'All'}),now:()=>NOW}).update();assert.match(target.innerHTML,/retained after failed update/);
+ createPriorityView({mount:target,getState:()=>({news,actor:'All'}),now:()=>NOW}).update();assert.doesNotMatch(target.innerHTML,/Iran oil exports continue through Hormuz/);
+ assert.equal(news.items.length,1);assert.match(target.innerHTML,/Current reporting is unavailable/);
 });
 test('audit 03 · successful empty requires a valid successful source check',()=>{
  const checked=source({recordCount:0,latestRelevant:null});assert.equal(coverage([checked]).empty,true);
@@ -66,7 +67,7 @@ test('audit 07 · repeated reporting remains copies without corroboration or ext
  assert.equal(groups.length,1);assert.equal(groups[0].independentConfirmation,false);assert.equal(brief.uniqueGroupCount,1);assert.equal(brief.cards[0].items[0].copyCount,2);
 });
 test('audit 08 · source, archive and local selection caps survive aggregate and rendered coverage',()=>{
- const capped=source({possiblyTruncated:true});assert.equal(coverage([capped]).truncated,true);assert.equal(coverage([capped]).incomplete,true);assert.match(panelNotice([capped],'news'),/bounded/);
+ const capped=source({possiblyTruncated:true});assert.equal(coverage([capped]).truncated,true);assert.equal(coverage([capped]).incomplete,true);assert.equal(panelNotice([capped],'news'),'');
  const news={items:Array.from({length:2001},(_,i)=>row(String(i))),sources:[source({})],coverage:{archive:{truncated:true,maxRecords:1200,retainedCount:800}}};
  assert.equal(briefCoverage(news,{now:NOW,inputTruncated:true}).truncated,true);const target=mount();createPriorityView({mount:target,getState:()=>({news,actor:'All'}),now:()=>NOW}).update();assert.match(target.innerHTML,/selection limits/);assert.match(target.innerHTML,/800 links are retained/);
  assert.equal(coverage(collectSources({news},NOW)).truncated,true);
@@ -113,10 +114,10 @@ test('mixed publication clocks remain limited even when the newest dated report 
 test('one fresh publisher cannot conceal four missing required publisher statuses',()=>{
  const news={items:[row()],sources:[source({})]},result=briefCoverage(news,{now:NOW}),target=mount();
  assert.equal(result.missingCore.length,4);assert.equal(result.limited,true);assert.equal(result.aggregate.incomplete,true);
- createPriorityView({mount:target,getState:()=>({news,actor:'All'}),now:()=>NOW}).update();assert.doesNotMatch(target.innerHTML,/Source headlines refreshed/);assert.match(target.innerHTML,/No source status received for/);assert.match(target.innerHTML,/Al Jazeera/);
+ createPriorityView({mount:target,getState:()=>({news,actor:'All'}),now:()=>NOW}).update();assert.doesNotMatch(target.innerHTML,/Source headlines refreshed/);assert.match(target.innerHTML,/Reporting coverage is partial/);assert.match(target.innerHTML,/Source diagnostics/);
 });
 test('cold failed request stops saying it is still waiting for reporting',()=>{
- const target=mount();createPriorityView({mount:target,getState:()=>({news:null,actor:'All',failures:{news:true}}),now:()=>NOW}).update();assert.doesNotMatch(target.innerHTML,/Waiting for retrieved reporting/);assert.match(target.innerHTML,/unavailable after a failed request/);
+ const target=mount();createPriorityView({mount:target,getState:()=>({news:null,actor:'All',failures:{news:true}}),now:()=>NOW}).update();assert.doesNotMatch(target.innerHTML,/Waiting for retrieved reporting/);assert.match(target.innerHTML,/Current reporting is unavailable/);
 });
 
 test('audited equity-stock headline remains market context through every surviving mechanism consumer',()=>{

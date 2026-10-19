@@ -1,4 +1,8 @@
-# U.S. Maritime Advisories: bounded metadata adapter
+# U.S. Maritime Advisories: retired collection and historical metadata
+
+Collection retired on 19 October 2026. The production Worker consistently received HTTP 403 while the same ordinary requests succeeded from the connected Mac. No access restriction was bypassed. Passage no longer polls this source or lists it as an active feed. Current official advisory coverage is explicitly unavailable; this is not an all-clear.
+
+The parser and original fixtures remain to preserve the meaning of any validated historical snapshots. Retired records keep their original retrieval dates, source links and validity dates; calendar expiry is recomputed without treating it as a new source check. The earlier evaluation below records the evidence behind the original adapter, not a claim of current availability.
 
 Verified 17 October 2026, approximately 04:47–04:49 UTC. No account, credentials, stored cookies, proxy workaround, or access-denial bypass was used. These are point-in-time access observations, not an uptime or completeness guarantee.
 
@@ -18,7 +22,7 @@ The adapter republishes only bounded identifying metadata, source status, geogra
 
 ## Parser and lifecycle contract
 
-- `MARAD_SOURCE`: fixed index URL, source ID `marad-advisories`, proposed interval 3,600 seconds. This cadence is an application choice, not a publisher entitlement
+- `MARAD_SOURCE`: fixed index URL, source ID `marad-advisories`, historical interval 3,600 seconds; collection is now disabled
 - `parseMaradAdvisoriesIndex(html, now)`: validates separate Active/Cancelled tables and four named columns, then selects titles mentioning the two supported theatres
 - `parseMaradAdvisoryPage(html, indexRecord, now)`: validates matching title, ID, status, date labels and machine-date calendar components; returns metadata only
 - `loadMaradAdvisories(fetchText, now)`: fixed index plus relevant active detail URLs, sequentially and bounded to 12 details. Returns `{advisories, recordCount, coverage, url, access, latest:null, sourceUpdatedDate:null}`

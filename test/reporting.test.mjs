@@ -71,7 +71,7 @@ test('aggregated reporting keeps regional context, source provenance and per-sou
  assert.ok(result.sources.every(x=>!('items' in x)));assert.ok(urls.every(x=>!x.includes('example.com')));
  const previous=urls.length;result=await loadReporting(runtime,{reliefweb:false,discoveryWaitMs:30000,discoverySpacingMs:0},{});assert.equal(urls.length,previous);
 });
-test('working regional publishers retain attributed theatre and energy reporting during a GDELT outage',async()=>{
+test('working regional publishers retain attributed reporting after GDELT retirement',async()=>{
  const current=Date.parse('2026-09-28T18:00:00Z');
  const publishers=[
   {id:'mee',name:'Middle East Eye',feed:'https://www.middleeasteye.net/rss',title:'Iran says its forces seized a vessel near Hormuz',url:'https://www.middleeasteye.net/news/fixture-vessel',date:'Mon, 28 Sep 2026 16:21:32 GMT',publishedAt:'2026-09-28T16:21:32.000Z',summary:'The report attributes the vessel seizure to a statement by Iranian authorities.',actor:'Iran',theater:'hormuz'},
@@ -103,8 +103,8 @@ test('working regional publishers retain attributed theatre and energy reporting
  assert.equal(result.items.find(item=>item.sourceId==='france24').energy,true);
  assert.ok(!requests.some(url=>new URL(url).hostname==='www.arabnews.com'));
  assert.ok(!result.sources.some(source=>source.id==='arabnews'));
- assert.equal(requests.filter(url=>new URL(url).hostname==='api.gdeltproject.org').length,1);
- assert.ok(result.sources.filter(source=>source.group==='discovery'&&source.configured).every(source=>source.status==='unavailable'));
+ assert.equal(requests.filter(url=>new URL(url).hostname==='api.gdeltproject.org').length,0);
+ assert.ok(result.sources.filter(source=>source.group==='discovery').every(source=>source.configured===false&&source.retired===true));
  assert.ok(!JSON.stringify(result).includes('unused-image'));
 });
 test('regional publisher failure retains dated records without disguising an outage as fresh coverage',async()=>{
