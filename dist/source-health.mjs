@@ -26,7 +26,7 @@ export const SOURCE_DEFINITIONS = [
   {id:'imo-redsea',name:'IMO · Red Sea statements',group:'maritime',interval:1800,freshnessAfterSeconds:86400,freshnessBasis:'retrieval',home:'https://www.imo.org/en/mediacentre/hottopics/pages/red-sea.aspx'},
   {id:'marad-advisories',name:'U.S. Maritime Advisories · MARAD host',group:'maritime',interval:3600,freshnessAfterSeconds:86400,freshnessBasis:'retrieval',home:'https://www.maritime.dot.gov/msci-advisories',limitations:'Bounded official advisory metadata and validity, not an incident feed. Cancelled history is incomplete.'},
   {id:'acled',name:'ACLED',group:'acled',interval:3600,optional:'acled',home:'https://acleddata.com/'},
-].map(definition=>({...definition,capability:CORE_REPORTING_IDS.includes(definition.id)||['brent','wti','imo-hormuz','imo-redsea'].includes(definition.id)?'core':'supporting',...(RETIRED_SOURCE_IDS.includes(definition.id)?{defaultEnabled:false,retired:true,retirementReason:definition.id==='centcom'?'Collector retired after repeated schema failures; original evidence remains in the archive.':'Broad discovery family retired; retained metadata remains available in the archive.'}:{})}));
+].map(definition=>({...definition,capability:CORE_REPORTING_IDS.includes(definition.id)||['brent','wti','imo-hormuz','imo-redsea'].includes(definition.id)?'core':'supporting',...(RETIRED_SOURCE_IDS.includes(definition.id)?{defaultEnabled:false,retired:true,retirementReason:definition.id==='centcom'?'Collector retired after repeated schema failures; original evidence remains in the archive.':definition.id==='marad-advisories'?'Collection retired because the provider rejects access from this deployment. Current advisory coverage is unavailable.':'Discovery collection retired after persistent provider failures; dated historical metadata remains in the archive.'}:{})}));
 const date = value => {if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}(?:T|$)/.test(value)||!Number.isFinite(Date.parse(value)))return null;const calendar=value.slice(0,10);return new Date(calendar+'T00:00:00Z').toISOString().slice(0,10)===calendar?value:null;};
 export function ageSeconds(value, now=Date.now()) { const d=date(value); return d && Date.parse(d)<=now+60000 ? Math.max(0,Math.floor((now-Date.parse(d))/1000)) : null; }
 export function sourceHealth(input, now=Date.now()) {
@@ -130,10 +130,19 @@ export function statusSummary(sources) {
   if(enabled.some(s=>s.coverageStatus==='unknown'||s.clockCompleteness==='partial'))return 'Sources responding · evidence dates incomplete';
   return enabled.some(s=>s.hasData)?'Sources responding':'Sources checked · no usable records';
 }
+// A working publisher may have no recent relevant story. That is distinct from
+// a failed collector; its original publication dates still govern selection.
+export function isActiveReportingSource(source) {
+  return source?.group==='news'&&source.configured===true&&!source.retired&&source.successfulCheck===true&&!source.attention&&!source.checkOverdue;
+}
 export function panelNotice(sources,group) {
   const list=sources.filter(s=>(s.group===group||group==='news'&&s.group==='discovery')&&s.configured===true);
   if(!list.length)return 'Coverage unknown · no active source status received.';
   const failed=list.filter(s=>['retained','unavailable'].includes(s.status));
+  if(failed.length&&group==='news'){
+    const working=list.some(isActiveReportingSource);
+    return working?'Showing available publisher reporting. Some updates are unavailable; details are in Coverage & sources.':'Current reporting is unavailable. Historical records remain in the archive; missing reports do not mean no events occurred.';
+  }
   if(failed.length){
     const isDiscovery=s=>s.group==='discovery'&&s.id?.startsWith('gdelt-');
     const names=[...new Set(failed.map(s=>isDiscovery(s)?'GDELT discovery':s.name))];
@@ -143,7 +152,8 @@ export function panelNotice(sources,group) {
   if(list.some(s=>s.status==='loading'))return 'Checking sources. Coverage is not yet established.';
   if(group==='vessels'&&list.some(s=>s.attentionReason==='reception'))return list.some(s=>s.hasData)?'Some vessel feeds have a reception gap. Positions from responding feeds are shown; the map is not a complete traffic census.':'No usable vessel positions have been received. This is a reception gap, not evidence that the waters are empty.';
   if(group==='vessels'&&list.some(s=>s.status==='paused'))return 'Live vessel reception is paused while the view is closed. Retained positions keep their original observation times.';
-  if(list.some(s=>s.status==='stale'))return 'Some sources contain older material. Check publication and observation dates in Sources.';
+  if(list.some(s=>s.status==='stale'&&(group!=='news'||s.attention)))return 'Older observations are labeled with their dates. Coverage & sources has update details.';
+  if(group==='news'&&list.some(isActiveReportingSource))return '';
   if(list.some(s=>s.cacheIssue))return 'Data retrieved, but the local cache could not be saved. Open Sources for details.';
   if(list.some(s=>s.possiblyTruncated||s.scopeStatus==='bounded'))return 'Retrieved results are bounded and may omit relevant records. Inspect source limits and archive coverage.';
   if(list.some(s=>s.coverageStatus==='unknown'||s.clockCompleteness==='partial'))return 'Some publication or observation dates are unknown. Successful retrieval does not establish current evidence.';

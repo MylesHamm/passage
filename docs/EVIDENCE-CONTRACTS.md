@@ -32,18 +32,17 @@ The stable `recordKind` field distinguishes publisher reports, official register
 
 - Keep the five direct regional publisher feeds, UN/EIA analysis and existing independent analysis
 - Retire CENTCOM's repeatedly failing default collector; preserve its adapter for rollback, cached diagnostics and archived evidence
-- Retire GDELT Reuters-only, broad regional-export and general energy/diplomacy collection
-- Keep two bounded GDELT maritime-route families at a 30-minute interval with shared provider backoff; the original discovery attribution and unknown publication status remain explicit
-- Add only MARAD-hosted U.S. maritime advisory metadata as a complementary validity/status source; keep it separate from incidents and incident counts
+- Retire all five GDELT families after persistent production rate limits; preserve original discovery attribution, unknown publication dates and bounded historical records
+- Retire MARAD-hosted advisory collection after persistent production HTTP 403 responses; disclose current official advisory coverage as unavailable, and preserve any validated historical metadata separately from incidents and incident counts
 - Do not enable UKMTO/JMIC as another default source: the sampled public JSON has unresolved revision, cancellation and date-consistency limitations
 
-Retired source identities remain visible as retired. Retired caches are not fetched again and are not relabeled as current collection. Their records enter display only through the bounded archive using the original successful retrieval clock, subject to its ordinary retention and capacity policies. Missing retrieval clocks cannot establish retention eligibility. A caller without a reporting archive does not reinsert retired snapshots into live results. Original cache files remain preserved. No credentials, local user notes or saved preferences are deleted by this policy change.
+Retired source identities remain available in secondary diagnostics as retired. Retired caches are not fetched again and are not relabeled as current collection. Their records enter display only through the bounded archive using the original successful retrieval clock, subject to its ordinary retention and capacity policies. Missing retrieval clocks cannot establish retention eligibility. A caller without a reporting archive does not reinsert retired snapshots into live results. Original cache files remain preserved. No credentials, local user notes or saved preferences are deleted by this policy change.
 
-See [advisory verification and reuse boundaries](source-advisories.md). Advisory expiry is recomputed when cached metadata is served. A failed refresh preserves the last successful retrieval time and exposes a retained state; a fresh fetch cannot make an expired advisory active.
+See [advisory verification and reuse boundaries](source-advisories.md). Advisory expiry is recomputed when cached metadata is served. Retirement preserves the last successful retrieval time; recomputed calendar validity cannot imply a new source check or establish current coverage.
 
 ## Release and regression gates
 
-The public API readiness check requires recent successful checks for five direct publisher feeds, the two existing IMO sources, and Brent/WTI. Official-source event dates may be old; daily spot observations use the existing ten-calendar-day lag policy so weekends do not trigger a false failure. Supporting discovery/advisory/weather/account-backed gaps remain visible separately.
+The public API readiness check requires recent successful checks for five direct publisher feeds, the two existing IMO sources, and Brent/WTI. A publisher with no recent relevant publication is a coverage limitation, not a technical failure; recent reporting is required from at least one direct publisher collectively. The gate requires explicit retirement and unavailable advisory coverage, and rejects claims that historical records establish current advisory coverage. Official-source event dates may be old; daily spot observations use the existing ten-calendar-day lag policy so weekends do not trigger a false failure. Supporting discovery/advisory/weather/account-backed gaps remain visible separately.
 
 `test/evidence-contracts.test.mjs` exercises the fourteen audit scenarios through shared models, plus the exact audited financial-metaphor headline and partial-publication coverage. Detailed parser, retained-cache, expiry, path-segmentation, timeline, provenance, local-persistence and UI regressions remain in their focused test files.
 

@@ -35,3 +35,11 @@ test('equity stocks and price sinking do not become petroleum inventory or secur
  assert.ok(oilMechanisms({title:'U.S. crude oil stocks fall as demand increases'}).some(channel=>channel.id==='buffers'));
  assert.ok(oilMechanisms({title:'Strategic petroleum reserves will be replenished'}).some(channel=>channel.id==='buffers'));
 });
+
+test('military casualties do not establish crew, civilian or port-worker harm',()=>{
+ for(const title of ['Yemen forces say 378 Houthis killed','Iran soldiers injured in clashes','Two security guards killed in Aden','Fighters missing after military evacuation'])assert.ok(!oilMechanisms({title}).some(channel=>channel.id==='people'),title);
+ for(const title of ['Crew evacuated from tanker','Civilians injured near port','Humanitarian aid reaches Yemen']){
+  const channel=oilMechanisms({title}).find(channel=>channel.id==='people');
+  assert.ok(channel,title);assert.match(channel.explanation,/does not establish casualties/);
+ }
+});

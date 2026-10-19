@@ -1,4 +1,5 @@
 import {collectorHealth} from './collector-status.mjs';
+import {isActiveReportingSource} from './source-health.mjs';
 // Browser-safe reporting policy: relevance is distinct from geographic location.
 export const reportTime = item => item.publicationPrecision==='day' ? item.publishedDate||item.publicationDate||item.publishedAt?.slice(0,10)||null : item.publishedAt||item.publishedDate||item.discoveredAt||null;
 export const reportTimeLabel = item => item.publicationPrecision==='day'||item.publishedDate ? 'Publication date' : item.publishedAt ? 'Published' : item.discoveredAt ? 'Discovered · publication unknown' : 'Publication date unknown';
@@ -10,10 +11,17 @@ export function inReportingWindow(item,hours,now=Date.now()) {
 }
 export function sortReports(a,b){return (reportTime(b)||'').localeCompare(reportTime(a)||'')||a.title.localeCompare(b.title);}
 
+// These are broad monitoring topics, not locations established by the record.
+export const reportContextLabel = theater => ({hormuz:'Iran & Gulf context',bab:'Yemen & Red Sea context'})[theater]||'Regional context';
+
+export function isActivePublisherReport(item,sources=[]) {
+  return !item.retainedFromHistory&&!item.collectionRetired&&!item.retainedForReading&&isActiveReportingSource(sources.find(source=>source.id===item.sourceId))&&item.dateBasis!=='discovery'&&item.type!=='Discovered reporting'&&!item.discoveryProvider&&item.contentAccess!=='discovery-metadata';
+}
+
 // Keep the difference between indexed links and a direct publisher feed visible.
 export function reportingCoverageText(coverage,{hosted=false,now=Date.now()}={}) {
   if (!coverage) return 'Checking reporting coverage…';
-  const parts = [coverage.reuters?.mode==='retained-links-only'?'Reuters: retained or source-linked reporting only. Reuters-specific discovery is retired; direct Reuters delivery is not connected.':'Reuters: public discovery. Direct Reuters delivery and your Reuters topic preferences are not connected.'];
+  const parts = ['The default view uses working publisher feeds. Include the historical archive to read previously collected links, including retired sources. Historical records keep their original publication and retrieval dates.'];
   if(coverage.publicationUnknown)parts.push(`${coverage.publicationUnknown} links have unknown publication dates; discovery time is not publication time.`);
   if(coverage.possiblyTruncatedFamilies?.length)parts.push('Discovery results are bounded and may omit relevant links.');
   if(hosted)parts.push(collectorHealth(coverage.collection,now).notice);

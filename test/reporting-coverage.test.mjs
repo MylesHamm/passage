@@ -6,6 +6,7 @@ import path from 'node:path';
 import {SourceRuntime} from '../lib/source-runtime.mjs';
 import {ReportArchive} from '../lib/report-archive.mjs';
 import {loadReporting,deduplicateReports} from '../lib/reporting.mjs';
+import {parseDiscovery} from '../lib/discovery.mjs';
 import {buildIntelligence,canonicalReportUrl} from '../dist/intelligence-data.mjs';
 import {reportTime,reportRelevant,inReportingWindow} from '../dist/reporting-view.mjs';
 
@@ -27,7 +28,7 @@ async function setup(t,{now=NOW}={}){
     return new Response(rss([]));
   }});
   const file=path.join(dir,'report-history.json');
-  return {runtime,file,requests,now:()=>time,setTime:value=>{time=value;},setRecords:value=>{records=value;},setDiscovery:value=>{discovery=value;},archive:()=>new ReportArchive({file,now:()=>time})};
+  return {runtime,file,requests,now:()=>time,setTime:value=>{time=value;},setRecords:value=>{records=value;},setDiscovery:value=>{discovery=value;const source={id:'gdelt-hormuz'};cache.set('/fixture-report-cache/gdelt-hormuz-metadata.json',JSON.stringify({items:parseDiscovery({articles:value},source,time),retrievedAt:new Date(time-3600000).toISOString(),checkedAt:new Date(time-3600000).toISOString()}));},archive:()=>new ReportArchive({file,now:()=>time})};
 }
 
 test('reporting payload and Investigate retain a publisher article after feed rollover and restart',async t=>{
@@ -73,7 +74,7 @@ test('the September 21 Reuters note is dated, attributed oil context on Watch an
   assert.ok(graph.edges.some(edge=>edge.from===node.id&&edge.relation==='POTENTIAL_CHANNEL'));
   assert.equal(graph.nodes.filter(row=>row.sourceUrl===ARTICLE).length,1);
   assert.equal(news.coverage.reuters.mode,'retained-links-only');assert.equal(news.coverage.reuters.directFeedConnected,false);assert.equal(news.coverage.reuters.topicPreferencesConnected,false);
-  assert.equal(news.coverage.discoveryFamilies,2);assert.equal(news.coverage.discoveryLimitPerFamily,250);
+  assert.equal(news.coverage.discoveryFamilies,0);assert.equal(news.coverage.discoveryLimitPerFamily,250);
 });
 
 test('reviewed reports are excluded before their publication or review date',async t=>{
@@ -90,7 +91,7 @@ test('discovery, archived metadata and graph provenance contain only canonical p
     ...['http://127.0.0.1/oil','https://example.com/oil?api_key=secret','https://person:password@example.com/oil'].map(url=>({title:'Iran oil shipping report',url,seendate:'20260922T100000Z'})),
   ]);
   const news=await loadReporting(f.runtime,{...CONFIG,reportArchive:f.archive()}),record=news.items.find(row=>row.url===clean);
-  assert.ok(record);assert.equal(record.publishedAt,null);assert.equal(record.discoveredAt,'2026-09-22T10:00:00.000Z');
+  assert.ok(record);assert.equal(record.collectionRetired,true);assert.equal(record.lastSeenAt,'2026-09-22T11:00:00.000Z');assert.equal(record.publishedAt,null);assert.equal(record.discoveredAt,'2026-09-22T10:00:00.000Z');assert.ok(!f.requests.some(url=>url.hostname==='api.gdeltproject.org'));
   assert.ok(record.provenance.length);assert.ok(record.provenance.every(p=>p.url===clean));
   for(const row of news.items){assert.equal(canonicalReportUrl(row.url),row.url);for(const p of row.provenance||[])assert.equal(canonicalReportUrl(p.url),p.url);}
   const graph=buildIntelligence({news,now:NOW});for(const row of graph.nodes.filter(row=>row.type==='report')){assert.equal(canonicalReportUrl(row.sourceUrl),row.sourceUrl);for(const p of row.record.provenance||[])assert.equal(canonicalReportUrl(p.url),p.url);}

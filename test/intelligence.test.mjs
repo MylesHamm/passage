@@ -156,3 +156,21 @@ test('raw legacy Doomberg metadata gains analysis labels but manual notes retain
  const manual=mergeManualEvidence(buildIntelligence({now}),[{url,title:'My reading note',note:'My interpretation'}],now).nodes.find(node=>node.sourceUrl===url).record;
  assert.equal(manual.evidenceStatus,'User-supplied context');assert.equal(manual.manual,true);assert.match(manual.contentAccess,/not fetched/);
 });
+
+test('canonical graph identities collapse feed trackers without losing meaningful article query IDs',()=>{
+  assert.equal(canonicalReportUrl('https://www.aljazeera.com/news/story?traffic_source=rss'),'https://www.aljazeera.com/news/story');
+  assert.notEqual(canonicalReportUrl('https://www.eia.gov/todayinenergy/detail.php?id=1'),canonicalReportUrl('https://www.eia.gov/todayinenergy/detail.php?id=2'));
+});
+test('rolling publisher URLs rebuild derived actors and oil channels from the selected current text',()=>{
+  const url='https://example.com/rolling',old=make({url,title:'Iran tanker attack closes Strait of Hormuz',summary:'Iranian forces seized the tanker.',publishedAt:'2026-09-16T08:00:00Z',discoveredAt:null}),current=make({url,title:'Egypt discusses Suez trade talks',summary:'Egyptian officials discuss access to the Suez Canal.',publishedAt:'2026-09-17T08:00:00Z',discoveredAt:null});
+  for(const items of [[old,current],[current,old]]){
+    const graph=buildIntelligence({news:{items},includeReviewedContext:false,now}),row=graph.nodes.find(node=>node.sourceUrl===url),edges=graph.edges.filter(edge=>edge.from===row.id);
+    assert.equal(row.label,current.title);assert.ok(edges.some(edge=>edge.to==='actor:egypt'));assert.ok(edges.some(edge=>edge.to==='asset:suez-canal'));
+    assert.ok(!edges.some(edge=>['actor:iran','asset:hormuz'].includes(edge.to)));assert.ok(!edges.some(edge=>/attack|tanker|Iran|Hormuz/.test(edge.matchedText||'')));
+    assert.ok(edges.every(edge=>edge.publishedAt==='2026-09-17T08:00:00.000Z'));
+  }
+});
+test('publisher genre metadata and cleaned previews remain explicit in graph evidence',()=>{
+  const report=make({type:'Publisher opinion',publisherGenre:'opinion',publisherCategories:['Opinion','Middle East'],evidenceStatus:'Publisher opinion; not independently verified',summary:'&lt;p&gt;Publisher interpretation.&lt;/p&gt;'}),graph=buildIntelligence({news:{items:[report]},now}),record=graph.nodes.find(node=>node.sourceUrl===report.url).record;
+  assert.equal(record.type,'Publisher opinion');assert.equal(record.publisherGenre,'opinion');assert.deepEqual(record.publisherCategories,report.publisherCategories);assert.equal(record.summary,'Publisher interpretation.');assert.equal(record.recordKind,'publisher-report');
+});

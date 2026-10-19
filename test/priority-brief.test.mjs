@@ -16,13 +16,13 @@ test('prioritizes explicit route and oil disruption while excluding unrelated Ir
     report('culture','Iran talks celebrate regional cinema'),
     report('route','Tankers rerouted as Strait of Hormuz remains closed, shipping firm says'),
   ]},{now:NOW});
-  assert.deepEqual(card(brief,'hormuz').items.map(item=>item.report.id),['route','oil','talks']);
+  assert.deepEqual(card(brief,'hormuz').items.map(item=>item.report.id),['route','oil']);
   assert.ok(!titles(brief).some(title=>/singer|tourism/.test(title)));
 });
 
 test('retains opposing missile and strike claims with qualifiers and no invented responsibility',()=>{
-  const houthi=report('houthi','Houthis claim missile launch toward Israel; military says intercepted',{actors:['Houthis','Israel']});
-  const israel=report('israel','Israel says it struck Houthi sites in Yemen',{actors:['Houthis','Israel']});
+  const houthi=report('houthi','Houthis claim missile launch toward Red Sea vessel; military says intercepted',{actors:['Houthis','Israel']});
+  const israel=report('israel','Israel says it struck Houthi naval sites in the Red Sea',{actors:['Houthis','Israel']});
   const brief=buildPriorityBrief({items:[houthi,israel]},{now:NOW});
   assert.deepEqual(new Set(card(brief,'bab').items.map(item=>item.title)),new Set([houthi.title,israel.title]));
   assert.equal(brief.uniqueGroupCount,2);
@@ -39,8 +39,8 @@ test('cross-listed headline is one unique group, even when both theatres are nam
 });
 
 test('39 matching headlines collapse without adding corroboration or ranking weight',()=>{
-  const headline='Iran must stop arming Houthis in Yemen, G7 says';
-  const copies=Array.from({length:39},(_,i)=>report(`copy-${i}`,i%2?'Iran must stop arming Houthis in Yemen , G7 says':headline,{publishedAt:null,publicationPrecision:'unknown',discoveredAt:'2026-09-28T11:00:00Z',sourceId:'gdelt-redsea',contentAccess:'discovery-metadata',source:`Outlet ${i}`,provenance:[{sourceId:'gdelt-redsea',url:`https://example.com/copy-${i}`}]}));
+  const headline='Iran must stop arming Houthi attacks on Red Sea shipping, G7 says';
+  const copies=Array.from({length:39},(_,i)=>report(`copy-${i}`,i%2?'Iran must stop arming Houthi attacks on Red Sea shipping , G7 says':headline,{publishedAt:null,publicationPrecision:'unknown',discoveredAt:'2026-09-28T11:00:00Z',sourceId:'gdelt-redsea',contentAccess:'discovery-metadata',source:`Outlet ${i}`,provenance:[{sourceId:'gdelt-redsea',url:`https://example.com/copy-${i}`}]}));
   const strike=report('strike','Houthis claim attack on Red Sea tanker');
   const single=buildPriorityBrief({items:[copies[0],strike]},{now:NOW,includeDiscovery:true});
   const many=buildPriorityBrief({items:[...copies,strike]},{now:NOW,includeDiscovery:true});
@@ -54,8 +54,8 @@ test('39 matching headlines collapse without adding corroboration or ranking wei
 });
 
 test('discovery clock never becomes publication and direct publisher metadata wins equal importance',()=>{
-  const discovery=report('discovery','Houthis report missile launch toward Israel',{publishedAt:null,publicationPrecision:'unknown',discoveredAt:'2026-09-28T11:55:00Z',sourceId:'gdelt-redsea',dateBasis:'discovery',contentAccess:'discovery-metadata'});
-  const direct=report('publisher','Israel reports strike on Houthi positions in Yemen',{publishedAt:'2026-09-28T08:00:00Z'});
+  const discovery=report('discovery','Houthis report missile launch toward Red Sea tanker',{publishedAt:null,publicationPrecision:'unknown',discoveredAt:'2026-09-28T11:55:00Z',sourceId:'gdelt-redsea',dateBasis:'discovery',contentAccess:'discovery-metadata'});
+  const direct=report('publisher','Israel reports strike on Houthi naval operations in the Red Sea',{publishedAt:'2026-09-28T08:00:00Z'});
   const brief=buildPriorityBrief({items:[discovery,direct]},{now:NOW,includeDiscovery:true});
   assert.equal(card(brief,'bab').items[0].report.id,'publisher');
   const item=card(brief,'bab').items.find(item=>item.report.id==='discovery');
@@ -147,13 +147,13 @@ test('same publisher URL repeated by metadata families is one source link and do
 
 test('Revolutionary Guard aliases and scoped naval or military exercises reach the Hormuz brief',()=>{
   for(const title of [
-    'Revolutionary Guards claim drone attack',
-    'Revolutionary Guard claims missile attack',
-    'Islamic Revolutionary Guard Corps reports drone interception',
+    'Revolutionary Guards claim drone attack in Strait of Hormuz',
+    'Revolutionary Guard claims missile attack near Hormuz',
+    'Islamic Revolutionary Guard Corps reports drone interception over Persian Gulf',
     'IRGC announces naval drills',
-    'Tehran announces military exercises',
+    'Tehran announces military exercises in Gulf of Oman',
     'Iran announces a naval exercise',
-    'IRGC announces a military drill',
+    'IRGC announces a military drill in Strait of Hormuz',
   ]){
     const row=report('security',title);
     const brief=buildPriorityBrief({items:[row]},{now:NOW});
@@ -180,9 +180,9 @@ test('oil exports and petroleum market headlines rank ahead of general military 
   const exports=report('exports','Iraq looks for oil export alternatives to troubled Hormuz',{publishedAt:'2026-09-28T08:00:00Z'});
   const market=report('market','Oil prices surge after Trump rejects Iran plan to reopen Hormuz',{publishedAt:'2026-09-28T07:00:00Z'});
   const shipping=report('shipping','Shipping halted in Hormuz, operator says',{publishedAt:'2026-09-27T15:00:00Z'});
-  const bab=report('bab-strike','Israel says it struck Houthi sites in Yemen');
+  const bab=report('bab-strike','Israel says it struck Houthi naval sites in the Red Sea');
   const brief=buildPriorityBrief({items:[airbase,exports,market,shipping,bab]},{now:NOW});
-  assert.deepEqual(card(brief,'hormuz').items.map(item=>item.report.id),['shipping','exports','market','airbase']);
+  assert.deepEqual(card(brief,'hormuz').items.map(item=>item.report.id),['shipping','exports','market']);
   assert.equal(card(brief,'hormuz').items.find(item=>item.report.id==='market').title,market.title);
   assert.equal(card(brief,'bab').items[0].title,bab.title);
 });
@@ -217,39 +217,20 @@ test('an unknown-publication copy joins a matching headline only when one public
   assert.equal(group.copies.find(item=>item.id==='unknown').publishedAt,null);
 });
 
-test('explicit forces targeting or military movement remains visible without matching generic targets',()=>{
-  const title='Yemeni government forces target Houthi buildup in new preemptive strategy';
-  const brief=buildPriorityBrief({items:[
-    report('arab-news',title,{source:'Arab News',sourceId:'arab-news'}),
+test('land conflict, diplomacy and casualty headlines remain in Reporting without becoming maritime developments',()=>{
+  const rows=[
+    report('border','Pakistan suspends Iran border trade, amid violence on both sides'),
+    report('lavrov','Russia’s Lavrov discusses US war and regional security in Tehran visit'),
+    report('forces','Yemeni government forces target Houthi buildup in new preemptive strategy'),
     report('mobilize','Yemeni government forces mobilize near Aden'),
     report('advance','Iran military advances toward border'),
-    report('sport','Iran football team targets championship final'),
-    report('culture','Yemeni singer targets international audience'),
-    report('buildup','Iran festival buildup attracts visitors'),
-    report('strategy','Houthi cultural group announces new preemptive strategy'),
-  ]},{now:NOW});
-  assert.deepEqual(new Set(card(brief,'bab').items.map(item=>item.report.id)),new Set(['arab-news','mobilize']));
-  assert.deepEqual(card(brief,'hormuz').items.map(item=>item.report.id),['advance']);
-  assert.equal(card(brief,'bab').items.find(item=>item.report.id==='arab-news').title,title);
-  assert.equal(brief.uniqueGroupCount,3);
-});
-
-test('recent Yemen mobilization, conflict casualties and mediation reach Bab without invented oil effects',()=>{
-  const rows=[
-    report('mobilisation',"Yemen's president calls on his people to mobilise against Iran-backed Houthis",{source:'France 24 Middle East',sourceId:'france24',publishedAt:'2026-09-25T20:41:00Z'}),
-    report('casualties','Yemen casualties rising by around 100 per day amid escalating conflict: WHO',{source:'Middle East Monitor',sourceId:'memo',publishedAt:'2026-09-28T09:30:00Z'}),
-    report('backing','Sudanese army chief backs Yemen’s government forces against Houthis',{source:'Middle East Monitor',sourceId:'memo',publishedAt:'2026-09-28T09:00:00Z'}),
-    report('mediation','Hamas says it offered mediation in Yemen, awaits response from warring sides',{source:'Middle East Monitor',sourceId:'memo',publishedAt:'2026-09-27T08:00:00Z'}),
+    report('casualties','Yemen casualties rising by around 100 per day amid escalating conflict: WHO'),
+    report('backing','Sudanese army chief backs Yemen’s government forces against Houthis'),
+    report('mediation','Hamas says it offered mediation in Yemen, awaits response from warring sides'),
   ];
-  const brief=buildPriorityBrief({items:rows},{now:NOW});
-  assert.equal(card(brief,'bab').items.length,4);
-  for(const row of rows){
-    const selected=card(brief,'bab').items.find(item=>item.report.id===row.id);
-    assert.equal(selected.title,row.title);assert.equal(selected.clock.value,row.publishedAt);assert.equal(selected.report,row);assert.equal(selected.independentConfirmation,false);
-    assert.equal(selected.category,['mobilisation','casualties'].includes(row.id)?'Military & security reporting':'Conflict policy reporting');
-    assert.equal(selected.report.eventDate,undefined);assert.equal(selected.report.oilImpact,undefined);
-  }
-  assert.equal(card(brief,'energy'),undefined);
+  const before=structuredClone(rows),brief=buildPriorityBrief({items:rows},{now:NOW});
+  assert.equal(brief.uniqueGroupCount,0);
+  assert.deepEqual(rows,before,'original claims and metadata remain available to Reporting');
 });
 
 test('civil mobilization, sports metaphors and casualties without conflict stay out of military selection',()=>{

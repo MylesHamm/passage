@@ -11,6 +11,36 @@ test('date and public URL helpers reject malformed or credential-bearing values'
 test('context extraction records actors, places and disruption terms without attribution',()=>{
   const context=deriveContext('Houthi drone attack near Bab el-Mandeb','Civilian crew rerouted from Aden');const ids=context.mentions.map(item=>item.entityId);assert.ok(ids.includes('houthis'));assert.ok(ids.includes('bab-chokepoint'));assert.ok(ids.includes('civilians'));assert.ok(ids.includes('aden'));assert.deepEqual(context.disruptionMatches.sort(),['attack','drone','rerouted'].sort());
 });
+test('research actor matching does not turn woman or Romania into Oman',()=>{
+  for(const text of ['Woman killed, five civilians injured in Houthi shelling and sniper fire','24 Indian sailors safe after tankers hit in Hormuz, Romania']) {
+    for(const [title,summary] of [[text,''],['Publisher update',text]])assert.ok(!deriveContext(title,summary).mentions.some(mention=>mention.entityId==='oman'));
+    const graph=buildEvidenceGraph([report('unrelated',text)],{now:NOW});
+    assert.ok(!graph.edges.some(edge=>edge.to==='oman'));
+    assert.ok(!graph.allEntities.some(entity=>entity.id==='oman'));
+  }
+});
+test('research actor boundaries preserve complete names and field provenance',()=>{
+  for(const name of ['Oman','Omani','Duqm']) {
+    for(const [title,summary,field] of [[`${name} issues a statement`,'','headline'],['Publisher update',`Statement from ${name}`,'feed text']]) {
+      const mention=deriveContext(title,summary).mentions.find(item=>item.entityId==='oman');
+      assert.equal(mention?.matchedText,name);assert.equal(mention?.field,field);
+    }
+  }
+  assert.ok(!deriveContext('A Tirana newspaper reviews a screwdriver').mentions.some(mention=>['iran','merchant-shipping'].includes(mention.entityId)));
+});
+test('research actor boundaries preserve explicit plural names and demonyms',()=>{
+  for(const [name,actor] of [['Islamic Revolutionary Guards','irgc'],['Revolutionary Guards','irgc'],['Emiratis','uae'],['Omanis','oman'],['Saudis','saudi-arabia'],['Saudi Arabians','saudi-arabia'],['maritime coalitions','maritime-coalitions'],['crews','merchant-shipping'],['humanitarians','civilians'],['Pakistanis','other-forces'],['Bahrainis','other-forces'],['Egyptians','other-forces'],['Somalis','other-forces'],['Djiboutians','other-forces']]) {
+    assert.ok(deriveContext(`${name} issue a statement`).mentions.some(mention=>mention.entityId===actor),name);
+  }
+});
+test('research actor links require civilian or crew context rather than casualties alone',()=>{
+  for(const title of ['Iran says 20 soldiers injured','Dozens killed after Houthi strike on military camp in Shabwa','Two guards killed in Aden']) {
+    assert.ok(!deriveContext(title).mentions.some(mention=>mention.entityId==='civilians'));
+    assert.ok(!deriveContext('Publisher update',title).mentions.some(mention=>mention.entityId==='civilians'));
+    assert.ok(!buildEvidenceGraph([report('military',title)],{now:NOW}).edges.some(edge=>edge.to==='civilians'));
+  }
+  for(const title of ['Civilians injured near a port','Seafarers killed aboard a ship','Children displaced by fighting','Crew evacuate a vessel'])assert.ok(deriveContext(title).mentions.some(mention=>mention.entityId==='civilians'),title);
+});
 test('evidence graph keeps source URL and matching field provenance',()=>{
   const item=report('one','Iran and Houthi forces discuss shipping attack near Hormuz','2026-09-12T10:00:00Z',{theaters:['hormuz'],actors:['Iran','Houthis']});const graph=buildEvidenceGraph([item]);assert.equal(graph.reports.length,1);assert.ok(graph.edges.length>=3);assert.ok(graph.edges.every(edge=>edge.sourceUrl===item.url));assert.ok(graph.edges.some(edge=>edge.basis==='headline'));assert.ok(graph.allEntities.some(entity=>entity.label==='Strait of Hormuz'));
 });

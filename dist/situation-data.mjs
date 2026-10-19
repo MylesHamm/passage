@@ -22,7 +22,7 @@ export const MECHANISMS = [
   {id:'transport',name:'Transit & freight',pattern:/\b(?:ships?|vessels?|tankers?|shipping|ports?|straits?|red sea|hormuz|rerout\w*|transit)\b/i,explanation:'Avoidance, waiting time and detours can tie up ships and raise delivered costs. A received AIS point does not establish cargo volume or completed transit.'},
   {id:'risk',name:'Security & insurance',pattern:/attack|strike|drone|missile|seiz|explos|damage|hostilit/i,explanation:'Perceived exposure may affect insurance terms and willingness to sail. This watch has no live war-risk premium or freight assessment.'},
   {id:'buffers',name:'Inventories & demand',pattern:/\b(?:inventor\w*|demand|consumption|buffers?)\b/i,explanation:'Inventories and changes in demand can absorb or amplify a supply disruption. Monthly agency estimates have their own vintage and are not current tank measurements.'},
-  {id:'people',name:'Crew & port safety',pattern:/seafarer|crew|fatal|injur|killed|missing|evacuat|civilian|humanitarian/i,explanation:'Harm to seafarers and port workers is a direct consequence. It can also interrupt operations; casualty reports alone do not quantify lost oil supply.'}
+  {id:'people',name:'Crew & civilian context',pattern:/\b(?:seafarers?|crew|mariners?|port workers?|civilians?|humanitarian|aid)\b/i,explanation:'The text mentions crew, civilians or humanitarian conditions. This topic match does not establish casualties, harm to port workers or an interruption to operations; check the source account.'}
 ];
 export function oilMechanisms(record) {
   const text=[record.title,record.summary,record.locationText].filter(Boolean).join(' '),physical=physicalClaimText(text);

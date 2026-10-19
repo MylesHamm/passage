@@ -7,7 +7,7 @@ import {createDataService,PUBLIC_API_PATHS} from '../lib/data-service.mjs';
 import {SourceRuntime} from '../lib/source-runtime.mjs';
 import {ReportArchive} from '../lib/report-archive.mjs';
 import {SOURCE_CAPABILITIES} from '../dist/source-policy.mjs';
-import {DISCOVERY_SOURCES} from '../lib/discovery.mjs';
+import {loadMaradAdvisories} from '../lib/marad.mjs';
 import {assessBackendReadiness} from '../lib/backend-readiness.mjs';
 
 const NOW=Date.parse('2026-09-22T12:00:00Z');
@@ -54,7 +54,7 @@ test('hosted service isolates private account adapters and secrets across every 
   assert.deepEqual({...outputs['/api/config']},{reliefweb:true,aisstream:true,eia:true,acled:false,version:'service-test',hosted:true,capabilities:SOURCE_CAPABILITIES});
   const backend=assessBackendReadiness({config:outputs['/api/config'],diagnostics:outputs['/api/diagnostics'],news:outputs['/api/news'],maritime:outputs['/api/maritime'],now:NOW});
   assert.equal(backend.compatible,true,'actual service schemas align even when supporting providers are unavailable');
-  assert.equal(backend.coverageEstablished,false,'a failed MARAD first retrieval must block initial coverage establishment');
+  assert.equal(backend.coverageEstablished,false,'retirement must never claim current advisory coverage');
   assert.ok(backend.warnings.some(warning=>warning.id==='marad-advisories'));
   assert.equal(privateCalls,0);
   assert.equal(outputs['/api/acled'].configured,false);
@@ -67,61 +67,25 @@ test('hosted service isolates private account adapters and secrets across every 
   assert.ok(outputs['/api/market-context'].series.every(series=>series.observations.length===1));
   assert.ok(requests.some(url=>url.hostname==='api.eia.gov'&&url.searchParams.get('api_key')===secret));
   assert.ok(requests.some(url=>url.hostname==='api.reliefweb.int'&&url.searchParams.get('appname')===secret));
-  assert.equal(requests.filter(url=>url.hostname==='api.gdeltproject.org').length,1,'a provider 429 defers the remaining discovery families');
+  assert.equal(requests.filter(url=>['api.gdeltproject.org','www.maritime.dot.gov'].includes(url.hostname)).length,0,'retired providers must never be polled');
   assert.equal(JSON.stringify({outputs,logs:f.logs}).includes(secret),false);
   for(const endpoint of ['/api/acled/credentials','/api/connections/acled','/api/config/save'])assert.equal(await service.get(endpoint),null);
 });
 
-test('background collection waits for late discovery and persists metadata with its original clocks', {timeout:5000},async t=>{
-  let release,started;
-  const responseGate=new Promise(resolve=>{release=resolve;});
-  const requestStarted=new Promise(resolve=>{started=resolve;});
-  let discoveryRequests=0;
-  const f=await fixture(t,async input=>{
-    if(new URL(input).hostname==='api.gdeltproject.org'){
-      discoveryRequests++;started();return responseGate;
-    }
-    return new Response('Temporarily unavailable',{status:503});
-  });
-  t.after(()=>release(new Response('{"articles":[]}')));
-  // Other families are inside their real runtime TTL. Only Hormuz needs a
-  // request, so the test does not wait through the provider spacing window.
-  for(const source of DISCOVERY_SOURCES.filter(source=>source.id!=='gdelt-hormuz')){
-    await f.runtime.get(source.id,source.interval,async()=>({items:[],recordCount:0,latest:null}),{},source.id+'-metadata');
-  }
-  let settled=false;
-  const collection=f.service.collect().finally(()=>{settled=true;});
-  await requestStarted;
-  const interactive=await f.service.news();
-  assert.equal(interactive.items.length,0);
-  assert.equal(interactive.coverage.discoveryPending,true);
-  assert.equal(settled,false,'the interactive response window must not end background collection');
-  const reportUrl='https://example.com/late-hormuz-report';
-  release(Response.json({articles:[{title:'Hormuz tanker disruption affects Iranian oil exports',url:reportUrl,seendate:'20260922T110000Z',language:'English'}]}));
-  const result=await collection;
-  assert.equal(result.reports,1);
-  assert.equal(result.completedAt,new Date(NOW).toISOString());
-  assert.equal(discoveryRequests,1);
-  // Reopening the real archive proves collection saved the late result before
-  // completing, rather than leaving it only in the in-memory source snapshot.
+test('background collection restores retired discovery into history without new requests or observation clocks',async t=>{
+  const requests=[],f=await fixture(t,async input=>{requests.push(new URL(input).hostname);return new Response('Unavailable',{status:503});});
+  const savedAt='2026-09-21T10:00:00.000Z',reportUrl='https://example.com/historical-hormuz-report';
+  const items=[{id:'historical-hormuz',title:'Hormuz tanker disruption affects Iranian oil exports',url:reportUrl,sourceId:'gdelt-hormuz',source:'Example',contentAccess:'discovery-metadata',publishedAt:null,discoveredAt:'2026-09-21T09:00:00.000Z',dateBasis:'discovery'}];
+  await f.runtime.storage.mkdir(f.runtime.cacheDir,{recursive:true});
+  await f.runtime.storage.writeFile(path.join(f.runtime.cacheDir,'gdelt-hormuz-metadata.json'),JSON.stringify({retrievedAt:savedAt,checkedAt:savedAt,connection:'cached',items,recordCount:1,resultLimit:75,possiblyTruncated:true}));
+  const result=await f.service.collect(),news=await f.service.news(),report=news.items.find(row=>row.url===reportUrl);
+  assert.equal(result.completedAt,new Date(NOW).toISOString());assert.ok(report);
+  assert.equal(news.coverage.discoveryPending,false);assert.equal(news.coverage.discoveryFamilies,0);assert.equal(news.coverage.nextDiscoveryPollSeconds,null);
+  assert.equal(report.collectionRetired,true);assert.equal(report.retainedFromHistory,true);assert.equal(report.lastSeenAt,savedAt);assert.equal(report.discoveredAt,items[0].discoveredAt);assert.equal(report.publishedAt,null);
+  const source=news.sources.find(row=>row.id==='gdelt-hormuz');assert.equal(source.configured,false);assert.equal(source.retired,true);assert.equal(source.retrievedAt,savedAt);assert.equal(source.checkedAt,savedAt);assert.equal(source.resultLimit,75);
+  assert.ok(!requests.includes('api.gdeltproject.org'));assert.ok(!requests.includes('www.maritime.dot.gov'));
   const restored=await new ReportArchive({file:f.archiveFile,now:()=>NOW}).merge([]);
-  assert.equal(restored.archive.storageStatus,'ready');
-  assert.equal(restored.items.length,1);
-  const report=restored.items[0];
-  assert.equal(report.url,reportUrl);
-  assert.equal(report.sourceId,'gdelt-hormuz');
-  assert.equal(report.contentAccess,'discovery-metadata');
-  assert.equal(report.publishedAt,null);
-  assert.equal(report.publishedDate,null);
-  assert.equal(report.publicationPrecision,'unknown');
-  assert.equal(report.dateBasis,'discovery');
-  assert.equal(report.discoveredAt,'2026-09-22T11:00:00.000Z');
-  assert.equal(report.firstSeenAt,'2026-09-22T12:00:00.000Z');
-  assert.equal(report.lastSeenAt,report.firstSeenAt);
-  assert.equal(report.provenance[0].publishedAt,null);
-  assert.equal(report.provenance[0].discoveredAt,report.discoveredAt);
-  await f.service.news();
-  assert.equal(discoveryRequests,1,'subsequent visitors reuse the collector result within its TTL');
+  assert.equal(restored.items[0].lastSeenAt,savedAt);assert.equal(restored.items[0].provenance[0].discoveredAt,items[0].discoveredAt);
 });
 
 test('oil responses retain observations and success clocks during failure and respect TTL and retry deadlines',async t=>{
@@ -160,15 +124,21 @@ test('oil responses retain observations and success clocks during failure and re
   assert.equal(JSON.stringify({initial,failed,recovered,logs:f.logs}).includes(secret),false);
 });
 
-test('official advisory metadata remains separate from incidents through cache failure and expiry',async t=>{
- const index=await readFile(new URL('./fixtures/marad/index.html',import.meta.url),'utf8'),hormuz=await readFile(new URL('./fixtures/marad/2026-011.html',import.meta.url),'utf8'),redsea=await readFile(new URL('./fixtures/marad/2026-013.html',import.meta.url),'utf8');
- let fail=false;const f=await fixture(t,async input=>{const url=new URL(input);if(url.hostname!=='www.maritime.dot.gov'||fail)return new Response('Unavailable',{status:503});return new Response(url.pathname==='/msci-advisories'?index:url.pathname.includes('2026-011')?hormuz:redsea);});
- f.setTime(Date.parse('2026-10-17T04:00:00Z'));
- const first=await f.service.get('/api/maritime');assert.equal(first.events.length,0);assert.equal(first.advisories.length,5);assert.equal(first.advisories.filter(record=>record.validityState==='active').length,2);
- assert.ok(first.advisories.every(record=>record.recordType==='advisory'&&record.eventDate===null&&record.publishedDate===null&&!record.summary));
- const source=first.sources.find(source=>source.id==='marad-advisories');assert.equal(source.connection,'connected');assert.equal(source.activeAdvisoryCount,2);assert.equal(source.coverageStatus,'limited');assert.equal(source.advisories,undefined);
- const backend=assessBackendReadiness({config:await f.service.get('/api/config'),diagnostics:await f.service.get('/api/diagnostics'),news:await f.service.get('/api/news'),maritime:first,now:Date.parse('2026-10-17T04:00:00Z')});
- assert.equal(backend.ready,true,'real parsed MARAD records establish compatible bounded coverage');
- assert.ok(backend.warnings.some(warning=>warning.id.startsWith('gdelt-')),'unavailable discovery remains disclosed');
- fail=true;f.setTime(Date.parse('2027-03-23T04:00:00Z'));const failed=await f.service.get('/api/maritime');const retained=failed.sources.find(source=>source.id==='marad-advisories');assert.equal(retained.status,'retained');assert.equal(retained.retrievedAt,source.retrievedAt);assert.equal(retained.activeAdvisoryCount,0);assert.ok(failed.advisories.filter(record=>record.sourceStatus==='active').every(record=>record.validityState==='expired'));assert.equal(failed.events.length,0);
+test('retired advisory metadata preserves provenance and expiry without a provider request or current coverage claim',async t=>{
+  const index=await readFile(new URL('./fixtures/marad/index.html',import.meta.url),'utf8'),hormuz=await readFile(new URL('./fixtures/marad/2026-011.html',import.meta.url),'utf8'),redsea=await readFile(new URL('./fixtures/marad/2026-013.html',import.meta.url),'utf8');
+  const savedAt='2026-10-17T04:00:00.000Z',now=Date.parse(savedAt),requests=[];
+  const snapshot=await loadMaradAdvisories(async input=>{const url=new URL(input);return url.pathname==='/msci-advisories'?index:url.pathname.includes('2026-011')?hormuz:redsea;},now);
+  const f=await fixture(t,async input=>{requests.push(new URL(input).hostname);return new Response('Unavailable',{status:503});});f.setTime(now);
+  await f.runtime.storage.mkdir(f.runtime.cacheDir,{recursive:true});
+  await f.runtime.storage.writeFile(path.join(f.runtime.cacheDir,'marad-advisories-v1.json'),JSON.stringify({...snapshot,checkedAt:savedAt,retrievedAt:savedAt,connection:'connected'}));
+  const first=await f.service.get('/api/maritime');assert.equal(first.events.length,0);assert.equal(first.advisories.length,5);
+  assert.ok(first.advisories.every(record=>record.collectionRetired&&record.retainedFromHistory&&record.recordType==='advisory'&&record.eventDate===null&&record.publishedDate===null&&!record.summary));
+  const source=first.sources.find(source=>source.id==='marad-advisories');assert.equal(source.configured,false);assert.equal(source.retired,true);assert.equal(source.status,'disabled');assert.equal(source.retrievedAt,savedAt);assert.equal(source.checkedAt,savedAt);
+  assert.equal(first.coverage.advisories.status,'unavailable');assert.equal(first.coverage.advisories.collection,'retired');assert.equal(first.coverage.advisories.complete,false);
+  const backend=assessBackendReadiness({config:await f.service.get('/api/config'),diagnostics:await f.service.get('/api/diagnostics'),news:await f.service.get('/api/news'),maritime:first,now});
+  assert.equal(backend.ready,true);assert.equal(backend.coverageEstablished,false);assert.equal(backend.retainedEvidenceEstablished,true);
+  f.setTime(Date.parse('2027-03-23T04:00:00Z'));const later=await f.service.get('/api/maritime'),retained=later.sources.find(source=>source.id==='marad-advisories');
+  assert.equal(retained.status,'disabled');assert.equal(retained.retrievedAt,savedAt);assert.equal(retained.checkedAt,savedAt);assert.equal(retained.activeAdvisoryCount,0);
+  assert.ok(later.advisories.filter(record=>record.sourceStatus==='active').every(record=>record.validityState==='expired'));assert.equal(later.events.length,0);
+  assert.ok(!requests.includes('www.maritime.dot.gov'));assert.ok(!requests.includes('api.gdeltproject.org'));
 });

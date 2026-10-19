@@ -24,5 +24,9 @@ export function evidenceKind(record={}){
   if(record.observationDate&&Number.isFinite(record.value))return 'market-observation';
   return 'publisher-report';
 }
-export function evidenceKindLabel(record){return EVIDENCE_KINDS[evidenceKind(record)];}
+export function evidenceKindLabel(record){
+  const kind=evidenceKind(record);
+  if(kind==='publisher-report'&&['Publisher opinion','Publisher analysis'].includes(record?.type))return record.type;
+  return EVIDENCE_KINDS[kind];
+}
 export function withEvidenceKind(record){return {...record,recordKind:evidenceKind(record)};}

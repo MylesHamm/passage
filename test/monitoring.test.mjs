@@ -1,9 +1,46 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createMonitoringSession,sinceLastLook,groupReporting,replayReporting,watchMatches,createWatch,buildBrief,normalizeMonitoringSettings,filterMonitoringReports,impactTags} from '../dist/monitoring-model.mjs';
+import {createMonitoringSession,sinceLastLook,groupReporting,replayReporting,watchMatches,createWatch,buildBrief,normalizeMonitoringSettings,filterMonitoringReports,impactTags,eligibleMonitoringReports} from '../dist/monitoring-model.mjs';
+import {createMonitoringView} from '../dist/monitoring-view.mjs';
 
 const NOW=Date.parse('2026-09-22T12:00:00Z');
-const row=(id,extra={})=>({id,url:`https://example.com/${id}`,title:`Report ${id} about shipping through the Strait of Hormuz`,source:'Example',sourceId:'example',theaters:['hormuz'],actors:['Iran'],publishedAt:'2026-09-22T09:00:00Z',firstSeenAt:'2026-09-22T10:00:00Z',lastSeenAt:'2026-09-22T10:00:00Z',...extra});
+const workingSource={id:'bbc',configured:true,connection:'connected',retrievedAt:'2026-09-22T11:59:00Z',latestRelevant:'2026-09-22T09:00:00Z',recordCount:1};
+const row=(id,extra={})=>({id,url:`https://example.com/${id}`,title:`Report ${id} about shipping through the Strait of Hormuz`,source:'Example',sourceId:'bbc',theaters:['hormuz'],actors:['Iran'],publishedAt:'2026-09-22T09:00:00Z',firstSeenAt:'2026-09-22T10:00:00Z',lastSeenAt:'2026-09-22T10:00:00Z',...extra});
+
+test('default personal monitoring excludes archived links while Archive arrivals explicitly exposes them',()=>{
+ const items=[row('current'),row('history',{retainedFromHistory:true}),row('retired',{collectionRetired:true}),row('held',{retainedForReading:true}),row('gdelt',{sourceId:'gdelt-hormuz'})];
+ const state={news:{items,sources:[workingSource]},view:'reporting',theater:'both',actor:'All',hours:'all',includeArchive:false};
+ const nodes=Object.fromEntries(['.monitor-shell','.monitor-tabs','.monitor-arrivals','.monitor-body','.monitor-status'].map(selector=>[selector,{innerHTML:'',querySelectorAll:()=>[],classList:{toggle:()=>{}}}]));
+ const listeners={},mount={ownerDocument:{activeElement:null},contains:value=>Boolean(value),querySelector:selector=>nodes[selector],querySelectorAll:()=>[],addEventListener:(event,callback)=>{listeners[event]=callback;}};
+ const stored={acknowledgedAt:'2026-09-22T08:00:00Z',seen:{},watches:[{id:'theater:hormuz',type:'theater',value:'hormuz',createdAt:'2026-09-22T08:00:00Z',knownUrls:[]}]};
+ const view=createMonitoringView({mount,getState:()=>state,now:()=>NOW,storage:{getItem:()=>JSON.stringify(stored),setItem:()=>{}}});
+ view.ingestNews(state.news);view.update();
+ const body=()=>nodes['.monitor-body'].innerHTML;
+ const select=tab=>listeners.click({target:{closest:()=>({dataset:{monitorTab:tab}})}});
+ assert.match(body(),/Report current about shipping/);
+ assert.doesNotMatch(body(),/Report (history|retired|held|gdelt) about shipping/);
+ select('watch');
+ assert.match(body(),/Report current about shipping/);
+ assert.doesNotMatch(body(),/Report (history|retired|held|gdelt) about shipping/);
+ select('replay');
+ for(const item of items)assert.ok(body().includes(item.title));
+ state.query='history';view.update();
+ assert.match(body(),/Report history about shipping/);
+ assert.doesNotMatch(body(),/Report current about shipping/);
+ assert.equal(state.includeArchive,false,'opening the explicit archive does not change the main reading filter');
+});
+
+test('monitoring archive eligibility preserves explicit opt-in and Saved scope',()=>{
+ const items=[row('current'),row('history',{retainedFromHistory:true}),row('failed',{sourceId:'aj'})],state={news:{items,sources:[workingSource]},includeArchive:false};
+ assert.deepEqual(eligibleMonitoringReports(items,state,NOW).map(item=>item.id),['current']);
+ assert.deepEqual(eligibleMonitoringReports(items,{...state,includeArchive:true},NOW).map(item=>item.id),['current','history','failed']);
+ assert.deepEqual(eligibleMonitoringReports(items,{...state,view:'saved',saved:{history:items[1]}},NOW).map(item=>item.id),['history']);
+});
+
+test('casualties alone never receive crew or civilian safety tags',()=>{
+ for(const title of ['Military personnel killed in Yemen','Three fighters injured in Iran','Two guards killed in Aden','Missile raid hits army camp'])assert.ok(!impactTags(title).includes('crew & civilian safety'),title);
+ for(const title of ['Crew killed in vessel attack','Civilians injured near port','Humanitarian aid enters Yemen'])assert.ok(impactTags(title).includes('crew & civilian safety'),title);
+});
 test('new arrivals wait for explicit acceptance while existing records and source clocks refresh',()=>{
   const session=createMonitoringSession({now:()=>NOW});
   assert.deepEqual(session.ingestNews({items:[row('a')],sources:[{lastSuccess:'old'}]}).items.map(r=>r.id),['a']);
@@ -85,7 +122,7 @@ test('watchlist matches exact source tags and excludes baseline articles and glo
   assert.equal(watchMatches([row('i',{actors:['IRGC']})],createWatch('actor','Iran',[],NOW),{}).length,0);
 });
 test('brief uses linked headlines and latest valid daily oil observations without treating them as live quotes',()=>{
-  const brief=buildBrief({news:{items:[row('a')]},oil:{series:[{id:'brent',name:'Brent',url:'https://www.eia.gov/dnav/pet/hist/RBRTEd.htm',observations:[{date:'2026-09-21',value:70},{date:'2026-09-19',value:68},{date:'2026-09-23',value:999}]}]},theater:'hormuz',actor:'All',hours:'all'},NOW);
+  const brief=buildBrief({news:{items:[row('a')],sources:[workingSource]},oil:{series:[{id:'brent',name:'Brent',url:'https://www.eia.gov/dnav/pet/hist/RBRTEd.htm',observations:[{date:'2026-09-21',value:70},{date:'2026-09-19',value:68},{date:'2026-09-23',value:999}]}]},theater:'hormuz',actor:'All',hours:'all'},NOW);
   assert.equal(brief.reports.length,1);assert.equal(brief.prices[0].date,'2026-09-21');assert.equal(brief.prices[0].value,70);assert.equal(brief.prices[0].change,2);assert.match(brief.speech,/daily spot/);assert.ok(!brief.speech.includes('999'));assert.equal(brief.reports[0].url,row('a').url);
 });
 test('brief price health reflects failed refreshes and advancing age without changing source records',()=>{
@@ -100,19 +137,19 @@ test('brief price health reflects failed refreshes and advancing age without cha
 });
 test('energy filters keep tagged energy and market context while excluding other regional reporting',()=>{
   const reports=[row('direct',{energy:true}),row('global',{theaters:[],relevanceScopes:['global-energy']}),row('regional',{theaters:[],relevanceScopes:['regional-energy']}),row('other')];
-  const state={view:'energy',theater:'hormuz',actor:'All',hours:'all'};
+  const state={view:'energy',theater:'hormuz',actor:'All',hours:'all',news:{sources:[workingSource]}};
   assert.deepEqual(filterMonitoringReports(reports,state,NOW).map(row=>row.id),['direct','global','regional']);
-  assert.deepEqual(buildBrief({...state,news:{items:reports}},NOW).reports.map(row=>row.id),['direct','global','regional']);
+  assert.deepEqual(buildBrief({...state,news:{items:reports,sources:[workingSource]}},NOW).reports.map(row=>row.id),['direct','global','regional']);
 });
 test('civilian filters use the same actor and headline impact rules as the reading stream',()=>{
   const reports=[row('actor',{title:'Talks continue in the region',actors:['Civilians']}),row('crew',{title:'Crew evacuated from a vessel after an incident'}),row('freight',{title:'Freight premiums climb through the strait'}),row('summary-only',{title:'Diplomats meet in the region',summary:'Crew safety was discussed.'}),row('other',{title:'Diplomats meet in the region'})];
-  const state={view:'civilian',theater:'both',actor:'All',hours:'all'};
+  const state={view:'civilian',theater:'both',actor:'All',hours:'all',news:{sources:[workingSource]}};
   assert.deepEqual(filterMonitoringReports(reports,state,NOW).map(row=>row.id),['actor','crew','freight']);
   assert.deepEqual(impactTags('A pipeline bypass could shorten transit time'),['rerouting & time','route exposure','pipeline bypass']);
 });
 test('searches include separately dated reviewed context and still respect actor and time filters',()=>{
   const reports=[row('review',{title:'Diplomatic discussions continue',reviewedContext:{summary:'The SUMED corridor remains part of the dated assessment.'}}),row('wrong-actor',{reviewedContext:{summary:'SUMED'},actors:['Houthis']}),row('old',{reviewedContext:{summary:'SUMED'},publishedAt:'2026-09-10T09:00:00Z'})];
-  assert.deepEqual(filterMonitoringReports(reports,{theater:'both',actor:'Iran',hours:'24',query:'sumed'},NOW).map(row=>row.id),['review']);
+  assert.deepEqual(filterMonitoringReports(reports,{theater:'both',actor:'Iran',hours:'24',query:'sumed',news:{sources:[workingSource]}},NOW).map(row=>row.id),['review']);
 });
 test('saved briefs read saved rows even when absent from news and bypass only the relevance requirement',()=>{
   const saved=row('saved',{title:'Diplomatic discussions continue',theaters:[],actors:['Iran'],reviewedContext:{summary:'A dated corridor assessment'}});

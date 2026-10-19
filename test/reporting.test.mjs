@@ -71,7 +71,7 @@ test('aggregated reporting keeps regional context, source provenance and per-sou
  assert.ok(result.sources.every(x=>!('items' in x)));assert.ok(urls.every(x=>!x.includes('example.com')));
  const previous=urls.length;result=await loadReporting(runtime,{reliefweb:false,discoveryWaitMs:30000,discoverySpacingMs:0},{});assert.equal(urls.length,previous);
 });
-test('working regional publishers retain attributed theatre and energy reporting during a GDELT outage',async()=>{
+test('working regional publishers retain attributed reporting after GDELT retirement',async()=>{
  const current=Date.parse('2026-09-28T18:00:00Z');
  const publishers=[
   {id:'mee',name:'Middle East Eye',feed:'https://www.middleeasteye.net/rss',title:'Iran says its forces seized a vessel near Hormuz',url:'https://www.middleeasteye.net/news/fixture-vessel',date:'Mon, 28 Sep 2026 16:21:32 GMT',publishedAt:'2026-09-28T16:21:32.000Z',summary:'The report attributes the vessel seizure to a statement by Iranian authorities.',actor:'Iran',theater:'hormuz'},
@@ -103,8 +103,8 @@ test('working regional publishers retain attributed theatre and energy reporting
  assert.equal(result.items.find(item=>item.sourceId==='france24').energy,true);
  assert.ok(!requests.some(url=>new URL(url).hostname==='www.arabnews.com'));
  assert.ok(!result.sources.some(source=>source.id==='arabnews'));
- assert.equal(requests.filter(url=>new URL(url).hostname==='api.gdeltproject.org').length,1);
- assert.ok(result.sources.filter(source=>source.group==='discovery'&&source.configured).every(source=>source.status==='unavailable'));
+ assert.equal(requests.filter(url=>new URL(url).hostname==='api.gdeltproject.org').length,0);
+ assert.ok(result.sources.filter(source=>source.group==='discovery').every(source=>source.configured===false&&source.retired===true));
  assert.ok(!JSON.stringify(result).includes('unused-image'));
 });
 test('regional publisher failure retains dated records without disguising an outage as fresh coverage',async()=>{
@@ -208,4 +208,18 @@ test('retired source cache cannot resurrect records outside archive retention or
  assert.equal(result.items[0].lastSeenAt,'2026-10-16T00:00:00.000Z');assert.equal(result.items[0].retainedFromHistory,true);
  const restored=await new ReportArchive({file:path.join(dir,'reports.json'),now:()=>current,maxRecords:1,retentionDays:30}).merge([]);
  assert.equal(restored.items.length,1);assert.equal(restored.items[0].id,result.items[0].id);
+});
+
+test('same publisher tracking aliases collapse to the exact RSS publication clock in either input order',()=>{
+  const url='https://www.aljazeera.com/news/2026/10/19/shabwa',precise={id:'rss',url:url+'?traffic_source=rss',sourceId:'aj',source:'Al Jazeera',title:'Houthi attack kills at least 53: reports',publishedAt:'2026-10-19T12:51:46.000Z',publicationPrecision:'timestamp',dateBasis:'publisher-publication',summary:'Publisher RSS preview.',eventDate:null};
+  const day={...precise,id:'index',url,title:'Houthi attack reportedly kills at least 53',publishedAt:'2026-10-19T00:00:00.000Z',publishedDate:'2026-10-19',publicationPrecision:'day',dateBasis:'publisher-date',summary:'Index preview.'};
+  for(const records of [[precise,day],[day,precise]]){
+    const rows=deduplicateReports(records),row=rows[0];assert.equal(rows.length,1);assert.equal(row.url,url);assert.equal(row.id,'rss');assert.equal(row.title,precise.title);assert.equal(row.publishedAt,precise.publishedAt);assert.equal(row.publicationPrecision,'timestamp');assert.equal(row.summary,precise.summary);assert.equal(row.eventDate,null);assert.equal(row.provenance.length,1);assert.equal(row.provenance[0].publishedAt,precise.publishedAt);
+  }
+});
+test('cached and archived publisher markup is cleaned without inventing missing excerpt text or new clocks',async()=>{
+  const savedAt='2026-09-16T10:00:00Z',base={id:'old',title:'Houthi shipping report',url:'https://example.com/old',sourceId:'bbc',source:'BBC',type:'Reporting',publishedAt:'2026-09-16T09:00:00Z',summary:'<article data-id="1"><a href="https://example.com/truncated…'};
+  const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>now,fetchImpl:async()=>new Response('Unavailable',{status:503})});runtime.memory.set('bbc',{items:[base],retrievedAt:savedAt,checkedAt:savedAt,connection:'cached'});
+  const result=await loadReporting(runtime,{includeReviewedContext:false,reportArchive:{merge:async items=>({items:[...items,{...base,id:'archive',url:'https://example.com/archive',summary:'&lt;p&gt;Older publisher text.&lt;/p&gt;',lastSeenAt:savedAt,retainedFromHistory:true}],archive:{}})}});
+  const cached=result.items.find(row=>row.id==='old'),archived=result.items.find(row=>row.id==='archive');assert.equal(cached.summary,null);assert.equal(cached.publishedAt,base.publishedAt);assert.equal(result.sources.find(source=>source.id==='bbc').retrievedAt,savedAt);assert.equal(archived.summary,'Older publisher text.');assert.equal(archived.lastSeenAt,savedAt);
 });

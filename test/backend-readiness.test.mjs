@@ -1,29 +1,28 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {assessBackendReadiness} from '../lib/backend-readiness.mjs';
-import {SOURCE_CAPABILITIES,RETIRED_SOURCE_IDS,sourceConfigured} from '../dist/source-policy.mjs';
+import {SOURCE_CAPABILITIES,RETIRED_SOURCE_IDS,RETIRED_REPORTING_SOURCE_IDS,sourceConfigured} from '../dist/source-policy.mjs';
 import {SOURCE_DEFINITIONS} from '../dist/source-health.mjs';
 import {DISCOVERY_SOURCES,RETIRED_DISCOVERY_SOURCES} from '../lib/discovery.mjs';
 import {SOURCES} from '../lib/feeds.mjs';
 import {backendFixture} from './fixtures/release-backend.mjs';
 
 const assess=input=>assessBackendReadiness(input);
-test('reviewed collection policy enables exactly two maritime discovery families and retires the old collectors',()=>{
-  const expected=['gdelt-hormuz','gdelt-redsea'];
+test('collection policy retires unsupported advisory and discovery collectors while preserving historical identities',()=>{
+  const expected=[];
   assert.deepEqual(SOURCE_CAPABILITIES.discovery.sourceIds,expected);
   assert.deepEqual(DISCOVERY_SOURCES.map(source=>source.id),expected);
-  assert.ok(DISCOVERY_SOURCES.every(source=>source.interval===1800));
-  assert.deepEqual(RETIRED_SOURCE_IDS,['centcom','gdelt-exports','gdelt-energy','gdelt-reuters']);
-  assert.deepEqual(RETIRED_DISCOVERY_SOURCES,RETIRED_SOURCE_IDS.slice(1));
+  assert.deepEqual(RETIRED_SOURCE_IDS,['centcom','gdelt-hormuz','gdelt-redsea','gdelt-exports','gdelt-energy','gdelt-reuters','marad-advisories']);
+  assert.deepEqual(RETIRED_DISCOVERY_SOURCES,RETIRED_REPORTING_SOURCE_IDS.slice(1));
   assert.ok(!SOURCES.some(source=>RETIRED_SOURCE_IDS.includes(source.id)));
   for(const id of RETIRED_SOURCE_IDS)assert.equal(sourceConfigured(SOURCE_DEFINITIONS.find(source=>source.id===id)),false);
-  assert.deepEqual(SOURCE_CAPABILITIES.advisories.sourceIds,['marad-advisories']);
+  assert.deepEqual(SOURCE_CAPABILITIES.advisories.sourceIds,[]);
 });
 
 test('aligned existing public schema passes without a new backend version field',()=>{
   const input=backendFixture(),before=structuredClone(input),result=assess(input);
-  assert.equal(result.ready,true);assert.equal(result.compatible,true);assert.equal(result.coverageEstablished,true);
-  assert.deepEqual(result.warnings,[]);assert.deepEqual(input,before);
+  assert.equal(result.ready,true);assert.equal(result.compatible,true);assert.equal(result.coverageEstablished,false);assert.equal(result.retainedEvidenceEstablished,true);
+  assert.equal(result.warnings[0].category,'coverage');assert.deepEqual(input,before);
 });
 
 test('previous backend is rejected even if all nine core feeds are healthy',()=>{
@@ -36,26 +35,26 @@ test('previous backend is rejected even if all nine core feeds are healthy',()=>
 });
 
 test('capability declarations alone cannot conceal active retired collectors or extra discovery families',()=>{
-  for(const endpoint of ['diagnostics','news'])for(const id of RETIRED_SOURCE_IDS){
+  for(const endpoint of ['diagnostics','news'])for(const id of endpoint==='news'?RETIRED_REPORTING_SOURCE_IDS:RETIRED_SOURCE_IDS){
     const input=backendFixture();input[endpoint].sources.find(source=>source.id===id).configured=true;
     assert.equal(assess(input).compatible,false,`${endpoint}:${id}`);
   }
   for(const endpoint of ['diagnostics','news']){
-    const input=backendFixture();input[endpoint].sources.push({...input.news.sources[0],id:'gdelt-extra'});
+    const input=backendFixture();input[endpoint].sources.push({...input.news.sources[0],id:'gdelt-extra',configured:true});
     assert.equal(assess(input).compatible,false);
   }
-  for(const value of [false,null,undefined]){
+  for(const value of [true,null,undefined]){
     const input=backendFixture();input.news.sources.find(source=>source.id==='gdelt-redsea').configured=value;assert.equal(assess(input).compatible,false);
   }
 });
 
-test('required declarations, retirement semantics and polling policy fail closed',()=>{
+test('required declarations and retirement semantics fail closed',()=>{
   const mutations=[
-    input=>{input.config.capabilities.advisories.sourceIds=[];},
+    input=>{input.config.capabilities.advisories.sourceIds=['marad-advisories'];},
     input=>{input.news.capabilities.discovery.sourceIds.push('gdelt-energy');},
     input=>{input.config.capabilities.advisories.core=true;},
     input=>{input.diagnostics.sources.find(source=>source.id==='centcom').retired=false;},
-    input=>{input.news.sources.find(source=>source.id==='gdelt-hormuz').interval=900;},
+    input=>{input.news.sources.find(source=>source.id==='gdelt-hormuz').retired=false;},
     input=>{input.news.coverage.discoveryFamilies=5;},
     input=>{input.news.coverage.retiredSources=[];},
     input=>{input.news.coverage.reuters.mode='discovery';},
@@ -63,34 +62,29 @@ test('required declarations, retirement semantics and polling policy fail closed
   for(const mutate of mutations){const input=backendFixture();mutate(input);assert.equal(assess(input).compatible,false,mutate.toString());}
 });
 
-test('an installed MARAD adapter without any successful snapshot is coverage failure, not capability failure or an all-clear',()=>{
+test('retired MARAD with no historical snapshot is explicitly unavailable without claiming established coverage',()=>{
   const input=backendFixture();input.maritime.advisories=[];
-  input.maritime.coverage.advisories={incidentCoverage:false,note:'No successful advisory source response is available.'};
-  Object.assign(input.maritime.sources[0],{connection:'unavailable',retrievedAt:null,recordCount:0,errorCategory:'upstream_http',httpStatus:503});
-  const result=assess(input);assert.equal(result.compatible,true);assert.equal(result.coverageEstablished,false);assert.equal(result.ready,false);
-  assert.equal(result.coverageFailures[0].category,'coverage');assert.equal(result.warnings[0].httpStatus,503);
+  Object.assign(input.maritime.sources[0],{retrievedAt:null,recordCount:0,errorCategory:'upstream_http',httpStatus:403});
+  Object.assign(input.maritime.coverage.advisories,{activeListedCount:0});
+  const result=assess(input);assert.equal(result.compatible,true);assert.equal(result.coverageEstablished,false);assert.equal(result.retainedEvidenceEstablished,false);assert.equal(result.ready,true);
+  assert.equal(result.warnings[0].category,'coverage');assert.match(result.warnings[0].reasons[0],/unavailable/);
 });
 
-test('retained MARAD coverage and GDELT rate limits pass alignment but preserve outage warnings and original clocks',()=>{
-  const input=backendFixture();
-  const old='2026-09-25T10:00:00Z',retry='2026-09-28T20:00:00Z';
-  Object.assign(input.maritime.sources[0],{connection:'cached',status:'retained',retrievedAt:old,errorCategory:'upstream_http',httpStatus:503});
-  for(const source of input.news.sources.filter(source=>source.configured))Object.assign(source,{connection:'cached',status:'retained',retrievedAt:old,errorCategory:'rate_limit',httpStatus:429,nextRetryAt:retry});
+test('historical provider failures remain untouched and never become current advisory coverage',()=>{
+  const input=backendFixture(),old='2026-09-25T10:00:00Z',retry='2026-09-28T20:00:00Z';
+  Object.assign(input.maritime.sources[0],{retrievedAt:old,errorCategory:'upstream_http',httpStatus:403});
+  for(const source of input.news.sources)Object.assign(source,{retrievedAt:old,errorCategory:'rate_limit',httpStatus:429,nextRetryAt:retry});
   const before=structuredClone(input),result=assess(input);
-  assert.equal(result.ready,true);assert.equal(result.coverageEstablished,true);assert.equal(result.warnings.length,3);
-  assert.ok(result.warnings.every(warning=>warning.retrievedAt===old&&warning.category==='source-health'));
-  assert.ok(result.warnings.filter(warning=>warning.id.startsWith('gdelt-')).every(warning=>warning.nextRetryAt===retry&&warning.httpStatus===429));
-  assert.deepEqual(input,before);
-});
-
-test('successful supporting checks with overdue clocks are warnings, never silently healthy',()=>{
-  const input=backendFixture();for(const source of [input.maritime.sources[0],...input.news.sources.filter(source=>source.configured)])source.retrievedAt='2026-09-25T10:00:00Z';
-  const result=assess(input);assert.equal(result.ready,true);assert.equal(result.warnings.length,3);
+  assert.equal(result.ready,true);assert.equal(result.coverageEstablished,false);assert.equal(result.retainedEvidenceEstablished,true);
+  assert.equal(result.warnings[0].retrievedAt,old);assert.deepEqual(input,before);
 });
 
 test('MARAD retains non-incident evidence and bounded archive/count semantics',()=>{
   const mutations=[
     input=>{input.maritime.coverage.complete=true;},
+    input=>{input.maritime.coverage.advisories.status='available';},
+    input=>{input.maritime.coverage.advisories.collection='active';},
+    input=>{input.maritime.coverage.advisories.complete=true;},
     input=>{input.maritime.coverage.advisories.incidentCoverage=true;},
     input=>{input.maritime.coverage.advisories.cancelledArchiveComplete=true;},
     input=>{input.maritime.coverage.advisories.publicationDateKnown=true;},
@@ -98,6 +92,8 @@ test('MARAD retains non-incident evidence and bounded archive/count semantics',(
     input=>{input.maritime.advisories[0].eventDate='2026-09-09';},
     input=>{input.maritime.advisories[0].publishedDate='2026-09-09';},
     input=>{input.maritime.advisories[0].recordType='incident';},
+    input=>{input.maritime.advisories[0].collectionRetired=false;},
+    input=>{input.maritime.advisories[0].retainedFromHistory=false;},
     input=>{input.maritime.advisories[0].validityState='clear';},
     input=>{input.maritime.events.push(input.maritime.advisories[0]);},
   ];
@@ -111,9 +107,9 @@ test('no fixed advisory ID or positive active-warning count is required',()=>{
 
 test('missing, invalid or future successful clocks and inconsistent result counts cannot establish coverage',()=>{
   for(const value of [null,'','not a date','2026-02-30T00:00:00Z','2026-09-28T19:01:01Z']){
-    const input=backendFixture();input.maritime.sources[0].retrievedAt=value;assert.equal(assess(input).coverageEstablished,false,String(value));
+    const input=backendFixture();input.maritime.sources[0].retrievedAt=value;assert.equal(assess(input).retainedEvidenceEstablished,false,String(value));assert.equal(assess(input).ready,false);
   }
-  const input=backendFixture();input.maritime.sources[0].recordCount=0;assert.equal(assess(input).coverageEstablished,false);
+  const input=backendFixture();input.maritime.sources[0].recordCount=0;assert.equal(assess(input).retainedEvidenceEstablished,false);assert.equal(assess(input).ready,false);
 });
 
 test('malformed arrays, null rows and duplicate source identities fail without throwing',()=>{

@@ -42,7 +42,7 @@ test('all current direct reporting feeds pass even when auxiliary feeds fail or 
   assert.deepEqual(result.failures,[]);
 });
 
-test('missing, disabled, unavailable, unknown and empty core reporting fail closed',()=>{
+test('missing, disabled, unavailable, unknown and inconsistent core reporting fail closed',()=>{
   const missing=fixture();missing.diagnostics.sources.shift();
   assert.equal(assessReportingReadiness(missing).ready,false);
   for(const changes of [
@@ -61,9 +61,22 @@ test('required successful retrieval and relevant publication dates must be valid
   assert.equal(assessReportingReadiness(changeFirst({retrievedAt:'2026-09-28T19:01:01Z'})).ready,false);
 });
 
-test('a newly fetched feed of only old relevant publications cannot satisfy the 72-hour briefing window',()=>{
-  assert.equal(assessReportingReadiness(changeFirst({latestRelevant:'2026-09-25T18:59:59Z'})).ready,false);
+test('a successful check with only older relevant reporting is a coverage limitation, not a failed publisher',()=>{
+  const input=changeFirst({status:'stale',latestRelevant:'2026-09-25T18:59:59Z'}),result=assessReportingReadiness(input);
+  assert.equal(result.ready,true);assert.equal(result.verifiedCount,core.length);assert.equal(result.recentReportingCount,core.length-1);
+  assert.equal(result.warnings[0].category,'reporting-coverage');assert.match(result.warnings[0].reasons[0],/check succeeded/);
   assert.equal(assessReportingReadiness(changeFirst({latestRelevant:'2026-09-25T19:00:00Z'})).ready,true);
+});
+test('a checked feed with no relevant matches stays supported without becoming an all-clear',()=>{
+  const result=assessReportingReadiness(changeFirst({status:'empty',recordCount:0,hasData:false,latestRelevant:null}));
+  assert.equal(result.ready,true);assert.equal(result.verifiedCount,core.length);assert.equal(result.recentReportingCount,core.length-1);
+  assert.match(result.warnings[0].reasons[0],/no relevant reports matched/);
+});
+test('a live briefing still requires recent direct reporting collectively',()=>{
+  const input=fixture();for(const source of input.diagnostics.sources)Object.assign(source,{status:'stale',latestRelevant:'2026-09-25T18:59:59Z'});
+  const result=assessReportingReadiness(input);assert.equal(result.ready,false);assert.equal(result.recentReportingCount,0);assert.equal(result.failures[0].id,'briefing');
+  for(const source of input.diagnostics.sources)Object.assign(source,{status:'empty',recordCount:0,hasData:false,latestRelevant:null});
+  assert.equal(assessReportingReadiness(input).ready,false);
 });
 
 test('retrieval deadline derives from configured interval with two minutes of scheduling grace',()=>{
