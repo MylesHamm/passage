@@ -274,3 +274,20 @@ test('legacy provenance aliases migrate only after every original entry passes v
   const invalid=JSON.stringify(saved);await writeFile(f.file,invalid);
   const blocked=await f.create().merge([]);assert.equal(blocked.archive.storageStatus,'memory-only');assert.equal(await readFile(f.file,'utf8'),invalid);
 });
+test('tracker migration preserves exact legacy bounds and original URL/provenance validation',async t=>{
+  const f=await fixture(t),url='https://example.com/report';
+  await f.create().merge([report('legacy',{url})],f.observation());
+  const saved=JSON.parse(await readFile(f.file,'utf8'));
+  const cases=[
+    row=>{row.provenance=Array.from({length:17},(_,i)=>({...row.provenance[0],sourceId:i?'source-'+i:row.sourceId}));},
+    row=>{row.provenance.push({...row.provenance[0]});},
+    row=>{row.url=' https://EXAMPLE.com/report ';},
+    row=>{row.provenance[0].url='https://EXAMPLE.com/report';},
+  ];
+  for(const mutate of cases){
+    const invalid=structuredClone(saved);mutate(invalid.items[0]);const original=JSON.stringify(invalid);await writeFile(f.file,original);
+    const result=await f.create().merge([]);assert.equal(result.archive.storageStatus,'memory-only');assert.equal(await readFile(f.file,'utf8'),original);
+  }
+  saved.items[0].discoveryUrl='https://example.com/index?traffic_source=rss';await writeFile(f.file,JSON.stringify(saved));
+  const restored=await f.create().merge([]);assert.equal(restored.archive.storageStatus,'ready');assert.equal(restored.items[0].discoveryUrl,'https://example.com/index');
+});
