@@ -76,6 +76,10 @@ button:disabled { opacity: .45; cursor: default; }
 
 /* Hero map */
 .hero-map { position: absolute; inset: 0; }
+/* Legibility scrims behind the overlay text; the map stays fully interactive. */
+.hero::before, .hero::after { content: ''; position: absolute; left: 0; right: 0; z-index: 2; pointer-events: none; }
+.hero::before { top: 0; height: 150px; background: linear-gradient(#03080ee0, #03080e00); }
+.hero::after { bottom: 0; height: 90px; background: linear-gradient(#03080e00, #03080ed0); }
 .hero-map canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
 .hero-map canvas:active { cursor: grabbing; }
 .map-overlay { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
@@ -135,6 +139,8 @@ button:disabled { opacity: .45; cursor: default; }
 .transit-figures .tankers { color: var(--tanker); }
 .transit-baseline { margin: 2px 0 8px; font-size: 12px; color: var(--faint); }
 .transit-baseline b { color: var(--dim); font-weight: 500; }
+.transit-share { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--live); font-variant-numeric: tabular-nums; }
+.transit-share[data-low=true] { color: var(--alert); }
 .transit-bars { display: block; width: 100%; height: 44px; }
 .transit-bars rect.total { fill: #8fd3ff33; }
 .transit-bars rect.tanker { fill: var(--tanker); }
@@ -216,7 +222,12 @@ dialog.sheet { margin: 0 0 0 auto; height: 100vh; max-height: 100vh; border-radi
   .ops-grid { padding: 10px; gap: 10px; }
   .hero { height: 70vh; min-height: 420px; }
   .hud-tl { left: 12px; top: 12px; max-width: calc(100% - 24px); }
-  .hud-tr { top: auto; bottom: 56px; right: 10px; max-width: calc(100% - 20px); }
+  .hud-tr { top: auto; bottom: 40px; left: 10px; right: 10px; max-width: none; flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; }
+  .hud-tr button { flex: none; font-size: 12px; padding: 6px 9px; }
+  .hud-br { top: 50%; bottom: auto; right: 10px; flex-direction: column; transform: translateY(-50%); }
+  .hud-bl { left: 12px; right: 12px; bottom: 10px; gap: 4px 10px; }
+  .hud-bl .stamp { display: none; }
+  .ops-status span { display: none; }
   .vessel-card { left: 10px; right: 10px; width: auto; top: auto; bottom: 10px; }
   .strip { grid-template-columns: 1fr; }
   .price-latest { grid-template-columns: 1fr 1fr; }

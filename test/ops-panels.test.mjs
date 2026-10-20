@@ -89,6 +89,7 @@ test('transit rows show the latest dated count against a labelled baseline', () 
   assert.match(markup, /<strong>4<\/strong>/); assert.match(markup, /<b>2<\/b> tankers/);
   assert.match(markup, /2025 daily average: <b>86<\/b> ships · <b>48<\/b> tankers/);
   assert.match(markup, /18 Oct/);
+  assert.match(markup, /data-low="true">5% of average</, 'a collapse below half of normal is stated plainly');
   assert.match(transitRowMarkup({ name: 'Bab el-Mandeb' }), /No transit counts/);
 });
 

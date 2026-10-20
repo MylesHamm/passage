@@ -85,6 +85,7 @@ async function loadDiagnostics() {
   try { state.diagnostics = await load('/api/diagnostics'); } catch { state.diagnostics = null; }
   const summary = state.diagnostics ? statusSummary(state.diagnostics.sources || []) : { state: 'down', text: 'Sources unavailable' };
   $('#status-open').dataset.state = summary.state; $('#status-text').textContent = summary.text;
+  $('#status-open').setAttribute('aria-label', `${summary.text}. Open About the data.`);
   if ($('#about-dialog').open) $('#about-body').innerHTML = aboutMarkup(state.diagnostics?.sources);
 }
 

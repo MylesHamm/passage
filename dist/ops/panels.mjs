@@ -115,6 +115,7 @@ export function chartSeries(oil) {
 
 export function transitRowMarkup({ name, rows = [], baseline = null, latest = null }) {
   if (!latest) return `<div class="transit-row"><div class="transit-name"><span>${esc(name)}</span></div><p class="empty-note">No transit counts available.</p></div>`;
+  const share = baseline && Number.isFinite(baseline.total) && baseline.total > 0 ? Math.round(latest.total / baseline.total * 100) : null;
   const recent = rows.slice(-42), max = Math.max(1, baseline?.total || 0, ...recent.map(r => r.total || 0));
   const w = 300, h = 44, step = w / Math.max(1, recent.length), bar = Math.max(1, step - 1.5);
   const bars = recent.map((r, i) => {
@@ -124,7 +125,7 @@ export function transitRowMarkup({ name, rows = [], baseline = null, latest = nu
   const base = baseline && Number.isFinite(baseline.total) ? `<line class="baseline" x1="0" x2="${w}" y1="${(h - baseline.total / max * (h - 2)).toFixed(1)}" y2="${(h - baseline.total / max * (h - 2)).toFixed(1)}"/>` : '';
   return `<div class="transit-row">
     <div class="transit-name"><span>${esc(name)}</span><span class="stamp">${esc(dayLabel(latest.date))}</span></div>
-    <div class="transit-figures"><strong>${latest.total}</strong><span>ships</span><span class="tankers"><b>${latest.tankers}</b> tankers</span></div>
+    <div class="transit-figures"><strong>${latest.total}</strong><span>ships</span><span class="tankers"><b>${latest.tankers}</b> tankers</span>${share === null ? '' : `<span class="transit-share" data-low="${share < 50}">${share}% of average</span>`}</div>
     ${baseline && Number.isFinite(baseline.total) ? `<p class="transit-baseline">${esc(baseline.label)}: <b>${Math.round(baseline.total)}</b> ships · <b>${Math.round(baseline.tankers)}</b> tankers</p>` : ''}
     <svg class="transit-bars" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="${esc(name)} daily transits over the last ${recent.length} days, tankers highlighted">${bars}${base}</svg>
   </div>`;
