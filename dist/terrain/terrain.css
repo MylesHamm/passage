@@ -44,3 +44,5 @@
 .regional-terrain .globe-tooltip{position:absolute;z-index:15;pointer-events:none;max-width:min(280px,85%);background:#081c2bf2;border:1px solid #8daba64a;border-radius:7px;padding:10px;font-size:11px;box-shadow:0 8px 25px #0005;}
 @media(max-width:600px){.regional-terrain .globe-caption{font-size:8px;left:13px;top:13px;max-width:175px;line-height:1.6;}.terrain-corner{top:13px;right:13px;}.terrain-corner>span:last-child{display:none;}.terrain-map-footer{left:13px;right:13px;bottom:14px;}.terrain-place--country{font-size:10px;letter-spacing:.14em;}.terrain-place--water{font-size:9px;letter-spacing:.08em;}.terrain-geographic-focus strong{font-size:18px;}.regional-terrain .globe-toolbar{padding:8px 10px;gap:4px;}.regional-terrain .globe-toolbar>div{gap:2px;}.regional-terrain .globe-toolbar button{min-height:38px;}.terrain-focus-coordinate{font-size:8px;}}
 @media(prefers-reduced-motion:reduce){.regional-terrain *{transition:none!important;animation:none!important;}}
+
+.terrain-received{margin:0;padding:8px 16px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;line-height:1.5;}

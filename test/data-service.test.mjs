@@ -9,6 +9,7 @@ import {ReportArchive} from '../lib/report-archive.mjs';
 import {SOURCE_CAPABILITIES} from '../dist/source-policy.mjs';
 import {loadMaradAdvisories} from '../lib/marad.mjs';
 import {assessBackendReadiness} from '../lib/backend-readiness.mjs';
+import {OPENWATERS_SNAPSHOT_CACHE_KEY} from '../lib/source-cache-keys.mjs';
 
 const NOW=Date.parse('2026-09-22T12:00:00Z');
 const secret='PRIVATE_TEST_KEY_NEVER_PUBLIC';
@@ -23,14 +24,14 @@ function eiaPayload(url,value=74.25) {
   return {request:{params:{api_key:secret}},response:{frequency:weekly?'weekly':'daily',
     data:[{series,units:weekly?(series==='WCESTUS1'?'MBBL':'%'):'$/BBL',period:'2026-09-18',value}]}};
 }
-async function fixture(t,fetchImpl,settings={}) {
+async function fixture(t,fetchImpl,settings={},aisFeed=ais) {
   const dir=await mkdtemp(path.join(tmpdir(),'passage-service-test-'));
   t.after(()=>rm(dir,{recursive:true,force:true}));
   let clock=NOW;
   const logs=[],archiveFile=path.join(dir,'reports.json');
   const runtime=new SourceRuntime({cacheDir:path.join(dir,'cache'),fetchImpl,now:()=>clock,log:event=>logs.push(event)});
   const reportArchive=new ReportArchive({file:archiveFile,now:()=>clock});
-  const service=createDataService({runtime,reportArchive,settings:{hosted:true,...settings},ais,version:'service-test'});
+  const service=createDataService({runtime,reportArchive,settings:{hosted:true,...settings},ais:aisFeed,version:'service-test'});
   return {service,runtime,reportArchive,archiveFile,logs,setTime:value=>{clock=value;}};
 }
 
@@ -42,6 +43,7 @@ test('public vessel output preserves snapshot credits and counts without exposin
       {type:'Feature',geometry:{type:'Point',coordinates:[56.25,26.57]},properties:{mmsi:999000001,seen,source:'kystverket',station:'test',msg_type:'PositionReport',type:80}}
     ]});
   });
+  await f.service.collectVesselSnapshots({entryPoint:'background'});
   const output=await f.service.get('/api/vessels');
   assert.deepEqual(output.vessels,[]);
   assert.equal(output.fallback.recordCount,0);
@@ -50,6 +52,113 @@ test('public vessel output preserves snapshot credits and counts without exposin
   assert.equal(output.fallback.lastMessageAt,seen);
   assert.deepEqual(output.fallback.attribution,{kystverket:'Kystverket · NLOD 2.0'});
   assert.match(output.fallback.observationBasis,/position time and source unavailable/);
+  assert.equal(output.fallback.interval,300);
+  assert.equal(f.service.diagnostics().sources.find(source=>source.id==='openwaters').interval,output.fallback.interval);
+});
+
+function receivedAis(){
+  const positionTime=new Date(Date.now()-60000).toISOString(),receivedAt=new Date(Date.now()-59000).toISOString();
+  const position={mmsi:'999000002',latitude:26.57,longitude:56.25,theater:'hormuz',positionTime,sourceAt:positionTime,receivedAt,timestampBasis:'provider'};
+  return {position,snapshot:()=>({configured:true,vessels:[position],source:{id:'aisstream',connection:'connected',recordCount:1,retrievedAt:receivedAt,latest:positionTime,timestampBasis:'provider'}}),diagnostics:()=>({configured:true,connection:'connected'})};
+}
+
+test('cold vessel reads return AIS without fetching snapshots or inventing source clocks in either host',async t=>{
+  for(const hosted of [true,false])await t.test(hosted?'hosted':'local',async child=>{
+    let requests=0;const feed=receivedAis();
+    const f=await fixture(child,async()=>{requests++;throw Error('Vessel reads must not fetch a provider');},{hosted,aisstream:true},feed);
+    const output=await f.service.get('/api/vessels');
+    assert.equal(requests,0);
+    assert.equal(output.vessels.length,1);assert.equal(output.vessels[0].positionTime,feed.position.positionTime);
+    assert.equal(output.vessels[0].receivedAt,feed.position.receivedAt);
+    assert.equal(output.fallback.configured,true);assert.equal(output.fallback.connection,'loading');
+    assert.equal(output.fallback.recordCount,0);assert.equal(output.fallback.snapshotCount,0);
+    assert.equal(output.fallback.retrievedAt,null);assert.equal(output.fallback.latest,null);
+    assert.equal(output.fallback.lastMessageAt,undefined);assert.equal(output.fallback.nextRetryAt,null);
+  });
+});
+
+test('vessel reads restore dated snapshot metadata and access failures without retrying an overdue source',async t=>{
+  let requests=0;
+  const f=await fixture(t,async()=>{requests++;throw Error('Retained source reads must not retry');});
+  const retrievedAt='2026-09-21T10:00:00.000Z',checkedAt='2026-09-21T11:00:00.000Z',nextRetryAt='2026-09-21T12:00:00.000Z';
+  const retained={connection:'cached',retrievedAt,checkedAt,nextRetryAt,error:'Source rejected access. Check local configuration.',errorCategory:'auth',httpStatus:403,
+    lastMessageAt:'2026-09-21T09:59:00.000Z',attribution:{example:'Retained collection credit'},
+    observationBasis:'Last-known coordinates; position time and source unavailable.',
+    vessels:[{mmsi:'999000003',provider:'Open Waters',positionEvidence:'snapshot',latitude:26.57,longitude:56.25,positionTime:null}]};
+  await f.runtime.storage.mkdir(f.runtime.cacheDir,{recursive:true});
+  await f.runtime.storage.writeFile(path.join(f.runtime.cacheDir,OPENWATERS_SNAPSHOT_CACHE_KEY+'.json'),JSON.stringify(retained));
+  for(let i=0;i<2;i++){
+    const output=await f.service.get('/api/vessels');
+    assert.deepEqual(output.vessels,[]);assert.equal(output.fallback.configured,true);
+    assert.equal(output.fallback.connection,'cached');assert.equal(output.fallback.status,'unavailable');
+    assert.equal(output.fallback.errorCategory,'auth');assert.equal(output.fallback.httpStatus,403);
+    assert.equal(output.fallback.error,retained.error);assert.equal(output.fallback.snapshotCount,1);
+    assert.equal(output.fallback.recordCount,0);assert.equal(output.fallback.latest,null);
+    for(const field of ['retrievedAt','checkedAt','nextRetryAt','lastMessageAt'])assert.equal(output.fallback[field],retained[field]);
+    assert.deepEqual(output.fallback.attribution,retained.attribution);
+  }
+  assert.equal(requests,0);
+});
+
+test('malformed retained snapshot records cannot suppress valid AIS positions',async t=>{
+  let requests=0;const feed=receivedAis();
+  const f=await fixture(t,async()=>{requests++;throw Error('Retained source reads must not fetch');},{aisstream:true},feed);
+  f.runtime.memory.set('openwaters',{connection:'cached',retrievedAt:'2026-09-21T10:00:00.000Z',vessels:{invalid:true}});
+  const output=await f.service.get('/api/vessels');
+  assert.equal(output.vessels.length,1);assert.equal(output.vessels[0].positionTime,feed.position.positionTime);
+  assert.equal(output.fallback.snapshotCount,0);assert.match(output.fallback.cacheIssue,/could not be read/);
+  assert.equal(output.fallback.retrievedAt,'2026-09-21T10:00:00.000Z');assert.equal(requests,0);
+});
+
+test('pending background snapshot refresh cannot delay AIS or renew retained clocks in either host',async t=>{
+  for(const hosted of [true,false])await t.test(hosted?'hosted':'local',async child=>{
+    let release,started,snapshotRequests=0;
+    const pending=new Promise(resolve=>{release=resolve;}),begun=new Promise(resolve=>{started=resolve;}),feed=receivedAis();
+    const f=await fixture(child,async input=>{
+      if(new URL(input).hostname!=='ais.openwaters.io')return new Response('Unavailable',{status:503});
+      snapshotRequests++;started();await pending;
+      return Response.json({type:'FeatureCollection',features:[]});
+    },{hosted,aisstream:true},feed);
+    const retained={connection:'connected',retrievedAt:'2026-09-21T10:00:00.000Z',checkedAt:'2026-09-21T10:00:00.000Z',nextRetryAt:'2026-09-21T10:00:10.000Z',lastMessageAt:'2026-09-21T09:59:00.000Z',vessels:[]};
+    f.runtime.memory.set('openwaters',retained);
+    const collection=hosted?f.service.collect({entryPoint:'background'}):f.service.collectVesselSnapshots({entryPoint:'background'});
+    let request;
+    try{
+      await begun;
+      request=f.service.get('/api/vessels');
+      // The warm retained read needs only microtasks; the deliberately blocked
+      // upstream promise must not hold the response through another event turn.
+      const output=await Promise.race([request,new Promise(resolve=>setImmediate(()=>resolve(null)))]);
+      assert.ok(output,'AIS response must finish while the snapshot refresh is unresolved');
+      assert.equal(output.vessels.length,1);
+      for(const field of ['positionTime','sourceAt','receivedAt'])assert.equal(output.vessels[0][field],feed.position[field]);
+      for(const field of ['retrievedAt','checkedAt','nextRetryAt','lastMessageAt'])assert.equal(output.fallback[field],retained[field]);
+      assert.equal(snapshotRequests,1,'the visitor must neither start nor join a provider refresh');
+    }finally{release();await collection;if(request)await request;}
+    const refreshed=await f.service.get('/api/vessels');
+    assert.equal(refreshed.fallback.retrievedAt,new Date(NOW).toISOString());
+    assert.equal(refreshed.vessels[0].positionTime,feed.position.positionTime);assert.equal(snapshotRequests,1);
+  });
+});
+
+test('owned snapshot collection preserves existing TTL and provider retry deadlines',async t=>{
+  let requests=0,failing=false;
+  const f=await fixture(t,async()=>{
+    requests++;
+    return failing?new Response('Unavailable',{status:429,headers:{'Retry-After':'900'}}):Response.json({type:'FeatureCollection',features:[]});
+  });
+  const initial=await f.service.collectVesselSnapshots({entryPoint:'background'});
+  f.setTime(NOW+9999);await f.service.collectVesselSnapshots({entryPoint:'background'});assert.equal(requests,1);
+  failing=true;f.setTime(NOW+10000);
+  const failed=await f.service.collectVesselSnapshots({entryPoint:'background'});
+  assert.equal(requests,2);assert.equal(failed.source.errorCategory,'rate_limit');
+  assert.equal(failed.source.retrievedAt,initial.source.retrievedAt);
+  assert.equal(failed.source.nextRetryAt,new Date(NOW+910000).toISOString());
+  f.setTime(NOW+909999);await f.service.collectVesselSnapshots({entryPoint:'background'});
+  await f.service.get('/api/vessels');assert.equal(requests,2);
+  failing=false;f.setTime(NOW+910000);
+  const recovered=await f.service.collectVesselSnapshots({entryPoint:'background'});
+  assert.equal(requests,3);assert.equal(recovered.source.connection,'connected');assert.equal(recovered.source.error,null);
 });
 
 test('hosted service isolates private account adapters and secrets across every public endpoint',async t=>{

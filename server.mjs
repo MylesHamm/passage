@@ -23,8 +23,13 @@ const acled=new AcledConnection({root,runtime});await acled.initialize();
 let reportingTimer,reportingStopped=false,reportingCollectorActive=false;
 async function collectReporting() {
   if(reportingStopped)return;
-  try { await Promise.all([service.news({entryPoint:'background'}),service.expectations({entryPoint:'background'})]); }
-  catch { console.warn('Reporting collection could not complete. Previously retained history remains available.'); }
+  // Last-known vessel snapshots share this owned startup/five-minute cycle;
+  // requests for received AIS positions only read their retained source state.
+  try {
+    const results=await Promise.allSettled([service.news({entryPoint:'background'}),service.expectations({entryPoint:'background'}),service.collectVesselSnapshots({entryPoint:'background'})]);
+    if(results.some(result=>result.status==='rejected'))throw Error('Background source failed');
+  }
+  catch { console.warn('Background collection could not complete. Previously retained data remains available.'); }
   finally { if(!reportingStopped){reportingTimer=setTimeout(collectReporting,300000);reportingTimer.unref();} }
 }
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.ttf':'font/ttf','.png':'image/png','.md':'text/plain; charset=utf-8'};
@@ -32,7 +37,7 @@ let port=Number(process.env.PORT)||4173;
 const ais = new AisFeed({ apiKey: process.env.AISSTREAM_API_KEY, onEvent:(event,context)=>runtime.event('ais_state','aisstream',context,event) });
 const service=createDataService({runtime,reportArchive,acled,ais,version,
   settings:{eiaApiKey:process.env.EIA_API_KEY,reliefwebAppname:process.env.RELIEFWEB_APPNAME,aisstream:!!process.env.AISSTREAM_API_KEY},
-  collection:()=>({active:reportingCollectorActive,intervalSeconds:300,basis:'Collects while this local Passage process is running; no collection while it is stopped.'}),
+  collection:()=>({active:reportingCollectorActive,intervalSeconds:300,basis:'Reporting, market expectations and last-known vessel snapshots collect at startup and every five minutes while this local process is running; no collection while it is stopped.'}),
 });
 const {health}=service;
 const server=http.createServer(async(req,res)=>{
