@@ -1,0 +1,110 @@
+.both-overview {
+  color: var(--text, #17212b);
+  background: var(--panel, #fff);
+}
+.both-overview[hidden] { display: none !important; }
+.both-overview-note {
+  margin: 0;
+  padding: 10px 16px;
+  color: var(--muted, #536475);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.both-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--border, #d4dde5);
+}
+.both-overview-pane { min-width: 0; background: var(--panel, #fff); }
+.both-overview-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 52px;
+  padding: 7px 14px;
+}
+.both-overview-title { min-width: 0; }
+.both-overview-title h3 { margin: 0; font-size: 15px; line-height: 1.3; }
+.both-overview-title p { margin: 2px 0 0; font-size: 10px; color: var(--muted, #536475); }
+.both-overview-focus {
+  flex: none;
+  min-height: 36px;
+  padding: 5px 8px;
+  border: 1px solid var(--border, #d4dde5);
+  border-radius: 4px;
+  background: var(--panel, #fff);
+  color: var(--accent, #204cf0);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.both-overview-focus:focus-visible,
+.both-overview-marker:focus-visible { outline: 3px solid #3864ff; outline-offset: 2px; }
+.both-overview-surface { position: relative; height: 190px; overflow: hidden; background: #071d2a; }
+.both-overview .both-overview-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  cursor: default; touch-action: pan-y;
+}
+.both-overview-layers, .both-overview-labels { position: absolute; inset: 0; pointer-events: none; }
+.both-overview-labels { z-index: 1; overflow: hidden; }
+.both-overview-layers { z-index: 3; }
+.both-overview-place {
+  position: absolute; top: 0; left: 0; white-space: nowrap;
+  padding: 1px 3px; border-radius: 2px;
+  background: #10212bda; color: #fff; font-size: 10px; line-height: 1.3;
+}
+.both-overview-centre {
+  position: absolute; top: 0; left: 0; width: 12px; height: 12px;
+  border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 3px #10212ba8;
+  z-index: 2; pointer-events: none;
+}
+.both-overview-north, .both-overview-scale {
+  position: absolute; z-index: 2; padding: 3px 5px; border-radius: 3px;
+  background: #10212bda; color: #fff; font-size: 10px; pointer-events: none;
+}
+.both-overview-north { top: 7px; right: 8px; }
+.both-overview-scale { left: 8px; bottom: 6px; display: grid; gap: 3px; }
+.both-overview-scale i { display: block; height: 4px; border: solid #dbe5ed; border-width: 0 1px 1px; }
+.both-overview .both-overview-marker {
+  position: absolute; left: 0; top: 0; display: grid; place-items: center;
+  width: 32px; height: 32px; min-width: 32px; min-height: 32px; padding: 0;
+  border: 0; border-radius: 4px; background: transparent; color: #e6fff1;
+  cursor: pointer; pointer-events: auto;
+}
+.both-overview-marker span { display: block; font-size: 15px; line-height: 1; text-shadow: 0 0 4px #03131e, 0 0 2px #03131e; }
+.both-overview-marker--older span { color: #071d2a; -webkit-text-stroke: 1px #e6fff1; }
+.both-overview-marker--infrastructure span { color: #fff2c2; font-size: 20px; }
+.both-overview-marker--event span { color: #86d8ff; font-size: 20px; }
+.both-overview-message {
+  position: absolute; inset: 0; z-index: 5; display: grid; place-content: center;
+  margin: 0; padding: 16px; background: #14232f; color: #fff;
+  font-size: 12px; line-height: 1.5; text-align: center;
+}
+.both-overview [hidden] { display: none !important; }
+.both-overview-received {
+  margin: 0; min-height: 24px; padding: 5px 14px;
+  color: var(--muted, #536475); font-size: 10px; line-height: 1.4;
+}
+.terrain-model-note {
+  margin: 0;
+  padding: 10px 14px;
+  color: var(--muted, #536475);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.terrain-tanker-symbol { display: block; width: 32px; height: 32px; }
+.terrain-tanker-symbol img { display: block; width: 32px; height: 32px; }
+.terrain-object--older .terrain-tanker-symbol,
+.both-overview-marker--older .terrain-tanker-symbol { opacity: .5; filter: grayscale(1); }
+@media (max-width: 640px) {
+  .both-overview-note { padding: 8px 12px; font-size: 11px; }
+  .both-overview-grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .both-overview-heading { min-height: 42px; padding: 4px 12px; }
+  .both-overview-title h3 { font-size: 14px; }
+  .both-overview-title p { font-size: 9px; }
+  .both-overview-focus { min-height: 34px; }
+  .both-overview-surface { height: 128px; }
+  .both-overview-received { min-height: 22px; padding: 4px 12px; font-size: 9px; }
+}

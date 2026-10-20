@@ -33,7 +33,15 @@ export const POSITION_EXPIRE_MS = 30 * 60_000;
 export const TYPE_EXPIRE_MS = 24 * 60 * 60_000;
 const timestamp = value => typeof value === 'string' && Number.isFinite(Date.parse(value)) ? Date.parse(value) : null;
 
+// Open Waters' current GeoJSON endpoint reports the latest message clock/source,
+// which can belong to a static message while its coordinates remain older.
+// Legacy rows must also be rejected until the backend provenance fix is deployed.
+export function isSnapshotVessel(vessel){
+  return vessel?.provider === 'Open Waters' || vessel?.positionEvidence === 'snapshot';
+}
+
 export function isCurrentVesselPosition(vessel, now = Date.now()) {
+  if(isSnapshotVessel(vessel)) return false;
   const at = timestamp(vessel?.positionTime);
   return at !== null && at <= now && now - at < POSITION_EXPIRE_MS
     && Number.isFinite(vessel.latitude) && Math.abs(vessel.latitude) <= 90
@@ -61,6 +69,9 @@ function typedMetadata(vessel, now) {
 export function mergeVesselPositions(records, now = Date.now()) {
   const byIdentity = new Map();
   for (const vessel of (records || []).slice(0, 10000)) {
+    // A snapshot cannot renew a position clock or lend undated/static provenance
+    // to a separate position-report provider.
+    if(isSnapshotVessel(vessel)) continue;
     const mmsi = String(vessel?.mmsi ?? '');
     if (!/^[1-9]\d{8}$/.test(mmsi)) continue;
     if (!byIdentity.has(mmsi)) byIdentity.set(mmsi, []);

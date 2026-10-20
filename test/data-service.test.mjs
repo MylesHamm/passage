@@ -34,6 +34,24 @@ async function fixture(t,fetchImpl,settings={}) {
   return {service,runtime,reportArchive,archiveFile,logs,setTime:value=>{clock=value;}};
 }
 
+test('public vessel output preserves snapshot credits and counts without exposing snapshots as current positions',async t=>{
+  const seen=new Date().toISOString();
+  const f=await fixture(t,async input=>{
+    assert.equal(new URL(input).hostname,'ais.openwaters.io');
+    return Response.json({type:'FeatureCollection',attribution:{kystverket:'Kystverket · NLOD 2.0'},features:[
+      {type:'Feature',geometry:{type:'Point',coordinates:[56.25,26.57]},properties:{mmsi:999000001,seen,source:'kystverket',station:'test',msg_type:'PositionReport',type:80}}
+    ]});
+  });
+  const output=await f.service.get('/api/vessels');
+  assert.deepEqual(output.vessels,[]);
+  assert.equal(output.fallback.recordCount,0);
+  assert.equal(output.fallback.snapshotCount,1);
+  assert.equal(output.fallback.latest,null);
+  assert.equal(output.fallback.lastMessageAt,seen);
+  assert.deepEqual(output.fallback.attribution,{kystverket:'Kystverket · NLOD 2.0'});
+  assert.match(output.fallback.observationBasis,/position time and source unavailable/);
+});
+
 test('hosted service isolates private account adapters and secrets across every public endpoint',async t=>{
   const requests=[];
   const f=await fixture(t,async input=>{
