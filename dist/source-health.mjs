@@ -68,12 +68,13 @@ export function sourceHealth(input, now=Date.now()) {
   // connection. Vessel and price ages still identify unusably old observations.
   const olderContent=['news','acled'].includes(s.group)&&s.connection==='connected'&&s.status==='stale'&&!s.checkOverdue;
   s.attentionReason=s.configurationFailed?'configuration':!enabled?null:s.cacheIssue?'cache':['unavailable','retained'].includes(s.status)?'update':s.group==='vessels'&&['empty','unknown'].includes(s.status)?'reception':s.checkOverdue?'check':s.group==='vessels'&&s.freshness==='stale'?'observation':s.status==='stale'&&!olderContent?(['maritime','discovery'].includes(s.group)?'check':'observation'):null;
-  if(enabled&&s.id==='openwaters'&&s.snapshotCount>0&&!failed){s.status='unknown';s.freshness='unknown';s.label='Last-known snapshots · position time unavailable';s.attentionReason='provenance';}
+  const snapshotOnly=enabled&&s.id==='openwaters'&&s.snapshotCount>0;
+  if(snapshotOnly&&!failed){s.status='unknown';s.freshness='unknown';s.label='Last-known snapshots · position time unavailable';s.attentionReason=s.cacheIssue?'cache':'provenance';}
   s.attention=s.attentionReason!==null;
   // Clocks, transport and bounds are independent. A successful fetch cannot
   // make unknown publication dates current or prove a complete result set.
   s.clockCompleteness=count===0?'not-applicable':Number.isInteger(s.publicationUnknown)&&s.publicationUnknown>0?(s.publicationKnown>0?'partial':'unknown'):s.group==='discovery'||s.hasData&&s.contentAgeSeconds===null&&!['expectations'].includes(s.group)?'unknown':s.hasData?'known':'unknown';
-  if(s.attentionReason==='provenance')s.clockCompleteness='unknown';
+  if(snapshotOnly)s.clockCompleteness='unknown';
   s.checkStatus=s.configurationFailed?'missing':!enabled?'disabled':s.connection==='loading'?'checking':!s.retrievedAt||s.retrievalAgeSeconds===null?'missing':failed?'failed':s.checkOverdue||['maritime','discovery'].includes(s.group)&&s.freshness==='stale'?'overdue':'successful';
   s.scopeStatus=s.possiblyTruncated||s.truncated||s.archiveTruncated?'bounded':'retrieved-only';
   s.coverageStatus=s.configurationFailed?'unknown':!enabled?'disabled':s.status==='loading'?'checking':s.status==='unavailable'?'unavailable':s.attention||['stale','paused'].includes(s.status)||s.scopeStatus==='bounded'||s.clockCompleteness==='partial'||s.delayed?'limited':s.status==='unknown'||s.hasData&&s.clockCompleteness==='unknown'?'unknown':s.hasData?'available':s.successfulCheck&&count===0?'no-matches':'unknown';

@@ -92,6 +92,22 @@ test('AIS with position frames but no retained vessel keeps the usable-position 
 test('Open Waters snapshots disclose missing position provenance despite successful reception',()=>{
  const sources=collectSources({vessels:{configured:true,vessels:[{provider:'Open Waters',latitude:25,longitude:55,positionTime:'2026-09-13T17:59:00Z',sourceAt:'2026-09-13T17:59:00Z',timestampBasis:'provider'}],source:{id:'aisstream',...connected},fallback:{id:'openwaters',...connected,recordCount:2,latest:'2026-09-13T17:59:00Z',timestampBasis:'provider'}}},now);const open=sources.find(s=>s.id==='openwaters');assert.equal(open.status,'unknown');assert.equal(open.hasData,false);assert.equal(open.snapshotCount,1);assert.equal(open.attentionReason,'provenance');assert.equal(open.checkStatus,'successful');assert.equal(open.freshness,'unknown');assert.match(open.label,/position time unavailable/);
 });
+test('snapshot provenance does not displace a failed cache-save warning',()=>{
+ const input={id:'openwaters',group:'vessels',configured:true,...connected,recordCount:0,snapshotCount:3,cacheIssue:'Local cache could not be saved.'};
+ const source=sourceHealth(input,now);
+ assert.equal(source.attentionReason,'cache');
+ assert.equal(source.status,'unknown');
+ assert.equal(source.freshness,'unknown');
+ assert.equal(source.clockCompleteness,'unknown');
+ assert.match(source.label,/position time unavailable/);
+ assert.match(statusSummary([source]),/cache needs attention/);
+ assert.match(panelNotice([source],'vessels'),/cache could not be saved/);
+ const failed=sourceHealth({...input,connection:'cached',errorCategory:'network',error:'Provider update failed.'},now);
+ assert.equal(failed.status,'unavailable');
+ assert.equal(failed.checkStatus,'failed');
+ assert.equal(failed.clockCompleteness,'unknown');
+ assert.match(panelNotice([failed],'vessels'),/update failed/);
+});
 test('ages advance from the clock without refreshing retained source objects',()=>{
  const s={id:'bbc',group:'news',configured:true,...connected,retrievedAt:'2026-09-13T17:59:00Z',recordCount:1,latestRelevant:'2026-09-10T18:00:01Z'};assert.equal(sourceHealth(s,now).status,'current');assert.equal(sourceHealth(s,now+2000).status,'stale');assert.equal(s.freshness,undefined);
 });
