@@ -68,10 +68,13 @@ export function sourceHealth(input, now=Date.now()) {
   // connection. Vessel and price ages still identify unusably old observations.
   const olderContent=['news','acled'].includes(s.group)&&s.connection==='connected'&&s.status==='stale'&&!s.checkOverdue;
   s.attentionReason=s.configurationFailed?'configuration':!enabled?null:s.cacheIssue?'cache':['unavailable','retained'].includes(s.status)?'update':s.group==='vessels'&&['empty','unknown'].includes(s.status)?'reception':s.checkOverdue?'check':s.group==='vessels'&&s.freshness==='stale'?'observation':s.status==='stale'&&!olderContent?(['maritime','discovery'].includes(s.group)?'check':'observation'):null;
+  const snapshotOnly=enabled&&s.id==='openwaters'&&s.snapshotCount>0;
+  if(snapshotOnly&&!failed){s.status='unknown';s.freshness='unknown';s.label='Last-known snapshots · position time unavailable';s.attentionReason=s.cacheIssue?'cache':'provenance';}
   s.attention=s.attentionReason!==null;
   // Clocks, transport and bounds are independent. A successful fetch cannot
   // make unknown publication dates current or prove a complete result set.
   s.clockCompleteness=count===0?'not-applicable':Number.isInteger(s.publicationUnknown)&&s.publicationUnknown>0?(s.publicationKnown>0?'partial':'unknown'):s.group==='discovery'||s.hasData&&s.contentAgeSeconds===null&&!['expectations'].includes(s.group)?'unknown':s.hasData?'known':'unknown';
+  if(snapshotOnly)s.clockCompleteness='unknown';
   s.checkStatus=s.configurationFailed?'missing':!enabled?'disabled':s.connection==='loading'?'checking':!s.retrievedAt||s.retrievalAgeSeconds===null?'missing':failed?'failed':s.checkOverdue||['maritime','discovery'].includes(s.group)&&s.freshness==='stale'?'overdue':'successful';
   s.scopeStatus=s.possiblyTruncated||s.truncated||s.archiveTruncated?'bounded':'retrieved-only';
   s.coverageStatus=s.configurationFailed?'unknown':!enabled?'disabled':s.status==='loading'?'checking':s.status==='unavailable'?'unavailable':s.attention||['stale','paused'].includes(s.status)||s.scopeStatus==='bounded'||s.clockCompleteness==='partial'||s.delayed?'limited':s.status==='unknown'||s.hasData&&s.clockCompleteness==='unknown'?'unknown':s.hasData?'available':s.successfulCheck&&count===0?'no-matches':'unknown';
@@ -93,6 +96,7 @@ export function collectSources(state,now=Date.now()) {
     if(def.group==='vessels' && state.vessels){
       const positions=(state.vessels.vessels||[]).filter(v=>(def.id==='openwaters'?v.provider==='Open Waters':v.provider!=='Open Waters')&&isCurrentVesselPosition(v,now));
       s.recordCount=positions.length;
+      if(def.id==='openwaters'){const snapshots=(state.vessels.vessels||[]).filter(v=>v.provider==='Open Waters');s.snapshotCount=Math.max(Number.isSafeInteger(value?.snapshotCount)?value.snapshotCount:0,snapshots.length);s.lastMessageAt=value?.lastMessageAt||snapshots.map(v=>v.lastMessageAt||v.sourceAt).filter(Boolean).sort().at(-1)||null;}
       const newest=positions.slice().sort((a,b)=>b.positionTime.localeCompare(a.positionTime))[0];
       s.latest=newest?.sourceAt||null;s.timestampBasis=newest?.timestampBasis||null;
       if(def.id==='aisstream'){s.frames=state.vessels.source?.frames??0;s.positionFrames=state.vessels.source?.positionFrames??0;s.positionsAccepted=state.vessels.source?.positionsAccepted??positions.length;}
@@ -123,6 +127,7 @@ export function statusSummary(sources) {
   const updates=enabled.some(s=>['retained','unavailable'].includes(s.status)),reception=enabled.some(s=>s.attentionReason==='reception');
   const messages=[];
   if(updates)messages.push('Source updates incomplete');
+  if(enabled.some(s=>s.attentionReason==='provenance'))messages.push(messages.length?'vessel position time unavailable':'Vessel position time unavailable');
   if(reception)messages.push(messages.length?'vessel reception limited':'Vessel reception limited');
   if(sources.some(s=>s.configurationFailed))messages.push(messages.length?'source configuration unavailable':'Source configuration unavailable');
   if(messages.length)return messages.join(' · ');
@@ -157,6 +162,7 @@ export function panelNotice(sources,group) {
     return `${names.join(', ')}: update failed. ${failed.some(s=>s.hasData)?'Previously retrieved data is shown; coverage is incomplete.':list.some(s=>s.hasData)?'Available source data is shown; coverage is incomplete.':'No usable data is available.'}`;
   }
   if(list.some(s=>s.status==='loading'))return 'Checking sources. Coverage is not yet established.';
+  if(group==='vessels'&&list.some(s=>s.attentionReason==='provenance'))return 'Last-known snapshots lack position time and source; they are excluded from current positions. Other received position reports may remain available. This is incomplete coverage, not evidence that the waters are empty.';
   if(group==='vessels'&&list.some(s=>s.attentionReason==='reception'))return list.some(s=>s.hasData)?'Some vessel feeds have a reception gap. Positions from responding feeds are shown; the map is not a complete traffic census.':'No usable vessel positions have been received. This is a reception gap, not evidence that the waters are empty.';
   if(group==='vessels'&&list.some(s=>s.status==='paused'))return 'Live vessel reception is paused while the view is closed. Retained positions keep their original observation times.';
   if(list.some(s=>s.status==='stale'&&(group!=='news'||s.attention)))return 'Older observations are labeled with their dates. Coverage & sources has update details.';

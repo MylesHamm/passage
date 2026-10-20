@@ -1,10 +1,11 @@
+import {OPENWATERS_SNAPSHOT_CACHE_KEY} from '../lib/source-cache-keys.mjs';
 /** Open Waters can refresh every ten seconds for viewers. Checkpoint it at
  * most every five minutes so frequent reads cannot exhaust daily SQL writes.
  * Source/receipt clocks are never changed when restoring the older checkpoint.
  */
 export function sourceStorage(files,now=Date.now) {
   let temporary=null,lastSaved=-Infinity;
-  const target='/cache/openwaters-vessels.json';
+  const target=`/cache/${OPENWATERS_SNAPSHOT_CACHE_KEY}.json`;
   const special=path=>path.startsWith(target+'.')&&path.endsWith('.tmp');
   return {
     readFile:files.readFile,mkdir:files.mkdir,

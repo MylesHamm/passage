@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {workspaceFor} from '../dist/workspace-view.mjs';
 import {vesselAvailability} from '../dist/vessel-availability.mjs';
-import {vesselTypeLabel} from '../dist/vessel-data.mjs';
+import {vesselTypeLabel,isSnapshotVessel} from '../dist/vessel-data.mjs';
 import {evidencePanelMarkup,safeEvidenceUrl} from '../dist/evidence-panel.mjs';
 
 const app=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
@@ -81,7 +81,7 @@ function vesselHarness(){
   const h=harness(),sources=[{id:'openwaters',group:'vessels',configured:true,connection:'connected'}];
   Object.assign(h.state,{vesselFilter:'oil',vessels:{vessels:[]},failures:{},auto:true});
   let inspector='';
-  Object.assign(h.context,{sources,allSourceStates:()=>sources,vesselAvailability,vesselTypeLabel,evidencePanelMarkup,safeEvidenceUrl,
+  Object.assign(h.context,{sources,allSourceStates:()=>sources,vesselAvailability,vesselTypeLabel,isSnapshotVessel,evidencePanelMarkup,safeEvidenceUrl,
     esc:String,relative:value=>value,$$:()=>[],globe:null,inspectorMode:null,markSelection(){},
     openInspector:(_title,html)=>{inspector=html;}});
   for(const selector of ['#vessel-status','#vessel-note','#vessel-filter','#vessel-count-summary','#vessel-count-basis'])h.$(selector).classList={toggle(){}};
@@ -92,6 +92,16 @@ function vesselHarness(){
   return {...h,sources,inspector:()=>inspector};
 }
 
+test('legacy Open Waters snapshots stay out of current positions with an explicit coverage explanation',()=>{
+  const h=vesselHarness();
+  h.state.vessels.vessels=[{mmsi:'999000001',provider:'Open Waters',theater:'hormuz',
+    shipType:'tanker',positionTime:new Date().toISOString(),latitude:26.57,longitude:56.25}];
+  assert.equal(h.context.allVisibleVessels().length,0);
+  h.context.renderVessels();h.context.showVesselList();
+  assert.match(h.$('#vessel-note').textContent,/last-known Open Waters snapshot.*excluded.*coordinate time and source are unavailable/);
+  assert.match(h.inspector(),/last-known Open Waters snapshot/);
+});
+
 test('vessel panel and list agree about a failed feed and offer All received only for actual hidden positions',()=>{
   const h=vesselHarness();h.state.failures.vessels=true;
   h.context.renderVessels();h.context.showVesselList();
@@ -100,7 +110,7 @@ test('vessel panel and list agree about a failed feed and offer All received onl
   assert.match(h.inspector(),/latest vessel-data request failed/);
   assert.doesNotMatch(h.inspector(),/show-all-vessels|Switch Layer|Checking/);
   h.state.failures.vessels=false;
-  h.state.vessels.vessels=[{mmsi:'123',name:'Cargo A',shipType:'cargo',theater:'hormuz',positionTime:new Date().toISOString(),provider:'Open Waters'}];
+  h.state.vessels.vessels=[{mmsi:'123',name:'Cargo A',shipType:'cargo',theater:'hormuz',positionTime:new Date().toISOString(),provider:'AISStream'}];
   h.context.renderVessels();h.context.showVesselList();
   assert.equal(h.$('#vessel-status').textContent,'No matching received positions');
   assert.match(h.inspector(),/Show all 1 received position/);

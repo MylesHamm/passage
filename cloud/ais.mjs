@@ -89,19 +89,26 @@ export class WorkerAisFeed {
   }
   checkpoint() {
     this.store.snapshot(this.now());
-    return {schema:1,vessels:[...this.store.vessels.values()],static:[...this.store.static],lastPositionAt:stamp(this.lastPositionAt)};
+    return {schema:2,vessels:[...this.store.vessels.values()],static:[...this.store.static],lastPositionAt:stamp(this.lastPositionAt)};
   }
   restore(value) {
-    if(value?.schema!==1 || !Array.isArray(value.vessels) || !Array.isArray(value.static))return;
+    if(![1,2].includes(value?.schema) || !Array.isArray(value.vessels) || !Array.isArray(value.static))return;
     const now=this.now(),validTime=(time,maxAge)=>typeof time==='string'&&Number.isFinite(Date.parse(time))&&Date.parse(time)<=now+60_000&&now-Date.parse(time)<maxAge;
-    // Revalidate persisted positions through the same provider parser. Restoring
-    // a receipt-dated point must never turn its old receipt into a new position.
-    for(const v of value.vessels.slice(-this.store.limit)) {
-      if(typeof v?.mmsi!=='string'||!/^([1-9]\d{8})$/.test(v.mmsi)||!validTime(v.positionTime,EXPIRE_MS)||!validTime(v.receivedAt,EXPIRE_MS)||!['provider','received'].includes(v.timestampBasis))continue;
-      if(v.timestampBasis==='provider'&&v.sourceAt!==v.positionTime)continue;
-      if(v.timestampBasis==='received'&&(v.sourceAt!==null||v.positionTime!==v.receivedAt))continue;
-      const envelope={MessageType:'PositionReport',MetaData:{MMSI:v.mmsi,ShipName:v.name,time_utc:v.positionTime},Message:{PositionReport:{Latitude:v.latitude,Longitude:v.longitude,Sog:v.speedKnots,Cog:v.courseDegrees,TrueHeading:v.headingDegrees}}};
-      if(this.store.ingest(envelope,now))Object.assign(this.store.vessels.get(v.mmsi),{receivedAt:v.receivedAt,sourceAt:v.sourceAt,timestampBasis:v.timestampBasis,timestampNote:v.timestampBasis==='received'?'Provider time unavailable in retained position; age uses original receipt time.':null});
+    // Schema 1 predates payload-only coordinate validation. Its positions cannot
+    // be promoted to proven reports; independently dated static metadata below
+    // remains usable until its own expiry. New reports repopulate positions.
+    let restoredPositions=0;
+    for(const v of (value.schema===2?value.vessels:[]).slice(-this.store.limit)) {
+      if(typeof v?.mmsi!=='string'||!/^([1-9]\d{8})$/.test(v.mmsi)||v.positionEvidence!=='position-report'||!validTime(v.positionTime,EXPIRE_MS)||!validTime(v.receivedAt,EXPIRE_MS)||!['provider','received'].includes(v.timestampBasis))continue;
+      if(v.timestampBasis==='provider'&&(v.sourceAt!==v.positionTime||v.providerReportAt!==v.sourceAt))continue;
+      if(v.timestampBasis==='received'&&(v.sourceAt!==null||v.providerReportAt!==null||v.positionTime!==v.receivedAt))continue;
+      const envelope={MessageType:'PositionReport',MetaData:{MMSI:v.mmsi,ShipName:v.name,time_utc:v.providerReportAt},Message:{PositionReport:{Latitude:v.latitude,Longitude:v.longitude,Sog:v.speedKnots,Cog:v.courseDegrees,TrueHeading:v.headingDegrees}}};
+      // Revalidate at the original receipt clock. A restart is neither a fresh
+      // receipt nor a provider report, especially for receipt-only records.
+      if(this.store.ingest(envelope,Date.parse(v.receivedAt))){
+        restoredPositions++;
+        if(v.timestampBasis==='received')this.store.vessels.get(v.mmsi).timestampNote='Provider time unavailable in retained position; age uses original receipt time.';
+      }
     }
     for(const pair of value.static.slice(-this.store.limit)) {
       if(!Array.isArray(pair)||pair.length!==2||typeof pair[0]!=='string'||!/^([1-9]\d{8})$/.test(pair[0])||typeof pair[1]!=='object'||!pair[1])continue;
@@ -112,7 +119,7 @@ export class WorkerAisFeed {
       }
       if(restored.nameAt||restored.shipTypeObservedAt)this.store.static.set(id,restored);
     }
-    this.lastPositionAt=validTime(value.lastPositionAt,EXPIRE_MS)?Date.parse(value.lastPositionAt):null;
+    this.lastPositionAt=restoredPositions&&validTime(value.lastPositionAt,EXPIRE_MS)?Date.parse(value.lastPositionAt):null;
     this.store.snapshot(now);
   }
   diagnostics() { return {counts:structuredClone(this.counts),...this.snapshot({touch:false}).source}; }

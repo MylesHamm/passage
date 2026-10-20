@@ -1,20 +1,25 @@
 import {SCENES,sceneFor,defaultPose,clamp,eligibleVessels,isCoordinate} from './geometry.mjs';
 import {createWebGLRenderer,createPlanRenderer,loadSceneAssets} from './renderer.mjs';
+import {createBothOverview} from './overview.mjs';
+import {paintVesselSymbol,projectedVesselAngle} from './vessel-symbol.mjs';
 
 /** Regional geographic reference. No location is inferred from a headline. */
-export async function createRegionalTerrain(root,callbacks={}){
+export async function createRegionalTerrain(root,callbacks={},options={}){
  if(!root)return null;
  let canvas=root.querySelector('canvas');const surface=root.querySelector('.globe-surface')||root;
  const status=root.querySelector('#globe-mode'),motion=root.querySelector('#globe-motion'),wider=root.querySelector('#terrain-wider');
  const zoomIn=root.querySelector('#zoom-in'),zoomOut=root.querySelector('#zoom-out'),loading=root.querySelector('.globe-loading');
  const heading=document.querySelector('#map-heading');const reduced=matchMedia('(prefers-reduced-motion: reduce)');
- let renderer,scene=SCENES.hormuz,scope='both',pose=defaultPose(),assets=null,frame=0,transition=null,drag=null,sequence=0,destroyed=false,inView=true,expiry=0;
- let vessels=[],events=[],infrastructure=[],showVessels=false,layerNodes=[],labels=[];
+ let renderer,overview,scene=SCENES.hormuz,scope='both',pose=defaultPose(),assets=null,frame=0,transition=null,drag=null,sequence=0,destroyed=false,inView=true,expiry=0;
+ let vessels=[],events=[],infrastructure=[],showVessels=false,vesselAvailability=null,layerNodes=[],labels=[];
  const boundCanvases=new WeakSet();
  const cache=new Map(),abort=new AbortController(),listeners=[];
  const stats={mode:'loading',frames:0,drawMilliseconds:[],sceneLoads:[],deviceValidation:'No device or GPU performance certification. drawMilliseconds measures CPU submission and labels, not completed GPU time.'};
  const listen=(node,type,fn,options)=>{if(!node)return;node.addEventListener(type,fn,options);listeners.push(()=>node.removeEventListener(type,fn,options));};
  const element=(tag,className,text)=>{const node=document.createElement(tag);node.className=className;if(text)node.textContent=text;return node;};
+ const tankerModels=options.tankerModels===true;
+ const overviewRoot=element('div','terrain-overview');overviewRoot.hidden=true;surface.before(overviewRoot);
+ if(tankerModels){const modelNote=element('p','terrain-model-note','Model preview · Up to eight generic tanker models per frame at received coordinates, enlarged for visibility; other positions retain small symbols. Faded models are older than ten minutes. Direction uses valid heading or a labeled course fallback. Positions change only when reports change; no prediction.');root.append(modelNote);listeners.push(()=>modelNote.remove());}
  root.classList.add('regional-terrain');surface.classList.add('regional-terrain-surface');
  root.querySelectorAll('[data-globe-theatre]').forEach(node=>{node.hidden=true;});
  const mapLabels=element('div','terrain-labels');mapLabels.setAttribute('aria-hidden','true');
@@ -30,11 +35,21 @@ export async function createRegionalTerrain(root,callbacks={}){
  const help=element('span','terrain-sr-only','Use left and right arrow keys to turn, up and down to tilt. Plus and minus zoom. Shift with arrow keys pans. T toggles top-down. R resets the camera. Terrain is static reference geography, not current conditions.');help.id='terrain-keyboard-help';root.append(help);
  const attribution=document.querySelector('#terrain-attribution');if(attribution){attribution.textContent='Mapzen Terrain Tiles · SRTM/GMTED2010: U.S. Geological Survey · ETOPO1: NOAA. Downloaded 17 October 2026; source tile modifications are from 2017, not survey dates. 4× vertical exaggeration. 1024-pixel source texture, about 0.55–0.60 km source spacing; 256-pixel display mesh, about 2.2–2.4 km. Designed elevation colors, not satellite imagery. Mixed-age source artifacts may remain. Water is flat; no bathymetry or navigable clearance. ';const link=element('a','','Sources & processing details ↗');link.href=new URL('./assets/provenance.json',import.meta.url).href;link.target='_blank';link.rel='noopener noreferrer';attribution.append(link);}
  function controls(){
+  const both=scope==='both';surface.hidden=both;overviewRoot.hidden=!both;
+  root.querySelectorAll('[data-terrain-region]').forEach(node=>node.setAttribute('aria-pressed',String(node.dataset.terrainRegion===scope)));
+  if(both){
+   root.dataset.terrainMode='overview';root.dataset.terrainScene='both';stats.mode='overview';
+   if(heading)heading.textContent='Both straits';
+   if(status)status.textContent='Both straits · separate regional views';
+   for(const control of [motion,wider,zoomIn,zoomOut])if(control)control.disabled=true;
+   if(motion){motion.textContent='Top-down';motion.setAttribute('aria-pressed','false');motion.title='Choose a strait to adjust its terrain view.';}
+   if(wider){wider.textContent='Wider';wider.setAttribute('aria-pressed','false');}
+   return;
+  }
   const fallback=renderer?.mode==='plan';root.dataset.terrainMode=renderer?.mode||'loading';root.dataset.terrainScene=scene.id;
   if(motion){motion.textContent=fallback?'Plan fallback':pose.topDown?'3D terrain':'Top-down';motion.setAttribute('aria-pressed',String(pose.topDown||fallback));motion.disabled=fallback;motion.title=fallback?'2D geographic reference is shown because GPU terrain is unavailable.':'Switch between a tilted regional scene and a plan view';}
-  if(wider){wider.textContent=pose.zoom<.92?'Focused':'Wider';wider.setAttribute('aria-pressed',String(pose.zoom<.92));}
+  if(wider){wider.disabled=false;wider.textContent=pose.zoom<.92?'Focused':'Wider';wider.setAttribute('aria-pressed',String(pose.zoom<.92));}
   if(zoomIn)zoomIn.disabled=pose.zoom>=2.4;if(zoomOut)zoomOut.disabled=pose.zoom<=.76;
-  root.querySelectorAll('[data-terrain-region]').forEach(node=>node.setAttribute('aria-pressed',String(node.dataset.terrainRegion===scene.id)));
   if(status)status.textContent=`${scene.shortName} · ${fallback?'2D reference fallback':pose.topDown?'plan view':'3D reference'}`;
   if(heading)heading.textContent=scene.name;
   if(north)north.style.transform=`rotate(${fallback?0:-pose.yaw*180/Math.PI}deg)`;
@@ -55,16 +70,20 @@ export async function createRegionalTerrain(root,callbacks={}){
  }
  function rebuildLayers(){
   if(destroyed)return;
+  overview?.setVessels(vessels,showVessels,vesselAvailability);overview?.setInfrastructure(infrastructure);overview?.setEvents(events);
   dynamicLayer.replaceChildren();layerNodes=layerData().map(item=>{
    const button=element('button',`terrain-object terrain-object--${item.kind}${item.older?' terrain-object--older':''}`);button.type='button';button.setAttribute('aria-label',`${item.label}. ${item.basis}${item.positionTime?`. Position time ${item.positionTime}`:''}`);button.title=`${item.label} · ${item.basis}`;
-   const symbol=element('span','',item.kind==='vessel'?(Number.isFinite(item.courseDegrees)||Number.isFinite(item.headingDegrees)?'▲':'●'):item.kind==='infrastructure'?'□':'○');symbol.setAttribute('aria-hidden','true');button.append(symbol);
+   const symbol=element('span','',item.kind==='infrastructure'?'□':'○');symbol.setAttribute('aria-hidden','true');button.append(symbol);
+   const appearance=item.kind==='vessel'?paintVesselSymbol(symbol,item,{tankerModels:false}):null;
+   button.dataset.recordId=String(item.id);if(appearance){button.dataset.model=String(appearance.model);button.setAttribute('aria-label',`${item.label}. ${appearance.description} Provider/receipt timestamp ${item.positionTime}. Source: ${item.providerSource||item.provider||'not supplied'}.`);button.title=button.getAttribute('aria-label');}
    button.addEventListener('click',()=>{callbacks[item.kind==='vessel'?'onVessel':item.kind==='event'?'onEvent':'onInfrastructure']?.(item.id);});
    button.addEventListener('pointerenter',()=>{const p=renderer?.point(item.point);if(p)callbacks.onHover?.({...item,x:p.x,y:p.y});});button.addEventListener('pointerleave',()=>callbacks.onHover?.(null));
-   dynamicLayer.append(button);return{...item,node:button};
+   dynamicLayer.append(button);return{...item,node:button,appearance};
   });
   clearTimeout(expiry);if(showVessels&&vessels.length){const next=vessels.flatMap(v=>[600000,1800000].map(age=>Date.parse(v.positionTime)+age-Date.now())).filter(n=>n>0);if(next.length)expiry=setTimeout(()=>{rebuildLayers();requestDraw();},Math.min(...next)+50);}
  }
  function draw(){
+  if(scope==='both'){overview?.refresh();return;}
   if(!renderer||!assets||destroyed)return;
   const t=performance.now();renderer.draw(pose);
   const w=surface.clientWidth,h=surface.clientHeight;
@@ -72,14 +91,19 @@ export async function createRegionalTerrain(root,callbacks={}){
   const occupied=focusPoint.visible?[{x:focusPoint.x-104,y:focusPoint.y+6,w:208,h:73}]:[];
   for(const item of labels){const p=renderer.point(item.point,.9),width=item.name.length*(item.kind==='country'?8.5:6.7),box={x:p.x-width/2,y:p.y-8,w:width,h:18};const collides=occupied.some(b=>box.x<b.x+b.w&&box.x+box.w>b.x&&box.y<b.y+b.h&&box.y+box.h>b.y);item.node.hidden=!p.visible||collides||p.y<47||p.y>h-62||p.x<32||p.x>w-32;if(!item.node.hidden){item.node.style.transform=`translate(${p.x}px,${p.y}px) translate(-50%,-50%)`;occupied.push(box);}}
   const p=renderer.point(scene.center,.3);focus.hidden=!p.visible;focus.style.transform=`translate(${p.x}px,${p.y+16}px) translate(-50%,0)`;
-  for(const item of layerNodes){const p=renderer.point(item.point,.55);item.node.hidden=!p.visible;item.node.style.transform=`translate(${p.x}px,${p.y}px) translate(-50%,-50%)`;if(item.kind==='vessel'&&(Number.isFinite(item.courseDegrees)||Number.isFinite(item.headingDegrees))){const bearing=(item.courseDegrees??item.headingDegrees)*Math.PI/180;const next=renderer.point([item.longitude+Math.sin(bearing)*.02/Math.cos(item.latitude*Math.PI/180),item.latitude+Math.cos(bearing)*.02],.55);item.node.firstElementChild.style.transform=`rotate(${Math.atan2(next.y-p.y,next.x-p.x)*180/Math.PI+90}deg)`;}}
+  let modelCount=0;
+  for(const item of layerNodes){const p=renderer.point(item.point,.55);item.node.hidden=!p.visible;item.node.style.transform=`translate(${p.x}px,${p.y}px) translate(-50%,-50%)`;if(item.kind==='vessel'){
+   item.appearance=paintVesselSymbol(item.node.firstElementChild,item,{tankerModels:tankerModels&&p.visible&&modelCount<8});if(item.appearance.model)modelCount++;
+   item.node.dataset.model=String(item.appearance.model);item.node.setAttribute('aria-label',`${item.label}. ${item.appearance.description} Provider/receipt timestamp ${item.positionTime}. Source: ${item.providerSource||item.provider||'not supplied'}.${item.older?' Older than ten minutes.':''}`);item.node.title=item.node.getAttribute('aria-label');
+   const angle=projectedVesselAngle(item,item.appearance.bearing,point=>renderer.point(point,.55));item.node.firstElementChild.style.transform=angle===null?'':`rotate(${angle}deg)`;
+  }}
   let km=50;let a=renderer.localPoint([-km/2,0,0]),b=renderer.localPoint([km/2,0,0]);if(Math.hypot(a.x-b.x,a.y-b.y)>Math.min(180,w*.4)){km=20;a=renderer.localPoint([-10,0,0]);b=renderer.localPoint([10,0,0]);}scale.querySelector('i').style.width=`${Math.hypot(a.x-b.x,a.y-b.y)}px`;scale.querySelector('span').textContent=`${km} km at scene centre`;
   controls();stats.frames++;stats.mode=renderer.mode;stats.triangles=renderer.triangleCount;stats.renderPixels=renderer.pixelCount;stats.drawMilliseconds.push(Math.round((performance.now()-t)*100)/100);if(stats.drawMilliseconds.length>120)stats.drawMilliseconds.shift();
  }
  function requestDraw(){if(frame||destroyed||document.hidden||!inView)return;frame=requestAnimationFrame(tick);}
  function tick(now){frame=0;if(transition){const t=clamp((now-transition.start)/320,0,1),ease=t*t*(3-2*t);for(const key of ['zoom','tilt','yaw','panX','panZ'])pose[key]=transition.from[key]+(transition.to[key]-transition.from[key])*ease;pose.topDown=transition.to.topDown;if(t===1){pose={...transition.to};transition=null;}}draw();if(transition)requestDraw();}
  function move(next,animate=true){transition=null;if(animate&&!reduced.matches&&renderer?.mode!=='plan'&&!document.hidden){transition={from:{...pose},to:{...pose,...next},start:performance.now()};}else pose={...pose,...next};requestDraw();}
- function reset(){move({...defaultPose(),topDown:renderer?.mode==='plan'});}
+ function reset(){if(scope==='both'){overview?.refresh();return;}move({...defaultPose(),topDown:renderer?.mode==='plan'});}
  function zoom(amount){move({zoom:clamp(pose.zoom*amount,.76,2.4)},false);}
  function togglePlan(){if(renderer?.mode==='plan')return;move({topDown:!pose.topDown},false);}
  function resize(){const {width,height}=surface.getBoundingClientRect();if(width&&height&&renderer){renderer.resize(width,height);requestDraw();}}
@@ -100,8 +124,19 @@ export async function createRegionalTerrain(root,callbacks={}){
  }
  async function select(theatre){
   if(destroyed||!['both','hormuz','bab'].includes(theatre))return;
-  const next=sceneFor(theatre);scope=theatre;
-  if(scene.id===next.id&&assets){controls();requestDraw();return;}
+  const previousScope=scope;scope=theatre;
+  if(theatre==='both'){
+   const token=++sequence;transition=null;drag=null;if(frame){cancelAnimationFrame(frame);frame=0;}
+   controls();loading.hidden=true;root.dataset.terrainLoading='true';
+   overview??=createBothOverview(overviewRoot,{...callbacks,onSelect:async region=>{await select(region);if(!destroyed&&scope===region)canvas.focus({preventScroll:true});}},{tankerModels});
+   overview.setVessels(vessels,showVessels,vesselAvailability);overview.setInfrastructure(infrastructure);overview.setEvents(events);
+   await overview.ready;
+   if(token!==sequence||destroyed)return;
+   delete root.dataset.terrainLoading;overview.refresh();controls();callbacks.onRegionChange?.('both');return;
+  }
+  if(!renderer){try{renderer=createWebGLRenderer(canvas);}catch(error){useFallback(error.message);}}
+  const next=sceneFor(theatre);
+  if(scene.id===next.id&&assets){++sequence;delete root.dataset.terrainLoading;if(previousScope==='both')pose={...defaultPose(),topDown:renderer.mode==='plan'};controls();resize();callbacks.onRegionChange?.(scene.id);return;}
   const token=++sequence,start=performance.now();scene=next;assets=null;transition=null;pose=defaultPose();layoutLabels();rebuildLayers();controls();
   loading.hidden=false;loading.textContent=`Preparing ${scene.shortName} reference terrain…`;root.dataset.terrainLoading='true';
   try{
@@ -114,7 +149,6 @@ export async function createRegionalTerrain(root,callbacks={}){
    }catch{loading.hidden=false;loading.textContent=`${scene.shortName} terrain could not load. Reporting and evidence remain available.`;stats.error=String(error.message);root.dataset.terrainMode='unavailable';focus.hidden=true;mapLabels.hidden=true;}
   }
  }
- try{renderer=createWebGLRenderer(canvas);}catch(error){useFallback(error.message);}
  bindCanvas();layoutLabels();
  listen(motion,'click',togglePlan);listen(wider,'click',()=>move({zoom:pose.zoom<.92?1:.76,panX:0,panZ:0}));listen(zoomIn,'click',()=>zoom(1.15));listen(zoomOut,'click',()=>zoom(1/1.15));
  root.querySelectorAll('[data-terrain-region]').forEach(node=>listen(node,'click',()=>select(node.dataset.terrainRegion)));
@@ -123,6 +157,6 @@ export async function createRegionalTerrain(root,callbacks={}){
  const observer=new ResizeObserver(resize);observer.observe(surface);
  const visibility=typeof IntersectionObserver!=='undefined'?new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;if(inView)requestDraw();else if(frame){cancelAnimationFrame(frame);frame=0;}},{threshold:.01}):null;visibility?.observe(surface);
  await select('both');
- return {select,reset,topDown:togglePlan,wider:()=>move({zoom:.76,panX:0,panZ:0}),pause(){if(transition){pose=transition.to;transition=null;}requestDraw();},setVessels(list,show){vessels=Array.isArray(list)?list:[];showVessels=Boolean(show);rebuildLayers();requestDraw();},setEvents(list){events=Array.isArray(list)?list:[];rebuildLayers();requestDraw();},setInfrastructure(list){infrastructure=Array.isArray(list)?list:[];rebuildLayers();requestDraw();},getDiagnostics(){return {...stats,scene:scene.id,scope,pose:{...pose},continuousAnimation:false,reducedMotion:reduced.matches,visibleVesselCount:layerNodes.filter(n=>n.kind==='vessel').length};},destroy(){destroyed=true;abort.abort();clearTimeout(expiry);if(frame)cancelAnimationFrame(frame);listeners.forEach(remove=>remove());observer.disconnect();visibility?.disconnect();renderer?.destroy();for(const promise of cache.values())promise.then(data=>['heightImage','normalImage','planImage'].forEach(key=>data[key]?.close?.())).catch(()=>{});cache.clear();mapLabels.remove();dynamicLayer.remove();focus.remove();foot.remove();help.remove();}};
+ return {select,reset,topDown:togglePlan,wider:()=>move({zoom:.76,panX:0,panZ:0}),pause(){if(transition){pose=transition.to;transition=null;}requestDraw();},setVessels(list,show,availability=null){vessels=Array.isArray(list)?list:[];showVessels=Boolean(show);vesselAvailability=availability;rebuildLayers();requestDraw();},setEvents(list){events=Array.isArray(list)?list:[];rebuildLayers();requestDraw();},setInfrastructure(list){infrastructure=Array.isArray(list)?list:[];rebuildLayers();requestDraw();},getDiagnostics(){return {...stats,scene:scope==='both'?'both':scene.id,scope,pose:{...pose},overview:overview?.getDiagnostics(),continuousAnimation:false,reducedMotion:reduced.matches,visibleVesselCount:scope==='both'?(overview?.getDiagnostics().regions.reduce((sum,region)=>sum+region.visibleVesselCount,0)||0):layerNodes.filter(n=>n.kind==='vessel'&&!n.node.hidden).length};},destroy(){destroyed=true;abort.abort();clearTimeout(expiry);if(frame)cancelAnimationFrame(frame);listeners.forEach(remove=>remove());observer.disconnect();visibility?.disconnect();renderer?.destroy();overview?.destroy();overviewRoot.remove();for(const promise of cache.values())promise.then(data=>['heightImage','normalImage','planImage'].forEach(key=>data[key]?.close?.())).catch(()=>{});cache.clear();mapLabels.remove();dynamicLayer.remove();focus.remove();foot.remove();help.remove();}};
 }
 export const createGlobe=createRegionalTerrain;

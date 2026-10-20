@@ -1,3 +1,4 @@
+import {isSnapshotVessel} from '../vessel-data.mjs';
 // Regional reference coordinates, not event locations or navigable routes.
 export const VERTICAL_EXAGGERATION = 4;
 export const SCENES = {
@@ -26,7 +27,8 @@ export const SCENES = {
     ] }
 };
 export const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
-export function sceneFor(theatre){return SCENES[theatre]||SCENES.hormuz;}
+// Both straits is a separate overview, never an alias for a single terrain tile.
+export function sceneFor(theatre){return SCENES[theatre]||null;}
 export function mercatorY(latitude){return (1-Math.asinh(Math.tan(latitude*Math.PI/180))/Math.PI)/2;}
 export function longitudeLatitudeToUV(point,scene){const n=2**scene.zoom;return [((point[0]+180)/360*n-scene.tileOrigin[0])/scene.tileSpan,(mercatorY(point[1])*n-scene.tileOrigin[1])/scene.tileSpan];}
 export function sceneWidthKm(scene){return 40075.016686*Math.cos(scene.center[1]*Math.PI/180)*scene.tileSpan/2**scene.zoom;}
@@ -58,5 +60,5 @@ export function cameraMatrix(pose,scene,width,height){
 }
 export function project(point,matrix,width,height){const [x,y,z]=point,w=matrix[3]*x+matrix[7]*y+matrix[11]*z+matrix[15];if(w<=0)return{x:-1000,y:-1000,visible:false};const px=(matrix[0]*x+matrix[4]*y+matrix[8]*z+matrix[12])/w,py=(matrix[1]*x+matrix[5]*y+matrix[9]*z+matrix[13])/w;return{x:(px*.5+.5)*width,y:(.5-py*.5)*height,visible:px>-.97&&px<.97&&py>-.92&&py<.92};}
 export function isCoordinate(point){return Number.isFinite(point?.longitude)&&Number.isFinite(point?.latitude)&&Math.abs(point.longitude)<=180&&Math.abs(point.latitude)<85;}
-export function eligibleVessels(vessels,scene,now=Date.now()){return(Array.isArray(vessels)?vessels:[]).filter(v=>isCoordinate(v)&&Number.isFinite(Date.parse(v.positionTime))&&now-Date.parse(v.positionTime)>=0&&now-Date.parse(v.positionTime)<1800000&&(!v.theater||v.theater===scene.id));}
+export function eligibleVessels(vessels,scene,now=Date.now()){return(Array.isArray(vessels)?vessels:[]).filter(v=>!isSnapshotVessel(v)&&isCoordinate(v)&&Number.isFinite(Date.parse(v.positionTime))&&now-Date.parse(v.positionTime)>=0&&now-Date.parse(v.positionTime)<1800000&&(!v.theater||v.theater===scene.id));}
 export function defaultPose(){return {zoom:1,tilt:.72,yaw:-.1,panX:0,panZ:0,topDown:false};}
