@@ -1,15 +1,15 @@
 // Hormuz hero map: WebGL terrain with received vessels, last-hour tracks and a
 // replay of received positions. Nothing is extrapolated between reports.
-import { SCENES, geographicPoint, clamp } from '../terrain/geometry.mjs';
+import { SCENES, geographicPoint, cameraMatrix, clamp } from '../terrain/geometry.mjs';
 import { createWebGLRenderer, createPlanRenderer, loadSceneAssets } from '../terrain/renderer.mjs';
-import { projectedVesselAngle } from '../terrain/vessel-symbol.mjs';
+import { shipSprite, localView } from '../terrain/ship-sprites.mjs';
 import { isCurrentVesselPosition, POSITION_STALE_MS } from '../vessel-data.mjs';
 import { isTanker, esc } from './panels.mjs';
 
 const SCENE = SCENES.hormuz;
 // The free feed's receivers sit along the Dubai and Sharjah coast, so the
 // default frame runs from those anchorages to the strait and Iran beyond.
-const FRAME_CENTER = [55.72, 25.68];
+const FRAME_CENTER = [55.55, 25.8];
 // Reference places only; their coordinates are static, not vessel data.
 const HERO_LABELS = [
   { name: 'UAE', point: [55.6, 24.85], kind: 'country' },
@@ -68,11 +68,14 @@ export function positionAt(points, t) {
   return null;
 }
 
-// Interim symbol until the detailed model is available: a top-down hull with
-// its bow up, rotated to the projected heading. Never shown for unknown headings.
-function silhouette(length) {
-  const w = Math.round(length * .26), h = Math.round(length);
-  return `<svg width="${w}" height="${h}" viewBox="0 0 26 100" aria-hidden="true"><path d="M13 1 L21 14 L23 30 L23 92 Q23 99 13 99 Q3 99 3 92 L3 30 L5 14 Z" fill="#1d2b36" stroke="#ffc069" stroke-width="2"/><rect x="6" y="74" width="14" height="16" rx="1.5" fill="#e9eef2"/><rect x="7.5" y="76" width="11" height="2.5" fill="#ffc069"/><line x1="13" y1="20" x2="13" y2="70" stroke="#ffc06988" stroke-width="1.4"/></svg>`;
+/** Screen angle, clockwise from up, of a compass bearing at a point on the map. */
+export function projectedVesselAngle(vessel, degrees, project) {
+  if (!Number.isFinite(degrees)) return null;
+  const radians = degrees * Math.PI / 180, latitude = vessel.latitude;
+  const start = project([vessel.longitude, latitude]);
+  const end = project([vessel.longitude + Math.sin(radians) * .02 / Math.cos(latitude * Math.PI / 180), latitude + Math.cos(radians) * .02]);
+  if (![start?.x, start?.y, end?.x, end?.y].every(Number.isFinite)) return null;
+  return Math.atan2(end.y - start.y, end.x - start.x) * 180 / Math.PI + 90;
 }
 
 export async function createHeroMap(root, { onSelect } = {}) {
@@ -87,8 +90,6 @@ export async function createHeroMap(root, { onSelect } = {}) {
     node.dataset.kind = label.kind; node.setAttribute('aria-hidden', 'true'); overlay.append(node);
     return { label, node };
   });
-  let sprites = null;
-  import('../terrain/ship-sprites.mjs').then(module => { sprites = module; dirty = true; schedule(); }).catch(() => {});
 
   let renderer = null, pose = heroPose(), width = 1, height = 1, frame = 0, dirty = true, destroyed = false;
   let vessels = [], showAll = true, selected = null, paused = false, inView = true, lastInteraction = -Infinity;
@@ -141,7 +142,7 @@ export async function createHeroMap(root, { onSelect } = {}) {
     return node;
   }
 
-  function paintVessel(node, vessel, at, bearing, now) {
+  function paintVessel(node, vessel, at, bearing, now, eye) {
     const tanker = isTanker(vessel), length = sizeFor();
     const p = project([at.longitude, at.latitude], .25);
     node.hidden = !p.visible;
@@ -149,23 +150,19 @@ export async function createHeroMap(root, { onSelect } = {}) {
     const angle = projectedVesselAngle({ longitude: at.longitude, latitude: at.latitude }, bearing, point => project(point, .25));
     const kind = !tanker ? 'other' : angle === null ? 'tanker-marker' : 'tanker';
     if (node.dataset.kind !== kind) { node.dataset.kind = kind; node.innerHTML = ''; node.dataset.sprite = ''; }
-    let transform = `translate3d(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px, 0)`;
+    let transform = `translate3d(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px, 0)`, origin = '';
     if (kind === 'tanker') {
-      const sprite = sprites?.shipSprite?.({ headingDegrees: bearing, cameraYawDegrees: pose.yaw * 180 / Math.PI, cameraTiltDegrees: (pose.topDown ? 89 : pose.tilt * 180 / Math.PI), lengthPx: length, screenAngleDegrees: angle });
+      // The model is drawn from this vessel's own line of sight, so perspective
+      // near the frame edges still shows the side of the hull the camera sees.
+      const view = eye ? localView({ eye, point: geographicPoint([at.longitude, at.latitude], SCENE, .25) }) : { cameraYawDegrees: pose.yaw * 180 / Math.PI, cameraTiltDegrees: pose.tilt * 180 / Math.PI };
+      const sprite = shipSprite({ headingDegrees: bearing, cameraYawDegrees: view.cameraYawDegrees, cameraTiltDegrees: pose.topDown || renderer.mode === 'plan' ? 0 : view.cameraTiltDegrees, lengthPx: length, screenBowDegrees: angle });
       if (sprite) {
-        const key = `${sprite.key || sprite.dataUrl?.length}:${Math.round(length)}`;
-        if (node.dataset.sprite !== key) { node.innerHTML = sprite.svg || `<img alt="" draggable="false" src="${sprite.dataUrl}" width="${sprite.width}" height="${sprite.height}">`; node.dataset.sprite = key; }
-        const ax = sprite.anchor?.[0] ?? sprite.width / 2, ay = sprite.anchor?.[1] ?? sprite.height / 2;
-        transform += ` translate(${-ax}px, ${-ay}px)` + (sprite.rotationDeg ? ` rotate(${sprite.rotationDeg}deg)` : '');
-        node.style.transformOrigin = `${ax}px ${ay}px`;
-      } else {
-        const key = `fallback:${Math.round(length)}`;
-        if (node.dataset.sprite !== key) { node.innerHTML = silhouette(length); node.dataset.sprite = key; }
-        const w = Math.round(length * .26), h = Math.round(length);
-        transform += ` translate(${-w / 2}px, ${-h / 2}px) rotate(${angle.toFixed(1)}deg)`;
-        node.style.transformOrigin = `${w / 2}px ${h / 2}px`;
+        if (node.dataset.sprite !== sprite.key) { node.innerHTML = `<img alt="" draggable="false" src="${sprite.dataUrl}" width="${sprite.width}" height="${sprite.height}">`; node.dataset.sprite = sprite.key; }
+        transform += ` translate(${(-sprite.anchor.x).toFixed(1)}px, ${(-sprite.anchor.y).toFixed(1)}px)` + (sprite.rotationDeg ? ` rotate(${sprite.rotationDeg.toFixed(2)}deg)` : '');
+        origin = `${sprite.anchor.x}px ${sprite.anchor.y}px`;
       }
     }
+    node.style.transformOrigin = origin;
     node.style.transform = transform;
     node.dataset.stale = String(!replay && now - (ms(vessel.positionTime) ?? now) >= POSITION_STALE_MS);
     node.setAttribute('aria-pressed', String(selected === vessel.mmsi));
@@ -182,6 +179,7 @@ export async function createHeroMap(root, { onSelect } = {}) {
       if (p.visible) node.style.transform = `translate3d(${p.x.toFixed(0)}px, ${p.y.toFixed(0)}px, 0) translate(-50%, -50%)`;
     }
     const t = replay ? replay.from + replay.elapsed / REPLAY_DURATION_MS * (replay.to - replay.from) : now;
+    const eye = renderer.mode === 'webgl' && !pose.topDown ? cameraMatrix(pose, SCENE, width, height).eye : null;
     const lines = [];
     const seen = new Set();
     for (const vessel of vessels) {
@@ -197,7 +195,7 @@ export async function createHeroMap(root, { onSelect } = {}) {
         at = vessel; bearing = Number.isFinite(vessel.headingDegrees) && vessel.headingDegrees < 360 ? vessel.headingDegrees : Number.isFinite(vessel.courseDegrees) && vessel.courseDegrees < 360 ? vessel.courseDegrees : null;
       }
       seen.add(vessel.mmsi);
-      paintVessel(vesselNode(vessel), vessel, at, bearing, now);
+      paintVessel(vesselNode(vessel), vessel, at, bearing, now, eye);
       if (tanker && points.length > 1) {
         const visible = points.filter(p => p[2] <= t);
         for (let i = 1; i < visible.length; i++) {

@@ -130,3 +130,14 @@ test('the chart gains a newer close as one dated point, leaving missing days mis
   assert.deepEqual(wti.observations.map(o => o.date), ['2026-10-14'], 'a close that is not newer never replaces history');
   assert.deepEqual(chartSeries(null), []);
 });
+
+test('a compass bearing projects to the matching clockwise screen angle', async () => {
+  const { projectedVesselAngle } = await import('../dist/ops/hero-map.mjs').catch(() => ({}));
+  // hero-map imports browser-only renderers lazily through createHeroMap only; the helper is pure.
+  const flat = ([lon, lat]) => ({ x: lon * 100, y: -lat * 100 });
+  const at = { longitude: 55, latitude: 25 };
+  assert.ok(Math.abs(projectedVesselAngle(at, 0, flat)) < 1e-9, 'north is straight up');
+  assert.ok(Math.abs(projectedVesselAngle(at, 90, flat) - 90) < .5, 'east is a quarter turn clockwise');
+  assert.equal(projectedVesselAngle(at, null, flat), null);
+  assert.equal(projectedVesselAngle(at, 90, () => ({ x: NaN, y: 0 })), null);
+});
