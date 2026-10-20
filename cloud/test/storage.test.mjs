@@ -1,8 +1,6 @@
-import {OPENWATERS_SNAPSHOT_CACHE_KEY} from '../../lib/source-cache-keys.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {SqliteFiles,FILE_LIMIT} from '../sqlite-files.mjs';
-import {sourceStorage} from '../source-storage.mjs';
 import {SourceRuntime,SourceError} from '../../lib/source-runtime.mjs';
 import {ReportArchive} from '../../lib/report-archive.mjs';
 import {sqliteState} from './helpers.mjs';
@@ -56,21 +54,13 @@ test('actual ReportArchive can save and restore using fs-like SQLite handles',as
   const loaded=await second.merge([]);assert.equal(loaded.items.length,1);assert.equal(loaded.items[0].publishedAt,new Date(input.publishedAt).toISOString());assert.equal(loaded.items[0].firstSeenAt,new Date(now).toISOString());state.db.close();
 });
 
-test('ten-second Open Waters refreshes checkpoint at five-minute intervals without redating data',async()=>{
-  let now=0;const state=sqliteState(),files=new SqliteFiles(state.storage),storage=sourceStorage(files,()=>now);
-  const save=async value=>{const tmp=`/cache/${OPENWATERS_SNAPSHOT_CACHE_KEY}.json.abc.tmp`;await storage.writeFile(tmp,value,{flag:'wx'});await storage.rename(tmp,`/cache/${OPENWATERS_SNAPSHOT_CACHE_KEY}.json`);};
-  await save('old original time');now=10_000;await save('new original time');
-  assert.equal(await files.readFile(`/cache/${OPENWATERS_SNAPSHOT_CACHE_KEY}.json`,'utf8'),'old original time');
-  now=300_000;await save('new original time');assert.equal(await files.readFile(`/cache/${OPENWATERS_SNAPSHOT_CACHE_KEY}.json`,'utf8'),'new original time');state.db.close();
-});
-
-test('an Open Waters checkpoint failure keeps the prior file and the next fetch can recover',async()=>{
-  let now=Date.parse('2026-09-23T00:00:00Z');const state=sqliteState(),files=new SqliteFiles(state.storage),storage=sourceStorage(files,()=>now);
-  const runtime=new SourceRuntime({cacheDir:'/cache',storage,now:()=>now});
-  await runtime.get('openwaters',10,async()=>({vessels:[],recordCount:0,original:'first'}),{},OPENWATERS_SNAPSHOT_CACHE_KEY);
+test('a failed source checkpoint keeps the prior file and the next fetch can recover',async()=>{
+  let now=Date.parse('2026-09-23T00:00:00Z');const state=sqliteState(),files=new SqliteFiles(state.storage);
+  const runtime=new SourceRuntime({cacheDir:'/cache',storage:files,now:()=>now});
+  await runtime.get('portwatch',10,async()=>({items:[],recordCount:0,original:'first'}),{});
   now+=300_000;state.fail=query=>query.startsWith('UPDATE passage_files');
-  const failed=await runtime.get('openwaters',10,async()=>({vessels:[],recordCount:0,original:'second'}),{},OPENWATERS_SNAPSHOT_CACHE_KEY);assert.ok(failed.cacheIssue);
-  state.fail=null;assert.equal(JSON.parse(await files.readFile(`/cache/${OPENWATERS_SNAPSHOT_CACHE_KEY}.json`,'utf8')).original,'first');
-  now+=10_000;const recovered=await runtime.get('openwaters',10,async()=>({vessels:[],recordCount:0,original:'third'}),{},OPENWATERS_SNAPSHOT_CACHE_KEY);
-  assert.equal(recovered.cacheIssue,null);assert.equal(JSON.parse(await files.readFile(`/cache/${OPENWATERS_SNAPSHOT_CACHE_KEY}.json`,'utf8')).original,'third');state.db.close();
+  const failed=await runtime.get('portwatch',10,async()=>({items:[],recordCount:0,original:'second'}),{});assert.ok(failed.cacheIssue);
+  state.fail=null;assert.equal(JSON.parse(await files.readFile('/cache/portwatch.json','utf8')).original,'first');
+  now+=10_000;const recovered=await runtime.get('portwatch',10,async()=>({items:[],recordCount:0,original:'third'}),{});
+  assert.equal(recovered.cacheIssue,null);assert.equal(JSON.parse(await files.readFile('/cache/portwatch.json','utf8')).original,'third');state.db.close();
 });

@@ -1,4 +1,4 @@
-import {VesselStore, AIS_AREAS, STALE_MS, EXPIRE_MS, STATIC_EXPIRE_MS} from '../lib/vessel-store.mjs';
+import {VesselStore, AIS_AREAS, STALE_MS, EXPIRE_MS, STATIC_EXPIRE_MS, TRACK_WINDOW_MS} from '../lib/vessel-store.mjs';
 
 const POSITION_TYPES = ['PositionReport','StandardClassBPositionReport','ExtendedClassBPositionReport'];
 const MESSAGE_TYPES = [...POSITION_TYPES,'ShipStaticData','StaticDataReport'];
@@ -89,16 +89,16 @@ export class WorkerAisFeed {
   }
   checkpoint() {
     this.store.snapshot(this.now());
-    return {schema:2,vessels:[...this.store.vessels.values()],static:[...this.store.static],lastPositionAt:stamp(this.lastPositionAt)};
+    return {schema:3,vessels:[...this.store.vessels.values()],static:[...this.store.static],tracks:[...this.store.tracks],lastPositionAt:stamp(this.lastPositionAt)};
   }
   restore(value) {
-    if(![1,2].includes(value?.schema) || !Array.isArray(value.vessels) || !Array.isArray(value.static))return;
+    if(![1,2,3].includes(value?.schema) || !Array.isArray(value.vessels) || !Array.isArray(value.static))return;
     const now=this.now(),validTime=(time,maxAge)=>typeof time==='string'&&Number.isFinite(Date.parse(time))&&Date.parse(time)<=now+60_000&&now-Date.parse(time)<maxAge;
     // Schema 1 predates payload-only coordinate validation. Its positions cannot
     // be promoted to proven reports; independently dated static metadata below
     // remains usable until its own expiry. New reports repopulate positions.
     let restoredPositions=0;
-    for(const v of (value.schema===2?value.vessels:[]).slice(-this.store.limit)) {
+    for(const v of (value.schema>=2?value.vessels:[]).slice(-this.store.limit)) {
       if(typeof v?.mmsi!=='string'||!/^([1-9]\d{8})$/.test(v.mmsi)||v.positionEvidence!=='position-report'||!validTime(v.positionTime,EXPIRE_MS)||!validTime(v.receivedAt,EXPIRE_MS)||!['provider','received'].includes(v.timestampBasis))continue;
       if(v.timestampBasis==='provider'&&(v.sourceAt!==v.positionTime||v.providerReportAt!==v.sourceAt))continue;
       if(v.timestampBasis==='received'&&(v.sourceAt!==null||v.providerReportAt!==null||v.positionTime!==v.receivedAt))continue;
@@ -118,6 +118,19 @@ export class WorkerAisFeed {
         for(const key of ['shipTypeCode','shipTypeObservedAt','shipTypeTimestampBasis','shipTypeMessage'])restored[key]=info[key];
       }
       if(restored.nameAt||restored.shipTypeObservedAt)this.store.static.set(id,restored);
+    }
+    // Retained tracks are revalidated point by point and only kept for vessels
+    // whose current position survived restore; replaying them re-applies the
+    // one-minute step and the 60-knot glitch rule.
+    for(const pair of (value.schema===3&&Array.isArray(value.tracks)?value.tracks:[]).slice(-this.store.limit)) {
+      if(!Array.isArray(pair)||pair.length!==2||!this.store.vessels.has(pair[0])||!Array.isArray(pair[1]))continue;
+      const current=this.store.vessels.get(pair[0]),area=AIS_AREAS.find(a=>a.id===current.theater);
+      const points=pair[1].filter(p=>Array.isArray(p)&&p.length===3&&Number.isFinite(p[0])&&Number.isFinite(p[1])&&validTime(p[2],TRACK_WINDOW_MS)
+        &&area&&p[1]>=area.bounds[0][0]&&p[1]<=area.bounds[1][0]&&p[0]>=area.bounds[0][1]&&p[0]<=area.bounds[1][1]&&Date.parse(p[2])<=Date.parse(current.positionTime))
+        .sort((a,b)=>Date.parse(a[2])-Date.parse(b[2]));
+      this.store.tracks.delete(pair[0]);
+      for(const [lon,lat,at] of points)this.store.addTrackPoint(pair[0],lon,lat,at);
+      this.store.addTrackPoint(pair[0],current.longitude,current.latitude,current.positionTime);
     }
     this.lastPositionAt=restoredPositions&&validTime(value.lastPositionAt,EXPIRE_MS)?Date.parse(value.lastPositionAt):null;
     this.store.snapshot(now);

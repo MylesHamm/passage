@@ -1,0 +1,16 @@
+{
+  "capturedAt": "2026-10-20T20:50:00Z",
+  "method": "Normal unauthenticated HTTPS GET using curl; no stored cookies or credentials sent",
+  "sanitization": "Fixture keeps the real page date, heading, republication sentence, the complete Daily Prices section (spot petroleum, prompt-month futures and select spot gas/power tables) and the source footnote, verbatim. Site header, navigation, scripts, styles, explainer pop-ups and footer removed; a minimal html/head/body wrapper was added.",
+  "fixtures": [
+    {
+      "file": "prices-2026-10-20.html",
+      "url": "https://www.eia.gov/todayinenergy/prices.php",
+      "responseStatus": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "observed": "Wholesale Spot Petroleum Prices, 10/19/26 Close: WTI 110.01, Brent 118.82; page date October 20, 2026; spot petroleum prices republished from Refinitiv",
+      "rawSha256": "66c2f55ad11945e3003676ace64f5186aa7a64b11c20012c7b79e30ca7ea8799",
+      "fixtureSha256": "5a8b1f6f8f075cbc070477f2f90b3619a9748e22743deb7d94851fbcef44831b"
+    }
+  ]
+}

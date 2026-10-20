@@ -134,22 +134,6 @@ test('independent analysis labels survive archive retention and restart',async t
   assert.equal(row.evidenceStatus,evidenceStatus);assert.equal(row.retainedFromHistory,true);
 });
 
-test('generic discovery cannot erase an analysis classification in either merge order',async t=>{
-  for(const analysisFirst of [true,false]){
-    const f=await fixture(t),archive=f.create(),evidenceStatus='Independent energy analysis; publisher interpretation';
-    const analysis=report('same',{type:'Independent energy analysis',evidenceStatus});
-    const discovery=report('same',{sourceId:'gdelt-energy',type:'Discovered reporting',evidenceStatus:'Indexed headline only',url:analysis.url+'?utm_source=index'});
-    const records=analysisFirst?[analysis,discovery]:[discovery,analysis];
-    for(const [i,row] of records.entries()){
-      f.setTime(START+i*DAY);
-      await archive.merge([row],{observedAtBySource:{[row.sourceId]:stamp(START+i*DAY)}});
-    }
-    const result=await f.create().merge([]),row=result.items[0];
-    assert.equal(result.items.length,1);assert.equal(row.type,'Independent energy analysis');assert.equal(row.evidenceStatus,evidenceStatus);
-    assert.equal(row.provenance.length,2);assert.equal(result.archive.storageStatus,'ready');
-  }
-});
-
 test('existing v1 metadata without evidence status remains loadable',async t=>{
   const f=await fixture(t);await f.create().merge([report('legacy',{type:'Reporting'})],f.observation());
   const stored=JSON.parse(await readFile(f.file,'utf8'));delete stored.items[0].evidenceStatus;await writeFile(f.file,JSON.stringify(stored));
@@ -163,42 +147,6 @@ test('analysis previews retain up to 600 characters while generic summaries keep
   const restored=await f.create().merge([]),analysis=restored.items.find(row=>row.id==='analysis'),generic=restored.items.find(row=>row.id==='generic');
   assert.equal(analysis.summary.length,600);assert.match(analysis.summary,/Diesel refining margins/);
   assert.equal(generic.summary.length,280);assert.equal(restored.archive.storageStatus,'ready');
-});
-
-test('analysis preview and access stay with their own publication clock when discovery also names the URL',async t=>{
-  for(const analysisFirst of [true,false]){
-    const f=await fixture(t),archive=f.create();
-    const analysis=report('same',{title:'Publisher title',type:'Independent energy analysis',summary:'Free preview about refining and diesel.',contentAccess:'Free preview; full article may require subscription'});
-    const discovery=report('same',{title:'Different indexed title',sourceId:'gdelt-energy',type:'Discovered reporting',summary:null,contentAccess:'Indexed headline only',publishedAt:stamp(START-1000),discoveredAt:stamp(START)});
-    const rows=analysisFirst?[analysis,discovery]:[discovery,analysis];
-    for(const [i,row] of rows.entries()){
-      f.setTime(START+i*DAY);
-      await archive.merge([row],{observedAtBySource:{[row.sourceId]:stamp(START+i*DAY)}});
-    }
-    const restored=await f.create().merge([]),row=restored.items[0];
-    assert.equal(row.title,analysis.title);assert.equal(row.summary,analysis.summary);assert.equal(row.contentAccess,analysis.contentAccess);assert.equal(row.sourceId,analysis.sourceId);
-    assert.equal(row.publishedAt,null);assert.equal(row.publicationPrecision,'unknown');assert.equal(row.discoveredAt,discovery.discoveredAt);
-    assert.equal(row.lastSeenAt,stamp(START+DAY));assert.equal(row.provenance.length,2);assert.equal(restored.archive.storageStatus,'ready');
-  }
-});
-test('archive favors publisher preview over analysis-classified discovery in either arrival order',async t=>{
- for(const directFirst of [true,false]){
-  const f=await fixture(t),archive=f.create(),url='https://newsletter.doomberg.com/p/example';
-  const direct=report('preview',{url,type:'Independent energy analysis',summary:'Public refining preview.',contentAccess:'Public RSS preview',evidenceStatus:'Independent energy analysis; publisher interpretation'});
-  const indexed=report('indexed',{url,sourceId:'gdelt-energy',type:'Independent energy analysis',contentAccess:'discovery-metadata',discoveredAt:stamp(START),publishedAt:stamp(START-1000)});
-  for(const [i,row] of (directFirst?[direct,indexed]:[indexed,direct]).entries()){
-   f.setTime(START+i*DAY);await archive.merge([row],{observedAtBySource:{[row.sourceId]:stamp(START+i*DAY)}});
-  }
-  const result=await f.create().merge([]),row=result.items[0];
-  assert.equal(row.id,direct.id);assert.equal(row.summary,direct.summary);assert.equal(row.contentAccess,direct.contentAccess);assert.equal(row.publishedAt,null);assert.equal(row.evidenceStatus,direct.evidenceStatus);assert.equal(row.discoveredAt,indexed.discoveredAt);assert.equal(row.provenance.length,2);assert.equal(result.archive.storageStatus,'ready');
- }
-});
-test('legacy archived Doomberg metadata is relabeled without invalidating the stored v1 shape',async t=>{
- const f=await fixture(t),item=report('legacy-doomberg',{url:'https://newsletter.doomberg.com/p/old',type:'Discovered reporting',contentAccess:'discovery-metadata',sourceId:'gdelt-energy'});
- await f.create().merge([item],{observedAtBySource:{'gdelt-energy':stamp(START)}});
- const stored=JSON.parse(await readFile(f.file,'utf8'));stored.items[0].type='Discovered reporting';delete stored.items[0].evidenceStatus;await writeFile(f.file,JSON.stringify(stored));
- const result=await f.create().merge([]),row=result.items[0];
- assert.equal(result.archive.storageStatus,'ready');assert.equal(row.type,'Independent energy analysis');assert.equal(row.summary,null);assert.equal(row.publishedAt,null);assert.equal(row.contentAccess,'discovery-metadata');
 });
 
 test('retired snapshots obey retention and capacity without becoming current or gaining a provenance clock',async t=>{

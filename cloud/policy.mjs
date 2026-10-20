@@ -6,9 +6,7 @@ export function configuredOrigin(value) {
 }
 export function allowedRoute(url) {
   if(!PUBLIC_API_PATHS.has(url.pathname)&&url.pathname!=='/api/health')return false;
-  if(url.pathname!=='/api/acled/events')return !url.search;
-  const entries=[...url.searchParams];
-  return entries.length===0||entries.length===1&&entries[0][0]==='days'&&['30','90','180','365','730'].includes(entries[0][1]);
+  return !url.search;
 }
 export function json(data,status=200,extra={}) {
   return new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; frame-ancestors 'none'",'Referrer-Policy':'no-referrer','Strict-Transport-Security':'max-age=31536000',...extra}});

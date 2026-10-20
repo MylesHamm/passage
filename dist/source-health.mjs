@@ -1,4 +1,3 @@
-import {isCurrentVesselPosition} from './vessel-data.mjs';
 import {RETIRED_SOURCE_IDS,CORE_REPORTING_IDS} from './source-policy.mjs';
 // Shared display policy. Transport success is separate from content availability.
 export const SOURCE_DEFINITIONS = [
@@ -9,23 +8,13 @@ export const SOURCE_DEFINITIONS = [
   {id:'memo',name:'Middle East Monitor',group:'news',interval:300,home:'https://www.middleeastmonitor.com/'},
   {id:'france24',name:'France 24 Middle East',group:'news',interval:300,home:'https://www.france24.com/en/middle-east/'},
   {id:'un',name:'UN News',group:'news',interval:600,home:'https://news.un.org/en/news/region/middle-east'},
-  {id:'centcom',name:'CENTCOM',group:'news',interval:900,home:'https://www.centcom.mil/MEDIA/PRESS-RELEASES/'},
-  {id:'eia-news',name:'EIA · Today in Energy',group:'news',interval:900,home:'https://www.eia.gov/todayinenergy/'},
-  {id:'doomberg',name:'Doomberg · energy analysis',group:'news',interval:3600,freshnessAfterSeconds:1209600,home:'https://newsletter.doomberg.com/',limitations:'Independent analysis · public previews only; full articles may require payment. Publisher expects 6–8 articles per month; this is not a breaking-news feed.'},
-  ...[['gdelt-hormuz','Hormuz discovery'],['gdelt-redsea','Red Sea discovery'],['gdelt-exports','Regional exports'],['gdelt-energy','Energy and diplomacy'],['gdelt-reuters','Reuters topic discovery']].map(([id,name])=>({id,name:'GDELT · '+name,group:'discovery',interval:1800,freshnessBasis:'retrieval',freshnessAfterSeconds:7200,home:'https://www.gdeltproject.org/'})),
-  {id:'reliefweb',name:'ReliefWeb',group:'news',interval:900,optional:'reliefweb',home:'https://reliefweb.int/'},
   {id:'brent',name:'EIA Brent',group:'oil',interval:3600,home:'https://www.eia.gov/dnav/pet/hist/RBRTEd.htm'},
   {id:'wti',name:'EIA WTI',group:'oil',interval:3600,home:'https://www.eia.gov/dnav/pet/hist/RWTCd.htm'},
-  {id:'crude-stocks',name:'EIA U.S. crude stocks',group:'market',interval:3600,freshnessAfterSeconds:1209600,optional:'eia',home:'https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=PET&s=WCESTUS1&f=W'},
-  {id:'refinery-use',name:'EIA U.S. refinery use',group:'market',interval:3600,freshnessAfterSeconds:1209600,optional:'eia',home:'https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=PET&s=WPULEUS3&f=W'},
-  {id:'marine',name:'Open-Meteo Marine',group:'weather',interval:1800,home:'https://open-meteo.com/en/docs/marine-weather-api'},
-  {id:'wind',name:'Open-Meteo Weather',group:'weather',interval:1800,home:'https://open-meteo.com/en/docs'},
+  {id:'eia-today',name:'EIA · next-day spot close',group:'oil',interval:3600,freshnessAfterSeconds:345600,home:'https://www.eia.gov/todayinenergy/prices.php',limitations:'Previous trading day close as republished on EIA Today in Energy.'},
+  {id:'portwatch',name:'IMF PortWatch · transits',group:'transits',interval:3600,freshnessAfterSeconds:864000,home:'https://portwatch.imf.org/',limitations:'Daily chokepoint transits derived from satellite AIS; released weekly.'},
   {id:'aisstream',name:'AISStream',group:'vessels',interval:10,optional:'aisstream',home:'https://aisstream.io/'},
-  {id:'openwaters',name:'Open Waters aiscast',group:'vessels',interval:10,home:'https://openwaters.io/api/ais/'},
   {id:'imo-hormuz',name:'IMO · Hormuz & Middle East',group:'maritime',interval:1800,freshnessAfterSeconds:86400,freshnessBasis:'retrieval',home:'https://www.imo.org/en/mediacentre/hottopics/pages/middle-east-highlighted-incidents.aspx'},
   {id:'imo-redsea',name:'IMO · Red Sea statements',group:'maritime',interval:1800,freshnessAfterSeconds:86400,freshnessBasis:'retrieval',home:'https://www.imo.org/en/mediacentre/hottopics/pages/red-sea.aspx'},
-  {id:'marad-advisories',name:'U.S. Maritime Advisories · MARAD host',group:'maritime',interval:3600,freshnessAfterSeconds:86400,freshnessBasis:'retrieval',home:'https://www.maritime.dot.gov/msci-advisories',limitations:'Bounded official advisory metadata and validity, not an incident feed. Cancelled history is incomplete.'},
-  {id:'acled',name:'ACLED',group:'acled',interval:3600,optional:'acled',home:'https://acleddata.com/'},
 ].map(definition=>({...definition,capability:CORE_REPORTING_IDS.includes(definition.id)||['brent','wti','imo-hormuz','imo-redsea'].includes(definition.id)?'core':'supporting',...(RETIRED_SOURCE_IDS.includes(definition.id)?{defaultEnabled:false,retired:true,retirementReason:definition.id==='centcom'?'Collector retired after repeated schema failures; original evidence remains in the archive.':definition.id==='marad-advisories'?'Collection retired because the provider rejects access from this deployment. Current advisory coverage is unavailable.':'Discovery collection retired after persistent provider failures; dated historical metadata remains in the archive.'}:{})}));
 const date = value => {if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}(?:T|$)/.test(value)||!Number.isFinite(Date.parse(value)))return null;const calendar=value.slice(0,10);return new Date(calendar+'T00:00:00Z').toISOString().slice(0,10)===calendar?value:null;};
 export function ageSeconds(value, now=Date.now()) { const d=date(value); return d && Date.parse(d)<=now+60000 ? Math.max(0,Math.floor((now-Date.parse(d))/1000)) : null; }
@@ -80,35 +69,6 @@ export function sourceHealth(input, now=Date.now()) {
   s.coverageStatus=s.configurationFailed?'unknown':!enabled?'disabled':s.status==='loading'?'checking':s.status==='unavailable'?'unavailable':s.attention||['stale','paused'].includes(s.status)||s.scopeStatus==='bounded'||s.clockCompleteness==='partial'||s.delayed?'limited':s.status==='unknown'||s.hasData&&s.clockCompleteness==='unknown'?'unknown':s.hasData?'available':s.successfulCheck&&count===0?'no-matches':'unknown';
   return s;
 }
-export function collectSources(state,now=Date.now()) {
-  const raw=[...(state.expectations?.source?[state.expectations.source]:[]),...(state.maritime?.sources||[]),...(state.news?.sources||[]),...[...(state.oil?.series||[]),...(state.market?.series||[])].map(s=>({...s,recordCount:s.observations?.length||0,latest:s.observations?.at(-1)?.date||null})),...(state.weather?.sources||[]),...(state.vessels?.source?[state.vessels.source]:[]),...(state.vessels?.fallback?[state.vessels.fallback]:[]),...(state.acled?.source?[state.acled.source]:[])];
-  return SOURCE_DEFINITIONS.map(def=>{
-    const value=raw.find(s=>s.id===def.id);
-    let configured=def.optional?(state.config?!!state.config[def.optional]:null):true;
-    if(value?.configured!==undefined)configured=value.configured;
-    if(def.defaultEnabled===false)configured=false;
-    if(def.id==='aisstream' && typeof state.vessels?.configured==='boolean')configured=state.vessels.configured;
-    const configurationFailed=configured===null && !!state.failures?.config;
-    const s={...def,...value,...(['news','discovery'].includes(def.group)&&state.news?.coverage?.archive?.truncated?{archiveTruncated:true}:{}),name:def.name,configured,configurationFailed,connection:value?.connection||(configured===false?'not configured':configurationFailed?'unknown':'loading')};
-    // Compatibility for a cache written before the source-health metadata existed.
-    if(def.group==='news' && value&&!Number.isInteger(value.recordCount)){const matches=(state.news?.items||[]).filter(x=>x.sourceId===def.id);s.recordCount=matches.length;s.latestRelevant=matches.map(x=>x.publishedAt||x.publishedDate).filter(Boolean).sort().at(-1)||null;s.publicationKnown=matches.filter(x=>x.publishedAt||x.publishedDate).length;s.publicationUnknown=matches.length-s.publicationKnown;}
-    if(def.group==='weather' && value)s.recordCount=state.weather.theaters?.filter(t=>t[def.id==='marine'?'marine':'wind']).length||0;
-    if(def.group==='vessels' && state.vessels){
-      const positions=(state.vessels.vessels||[]).filter(v=>(def.id==='openwaters'?v.provider==='Open Waters':v.provider!=='Open Waters')&&isCurrentVesselPosition(v,now));
-      s.recordCount=positions.length;
-      if(def.id==='openwaters'){const snapshots=(state.vessels.vessels||[]).filter(v=>v.provider==='Open Waters');s.snapshotCount=Math.max(Number.isSafeInteger(value?.snapshotCount)?value.snapshotCount:0,snapshots.length);s.lastMessageAt=value?.lastMessageAt||snapshots.map(v=>v.lastMessageAt||v.sourceAt).filter(Boolean).sort().at(-1)||null;}
-      const newest=positions.slice().sort((a,b)=>b.positionTime.localeCompare(a.positionTime))[0];
-      s.latest=newest?.sourceAt||null;s.timestampBasis=newest?.timestampBasis||null;
-      if(def.id==='aisstream'){s.frames=state.vessels.source?.frames??0;s.positionFrames=state.vessels.source?.positionFrames??0;s.positionsAccepted=state.vessels.source?.positionsAccepted??positions.length;}
-    }
-    if(state.failures?.[def.group]||def.group==='discovery'&&state.failures?.news){
-      const retained=configured===true && Number.isInteger(s.recordCount) && s.recordCount>0;
-      s.localFailure=true;s.connection=retained?'cached':'unavailable';
-      s.error='Local server request failed. '+(retained?'Previously retrieved data is retained.':'No retained data is available.');
-    }
-    return sourceHealth(s,now);
-  });
-}
 export function coverage(sources=[],group='news') {
   const list=sources.filter(s=>(s.group===group||group==='news'&&s.group==='discovery') && s.configured!==false && s.configured!==null);
   const usable=list.some(s=>s.hasData),pending=list.some(s=>s.status==='loading');
@@ -121,54 +81,4 @@ export function coverage(sources=[],group='news') {
   const empty=!usable&&successful.length>0&&!incomplete&&list.every(s=>s.coverageStatus==='no-matches'||s.recordCount===0);
   return {usable,pending,incomplete,unknown,empty,clockUnknown,truncated,retained,sourceCount:list.length,successfulCount:successful.length,complete:false,
     label:!list.length?'Coverage unknown · no source status received':!usable&&!successful.length?(pending?'Checking reporting sources':'Reporting unavailable'):incomplete?(usable?'Incomplete coverage · retrieved reports only':'Coverage incomplete · no usable reporting'):'Retrieved reports only'};
-}
-export function statusSummary(sources) {
-  const enabled=sources.filter(s=>s.configured===true),checking=enabled.some(s=>s.status==='loading')||sources.some(s=>s.configured===null&&!s.configurationFailed);
-  const updates=enabled.some(s=>['retained','unavailable'].includes(s.status)),reception=enabled.some(s=>s.attentionReason==='reception');
-  const messages=[];
-  if(updates)messages.push('Source updates incomplete');
-  if(enabled.some(s=>s.attentionReason==='provenance'))messages.push(messages.length?'vessel position time unavailable':'Vessel position time unavailable');
-  if(reception)messages.push(messages.length?'vessel reception limited':'Vessel reception limited');
-  if(sources.some(s=>s.configurationFailed))messages.push(messages.length?'source configuration unavailable':'Source configuration unavailable');
-  if(messages.length)return messages.join(' · ');
-  if(enabled.some(s=>s.cacheIssue))return 'Local cache needs attention';
-  if(enabled.some(s=>s.attentionReason==='check'))return 'Some source checks are overdue';
-  if(enabled.some(s=>s.attentionReason==='observation'))return 'Some observations need an update';
-  if(checking)return 'Checking source coverage';
-  if(!enabled.length)return 'No sources configured';
-  if(enabled.some(s=>s.status==='paused'))return 'Vessel reception paused';
-  if(enabled.some(s=>s.status==='stale'))return 'Sources responding · older material available';
-  if(enabled.some(s=>s.possiblyTruncated||s.scopeStatus==='bounded'))return 'Source coverage limited · bounded results';
-  if(enabled.some(s=>s.coverageStatus==='unknown'||s.clockCompleteness==='partial'))return 'Sources responding · evidence dates incomplete';
-  return enabled.some(s=>s.hasData)?'Sources responding':'Sources checked · no usable records';
-}
-// A working publisher may have no recent relevant story. That is distinct from
-// a failed collector; its original publication dates still govern selection.
-export function isActiveReportingSource(source) {
-  return source?.group==='news'&&source.configured===true&&!source.retired&&source.successfulCheck===true&&!source.attention&&!source.checkOverdue;
-}
-export function panelNotice(sources,group) {
-  const list=sources.filter(s=>(s.group===group||group==='news'&&s.group==='discovery')&&s.configured===true);
-  if(!list.length)return 'Coverage unknown · no active source status received.';
-  const failed=list.filter(s=>['retained','unavailable'].includes(s.status));
-  if(failed.length&&group==='news'){
-    const working=list.some(isActiveReportingSource);
-    return working?'Showing available publisher reporting. Some updates are unavailable; details are in Coverage & sources.':`Current reporting is unavailable. ${list.some(s=>s.hasData)?'Historical records remain in the archive. ':''}Missing reports do not mean no events occurred.`;
-  }
-  if(failed.length){
-    const isDiscovery=s=>s.group==='discovery'&&s.id?.startsWith('gdelt-');
-    const names=[...new Set(failed.map(s=>isDiscovery(s)?'GDELT discovery':s.name))];
-    if(failed.every(isDiscovery))return `GDELT discovery: update delayed. ${failed.some(s=>s.hasData)?'Retained reporting is shown.':list.some(s=>s.hasData)?'Available reporting is shown.':'No usable reporting is available.'} Inspect Sources.`;
-    return `${names.join(', ')}: update failed. ${failed.some(s=>s.hasData)?'Previously retrieved data is shown; coverage is incomplete.':list.some(s=>s.hasData)?'Available source data is shown; coverage is incomplete.':'No usable data is available.'}`;
-  }
-  if(list.some(s=>s.status==='loading'))return 'Checking sources. Coverage is not yet established.';
-  if(group==='vessels'&&list.some(s=>s.attentionReason==='provenance'))return 'Last-known snapshots lack position time and source; they are excluded from current positions. Other received position reports may remain available. This is incomplete coverage, not evidence that the waters are empty.';
-  if(group==='vessels'&&list.some(s=>s.attentionReason==='reception'))return list.some(s=>s.hasData)?'Some vessel feeds have a reception gap. Positions from responding feeds are shown; the map is not a complete traffic census.':'No usable vessel positions have been received. This is a reception gap, not evidence that the waters are empty.';
-  if(group==='vessels'&&list.some(s=>s.status==='paused'))return 'Live vessel reception is paused while the view is closed. Retained positions keep their original observation times.';
-  if(list.some(s=>s.status==='stale'&&(group!=='news'||s.attention)))return 'Older observations are labeled with their dates. Coverage & sources has update details.';
-  if(group==='news'&&list.some(isActiveReportingSource))return '';
-  if(list.some(s=>s.cacheIssue))return 'Data retrieved, but the local cache could not be saved. Open Sources for details.';
-  if(list.some(s=>s.possiblyTruncated||s.scopeStatus==='bounded'))return 'Retrieved results are bounded and may omit relevant records. Inspect source limits and archive coverage.';
-  if(list.some(s=>s.coverageStatus==='unknown'||s.clockCompleteness==='partial'))return 'Some publication or observation dates are unknown. Successful retrieval does not establish current evidence.';
-  return group==='weather'?'Forecast valid times are shown below. Original model-run age is unknown.':'';
 }

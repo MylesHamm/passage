@@ -31,14 +31,14 @@ test('continuous AIS survives a checkpoint and collector restart with its origin
   assert.equal(restored.positionTime,original.positionTime);assert.equal(restored.receivedAt,original.receivedAt);assert.equal(restored.ageSeconds,300);assert.ok(restarted.ais.socket);assert.equal(await state.storage.getAlarm(),now+1000);restarted.ais.close();await Promise.all(state.waits);state.db.close();
 });
 
-test('actual hosted service exposes only sanitized configuration and permanently disables ACLED',async()=>{
-  const state=sqliteState(),collector=new Collector(state,{EIA_API_KEY:'eia-secret',AISSTREAM_API_KEY:'ais-secret',RELIEFWEB_APPNAME:'rw-secret'},{Socket:FakeSocket});await collector.initialize();
-  const config=await (await collector.fetch(new Request('https://collector.internal/api/config'))).json();assert.equal(config.hosted,true);assert.equal(config.acled,false);assert.equal(config.eia,true);assert.ok(!JSON.stringify(config).includes('secret'));
-  const acled=await (await collector.fetch(new Request('https://collector.internal/api/acled/events?days=90'))).json();assert.equal(acled.configured,false);assert.deepEqual(acled.events,[]);
+test('actual hosted service exposes only sanitized configuration and no removed endpoints',async()=>{
+  const state=sqliteState(),collector=new Collector(state,{EIA_API_KEY:'eia-secret',AISSTREAM_API_KEY:'ais-secret'},{Socket:FakeSocket});await collector.initialize();
+  const config=await (await collector.fetch(new Request('https://collector.internal/api/config'))).json();assert.equal(config.hosted,true);assert.equal(config.eia,true);assert.equal(config.aisstream,true);assert.ok(!JSON.stringify(config).includes('secret'));
+  assert.deepEqual(Object.keys(config).sort(),['aisstream','capabilities','eia','hosted','version']);
+  for(const removed of ['/api/acled/events','/api/weather','/api/intelligence','/api/market-context'])assert.equal((await collector.fetch(new Request('https://collector.internal'+removed))).status,404,removed);
   assert.equal((await collector.fetch(new Request('https://collector.internal/api/acled/connect',{method:'POST'}))).status,404);
   collector.ais.close();await Promise.all(state.waits);state.db.close();
 });
-
 test('public views coalesce concurrent requests and cache only five seconds',async()=>{
   let now=Date.now(),calls=0,finish;const state=sqliteState(),collector=new Collector(state,{}, {now:()=>now,serviceFactory:()=>({get:async()=>{calls++;await new Promise(resolve=>finish=resolve);return {checkedAt:'original-source-clock'};}})});await collector.initialize();
   const request=()=>new Request('https://collector.internal/api/news');const one=collector.fetch(request()),two=collector.fetch(request());await new Promise(resolve=>setImmediate(resolve));assert.equal(calls,1);finish();await Promise.all([one,two]);

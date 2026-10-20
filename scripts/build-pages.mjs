@@ -5,7 +5,7 @@ import { normalizeApiBase } from '../dist/runtime-config.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const staticExtensions = new Set(['.html', '.css', '.js', '.mjs', '.json', '.svg', '.ttf', '.woff', '.woff2', '.png', '.jpg', '.webp', '.ico', '.txt']);
-const geography = new Set(['assets/region.json', 'assets/world-land.json', 'terrain/assets/provenance.json']);
+const geography = new Set(['terrain/assets/provenance.json']);
 const terrainGrids = new Set(['terrain/assets/hormuz-dem.bin', 'terrain/assets/bab-dem.bin']);
 const escapeAttribute = text => text.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const inside = (parent, child) => child === parent || child.startsWith(parent + sep);
@@ -52,21 +52,6 @@ export async function buildPages({ sourceDir = resolve(root, 'dist'), outputDir 
     } else if (name.endsWith('.css')) {
       const css = (await readFile(from, 'utf8')).replace(/(url\(["']?)\/(?!\/)/g, `$1${base}`);
       await writeFile(to, css);
-    } else if (name === 'intelligence-context.mjs') {
-      const source = await readFile(from, 'utf8');
-      const publicContext = source.replace(/export const COVERAGE_REVIEW_DATE\s*=\s*'[^']+';/, 'export const COVERAGE_REVIEW_DATE = null;')
-        .replace(/export const COVERAGE_NOTES\s*=\s*\[[\s\S]*?\n\];/, 'export const COVERAGE_NOTES = [];');
-      if (publicContext.includes("id:'review:")) throw new Error('Private reviewed reporting remains in the public artifact.');
-      await writeFile(to, publicContext);
-    } else if (name === 'energy-context.mjs') {
-      const source = await readFile(from, 'utf8');
-      const publicContext = source.replace(/export const REVIEW_DATE\s*=\s*'[^']+';/, 'export const REVIEW_DATE = null;')
-        .replace(/export const MARKET_CONTEXT\s*=\s*\[[\s\S]*?\n\];/, 'export const MARKET_CONTEXT = [];')
-        .replace('East–West to Yanbu · shutdown reported Sep 11, 2026; see dated evidence', 'East–West to Yanbu · current operating status not connected')
-        .replace('Pipeline restart, Yanbu loadings, production and OPEC+ decisions.', 'Dated operating notices, Yanbu loadings, production and OPEC+ decisions.')
-        .replace('The September 11 shutdown notice supersedes an assumption of uninterrupted bypass availability. Nameplate capacity is not today’s throughput.', 'Nameplate capacity is not today’s throughput. Operating status requires current source evidence.');
-      if (publicContext.includes("id:'saudi-pipeline'") || publicContext.includes("id:'iea-september'")) throw new Error('Private market assessments remain in the public artifact.');
-      await writeFile(to, publicContext);
     } else await copyFile(from, to);
   }
   await writeFile(resolve(output, '.nojekyll'), '');

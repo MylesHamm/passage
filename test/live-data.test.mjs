@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
 import { parseEIAApi } from '../lib/eia.mjs';
 import { VesselStore, AisFeed, EXPIRE_MS, STALE_MS, STATIC_EXPIRE_MS } from '../lib/ais.mjs';
-import { parseOpenWaters } from '../lib/openwaters.mjs';
 const now = Date.parse('2026-09-13T17:00:00Z');
 const row = (period, value, extra = {}) => ({ period, value, series: 'RBRTE', units: '$/BBL', ...extra });
 const payload = data => ({ response: { frequency: 'daily', data }, request: { params: { api_key: 'TEST-SECRET-DO-NOT-EXPORT' } } });
@@ -59,15 +58,6 @@ test('AIS drops out-of-area and expired reports and bounds retained memory', () 
   store.ingest(report({UserID:223456789,Latitude:50,Longitude:10},{MMSI:223456789}),now+1000);
   assert.equal(store.snapshot(now).length,0);
   assert.equal(store.ingest(report({},{time_utc:'2026-09-13T16:00:00Z'}),now),false);
-});
-
-test('Open Waters GeoJSON snapshot keeps current, in-area vessel positions',()=>{
-  const payload={type:'FeatureCollection',features:[
-    {id:671153100,geometry:{type:'Point',coordinates:[55.33,25.445]},properties:{mmsi:671153100,seen:'2026-09-13T16:59:30Z',type:80,sog:0.1,cog:150.7,source:'aishub'}},
-    {id:123456789,geometry:{type:'Point',coordinates:[10,10]},properties:{mmsi:123456789,seen:'2026-09-13T16:59:30Z'}},
-    {id:223456789,geometry:{type:'Point',coordinates:[55,25]},properties:{mmsi:223456789,seen:'2026-09-13T15:00:00Z'}},
-  ]};
-  const vessels=parseOpenWaters(payload,now);assert.equal(vessels.length,1);assert.equal(vessels[0].mmsi,'671153100');assert.equal(vessels[0].provider,'Open Waters');assert.equal(vessels[0].theater,'hormuz');assert.equal(vessels[0].shipTypeCode,80);assert.equal(vessels[0].shipType,'tanker');assert.equal(vessels[0].sourceAt,'2026-09-13T16:59:30.000Z');
 });
 
 class FakeSocket extends EventEmitter {

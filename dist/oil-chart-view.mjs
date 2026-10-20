@@ -127,7 +127,7 @@ export function revealChart(svg, reason, { scope = globalThis } = {}) {
  * values and descriptions: https://www.w3.org/WAI/tutorials/images/complex/
  * Keep this instance alive across updates so the date control retains focus.
  */
-export function createOilChart(mount, { onReadout } = {}) {
+export function createOilChart(mount, { onReadout, height: chartHeight = 280 } = {}) {
   const id = `oil-history-${++chartSequence}`;
   let model = buildOilChartModel();
   let sourceState = { loading: true, failed: false };
@@ -192,7 +192,7 @@ export function createOilChart(mount, { onReadout } = {}) {
     }
     controls.hidden = false;
     const compact = width < 400;
-    const height = 280, left = 48, right = width - (compact ? 12 : 78), top = 28, bottom = height - 42;
+    const height = Math.max(140, Math.round(chartHeight)), left = 48, right = width - (compact ? 12 : 78), top = height < 220 ? 16 : 28, bottom = height - (height < 220 ? 30 : 42);
     const span = Math.max(DAY, model.latest - model.begin);
     const x = ms => left + (ms - model.begin) / span * (right - left);
     const y = value => bottom - (value - model.yMin) / (model.yMax - model.yMin) * (bottom - top);

@@ -49,9 +49,9 @@ test('repeated failures back off, persist their retry deadline, and reset after 
 });
 test('a source retry policy sets a longer floor without shortening Retry-After',async()=>{
  const {runtime,advance}=fixture(),policy={retryBaseMs:300000,retryMaxMs:3600000};
- const first=await runtime.get('gdelt-hormuz',900,async()=>{throw new SourceError('rate_limit',{status:429,retryAfterMs:30000});},{},'gdelt-hormuz-metadata',policy);
+ const first=await runtime.get('portwatch',3600,async()=>{throw new SourceError('rate_limit',{status:429,retryAfterMs:30000});},{},'portwatch',policy);
  assert.equal(Date.parse(first.nextRetryAt)-runtime.now(),300000);
- advance(300000);const second=await runtime.get('gdelt-hormuz',900,async()=>{throw new SourceError('rate_limit',{status:429,retryAfterMs:7200000});},{},'gdelt-hormuz-metadata',policy);
+ advance(300000);const second=await runtime.get('portwatch',3600,async()=>{throw new SourceError('rate_limit',{status:429,retryAfterMs:7200000});},{},'portwatch',policy);
  assert.equal(Date.parse(second.nextRetryAt)-runtime.now(),7200000);
 });
 test('failed refresh persists retained records without advancing their successful retrieval clock',async()=>{

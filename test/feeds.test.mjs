@@ -103,22 +103,6 @@ test('publisher calendar dates cannot roll into another month before validation'
     ['2026-02-28T23:30:00-04:00','2026-03-01T03:30:00.000Z'],
   ])assert.equal(parse(date)[0]?.publishedAt,expected,date);
 });
-test('Doomberg keeps only bounded public preview text and dates with an analysis label',()=>{
- const source=SOURCES.find(s=>s.id==='doomberg');
- const xml=`<rss><channel><item><title>A changing balance</title><link>https://newsletter.doomberg.com/p/example?utm_source=rss</link><pubDate>Tue, 22 Sep 2026 09:02:17 GMT</pubDate><description>Public subtitle.</description><content:encoded><![CDATA[<script>secretScript()</script><p>Saudi Arabia and the Houthis affect diesel and oil supplies.</p><img src="https://example.com/tracker">${'Public preview words. '.repeat(100)}<p>DO_NOT_RETAIN_TAIL</p>]]></content:encoded></item></channel></rss>`;
- const [row]=parseRSS(xml,source,Date.parse('2026-09-22T12:00:00Z'));
- assert.equal(row.type,'Independent energy analysis');assert.match(row.evidenceStatus,/not independently verified/);assert.match(row.contentAccess,/Public RSS preview/);
- assert.ok(row.summary.length<=600);assert.ok(row.summary.endsWith('…'));assert.ok(!JSON.stringify(row).match(/secretScript|<img|DO_NOT_RETAIN_TAIL|tracker/));
- assert.equal(row.publishedAt,'2026-09-22T09:02:17.000Z');assert.equal(row.eventDate,null);assert.equal(row.url,'https://newsletter.doomberg.com/p/example');
- assert.ok(row.actors.includes('Saudi Arabia'));assert.ok(row.actors.includes('Houthis'));assert.deepEqual(row.theaters,[]);assert.equal(reportRelevant(row),true);
- assert.deepEqual(classifyReport(row).relevanceScopes,row.relevanceScopes);
-});
-test('analysis relevance uses the displayed preview without pulling unrelated or edible-oil content in',()=>{
- for(const summary of ['A discussion of rare earths and solar panels.','Crude palm oil prices are higher.'])assert.equal(reportRelevant(classifyReport({type:'Independent energy analysis',title:'Perspective',summary})),false);
- const xml='<rss><channel><item><title>Perspective</title><link>https://newsletter.doomberg.com/p/example</link><description>Public subtitle.</description><content:encoded><![CDATA['+'Filler words. '.repeat(80)+' Iran oil supplies.]]></content:encoded></item></channel></rss>';
- const [row]=parseRSS(xml,SOURCES.find(s=>s.id==='doomberg'));assert.equal(reportRelevant(row),false);assert.deepEqual(row.actors,[]);
-});
-
 test('publisher summaries decode escaped markup before truncation and exclude attribute captions and scripts',()=>{
   const encoded='&lt;article data-id="1"&gt;&lt;h2&gt;Headline&lt;/h2&gt;&lt;p&gt;Saudi organisers postponed the event, the Financial Times reported.&amp;nbsp;&lt;/p&gt;&lt;script&gt;Iran secretScript()&lt;/script&gt;&lt;/article&gt;';
   assert.equal(publisherSummary(encoded),'Headline Saudi organisers postponed the event, the Financial Times reported.');
