@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {SCENES} from '../dist/terrain/geometry.mjs';
+import {SCENES, cameraMatrix, defaultPose, geographicPoint, project} from '../dist/terrain/geometry.mjs';
 import {createPlanRenderer} from '../dist/terrain/renderer.mjs';
 import {OVERVIEW_REGIONS, OVERVIEW_POSE, overviewLayers, nextOverviewVesselChange, overviewReadiness, overviewVesselCaption, loadOverviewPlans} from '../dist/terrain/overview.mjs';
 
@@ -133,4 +133,34 @@ test('frame reception caption distinguishes failures, pending and paused data fr
   }
   assert.equal(overviewVesselCaption({showVessels:true, availability:{status:'available'}}), 'No matching received positions in this frame');
   assert.match(overviewVesselCaption({showVessels:true, count:1, availability:{status:'available'}}), /^1 received position in this frame/);
+});
+
+
+test('frame captions separate area counts, type exclusion and an empty feed', () => {
+  assert.match(overviewVesselCaption({showVessels:true,count:0,availability:{status:'available',count:2}}), /2 received positions match.*none are in this frame/);
+  assert.match(overviewVesselCaption({showVessels:true,count:0,availability:{status:'filtered',count:0}}), /selected vessel type.*All received/);
+  assert.match(overviewVesselCaption({showVessels:true,count:0,availability:{status:'empty',count:0}}), /No received positions in the selected reporting area.*incomplete/);
+  assert.match(overviewVesselCaption({showVessels:true,count:0,availability:{status:'unavailable',heading:'Vessel update unavailable',count:2}}), /Vessel update unavailable.*not established/);
+});
+
+test('focused camera culls before its display limit and reselects on camera movement', () => {
+  const scene=SCENES.hormuz;
+  const distant=Array.from({length:300}, (_,i)=>position('distant-'+i,scene,1000,{longitude:53,latitude:23}));
+  const near=position('in-frame',scene);
+  for(const topDown of [false,true])for(const zoom of [.76,1,2.4]){
+    const {matrix}=cameraMatrix({...defaultPose(),topDown,zoom},scene,640,280);
+    const rows=overviewLayers({scene,project:p=>project(geographicPoint(p,scene),matrix,640,280),vessels:[...distant,near],showVessels:true,now:NOW});
+    assert.deepEqual(rows.map(r=>r.id),['in-frame']);
+  }
+  const right=position('east',scene,1000,{longitude:57.25});
+  const select=panX=>{const {matrix}=cameraMatrix({...defaultPose(),topDown:true,zoom:2.4,panX},scene,390,280);return overviewLayers({scene,project:p=>project(geographicPoint(p,scene),matrix,390,280),vessels:[...distant,right],showVessels:true,now:NOW});};
+  assert.equal(select(0).length,0);
+  assert.deepEqual(select(70).map(r=>r.id),['east']);
+});
+
+
+test('map loading or failure never mislabels an enabled received-position layer as off', () => {
+  assert.match(overviewVesselCaption({showVessels:true,mapStatus:'loading'}), /Preparing reference map.*cannot be displayed yet/);
+  assert.match(overviewVesselCaption({showVessels:true,mapStatus:'unavailable'}), /Reference map unavailable.*cannot be displayed in this frame/);
+  assert.doesNotMatch(overviewVesselCaption({showVessels:true,mapStatus:'unavailable'}), /layer off/);
 });

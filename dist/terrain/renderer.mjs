@@ -81,17 +81,4 @@ export function createPlanRenderer(canvas){
  function localPoint(point){const x=(point[0]-pose.panX)*scale+width/2,y=(point[2]-pose.panZ)*scale+height/2;return{x,y,visible:x>10&&x<width-10&&y>15&&y<height-15};}
  return{mode:'plan',setScene(next,assets){scene=next;data=assets;},resize,draw(next){pose=next;const aspect=width/height;span=scene.extent*Math.min(1,aspect/1.45)/pose.zoom;scale=width/span;ctx.fillStyle='#061b26';ctx.fillRect(0,0,width,height);if(!scene||!data?.planImage)return;const center=longitudeLatitudeToUV(scene.center,scene),size=sceneWidthKm(scene)*scale;ctx.drawImage(data.planImage,width/2-center[0]*size-pose.panX*scale,height/2-center[1]*size-pose.panZ*scale,size,size);},point(point){return localPoint(geographicPoint(point,scene));},localPoint,get span(){return span;},get triangleCount(){return 0;},get pixelCount(){return canvas.width*canvas.height;},destroy(){}};
 }
-export async function loadSceneAssets(scene,{signal,planOnly=false}={}){
- const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
- const abort=()=>controller.abort();if(signal?.aborted)controller.abort();signal?.addEventListener('abort',abort,{once:true});
- const finish=()=>{clearTimeout(timer);signal?.removeEventListener('abort',abort);};
- const base=new URL(`./assets/${scene.id}-`,import.meta.url).href;
- const image=async suffix=>{const response=await fetch(base+suffix,{signal:controller.signal});if(!response.ok)throw new Error(`Terrain image ${response.status}`);const blob=await response.blob();if(globalThis.createImageBitmap)return createImageBitmap(blob,{premultiplyAlpha:'none',colorSpaceConversion:'none'});return new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(blob);img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Terrain image decode failed'));};img.src=url;});};
- try{
- if(!planOnly&&!globalThis.createImageBitmap)throw new Error('Safe raw terrain texture decoding unavailable');
- if(planOnly)return {planImage:await image('plan.webp')};
- const [heightImage,normalImage,planImage,buffer]=await Promise.all([image('height.png'),image('normal.png'),image('plan.webp'),fetch(base+'dem.bin',{signal:controller.signal}).then(r=>{if(!r.ok)throw new Error(`Terrain grid ${r.status}`);return r.arrayBuffer();})]);
- if(buffer.byteLength!==256*256*2)throw new Error('Terrain grid has unexpected length');
- return {heightImage,normalImage,planImage,heights:new Uint16Array(buffer)};
- }finally{finish();}
-}
+export {loadSceneAssets} from './scene-assets.mjs';

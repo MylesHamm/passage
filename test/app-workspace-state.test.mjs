@@ -53,7 +53,7 @@ test('scope text exposes the filters actually applied to each workspace',()=>{
 
 test('visible map layer state names active layers and the received-position scope',()=>{
   const h=harness();h.context.renderMapLayerState();
-  assert.equal(h.$('#map-layer-state').textContent,'AIS layer off · Infrastructure references off');
+  assert.equal(h.$('#map-layer-state').textContent,'AIS layer off · Use Show vessels above to display received positions · Infrastructure references off');
   h.state.showVessels=true;h.state.showInfrastructure=true;h.context.renderMapLayerState();
   assert.match(h.$('#map-layer-state').textContent,/AIS: Tankers · Strait of Hormuz · received positions under 30 min/);
   assert.match(h.$('#map-layer-state').textContent,/Infrastructure references on/);

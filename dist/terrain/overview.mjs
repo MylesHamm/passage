@@ -46,11 +46,18 @@ export function nextOverviewVesselChange(vessels, now=Date.now()){
   return changes.length ? Math.min(...changes)-now+1 : null;
 }
 
-export function overviewVesselCaption({showVessels=false, count=0, availability=null}={}){
+export function overviewVesselCaption({showVessels=false, count=0, availability=null, mapStatus='ready'}={}){
+  if(mapStatus === 'loading') return 'Preparing reference map · positions cannot be displayed yet';
+  if(mapStatus !== 'ready') return 'Reference map unavailable · positions cannot be displayed in this frame';
   if(!showVessels) return 'Received AIS layer off';
   const healthy = ['available', 'empty', 'filtered'].includes(availability?.status);
   const countText = count ? `${count} ${healthy ? '' : 'previously '}received position${count === 1 ? '' : 's'} in this frame · partial reception` : 'No matching received positions in this frame';
-  if(healthy) return countText;
+  if(healthy){
+    if(!count && availability?.status === 'filtered') return 'No received positions match the selected vessel type · choose All received to inspect other types';
+    if(!count && availability?.count > 0) return `${availability.count} received position${availability.count === 1 ? ' matches' : 's match'} the selected reporting area; none are in this frame`;
+    if(!count && availability?.status === 'empty') return 'No received positions in the selected reporting area · reception is incomplete';
+    return countText;
+  }
   return `${availability?.heading || 'Checking vessel reception'} · ${count ? countText : 'Position availability is not established for this frame'}`;
 }
 
@@ -174,7 +181,8 @@ export function createBothOverview(root, callbacks={}, options={}){
     }
   }
   function draw(pane){
-    if(destroyed || pane.status !== 'ready') return;
+    if(destroyed) return;
+    if(pane.status !== 'ready'){pane.received.textContent=overviewVesselCaption({mapStatus:pane.status});return;}
     const {width, height} = pane.surface.getBoundingClientRect();
     if(!width || !height) return;
     const renderer = pane.renderer;

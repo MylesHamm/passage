@@ -1,6 +1,6 @@
-import {SCENES,sceneFor,defaultPose,clamp,eligibleVessels,isCoordinate} from './geometry.mjs';
+import {SCENES,sceneFor,defaultPose,clamp} from './geometry.mjs';
 import {createWebGLRenderer,createPlanRenderer,loadSceneAssets} from './renderer.mjs';
-import {createBothOverview} from './overview.mjs';
+import {createBothOverview,overviewLayers,overviewVesselCaption} from './overview.mjs';
 import {paintVesselSymbol,projectedVesselAngle} from './vessel-symbol.mjs';
 
 /** Regional geographic reference. No location is inferred from a headline. */
@@ -29,28 +29,33 @@ export async function createRegionalTerrain(root,callbacks={},options={}){
  const scale=element('div','terrain-scale');scale.innerHTML='<i></i><span>50 km at scene centre</span>';
  const note=element('span','terrain-reference-note','Static elevation · relief ×4');
  foot.append(scale,note);surface.append(mapLabels,dynamicLayer,focus,foot);
+ const received=element('p','terrain-received');received.setAttribute('role','status');surface.after(received);
  const north=surface.querySelector('.terrain-north');
  const caption=surface.querySelector('.globe-caption');if(caption)caption.textContent='Drag to tilt · Shift-drag to pan · R to reset';
  canvas.tabIndex=0;canvas.setAttribute('aria-describedby','terrain-keyboard-help');
  const help=element('span','terrain-sr-only','Use left and right arrow keys to turn, up and down to tilt. Plus and minus zoom. Shift with arrow keys pans. T toggles top-down. R resets the camera. Terrain is static reference geography, not current conditions.');help.id='terrain-keyboard-help';root.append(help);
  const attribution=document.querySelector('#terrain-attribution');if(attribution){attribution.textContent='Mapzen Terrain Tiles · SRTM/GMTED2010: U.S. Geological Survey · ETOPO1: NOAA. Downloaded 17 October 2026; source tile modifications are from 2017, not survey dates. 4× vertical exaggeration. 1024-pixel source texture, about 0.55–0.60 km source spacing; 256-pixel display mesh, about 2.2–2.4 km. Designed elevation colors, not satellite imagery. Mixed-age source artifacts may remain. Water is flat; no bathymetry or navigable clearance. ';const link=element('a','','Sources & processing details ↗');link.href=new URL('./assets/provenance.json',import.meta.url).href;link.target='_blank';link.rel='noopener noreferrer';attribution.append(link);}
  function controls(){
-  const both=scope==='both';surface.hidden=both;overviewRoot.hidden=!both;
+  const both=scope==='both';surface.hidden=both;overviewRoot.hidden=!both;received.hidden=both;
   root.querySelectorAll('[data-terrain-region]').forEach(node=>node.setAttribute('aria-pressed',String(node.dataset.terrainRegion===scope)));
   if(both){
    root.dataset.terrainMode='overview';root.dataset.terrainScene='both';stats.mode='overview';
    if(heading)heading.textContent='Both straits';
    if(status)status.textContent='Both straits · separate regional views';
    for(const control of [motion,wider,zoomIn,zoomOut])if(control)control.disabled=true;
+   for(const control of [zoomIn,zoomOut])if(control)control.title='Choose a strait to adjust its zoom.';
    if(motion){motion.textContent='Top-down';motion.setAttribute('aria-pressed','false');motion.title='Choose a strait to adjust its terrain view.';}
    if(wider){wider.textContent='Wider';wider.setAttribute('aria-pressed','false');}
    return;
   }
+  dynamicLayer.hidden=!assets;
+  if(!assets)received.textContent=`Preparing ${scene.shortName} map; position display is not ready.`;
   const fallback=renderer?.mode==='plan';root.dataset.terrainMode=renderer?.mode||'loading';root.dataset.terrainScene=scene.id;
   if(motion){motion.textContent=fallback?'Plan fallback':pose.topDown?'3D terrain':'Top-down';motion.setAttribute('aria-pressed',String(pose.topDown||fallback));motion.disabled=fallback;motion.title=fallback?'2D geographic reference is shown because GPU terrain is unavailable.':'Switch between a tilted regional scene and a plan view';}
   if(wider){wider.disabled=false;wider.textContent=pose.zoom<.92?'Focused':'Wider';wider.setAttribute('aria-pressed',String(pose.zoom<.92));}
-  if(zoomIn)zoomIn.disabled=pose.zoom>=2.4;if(zoomOut)zoomOut.disabled=pose.zoom<=.76;
-  if(status)status.textContent=`${scene.shortName} · ${fallback?'2D reference fallback':pose.topDown?'plan view':'3D reference'}`;
+  if(zoomIn){zoomIn.disabled=pose.zoom>=2.4;zoomIn.title=zoomIn.disabled?'Closest view reached':'Zoom in';}
+  if(zoomOut){zoomOut.disabled=pose.zoom<=.76;zoomOut.title=zoomOut.disabled?'Widest view reached':'Zoom out';}
+  if(status)status.textContent=`${scene.shortName} · ${fallback?'2D reference fallback':pose.topDown?'plan view':'3D reference'}${pose.zoom<=.76?' · Widest view':pose.zoom>=2.4?' · Closest view':''}`;
   if(heading)heading.textContent=scene.name;
   if(north)north.style.transform=`rotate(${fallback?0:-pose.yaw*180/Math.PI}deg)`;
   if(caption)caption.textContent=fallback||pose.topDown?'Drag to pan · + / − zoom · R to reset':'Drag to tilt · Shift-drag to pan · R to reset';
@@ -62,24 +67,26 @@ export async function createRegionalTerrain(root,callbacks={},options={}){
   focus.querySelector('strong').textContent=scene.name;focus.querySelector('.terrain-focus-coordinate').textContent=scene.coordinates;
  }
  function layerData(){
-  const list=[];
-  for(const v of showVessels?eligibleVessels(vessels,scene):[]){const age=Date.now()-Date.parse(v.positionTime);list.push({...v,point:[v.longitude,v.latitude],kind:'vessel',id:v.mmsi||v.id,label:v.name||'Vessel name not reported',basis:'Received AIS position',older:age>=600000});}
-  for(const item of infrastructure.filter(p=>isCoordinate(p)&&(!p.theaters||p.theaters.includes(scene.id))))list.push({...item,point:[item.longitude,item.latitude],kind:'infrastructure',label:item.name,basis:item.basis||'Approximate infrastructure reference'});
-  for(const item of events.filter(isCoordinate))list.push({...item,point:[item.longitude,item.latitude],kind:'event',label:item.title||'Structured source record',basis:'Source-provided event coordinate'});
-  return list.slice(0,250);
+  return overviewLayers({scene,project:point=>renderer.point(point,.55),vessels,showVessels,infrastructure,events})
+   .map(item=>({...item,point:[item.longitude,item.latitude],basis:item.kind==='vessel'?'Received AIS position':item.kind==='infrastructure'?item.basis||'Approximate infrastructure reference':'Source-provided event coordinate'}));
+ }
+ function syncLayers(){
+  const existing=new Map(layerNodes.map(item=>[item.key,item]));
+  layerNodes=layerData().map(item=>{
+   let entry=existing.get(item.key);existing.delete(item.key);
+   if(entry){Object.assign(entry,item);return entry;}
+   const button=element('button',`terrain-object terrain-object--${item.kind}`);button.type='button';
+   const symbol=element('span','',item.kind==='infrastructure'?'□':'○');symbol.setAttribute('aria-hidden','true');button.append(symbol);
+   entry={...item,node:button};button.dataset.recordId=String(item.id);
+   button.addEventListener('click',()=>{callbacks[entry.kind==='vessel'?'onVessel':entry.kind==='event'?'onEvent':'onInfrastructure']?.(entry.id);});
+   button.addEventListener('pointerenter',()=>{const p=renderer?.point(entry.point);if(p)callbacks.onHover?.({...entry,x:p.x,y:p.y});});button.addEventListener('pointerleave',()=>callbacks.onHover?.(null));
+   dynamicLayer.append(button);return entry;
+  });
+  for(const entry of existing.values())entry.node.remove();
  }
  function rebuildLayers(){
   if(destroyed)return;
   overview?.setVessels(vessels,showVessels,vesselAvailability);overview?.setInfrastructure(infrastructure);overview?.setEvents(events);
-  dynamicLayer.replaceChildren();layerNodes=layerData().map(item=>{
-   const button=element('button',`terrain-object terrain-object--${item.kind}${item.older?' terrain-object--older':''}`);button.type='button';button.setAttribute('aria-label',`${item.label}. ${item.basis}${item.positionTime?`. Position time ${item.positionTime}`:''}`);button.title=`${item.label} · ${item.basis}`;
-   const symbol=element('span','',item.kind==='infrastructure'?'□':'○');symbol.setAttribute('aria-hidden','true');button.append(symbol);
-   const appearance=item.kind==='vessel'?paintVesselSymbol(symbol,item,{tankerModels:false}):null;
-   button.dataset.recordId=String(item.id);if(appearance){button.dataset.model=String(appearance.model);button.setAttribute('aria-label',`${item.label}. ${appearance.description} Provider/receipt timestamp ${item.positionTime}. Source: ${item.providerSource||item.provider||'not supplied'}.`);button.title=button.getAttribute('aria-label');}
-   button.addEventListener('click',()=>{callbacks[item.kind==='vessel'?'onVessel':item.kind==='event'?'onEvent':'onInfrastructure']?.(item.id);});
-   button.addEventListener('pointerenter',()=>{const p=renderer?.point(item.point);if(p)callbacks.onHover?.({...item,x:p.x,y:p.y});});button.addEventListener('pointerleave',()=>callbacks.onHover?.(null));
-   dynamicLayer.append(button);return{...item,node:button,appearance};
-  });
   clearTimeout(expiry);if(showVessels&&vessels.length){const next=vessels.flatMap(v=>[600000,1800000].map(age=>Date.parse(v.positionTime)+age-Date.now())).filter(n=>n>0);if(next.length)expiry=setTimeout(()=>{rebuildLayers();requestDraw();},Math.min(...next)+50);}
  }
  function draw(){
@@ -91,12 +98,13 @@ export async function createRegionalTerrain(root,callbacks={},options={}){
   const occupied=focusPoint.visible?[{x:focusPoint.x-104,y:focusPoint.y+6,w:208,h:73}]:[];
   for(const item of labels){const p=renderer.point(item.point,.9),width=item.name.length*(item.kind==='country'?8.5:6.7),box={x:p.x-width/2,y:p.y-8,w:width,h:18};const collides=occupied.some(b=>box.x<b.x+b.w&&box.x+box.w>b.x&&box.y<b.y+b.h&&box.y+box.h>b.y);item.node.hidden=!p.visible||collides||p.y<47||p.y>h-62||p.x<32||p.x>w-32;if(!item.node.hidden){item.node.style.transform=`translate(${p.x}px,${p.y}px) translate(-50%,-50%)`;occupied.push(box);}}
   const p=renderer.point(scene.center,.3);focus.hidden=!p.visible;focus.style.transform=`translate(${p.x}px,${p.y+16}px) translate(-50%,0)`;
-  let modelCount=0;
-  for(const item of layerNodes){const p=renderer.point(item.point,.55);item.node.hidden=!p.visible;item.node.style.transform=`translate(${p.x}px,${p.y}px) translate(-50%,-50%)`;if(item.kind==='vessel'){
+  syncLayers();let modelCount=0;
+  for(const item of layerNodes){const p=renderer.point(item.point,.55);item.node.hidden=!p.visible;item.node.classList.toggle('terrain-object--older',Boolean(item.older));item.node.setAttribute('aria-label',`${item.label}. ${item.basis}`);item.node.title=item.node.getAttribute('aria-label');item.node.style.transform=`translate(${p.x}px,${p.y}px) translate(-50%,-50%)`;if(item.kind==='vessel'){
    item.appearance=paintVesselSymbol(item.node.firstElementChild,item,{tankerModels:tankerModels&&p.visible&&modelCount<8});if(item.appearance.model)modelCount++;
    item.node.dataset.model=String(item.appearance.model);item.node.setAttribute('aria-label',`${item.label}. ${item.appearance.description} Provider/receipt timestamp ${item.positionTime}. Source: ${item.providerSource||item.provider||'not supplied'}.${item.older?' Older than ten minutes.':''}`);item.node.title=item.node.getAttribute('aria-label');
    const angle=projectedVesselAngle(item,item.appearance.bearing,point=>renderer.point(point,.55));item.node.firstElementChild.style.transform=angle===null?'':`rotate(${angle}deg)`;
   }}
+  received.textContent=overviewVesselCaption({showVessels,count:layerNodes.filter(item=>item.kind==='vessel').length,availability:vesselAvailability});
   let km=50;let a=renderer.localPoint([-km/2,0,0]),b=renderer.localPoint([km/2,0,0]);if(Math.hypot(a.x-b.x,a.y-b.y)>Math.min(180,w*.4)){km=20;a=renderer.localPoint([-10,0,0]);b=renderer.localPoint([10,0,0]);}scale.querySelector('i').style.width=`${Math.hypot(a.x-b.x,a.y-b.y)}px`;scale.querySelector('span').textContent=`${km} km at scene centre`;
   controls();stats.frames++;stats.mode=renderer.mode;stats.triangles=renderer.triangleCount;stats.renderPixels=renderer.pixelCount;stats.drawMilliseconds.push(Math.round((performance.now()-t)*100)/100);if(stats.drawMilliseconds.length>120)stats.drawMilliseconds.shift();
  }
@@ -136,17 +144,26 @@ export async function createRegionalTerrain(root,callbacks={},options={}){
   }
   if(!renderer){try{renderer=createWebGLRenderer(canvas);}catch(error){useFallback(error.message);}}
   const next=sceneFor(theatre);
-  if(scene.id===next.id&&assets){++sequence;delete root.dataset.terrainLoading;if(previousScope==='both')pose={...defaultPose(),topDown:renderer.mode==='plan'};controls();resize();callbacks.onRegionChange?.(scene.id);return;}
+  if(scene.id===next.id&&assets){++sequence;loading.hidden=true;delete root.dataset.terrainLoading;delete stats.error;if(previousScope==='both')pose={...defaultPose(),topDown:renderer.mode==='plan'};controls();resize();callbacks.onRegionChange?.(scene.id);return;}
   const token=++sequence,start=performance.now();scene=next;assets=null;transition=null;pose=defaultPose();layoutLabels();rebuildLayers();controls();
-  loading.hidden=false;loading.textContent=`Preparing ${scene.shortName} reference terrain…`;root.dataset.terrainLoading='true';
+  loading.hidden=false;loading.textContent=`Preparing ${next.shortName} reference terrain…`;root.dataset.terrainLoading='true';delete stats.error;
   try{
-   if(!cache.has(scene.id))cache.set(scene.id,loadSceneAssets(scene,{signal:abort.signal,planOnly:renderer.mode==='plan'}).catch(error=>{cache.delete(next.id);throw error;}));
-   const data=await cache.get(scene.id);if(token!==sequence||destroyed)return;assets=data;renderer.setScene(scene,assets);if(renderer.mode==='plan')pose.topDown=true;loading.hidden=true;delete root.dataset.terrainLoading;resize();callbacks.onRegionChange?.(scene.id);stats.sceneLoads.push({scene:scene.id,milliseconds:Math.round(performance.now()-start)});
+   if(!cache.has(next.id))cache.set(next.id,loadSceneAssets(next,{signal:abort.signal,planOnly:renderer.mode==='plan'}).catch(error=>{cache.delete(next.id);throw error;}));
+   const data=await cache.get(next.id);if(token!==sequence||destroyed)return;assets=data;renderer.setScene(next,assets);if(renderer.mode==='plan')pose.topDown=true;loading.hidden=true;resize();callbacks.onRegionChange?.(next.id);stats.sceneLoads.push({scene:next.id,milliseconds:Math.round(performance.now()-start)});
   }catch(error){
    if(token!==sequence||destroyed)return;
    try{
-    const img=new Image();img.src=new URL(`./assets/${scene.id}-plan.webp`,import.meta.url).href;await img.decode();if(token!==sequence||destroyed)return;assets={planImage:img};useFallback('Detailed terrain could not load; bundled plan reference shown.');renderer.setScene(scene,assets);loading.hidden=true;delete root.dataset.terrainLoading;resize();
-   }catch{loading.hidden=false;loading.textContent=`${scene.shortName} terrain could not load. Reporting and evidence remain available.`;stats.error=String(error.message);root.dataset.terrainMode='unavailable';focus.hidden=true;mapLabels.hidden=true;}
+    const data=await loadSceneAssets(next,{signal:abort.signal,planOnly:true});
+    if(token!==sequence||destroyed){data.planImage?.close?.();return;}
+    const previous=cache.get(next.id);assets=data;useFallback('Detailed terrain could not load; bundled plan reference shown.');renderer.setScene(next,assets);
+    cache.set(next.id,Promise.resolve(data));previous?.then(old=>['heightImage','normalImage','planImage'].forEach(key=>old[key]?.close?.())).catch(()=>{});
+    loading.hidden=true;resize();callbacks.onRegionChange?.(next.id);
+   }catch(fallbackError){
+    if(token!==sequence||destroyed)return;
+    assets=null;loading.hidden=false;loading.textContent=`${next.shortName} terrain could not load. Reporting and evidence remain available.`;stats.error=String(fallbackError.message||error.message);root.dataset.terrainMode='unavailable';focus.hidden=true;mapLabels.hidden=true;dynamicLayer.hidden=true;received.textContent='Reference map unavailable; received positions cannot be displayed in this frame.';
+   }
+  }finally{
+   if(token===sequence&&!destroyed)delete root.dataset.terrainLoading;
   }
  }
  bindCanvas();layoutLabels();
@@ -157,6 +174,6 @@ export async function createRegionalTerrain(root,callbacks={},options={}){
  const observer=new ResizeObserver(resize);observer.observe(surface);
  const visibility=typeof IntersectionObserver!=='undefined'?new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;if(inView)requestDraw();else if(frame){cancelAnimationFrame(frame);frame=0;}},{threshold:.01}):null;visibility?.observe(surface);
  await select('both');
- return {select,reset,topDown:togglePlan,wider:()=>move({zoom:.76,panX:0,panZ:0}),pause(){if(transition){pose=transition.to;transition=null;}requestDraw();},setVessels(list,show,availability=null){vessels=Array.isArray(list)?list:[];showVessels=Boolean(show);vesselAvailability=availability;rebuildLayers();requestDraw();},setEvents(list){events=Array.isArray(list)?list:[];rebuildLayers();requestDraw();},setInfrastructure(list){infrastructure=Array.isArray(list)?list:[];rebuildLayers();requestDraw();},getDiagnostics(){return {...stats,scene:scope==='both'?'both':scene.id,scope,pose:{...pose},overview:overview?.getDiagnostics(),continuousAnimation:false,reducedMotion:reduced.matches,visibleVesselCount:scope==='both'?(overview?.getDiagnostics().regions.reduce((sum,region)=>sum+region.visibleVesselCount,0)||0):layerNodes.filter(n=>n.kind==='vessel'&&!n.node.hidden).length};},destroy(){destroyed=true;abort.abort();clearTimeout(expiry);if(frame)cancelAnimationFrame(frame);listeners.forEach(remove=>remove());observer.disconnect();visibility?.disconnect();renderer?.destroy();overview?.destroy();overviewRoot.remove();for(const promise of cache.values())promise.then(data=>['heightImage','normalImage','planImage'].forEach(key=>data[key]?.close?.())).catch(()=>{});cache.clear();mapLabels.remove();dynamicLayer.remove();focus.remove();foot.remove();help.remove();}};
+ return {select,reset,topDown:togglePlan,wider:()=>move({zoom:.76,panX:0,panZ:0}),pause(){if(transition){pose=transition.to;transition=null;}requestDraw();},setVessels(list,show,availability=null){vessels=Array.isArray(list)?list:[];showVessels=Boolean(show);vesselAvailability=availability;rebuildLayers();requestDraw();},setEvents(list){events=Array.isArray(list)?list:[];rebuildLayers();requestDraw();},setInfrastructure(list){infrastructure=Array.isArray(list)?list:[];rebuildLayers();requestDraw();},getDiagnostics(){return {...stats,scene:scope==='both'?'both':scene.id,scope,pose:{...pose},overview:overview?.getDiagnostics(),continuousAnimation:false,reducedMotion:reduced.matches,visibleVesselCount:scope==='both'?(overview?.getDiagnostics().regions.reduce((sum,region)=>sum+region.visibleVesselCount,0)||0):assets&&!dynamicLayer.hidden?layerNodes.filter(n=>n.kind==='vessel'&&!n.node.hidden).length:0};},destroy(){destroyed=true;abort.abort();clearTimeout(expiry);if(frame)cancelAnimationFrame(frame);listeners.forEach(remove=>remove());observer.disconnect();visibility?.disconnect();renderer?.destroy();overview?.destroy();overviewRoot.remove();for(const promise of cache.values())promise.then(data=>['heightImage','normalImage','planImage'].forEach(key=>data[key]?.close?.())).catch(()=>{});cache.clear();mapLabels.remove();dynamicLayer.remove();focus.remove();foot.remove();received.remove();help.remove();}};
 }
 export const createGlobe=createRegionalTerrain;
