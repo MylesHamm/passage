@@ -4,6 +4,71 @@ import {briefCoverage,createPriorityView} from '../dist/priority-view.mjs';
 
 const now=Date.parse('2026-09-28T18:00:00Z');
 const healthySource=(id='bbc')=>({id,configured:true,connection:'connected',retrievedAt:'2026-09-28T17:58:00Z',latestRelevant:'2026-09-28T17:00:00Z',recordCount:1});
+
+test('Watch follows the shared reporting window and does not imply comparison history without a checkpoint',()=>{
+  const report={id:'older',sourceId:'bbc',source:'BBC',title:'Iran tanker attack reported',url:'https://example.com/older',publishedAt:'2026-09-26T17:00:00Z'};
+  const state={news:{items:[report],sources:[healthySource()]},actor:'All',theater:'both',hours:'24'};
+  const mount={innerHTML:'',ownerDocument:{activeElement:null},contains:()=>false,querySelectorAll:()=>[],addEventListener:()=>{}};
+  const view=createPriorityView({mount,getState:()=>state,now:()=>now});
+  view.update();
+  assert.match(mount.innerHTML,/Past 24 hours/);
+  assert.doesNotMatch(mount.innerHTML,/Iran tanker attack reported|Published since your last review/);
+  state.hours='168';view.update();
+  assert.match(mount.innerHTML,/Past 7 days/);
+  assert.match(mount.innerHTML,/Iran tanker attack reported/);
+  assert.match(mount.innerHTML,/No reading checkpoint yet/);
+  assert.doesNotMatch(mount.innerHTML,/source links are unreviewed|Published since your last review/);
+  state.hours='all';view.update();
+  assert.match(mount.innerHTML,/All retrieved dates/);
+});
+
+test('Watch comparisons count selected source links once and distinguish publication from retrieval',()=>{
+  const item=(id,title,extra={})=>({id,sourceId:'bbc',source:'BBC',title,url:`https://example.com/${id}`,publishedAt:'2026-09-28T17:00:00Z',...extra});
+  const shared=item('shared','Missile alerts issued for Red Sea and Strait of Hormuz shipping',{url:'https://example.com/shared?utm_source=feed'});
+  const older=item('older','Iran oil terminal closed',{publishedAt:'2026-09-27T11:00:00Z',firstSeenAt:'2026-09-28T17:30:00Z'});
+  const reviewed=item('reviewed','Iran pipeline oil exports resume');
+  const retired=item('retired','Iran tanker attack reported',{collectionRetired:true});
+  const news={items:[shared,older,reviewed,retired],sources:[healthySource()]};
+  const checkpoint={acknowledgedAt:'2026-09-28T16:00:00Z',seen:{[reviewed.url]:'2026-09-28T16:00:00Z'}};
+  const original=structuredClone({news,checkpoint});
+  const mount={innerHTML:'',ownerDocument:{activeElement:null},contains:()=>false,querySelectorAll:()=>[],addEventListener:()=>{}};
+  createPriorityView({mount,getState:()=>({news,actor:'All',theater:'both',hours:'72'}),getCheckpoint:()=>checkpoint,now:()=>now}).update();
+  assert.match(mount.innerHTML,/2 selected source links are unreviewed/);
+  assert.match(mount.innerHTML,/Published since your last review/);
+  assert.match(mount.innerHTML,/Newly retrieved · older publication/);
+  assert.match(mount.innerHTML,/Reading history in this browser; not an event count/);
+  assert.doesNotMatch(mount.innerHTML,/Iran tanker attack reported/);
+  assert.deepEqual({news,checkpoint},original);
+});
+
+test('Watch preserves unknown publication time and rejects a future reading checkpoint',()=>{
+  const report={id:'day',sourceId:'bbc',source:'BBC',title:'Iran oil terminal closed',url:'https://example.com/day',publishedDate:'2026-09-28',publicationPrecision:'day'};
+  const mount={innerHTML:'',ownerDocument:{activeElement:null},contains:()=>false,querySelectorAll:()=>[],addEventListener:()=>{}};
+  let checkpoint={acknowledgedAt:'2026-09-28T16:00:00Z',seen:{}};
+  const view=createPriorityView({mount,getState:()=>({news:{items:[report],sources:[healthySource()]},actor:'All',theater:'both'}),getCheckpoint:()=>checkpoint,now:()=>now});
+  view.update();
+  assert.match(mount.innerHTML,/Same publication day · exact time unknown/);
+  assert.doesNotMatch(mount.innerHTML,/Published since your last review/);
+  checkpoint={...checkpoint,acknowledgedAt:'2026-09-29T16:00:00Z'};view.update();
+  assert.match(mount.innerHTML,/No reading checkpoint yet/);
+  assert.doesNotMatch(mount.innerHTML,/selected source link is unreviewed/);
+});
+
+test('Watch ends pending copy on failure and promises archive records only when present',()=>{
+  const mount={innerHTML:'',ownerDocument:{activeElement:null},contains:()=>false,querySelectorAll:()=>[],addEventListener:()=>{}};
+  const state={actor:'All',theater:'both',failures:{}};
+  const view=createPriorityView({mount,getState:()=>state,now:()=>now});
+  view.update();
+  assert.match(mount.innerHTML,/Waiting for retrieved reporting/);
+  assert.doesNotMatch(mount.innerHTML,/currently unavailable|Current reporting unavailable|data-delayed="true"|Historical reports remain/);
+  state.failures.news=true;view.update();
+  assert.match(mount.innerHTML,/Current reporting is unavailable/);
+  assert.doesNotMatch(mount.innerHTML,/Waiting|Checking|Historical reports remain/);
+  state.news={items:[{id:'old',sourceId:'bbc',title:'Historical report'}],sources:[healthySource()]};
+  const original=structuredClone(state.news);view.update();
+  assert.match(mount.innerHTML,/Historical reports remain in Reporting/);
+  assert.deepEqual(state.news,original);
+});
 test('recent failed attempts and a healthy collector never replace source success clocks',()=>{
   const news={coverage:{collection:{lastCompletedAt:new Date(now).toISOString()},archive:{truncated:true}},sources:[
     {id:'bbc',name:'BBC',lastSuccessAt:'2026-09-28T17:58:00Z'},

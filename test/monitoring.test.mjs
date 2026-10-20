@@ -7,6 +7,24 @@ const NOW=Date.parse('2026-09-22T12:00:00Z');
 const workingSource={id:'bbc',configured:true,connection:'connected',retrievedAt:'2026-09-22T11:59:00Z',latestRelevant:'2026-09-22T09:00:00Z',recordCount:1};
 const row=(id,extra={})=>({id,url:`https://example.com/${id}`,title:`Report ${id} about shipping through the Strait of Hormuz`,source:'Example',sourceId:'bbc',theaters:['hormuz'],actors:['Iran'],publishedAt:'2026-09-22T09:00:00Z',firstSeenAt:'2026-09-22T10:00:00Z',lastSeenAt:'2026-09-22T10:00:00Z',...extra});
 
+test('the Watch checkpoint snapshot refreshes only when visible reporting is acknowledged',()=>{
+ const state={news:{items:[row('visible')],sources:[workingSource]},view:'reporting',theater:'both',actor:'All',hours:'72'};
+ const nodes=Object.fromEntries(['.monitor-shell','.monitor-tabs','.monitor-arrivals','.monitor-body','.monitor-status'].map(selector=>[selector,{innerHTML:'',querySelectorAll:()=>[],classList:{toggle:()=>{}}}]));
+ const listeners={},notifications=[],mount={ownerDocument:{activeElement:null},contains:value=>Boolean(value),querySelector:selector=>nodes[selector],querySelectorAll:()=>[],addEventListener:(event,callback)=>{listeners[event]=callback;}};
+ const view=createMonitoringView({mount,getState:()=>state,now:()=>NOW,storage:{getItem:()=>null,setItem:()=>{}},onCheckpointChanged:value=>notifications.push(value)});
+ view.ingestNews(state.news);view.update();
+ assert.equal(view.getCheckpoint().acknowledgedAt,null);
+ assert.equal(notifications.length,0,'retrieval and rendering do not acknowledge reporting');
+ view.ingestNews({...state.news,items:[row('visible'),row('waiting')]});
+ listeners.click({target:{closest:()=>({dataset:{monitorAction:'review'}})}});
+ assert.equal(notifications.length,1);
+ assert.equal(notifications[0].acknowledgedAt,new Date(NOW).toISOString());
+ assert.ok(notifications[0].seen[row('visible').url]);
+ assert.equal(notifications[0].seen[row('waiting').url],undefined,'waiting arrivals remain unreviewed');
+ notifications[0].seen[row('waiting').url]=new Date(NOW).toISOString();
+ assert.equal(view.getCheckpoint().seen[row('waiting').url],undefined,'consumers cannot change the stored checkpoint');
+});
+
 test('default personal monitoring excludes archived links while Archive arrivals explicitly exposes them',()=>{
  const items=[row('current'),row('history',{retainedFromHistory:true}),row('retired',{collectionRetired:true}),row('held',{retainedForReading:true}),row('gdelt',{sourceId:'gdelt-hormuz'})];
  const state={news:{items,sources:[workingSource]},view:'reporting',theater:'both',actor:'All',hours:'all',includeArchive:false};

@@ -49,6 +49,10 @@ body.regional-workspace { background: var(--bg); color: var(--text); --command-d
 .regional-workspace .scope-subtitle { font-size: 15px; line-height: 1.6; color: var(--muted); margin: 0; max-width: 72ch; }
 .regional-workspace .scope-bar { flex-wrap: wrap; gap: 12px; padding: 0 0 24px; position: relative; }
 .regional-workspace .scope-label { display: block; font-size: 13px; letter-spacing: 0; color: var(--text); }
+.regional-workspace .reporting-window { display: flex; align-items: center; gap: 8px; color: var(--text); font-size: 12px; }
+.regional-workspace .reporting-window[hidden] { display: none; }
+.regional-workspace .reporting-window select { min-height: 40px; padding: 8px; border: 1px solid var(--border); border-radius: 5px; color: var(--text); background: var(--panel); font: inherit; }
+.regional-workspace .workspace-filter-note { flex-basis: 100%; order: 1; color: var(--muted); line-height: 1.5; }
 .regional-workspace .scope-bar .theatre-picker { background: var(--panel); border-color: var(--border); padding: 3px; gap: 3px; }
 .regional-workspace .scope-bar .theatre-picker button { font-size: 13px; padding: 8px 16px; min-height: 36px; color: var(--muted); }
 .regional-workspace :is(.segmented button.active,.segmented button[aria-pressed=true],button.active) { background: var(--accent-soft); color: var(--accent); border-color: #b8c9f5; }
@@ -65,6 +69,8 @@ body.regional-workspace { background: var(--bg); color: var(--text); --command-d
 .regional-workspace .priority-heading { padding: 16px 24px 0; gap: 10px; align-items: start; }
 .regional-workspace .priority-kicker { font-size: 13px; font-weight: 500; letter-spacing: 0; color: var(--text); }
 .regional-workspace .priority-heading p { font-size: 12px; line-height: 1.5; color: var(--muted); }
+.regional-workspace .priority-change-summary { margin: 12px 24px 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.regional-workspace .priority-change { display: inline-block; margin: 4px 0 8px; color: var(--accent); background: var(--accent-soft); padding: 3px 6px; border-radius: 3px; font-size: 11px; line-height: 1.5; }
 .regional-workspace .priority-refresh { display: none; }
 .regional-workspace .priority-grid { display: block; }
 .regional-workspace .priority-card { padding: 20px 24px; border: 0; border-bottom: 1px solid var(--border); }
@@ -118,6 +124,9 @@ body.regional-workspace { background: var(--bg); color: var(--text); --command-d
 .regional-workspace .globe-toolbar [aria-pressed=true] { color: var(--accent); background: var(--accent-soft); border-color: #b8c9f5; }
 .regional-workspace .globe-toolbar .icon-button { width: 40px; min-width: 40px; min-height: 40px; }
 .regional-workspace .map-filter-note { margin: 0; padding: 0 24px 12px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.regional-workspace .map-key { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0; padding: 0 24px 12px; list-style: none; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.regional-workspace .map-key li { display: flex; align-items: center; gap: 6px; }
+.regional-workspace .map-key li > span { color: var(--text); font-size: 16px; }
 .regional-workspace .selection-caption { padding: 12px 24px; background: #f8f9fb; color: var(--muted); font-size: 12px; line-height: 1.6; border-top: 1px solid var(--border); }
 .regional-workspace :is(.terrain-place,.terrain-focus-kicker,.terrain-focus-coordinate,.terrain-map-footer,.terrain-corner,.globe-caption) { color: #fff; opacity: 1; }
 .regional-workspace .terrain-place { background: #17212bdd; padding: 2px 4px; border-radius: 3px; font-size: 11px; text-shadow: none; }
@@ -254,13 +263,14 @@ body.regional-workspace { background: var(--bg); color: var(--text); --command-d
   .regional-workspace .refresh-toggle { margin-left: auto; font-size: 12px; }
   .regional-workspace .watch-stream-heading { padding: 14px 18px; }.watch-stream-heading h2 { font-size: 19px; }.regional-workspace .watch-stream-heading .text-button { font-size: 12px; padding: 6px 0; }
   .regional-workspace .priority-heading { padding: 16px 18px 0; flex-direction: row; }.regional-workspace .priority-card { padding: 20px 18px; }.regional-workspace .priority-headline { font-size: 20px; }
+  .regional-workspace .priority-change-summary { margin-inline: 18px; }
   .regional-workspace :is(.priority-bottom,.priority-coverage-gap,.preferred-source) { padding-inline: 18px; }
   .regional-workspace .pulse-rows { display: block; }.regional-workspace #market-pulse { padding: 20px; }
   .regional-workspace .map-panel .panel-heading { padding: 16px; }.regional-workspace .map-panel .panel-heading h2 { font-size: 18px; }.regional-workspace #map-reset { font-size: 12px; padding: 6px; }
   .regional-workspace .map-panel .globe-surface { height: 240px; }.regional-workspace .terrain-place--water { display: none; }
   .regional-workspace .terrain-map-footer { font-size: 9px; }.regional-workspace .terrain-reference-note { max-width: 110px; }.regional-workspace .terrain-scale i { max-width: 100px; }
   .regional-workspace .globe-toolbar { padding: 12px 16px; }.map-focus-label { width: 100%; }.regional-workspace .globe-toolbar .text-button { min-height: 44px; font-size: 12px; }.regional-workspace .globe-toolbar .icon-button { min-height: 44px; width: 44px; }
-  .regional-workspace :is(.map-filter-note,.selection-caption,.terrain-attribution,.globe-layers,.asset-picker,.vessel-panel) { padding-inline: 16px; }
+  .regional-workspace :is(.map-key,.map-filter-note,.selection-caption,.terrain-attribution,.globe-layers,.asset-picker,.vessel-panel) { padding-inline: 16px; }
   .regional-workspace .layer-disclosure > summary { padding: 16px; }.asset-picker { flex-wrap: wrap; }.asset-picker select { width: 100%; }
   .regional-workspace .feed-tools { padding: 16px; }.regional-workspace .feed-item { padding: 20px 18px; }.regional-workspace .feed-item .story-title { font-size: 18px; }.regional-workspace .feed-meta time { margin-left: 0; }
   .regional-workspace .reporting-header { gap: 12px; }.regional-workspace .reporting-header .segmented { flex-wrap: wrap; }.regional-workspace .reporting-layout .feed-panel { height: 850px; }

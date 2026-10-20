@@ -9,7 +9,7 @@ const plural=(count,word)=>`${count} ${count===1?word:word+'s'}`;
 /** The host owns fetching and calls ingestNews before assigning state.news.
  * onAccept receives the complete accepted snapshot; update is safe on every render.
  */
-export function createMonitoringView({mount,getState,onAccept=()=>{},onReport=()=>{},onFilter=()=>{},onSources=()=>{},storage,now=Date.now}={}){
+export function createMonitoringView({mount,getState,onAccept=()=>{},onReport=()=>{},onFilter=()=>{},onSources=()=>{},onCheckpointChanged=()=>{},storage,now=Date.now}={}){
   let stored,storageFailed=false;
   try{storage=storage===undefined?globalThis.localStorage:storage;stored=JSON.parse(storage?.getItem(MONITORING_STORAGE_KEY)||'null');}catch{storageFailed=true;}
   const session=createMonitoringSession({stored,now});
@@ -77,7 +77,7 @@ export function createMonitoringView({mount,getState,onAccept=()=>{},onReport=()
     if(button.dataset.monitorWatch){const watch=settings().watches.find(row=>row.id===button.dataset.monitorWatch);if(watch)onFilter({[watch.type==='theater'?'theater':'actor']:watch.value});return;}
     switch(button.dataset.monitorAction){
       case 'accept':{const count=session.pending().length,removed=session.retained().length;onAccept(session.acceptPending());message=`Latest snapshot applied: ${plural(count,'arrival')} added${removed?`, ${plural(removed,'prior report')} no longer in the reading stream`:''}. Your reading checkpoint has not changed.`;break;}
-      case 'review':session.acknowledge(scoped(session.news()?.items||[]));persist();message='Checkpoint saved for visible reporting. Waiting arrivals remain unreviewed.';break;
+      case 'review':session.acknowledge(scoped(session.news()?.items||[]));persist();onCheckpointChanged(settings());message='Checkpoint saved for visible reporting. Waiting arrivals remain unreviewed.';break;
       case 'more':limit+=20;break;
       case 'latest':replayAt=null;break;
       case 'sources':onSources();return;
@@ -97,5 +97,5 @@ export function createMonitoringView({mount,getState,onAccept=()=>{},onReport=()
     const [type,...parts]=mount.querySelector('#monitor-watch-choice').value.split(':');session.addWatch(type,parts.join(':'));persist();message='Watch saved on this browser. Only new matching links will count.';render();
   }
   mount?.addEventListener('click',click);mount?.addEventListener('input',input);mount?.addEventListener('submit',submit);render();
-  return {ingestNews:incoming=>session.ingestNews(incoming),pendingCount:()=>session.pending().length,retainedCount:()=>session.retained().length,acceptArrivals:()=>{onAccept(session.acceptPending());render();},update:render,destroy(){destroyed=true;stopSpeech();mount?.removeEventListener('click',click);mount?.removeEventListener('input',input);mount?.removeEventListener('submit',submit);}};
+  return {ingestNews:incoming=>session.ingestNews(incoming),getCheckpoint:settings,pendingCount:()=>session.pending().length,retainedCount:()=>session.retained().length,acceptArrivals:()=>{onAccept(session.acceptPending());render();},update:render,destroy(){destroyed=true;stopSpeech();mount?.removeEventListener('click',click);mount?.removeEventListener('input',input);mount?.removeEventListener('submit',submit);}};
 }

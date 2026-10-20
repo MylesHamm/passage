@@ -1,7 +1,7 @@
 import {renderExposureBaselineMarkup} from './exposure-view.mjs';
 import {createWorkspaceView,workspaceFor} from './workspace-view.mjs';
 import {enterSequence,bindDisclosures} from './motion.mjs';
-import {renderMarketPulse} from './market-pulse.mjs';
+import {renderMarketPulse,oilObservationState} from './market-pulse.mjs';
 import {createOilChart,normalizeOilObservations} from './oil-chart-view.mjs';
 import {oilObservationTableMarkup} from './oil-table-view.mjs';
 import {createOilSystemView} from './oil-system-view.mjs';
@@ -9,7 +9,7 @@ import {preserveViewFocus} from './view-focus.mjs';
 import {createExpectationsView} from './expectations-view.mjs';
 import {collectorHealth,collectorCard} from './collector-status.mjs';
 import {apiFetch,siteUrl,runtime,LIVE_REFRESH_MS} from './runtime-config.mjs';
-import {reportTime,reportTimeLabel,reportRelevant,matchesTheater,inReportingWindow,sortReports,reportingCoverageText,isActivePublisherReport,reportContextLabel} from './reporting-view.mjs';
+import {reportTime,reportTimeLabel,reportRelevant,matchesTheater,inReportingWindow,sortReports,reportingCoverageText,reportingEmptyState,isActivePublisherReport,reportContextLabel} from './reporting-view.mjs';
 import {createMonitoringView} from './monitoring-view.mjs';
 import {impactTags,groupReporting} from './monitoring-model.mjs';
 import {buildPriorityBrief} from './priority-brief.mjs';
@@ -18,6 +18,8 @@ import {renderMarketContext} from './market-view.mjs';
 import {createSituationView} from './situation-view.mjs';
 import {INFRASTRUCTURE} from './energy-context.mjs';
 import {vesselTypeLabel} from './vessel-data.mjs';
+import {vesselAvailability} from './vessel-availability.mjs';
+import {evidencePanelMarkup,safeEvidenceUrl} from './evidence-panel.mjs';
 import {createRegionalTerrain} from './terrain/controller.mjs';
 import {reportInspectorMarkup,bindInspectorTabs} from './report-inspector.mjs';
 import {collectSources,coverage,panelNotice,ageSeconds,isActiveReportingSource} from './source-health.mjs';
@@ -135,10 +137,11 @@ inspectorMedia.addEventListener('change',()=>{
 function renderReports(){
   const feed=$('#feed'),scroll=feed.scrollTop,active=document.activeElement;
   const focusKey=active?.dataset.story?'story':active?.dataset.save?'save':active?.dataset.reportGroup?'reportGroup':null,focusId=focusKey?active.dataset[focusKey]:null;
-  $('#reporting-coverage').textContent=runtime.configurationNotice||reportingCoverageText(state.news?.coverage,{hosted:runtime.hosted});
+  $('#reporting-coverage').textContent=runtime.configurationNotice||reportingCoverageText(state.news?.coverage,{hosted:runtime.hosted,failed:Boolean(state.failures?.news)});
   renderActors();const sourceStates=allSourceStates(),links=reports(),groups=groupReporting(links),items=groups.map(group=>group.reports[0]),c=coverage(sourceStates),unconfigured=runtime.configurationError&&state.view!=='saved',unknown=state.view!=='saved'&&!items.length&&(state.includeArchive?c.unknown:!sourceStates.some(isActiveReportingSource));$('#feed-count').textContent=unknown?'—':`${items.length} groups`;$('#feed-count').title=`${items.length} headline groups · ${links.length} source links · not events`;
+  const empty=reportingEmptyState({saved:state.view==='saved',unconfigured,configurationNotice:runtime.configurationNotice,unknown,pending:c.pending,incomplete:c.incomplete,hasArchive:Boolean(state.news?.items?.some(item=>!isActivePublisherReport(item,sourceStates)))});
   $('#feed-heading').textContent=state.view==='saved'?'Saved reporting':state.includeArchive?'Reporting & historical archive':state.view==='civilian'?'Passage & civilian impact':state.view==='energy'?'Energy reporting':'Latest reporting';
-  $('#feed').innerHTML=items.length?items.map((x,index)=>`<article class="feed-item"><div class="feed-meta"><span>${esc(x.source)}</span><span>·</span><span>${esc(x.type)}</span>${!isActivePublisherReport(x,sourceStates)?'<span>Historical archive</span>':''}<time ${reportTime(x)?`datetime="${esc(reportTime(x))}"`:""} title="${esc(reportTimeLabel(x)+' · '+fmtDate(reportTime(x)))}">${esc(isActivePublisherReport(x,sourceStates)?reportAge(x):reportTimeLabel(x)+' · '+fmtDate(reportTime(x)))}</time></div><button class="story-title" data-story="${x.id}">${esc(x.title)}</button>${groups[index].reports.length>1?`<button class="feed-group-button" data-report-group="${esc(x.id)}">${groups[index].reports.length} matching headlines · inspect links</button>`:''}${!isActivePublisherReport(x,sourceStates)?`<p class="archive-record-date">Historical record · last retrieved ${esc(stamp(x.retrievedAt||x.lastSeenAt))}</p>`:''}<div class="feed-tags">${x.type==='Independent energy analysis'?'<span class="tag mint">ANALYSIS</span>':''}${(x.theaters||[]).map(t=>`<span class="tag">${esc(reportContextLabel(t))}</span>`).join('')}${x.relevanceScopes?.includes('regional-energy')?'<span class="tag mint">REGIONAL ENERGY</span>':x.relevanceScopes?.includes('global-energy')?'<span class="tag mint">MARKET CONTEXT</span>':''}${x.retainedForReading?'<span class="tag">KEPT FOR READING</span>':x.retainedFromHistory?'<span class="tag">RETAINED HISTORY</span>':''}${x.actors.includes('Civilians')?'<span class="tag mint">CIVILIAN / CREW CONTEXT</span>':''}<button class="bookmark ${state.saved[x.id]?'saved':''}" data-save="${x.id}" aria-label="${state.saved[x.id]?'Unsave':'Save'} report" title="${state.saved[x.id]?'Unsave':'Save'} report">${state.saved[x.id]?'◆':'◇'}</button></div></article>`).join(''):`<div class="empty"><strong>${state.view==='saved'?'No saved reports match this view.':unconfigured?'Reporting is not configured.':unknown?(c.pending?'Checking reporting sources.':'Reporting is unavailable.'):'No current reports match these filters.'}</strong>${state.view==='saved'?'Saved reports remain on this browser.':unconfigured?esc(runtime.configurationNotice):unknown?'Current publisher reporting is unavailable. Coverage & sources has details; the historical archive remains accessible.':c.incomplete?'Try a wider date window or include the historical archive. No matching reports do not establish that no events occurred.':'Try a wider reporting window or reset the filters. Retrieved reports are not a complete account of events.'}<br>${unknown?'':'<button id="reset-filters" class="text-button">Reset filters</button>'}</div>`;
+  $('#feed').innerHTML=items.length?items.map((x,index)=>`<article class="feed-item"><div class="feed-meta"><span>${esc(x.source)}</span><span>·</span><span>${esc(x.type)}</span>${!isActivePublisherReport(x,sourceStates)?'<span>Historical archive</span>':''}<time ${reportTime(x)?`datetime="${esc(reportTime(x))}"`:""} title="${esc(reportTimeLabel(x)+' · '+fmtDate(reportTime(x)))}">${esc(isActivePublisherReport(x,sourceStates)?reportAge(x):reportTimeLabel(x)+' · '+fmtDate(reportTime(x)))}</time></div><button class="story-title" data-story="${x.id}">${esc(x.title)}</button>${groups[index].reports.length>1?`<button class="feed-group-button" data-report-group="${esc(x.id)}">${groups[index].reports.length} matching headlines · inspect links</button>`:''}${!isActivePublisherReport(x,sourceStates)?`<p class="archive-record-date">Historical record · last retrieved ${esc(stamp(x.retrievedAt||x.lastSeenAt))}</p>`:''}<div class="feed-tags">${x.type==='Independent energy analysis'?'<span class="tag mint">ANALYSIS</span>':''}${(x.theaters||[]).map(t=>`<span class="tag">${esc(reportContextLabel(t))}</span>`).join('')}${x.relevanceScopes?.includes('regional-energy')?'<span class="tag mint">REGIONAL ENERGY</span>':x.relevanceScopes?.includes('global-energy')?'<span class="tag mint">MARKET CONTEXT</span>':''}${x.retainedForReading?'<span class="tag">KEPT FOR READING</span>':x.retainedFromHistory?'<span class="tag">RETAINED HISTORY</span>':''}${x.actors.includes('Civilians')?'<span class="tag mint">CIVILIAN / CREW CONTEXT</span>':''}<button class="bookmark ${state.saved[x.id]?'saved':''}" data-save="${x.id}" aria-label="${state.saved[x.id]?'Unsave':'Save'} report" title="${state.saved[x.id]?'Unsave':'Save'} report">${state.saved[x.id]?'◆':'◇'}</button></div></article>`).join(''):`<div class="empty"><strong>${esc(empty.heading)}</strong>${esc(empty.detail)}${empty.reset?'<br><button id="reset-filters" class="text-button">Reset filters</button>':''}</div>`;
   $$('[data-story]').forEach(b=>b.onclick=()=>showStory(b.dataset.story));$$('[data-save]').forEach(b=>b.onclick=()=>toggleSave(b.dataset.save));if($('#reset-filters'))$('#reset-filters').onclick=resetFilters;
   $$('[data-report-group]').forEach(button=>button.onclick=()=>{const group=groups.find(group=>group.reports[0].id===button.dataset.reportGroup);if(!group)return;openDialog('MATCHING HEADLINES',`<h2>${esc(group.title)}</h2><p>Matching wording is not independent confirmation or a verified event count. Each link retains its own source and date.</p><ul class="brief-list">${group.reports.map(row=>`<li><a href="${esc(row.url)}" target="_blank" rel="noopener noreferrer">${esc(row.source)} ↗</a><small>${esc(reportTimeLabel(row))} · ${esc(stamp(reportTime(row)))}</small></li>`).join('')}</ul>`);});
   feed.scrollTop=scroll;
@@ -154,7 +157,7 @@ function renderArrivals(){
   $('#reporting-arrivals-copy').textContent=`${incoming?`${incoming} new source links waiting. `:''}${retained?`${retained} prior links held for reading. `:''}Your reading position stays in place until you apply the refresh.`;
 }
 $('#reporting-apply').onclick=()=>{monitoring.acceptArrivals();$('#feed-heading').focus({preventScroll:true});};
-function resetFilters(){state.theater='both';state.actor='All';state.query='';state.hours='72';$('#search').value='';$('#time-window').value='72';if(state.view!=='saved')setView('overview');setTheater('both');}
+function resetFilters(){state.theater='both';state.actor='All';state.query='';state.hours='72';state.includeArchive=false;$('#search').value='';$('#time-window').value='72';$('#include-archive').checked=false;setTheater('both');}
 function storyById(id){return state.latestNews?.items.find(x=>x.id===id)||state.news?.items.find(x=>x.id===id)||state.saved[id]||(selectedReport?.id===id?selectedReport:null);}
 function toggleSave(id){
   const story=storyById(id);if(!story)return;
@@ -188,7 +191,16 @@ function renderScope(){
   const titles={overview:overview?'Maritime watch':names[state.theater]+' watch',reporting:state.view==='saved'?'Your saved reporting':state.view==='civilian'?'Supply & crew impacts':'Reporting library',energy:'Oil & energy',evidence:'Evidence & coverage'};
   const descriptions={overview:'Recent reporting, official records and oil observations. Each with its own date.',reporting:'A single stream of source-linked reporting. Search, filter and inspect.',energy:'Dated price observations, historical flows and the possible connections to maritime reporting.',evidence:'Official records, regional connections and the limits of this watch.'};
   $('#view-title').textContent=titles[scene];$('#scope-subtitle').textContent=descriptions[scene];
-  $('#workspace-filter-note').textContent=state.actor==='All'?'':`Reporting actor: ${state.actor}`;
+  const reportingScene=scene==='overview'||scene==='reporting';
+  const scope=[state.actor==='All'?'All actors':`Actor: ${state.actor}`];
+  if(scene==='reporting'){
+    if(state.query)scope.push(`Search: ${state.query}`);
+    scope.push(state.view==='saved'?'Saved links · original dates':state.includeArchive?'Historical archive included · original dates':'Active publisher feeds');
+  }else if(scene==='overview')scope.push('Active publisher feeds · reading search and archive filters apply in Reporting');
+  else scope.push(scene==='energy'?'Prices use their observation dates and chart period':'Evidence dates and windows are shown in each ledger');
+  $('#workspace-filter-note').textContent=scope.join(' · ');
+  $('#time-window').closest('label').hidden=!reportingScene;
+  $('#time-window').value=state.hours;
   $('#oil-heading').textContent='Brent & WTI · daily spot';
 }
 function setView(view){
@@ -207,11 +219,16 @@ function renderOilContext(){
   if(pulse.innerHTML!==html){const focused=pulse.contains(document.activeElement);pulse.innerHTML=html;if(focused)pulse.querySelector('button')?.focus({preventScroll:true});}
   oilSystem.update({oil:state.oil,oilFailed:state.failures.oil,theater:state.theater,now});
 }
+function oilQuoteState(series){
+  const now=Date.now(),observations=normalizeOilObservations(series?.observations,{now}).filter(point=>point.value!==null),latest=observations.at(-1);
+  const status=oilObservationState(series,observations,{now,failed:Boolean(state.failures.oil),loading:!state.oil});
+  return {latest,label:(latest?fmtDate(latest.date)+' · ':'')+status.label};
+}
 function renderOil(){
   renderExposureBaseline();
   renderOilContext();
   const series=state.oil?.series||[];
-  $('#oil-summary').innerHTML=series.length?series.map(s=>{const p=normalizeOilObservations(s.observations,{now:Date.now()}).filter(point=>point.value!==null).at(-1);return `<div class="oil-quote"><span class="${s.id}-label">${s.id==='brent'?'━':'┄'} ${esc(s.name)}</span><strong>${money(p?.value)}</strong><small data-oil-state="${s.id}">${p?`${esc(fmtDate(p.date))} · ${esc(allSourceStates().find(x=>x.id===s.id)?.label||'daily spot')}`:'Source unavailable'}</small></div>`;}).join(''):`<p class="muted">${state.failures.oil?'Oil observations unavailable. Inspect Sources for the failed connection.':state.oil?'No daily observations were retrieved.':'Checking daily EIA observations…'}</p>`;
+  $('#oil-summary').innerHTML=series.length?series.map(s=>{const {latest:p,label}=oilQuoteState(s);return `<div class="oil-quote"><span class="${s.id}-label">${s.id==='brent'?'━':'┄'} ${esc(s.name)}</span><strong>${money(p?.value)}</strong><small data-oil-state="${s.id}">${esc(label)}</small></div>`;}).join(''):`<p class="muted">${state.failures.oil?'Oil observations unavailable. Inspect Sources for the failed connection.':state.oil?'No daily observations were retrieved.':'Checking daily EIA observations…'}</p>`;
   oilChart.update(series,{period:state.period,loading:!state.oil&&!state.failures.oil,failed:Boolean(state.failures.oil)});
 }
 function renderWeather(){const data=state.weather;if(!data){if(state.failures.weather)$('#weather').innerHTML='<div class="empty">Marine data is unavailable. Check Sources for the live-data connection.</div>';return;}const now=Date.now();
@@ -223,8 +240,8 @@ function acledEvents(){
 }
 function showAcledEvent(id){
   const event=(state.acled?.events||[]).find(x=>x.id===id);if(!event)return;
-  const coords=Number.isFinite(event.latitude)&&Number.isFinite(event.longitude)?`${event.latitude.toFixed(4)}, ${event.longitude.toFixed(4)}`:'No coordinates returned';
-  openInspector('ACLED STRUCTURED EVENT',`<h2>${esc(event.title)}</h2><div class="detail-meta">${esc(event.country)} · event date ${esc(fmtDate(event.eventDate+'T00:00:00Z'))} · record ${esc(event.recordId)}</div><dl class="vessel-facts"><div><dt>Actors</dt><dd>${esc(event.actors?.join(' · ')||'No classified actor')}</dd></div><div><dt>Event type</dt><dd>${esc(event.eventType||'Not reported')}${event.subEventType?' · '+esc(event.subEventType):''}</dd></div><div><dt>Location</dt><dd>${esc([event.location,event.admin1,event.admin2].filter(Boolean).join(' · ')||'Not reported')}</dd></div><div><dt>Coordinates</dt><dd>${esc(coords)} · geo precision ${esc(event.geoPrecision??'not reported')}</dd></div><div><dt>Time precision</dt><dd>${esc(event.timePrecision??'not reported')}</dd></div><div><dt>Updated in source</dt><dd>${esc(stamp(event.updatedAt))}</dd></div></dl><p>ACLED event date and location fields are preserved separately from the source upload time. This record is scoped to ${esc(event.country)} for theatre context; that country scope is not maritime geocoding. Civilian targeting and fatalities are reported fields when present, not independent verification.</p><div class="detail-actions"><a class="primary-link" href="${esc(event.url)}" target="_blank" rel="noopener noreferrer">Open ACLED record ↗</a><a class="text-button" href="${esc(event.sourceUrl)}" target="_blank" rel="noopener noreferrer">API field documentation ↗</a></div>`);
+  const source=allSourceStates().find(s=>s.id==='acled'),documentation=safeEvidenceUrl(event.sourceUrl);
+  openInspector('ACLED STRUCTURED EVENT',`<h2>${esc(event.title)}</h2><div class="detail-meta">Record ${esc(event.recordId)}</div>${evidencePanelMarkup(event,{source})}<dl class="vessel-facts"><div><dt>Actors</dt><dd>${esc(event.actors?.join(' · ')||'No classified actor')}</dd></div><div><dt>Event type</dt><dd>${esc(event.eventType||'Not reported')}${event.subEventType?' · '+esc(event.subEventType):''}</dd></div></dl>${documentation?`<div class="detail-actions"><a class="text-button" href="${esc(documentation)}" target="_blank" rel="noopener noreferrer">API field documentation ↗</a></div>`:''}`);
   inspectorMode='acled-event';markSelection({kind:'event',id:event.id,theaters:event.theaters,description:`${event.title} · reported event location and precision in details`});
 }
 function renderAcledSummary(){
@@ -301,9 +318,9 @@ function showGuide(){
 function showBrief(mode){
  const scope=['watch','reading'].includes(mode)?mode:workspaceFor(state.view)==='reporting'?'reading':'watch';
  const news=state.latestNews||state.news,sources=allSourceStates();
- const selection=buildPriorityBrief(news?{...news,items:news.items.filter(item=>isActivePublisherReport(item,sources))}:news,{theater:state.theater,actor:state.actor});
+ const selection=buildPriorityBrief(news?{...news,items:news.items.filter(item=>isActivePublisherReport(item,sources))}:news,{theater:state.theater,actor:state.actor,hours:state.hours});
  const items=scope==='reading'?reports().slice(0,6):[...new Map(selection.cards.flatMap(card=>card.items.slice(0,2)).map(group=>[group.id,group.report])).values()];
- const description=scope==='reading'?`${items.length} source headlines in your current reading selection. Theatre, actor, search, date window and saved-only filters apply.`:`${items.length} selected publisher headlines from the latest loaded 72 hours. Theatre and actor apply; reading search and date filters do not.`;
+ const description=scope==='reading'?`${items.length} source headlines in your current reading selection. Theatre, actor, search, date window and saved-only filters apply.`:`${items.length} selected publisher headlines · ${state.hours==='all'?'all retrieved publication dates':'past '+state.hours+' hours'}. Theatre, actor and reporting window apply; reading search and archive filters apply only in Reporting.`;
  const c=coverage(allSourceStates());
  openDialog('SOURCE-LINKED BRIEF',`<h2>${esc(names[state.theater])}</h2><div class="segmented" role="group" aria-label="Brief scope"><button data-brief-scope="watch" aria-pressed="${scope==='watch'}" class="${scope==='watch'?'active':''}">Latest watch</button><button data-brief-scope="reading" aria-pressed="${scope==='reading'}" class="${scope==='reading'?'active':''}">Current reading</button></div><p>${esc(description)}</p><p class="record-limit">${c.unknown?'Source coverage is unknown.':c.incomplete?'Source coverage is incomplete.':'Successful source checks do not establish complete coverage.'} ${selection.inputTruncated||state.news?.coverage?.archive?.truncated?'Selection or archive limits can omit links. ':''}Publisher claims are not independently verified.</p><ul class="brief-list">${items.map(x=>`<li><a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title)} ↗</a><small>${esc(x.source)}${x.type==='Independent energy analysis'?' · Independent analysis':''} · ${esc(reportTimeLabel(x))}: ${esc(fmtDate(reportTime(x)))}</small></li>`).join('')||'<li>No retrieved reporting matches this selection. Check source coverage and filters.</li>'}</ul><p>Compare dated observations in Energy. Headline timing does not measure a price effect.</p><div class="detail-actions"><button id="read-brief" class="text-button">▷ Read aloud</button><button id="stop-brief" class="text-button">Stop audio</button><button id="brief-energy" class="text-button">Open Energy →</button></div>`);
  $$('[data-brief-scope]').forEach(button=>button.onclick=()=>showBrief(button.dataset.briefScope));
@@ -324,15 +341,15 @@ async function loadAll(){
   $('#last-refresh').textContent=runtime.configurationError?'Live data not configured':'View checked '+fmtTime(new Date().toISOString())+' UTC';renderStatus();
 }
 function exportView(){const items=reports(),layer=currentVesselLayer(),payload={exportedAt:new Date().toISOString(),version:state.config?.version||null,autoRefresh:state.auto,reportingCoverage:coverage(allSourceStates()),scope:{view:state.view,theater:state.theater,actor:state.actor,reportingWindowHours:state.hours,search:state.query,vesselLayer:layer.label},dataNotes:'Reporting records are not verified incident counts. Actor tags are text matches. EIA prices are delayed daily observations; shared timing does not establish causation. Oil prices provide shared market context. Regional reference routes are illustrative, not observed vessel tracks.',reports:items,notes:Object.fromEntries(items.filter(x=>state.notes[x.id]).map(x=>[x.id,state.notes[x.id]])),sourceStatus:allSourceStates().map(({items,models,observations,events,vessels,...meta})=>meta),maritime:situation.exportEvidence(),oil:state.oil,market:state.market,expectations:state.expectations,weather:state.weather?{...state.weather,theaters:state.weather.theaters.filter(t=>state.theater==='both'||t.id===state.theater)}:null,acled:state.acled?{...state.acled,events:acledEvents(),exportNote:'ACLED records are country/date filtered structured events. Theatre labels are contextual country scopes, not maritime geocoding; event date and source update time are separate.'}:null,vessels:state.vessels?{...state.vessels,vessels:visibleVessels(),scope:names[state.theater],snapshotNote:`Received AIS positions only; vessel layer is ${layer.label}. Incomplete reception, unverified identities. Age is based on provider time when supplied, otherwise receipt time.`}:null};const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=new Date().toISOString().slice(0,10)+'_Passage_Watch-Export.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('View exported with source timestamps');}
-const situation=createSituationView({getState:()=>state,getSources:allSourceStates,openDialog,openInspector,onSources:showSources,onFocus:theater=>{closeInspector();setView('overview');setTheater(theater);},onInfrastructure:()=>{state.showInfrastructure=true;const input=$('#show-infrastructure');if(input)input.checked=true;globe?.setInfrastructure(INFRASTRUCTURE);}});
+const situation=createSituationView({getState:()=>state,getSources:allSourceStates,openDialog,openInspector,onSources:showSources,onFocus:theater=>{closeInspector();setView('overview');setTheater(theater);},onInfrastructure:()=>{state.showInfrastructure=true;const input=$('#show-infrastructure');if(input)input.checked=true;globe?.setInfrastructure(INFRASTRUCTURE);renderMapLayerState();}});
 monitoring=createMonitoringView({
   mount:$('#monitoring-dock'),getState:()=>state,
   onAccept:news=>{state.news=news;renderReports();renderStatus();},
   onReport:showStory,
   onFilter:({theater,actor})=>{if(actorNames.includes(actor))state.actor=actor;setView('reporting');if(theater&&names[theater])setTheater(theater);else renderReports();},
-  onSources:showSources,
+  onSources:showSources,onCheckpointChanged:()=>priority?.update(),
 });
-priority=createPriorityView({mount:$('#priority-watch'),getState:()=>state,onReport:showStory,onSources:showSources,onEvidence:situation.showEvidence,onArrivals:()=>monitoring.acceptArrivals(),getArrivalCount:()=>monitoring.pendingCount()});
+priority=createPriorityView({mount:$('#priority-watch'),getState:()=>state,onReport:showStory,onSources:showSources,onEvidence:situation.showEvidence,onArrivals:()=>monitoring.acceptArrivals(),getArrivalCount:()=>monitoring.pendingCount(),getCheckpoint:()=>monitoring.getCheckpoint()});
 function renderMarket(){
   const target=$('#market-context');if(!target)return;
   const html=renderMarketContext(state.market,{failed:Boolean(state.failures.market),now:Date.now()});
@@ -341,11 +358,11 @@ function renderMarket(){
 renderMarket();
 const assetSelect=$('#asset-select');
 assetSelect.innerHTML='<option value="">Choose a place…</option>'+INFRASTRUCTURE.map(asset=>`<option value="${esc(asset.id)}">${esc(asset.name)}</option>`).join('');
-assetSelect.onchange=()=>{if(!assetSelect.value)return;state.showInfrastructure=true;$('#show-infrastructure').checked=true;globe?.setInfrastructure(INFRASTRUCTURE);situation.showAsset(assetSelect.value);};
+assetSelect.onchange=()=>{if(!assetSelect.value)return;state.showInfrastructure=true;$('#show-infrastructure').checked=true;globe?.setInfrastructure(INFRASTRUCTURE);renderMapLayerState();situation.showAsset(assetSelect.value);};
 $$('.secondary-nav a[href^="#"]').forEach(link=>link.onclick=event=>{const target=$(link.getAttribute('href'));if(!target)return;event.preventDefault();target.open=true;target.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});target.querySelector('summary')?.focus({preventScroll:true});});
 
 situation.update();
-workspaceView=createWorkspaceView({onNavigate:setView});bindDisclosures(document);$$('[data-theater]').forEach(b=>b.onclick=()=>setTheater(b.dataset.theater));$$('[data-period]').forEach(b=>b.onclick=()=>{state.period=+b.dataset.period;$$('[data-period]').forEach(x=>x.classList.toggle('active',x===b));renderOil();});$('#time-window').onchange=e=>{state.hours=e.target.value;renderReports();};$('#include-archive').onchange=e=>{state.includeArchive=e.target.checked;renderReports();};$('#search').oninput=e=>{state.query=e.target.value;renderReports();};$('#auto-refresh').onchange=e=>{state.auto=e.target.checked;$('passage-oil-quotes')?.toggleAttribute('paused',!state.auto);if(state.auto)loadVessels();renderVessels();renderStatus();toast(state.auto?'Automatic refresh enabled':'Automatic refresh paused');};$('#refresh').onclick=()=>{loadAll();toast('Checking sources; provider cache intervals still apply');};$('#show-vessels').onchange=e=>{state.showVessels=e.target.checked;renderVessels();};$('#vessel-filter').onchange=e=>{state.vesselFilter=e.target.value;renderVessels();renderMetrics();renderTheaters();};$('#show-infrastructure').onchange=e=>{state.showInfrastructure=e.target.checked;globe?.setInfrastructure(state.showInfrastructure?INFRASTRUCTURE:[]);};$('#map-layer-guide').onclick=()=>openDialog('MAP LAYERS',`<h2>Read the map</h2><dl class="vessel-facts"><div><dt>Arrows / circles</dt><dd>Received AIS positions. Arrows indicate reported direction; circles mean direction is missing. Hollow symbols are more than 10 minutes old.</dd></div><div><dt>Outlined squares</dt><dd>Approximate energy infrastructure references. Click for regional context; current operational status is not encoded.</dd></div><div><dt>Terrain &amp; coastline</dt><dd>Static elevation-derived geographic reference. Relief is exaggerated four times. This is not a navigable chart or a current operating-status layer.</dd></div></dl><p>The official IMO ledger preserves prose locations without placing invented coordinates on this regional map. Theater buttons, the vessel list and regional context provide keyboard-accessible details.</p>`);$('#price-table').onclick=()=>openDialog('DAILY OIL OBSERVATIONS',oilObservationTableMarkup(state.oil?.series,{period:state.period}));$('#vessel-list').onclick=showVesselList;$('#map-reset').onclick=()=>globe?.reset();$('#source-status').onclick=showSources;$('#sources-nav').onclick=showSources;$('#methodology').onclick=showGuide;$('#data-method').onclick=showGuide;$('#command-help').onclick=showGuide;$('#brief-button').onclick=showBrief;$('#export-button').onclick=exportView;$('#command-form').onsubmit=e=>{e.preventDefault();const raw=$('#command').value;runCommand(raw);$('#command').value='';};
+workspaceView=createWorkspaceView({onNavigate:setView});bindDisclosures(document);$$('[data-theater]').forEach(b=>b.onclick=()=>setTheater(b.dataset.theater));$$('[data-period]').forEach(b=>b.onclick=()=>{state.period=+b.dataset.period;$$('[data-period]').forEach(x=>x.classList.toggle('active',x===b));renderOil();});$('#time-window').onchange=e=>{state.hours=e.target.value;renderReports();};$('#include-archive').onchange=e=>{state.includeArchive=e.target.checked;renderReports();};$('#search').oninput=e=>{state.query=e.target.value;renderReports();};$('#auto-refresh').onchange=e=>{state.auto=e.target.checked;$('passage-oil-quotes')?.toggleAttribute('paused',!state.auto);if(state.auto)loadVessels();renderVessels();renderStatus();toast(state.auto?'Automatic refresh enabled':'Automatic refresh paused');};$('#refresh').onclick=()=>{loadAll();toast('Checking sources; provider cache intervals still apply');};$('#show-vessels').onchange=e=>{state.showVessels=e.target.checked;renderVessels();};$('#vessel-filter').onchange=e=>{state.vesselFilter=e.target.value;renderVessels();renderMetrics();renderTheaters();};$('#show-infrastructure').onchange=e=>{state.showInfrastructure=e.target.checked;globe?.setInfrastructure(state.showInfrastructure?INFRASTRUCTURE:[]);renderMapLayerState();};$('#map-layer-guide').onclick=()=>openDialog('MAP LAYERS',`<h2>Read the map</h2><dl class="vessel-facts"><div><dt>Arrows / circles</dt><dd>Received AIS positions. Arrows indicate reported direction; circles mean direction is missing. Hollow symbols are more than 10 minutes old.</dd></div><div><dt>Outlined squares</dt><dd>Approximate energy infrastructure references. Click for regional context; current operational status is not encoded.</dd></div><div><dt>Terrain &amp; coastline</dt><dd>Static elevation-derived geographic reference. Relief is exaggerated four times. This is not a navigable chart or a current operating-status layer.</dd></div></dl><p>The official IMO ledger preserves prose locations without placing invented coordinates on this regional map. Theater buttons, the vessel list and regional context provide keyboard-accessible details.</p>`);$('#price-table').onclick=()=>openDialog('DAILY OIL OBSERVATIONS',oilObservationTableMarkup(state.oil?.series,{period:state.period}));$('#vessel-list').onclick=showVesselList;$('#map-reset').onclick=()=>globe?.reset();$('#source-status').onclick=showSources;$('#sources-nav').onclick=showSources;$('#methodology').onclick=showGuide;$('#data-method').onclick=showGuide;$('#command-help').onclick=showGuide;$('#brief-button').onclick=showBrief;$('#export-button').onclick=exportView;$('#command-form').onsubmit=e=>{e.preventDefault();const raw=$('#command').value;runCommand(raw);$('#command').value='';};
 function updateClock(){$('#utc-clock').textContent=new Date().toLocaleTimeString('en-GB',{hour12:false,timeZone:'UTC'})+' UTC';}updateClock();setInterval(updateClock,1000);setInterval(()=>{if(state.auto&&!document.hidden)loadAll();},LIVE_REFRESH_MS);document.addEventListener('visibilitychange',()=>{if(!document.hidden&&state.auto)loadAll();});
 setInterval(()=>{if(state.auto&&!document.hidden){loadVessels();if(dialogMode==='sources')loadDiagnostics();}else renderVessels();refreshAges();},10000);
 $('passage-oil-quotes')?.toggleAttribute('paused',!state.auto);
@@ -377,33 +394,21 @@ function renderVesselFilter(){
   const select=$('#vessel-filter');if(!select)return;
   const all=allVisibleVessels();select.innerHTML=Object.entries(VESSEL_LAYERS).map(([id,layer])=>`<option value="${id}">${layer.label} · ${layer.matches?all.filter(v=>layer.matches.includes(v.shipType||'unknown')).length:all.length}</option>`).join('');select.value=state.vesselFilter;
 }
+function renderMapLayerState(){
+  const target=$('#map-layer-state');if(!target)return;
+  target.textContent=`${state.showVessels?'AIS: '+currentVesselLayer().detail+' · '+names[state.theater]+' · received positions under 30 min':'AIS layer off'} · Infrastructure references ${state.showInfrastructure?'on':'off'}`;
+}
+function currentVesselAvailability(all=allVisibleVessels(),vessels=all.filter(vesselMatchesLayer)){
+  return vesselAvailability({sources:allSourceStates().filter(source=>source.group==='vessels'),hasSnapshot:Boolean(state.vessels),requestFailed:Boolean(state.failures.vessels),autoRefresh:state.auto,allCount:all.length,matchingCount:vessels.length,typeFiltered:state.vesselFilter!=='all',layerLabel:currentVesselLayer().detail,scopeLabel:names[state.theater]});
+}
 function renderVessels() {
-  const data = state.vessels, all = allVisibleVessels(), vessels = all.filter(vesselMatchesLayer), layer=currentVesselLayer(), source = allSourceStates().find(s=>s.id==='aisstream'), fallbackSource = allSourceStates().find(s=>s.id==='openwaters');
-  const aisConnected = source?.connection === 'connected' && !state.failures.vessels;
-  const fallbackConnected = fallbackSource?.connection === 'connected' && !state.failures.vessels;
-  const connected = aisConnected || fallbackConnected;
-  const providers = [...new Set(all.map(v=>v.provider).filter(Boolean))];
-  const providerLabel = providers.length ? providers.join(' + ') : fallbackConnected ? 'Open Waters' : 'AISStream';
-  const current = vessels.filter(v => !v.stale).length;
-  const status = !data ? (state.failures.vessels ? 'Live-data connection unavailable' : 'Checking connection')
-    : !data.configured ? 'Public fallback checking'
-    : !state.auto ? `Refresh paused · ${vessels.length} ${layer.metricLabel} retained`
-    : state.failures.vessels ? 'Live-data connection unavailable'
-    : connected && !all.length && aisConnected && source?.positionFrames===0 && !fallbackConnected ? 'Connected · no vessel positions received'
-    : connected && vessels.length ? `${layer.detail} · ${vessels.length} received · ${current} under 10 min`
-    : connected && all.length ? `No ${layer.detail.toLowerCase()} in view`
-    : connected ? 'No received positions in view'
-    : `${source?.connection||'disconnected'} · ${vessels.length} retained`;
-  $('#vessel-status').textContent = status;
-  $('#vessel-status').classList.toggle('receiving', connected && current>0 && state.auto);
-  renderVesselFilter();
-  $('#vessel-note').textContent = !data?.configured && data ? 'Public Open Waters positions are used when available. Add AISStream locally for a second stream.'
-    : vessels.length ? `${names[state.theater]} · ${layer.detail} layer · received from ${providerLabel}. ${all.length-vessels.length?`${all.length-vessels.length} other positions hidden. `:''}Positions expire after 30 minutes.`
-    : all.length ? `${names[state.theater]} · No typed ${layer.detail.toLowerCase()} positions in this snapshot. ${all.length} other received positions are hidden; switch Layer to inspect them.`
-    : connected && aisConnected && source?.positionFrames===0 && !fallbackConnected ? 'AISStream accepted the subscription and the heartbeat is verified, but no vessel positions have arrived. Open Waters is also quiet for the selected areas. That is a provider reception gap, not an empty waterway.'
-    : connected ? `${names[state.theater]} · No provider positions are available in this snapshot. That is a coverage gap, not evidence that the waterway is empty.`
-    : 'Awaiting AIS reception. Previously received positions, if any, retain their original timestamps.';
-  if($('#vessel-count-summary')){$('#vessel-count-summary').textContent=!data||(!data.configured&&!all.length)?'—':vessels.length;$('#vessel-count-basis').textContent=!data?'Checking AIS':!data.configured?'Public fallback · incomplete coverage':connected?`${layer.detail} · ${providerLabel} · incomplete coverage`:'Retained · connection '+(source?.connection||'unknown');}
+  const all=allVisibleVessels(),vessels=all.filter(vesselMatchesLayer),availability=currentVesselAvailability(all,vessels),current=vessels.filter(v=>!v.stale).length;
+  const providers=[...new Set(vessels.map(v=>v.provider).filter(Boolean))];
+  $('#vessel-status').textContent=availability.heading+(availability.status==='available'?` · ${names[state.theater]} · ${current} under 10 min`:'');
+  $('#vessel-status').classList.toggle('receiving',availability.status==='available'&&current>0&&state.auto);
+  renderVesselFilter();renderMapLayerState();
+  $('#vessel-note').textContent=(providers.length?'Received from '+providers.join(' + ')+'. ':'')+availability.detail;
+  if($('#vessel-count-summary')){$('#vessel-count-summary').textContent=availability.count??'—';$('#vessel-count-basis').textContent=`${names[state.theater]} · ${availability.heading} · incomplete reception`;}
   globe?.setVessels(vessels,state.showVessels);
 }
 async function loadVessels() {
@@ -417,9 +422,10 @@ async function loadVessels() {
   finally { state.vesselsBusy = false; renderVessels(); renderTheaters(); renderStatus(); }
 }
 function showVesselList() {
-  const all=allVisibleVessels(),vessels = all.filter(vesselMatchesLayer),layer=currentVesselLayer(),providers=[...new Set(all.map(v=>v.provider).filter(Boolean))],providerLabel=providers.join(' + ')||'AIS provider',providerHref=providers.includes('Open Waters')?'https://openwaters.io/api/ais/':'https://aisstream.io/';
-  openInspector(`RECEIVED ${layer.detail.toUpperCase()}`, `<h2>${esc(names[state.theater])}</h2><p>${vessels.length} ${esc(layer.detail.toLowerCase())} with received positions in the past 30 minutes. This list is a snapshot from ${fmtTime(new Date().toISOString())} UTC. ${all.length-vessels.length?`${all.length-vessels.length} other positions are hidden by the Layer filter. `:''}Reception is incomplete; provider positions are not a traffic count.</p><div class="vessel-list">${vessels.map(v => `<button class="vessel-row" data-vessel-detail="${esc(v.mmsi)}"><span><strong>${esc(v.name || 'Name not reported')}</strong><small>${esc(vesselTypeLabel(v.shipType))} · MMSI ${esc(v.mmsi)} · ${esc(names[v.theater])}</small></span><span>${esc(relative(v.positionTime))}<small>${v.stale ? 'Older position' : 'Under 10 minutes'}</small></span></button>`).join('') || `<p>No typed ${esc(layer.detail.toLowerCase())} positions are available in this theater right now. Switch Layer to All received to inspect ${all.length||'other'} positions.</p>`}</div><p><a href="${providerHref}" target="_blank" rel="noopener noreferrer">Source: ${esc(providerLabel)} ↗</a></p>`);
+  const all=allVisibleVessels(),vessels=all.filter(vesselMatchesLayer),layer=currentVesselLayer(),availability=currentVesselAvailability(all,vessels),providers=[...new Set(all.map(v=>v.provider).filter(Boolean))],providerLabel=providers.join(' + ')||'AIS provider',providerHref=providers.includes('Open Waters')?'https://openwaters.io/api/ais/':'https://aisstream.io/';
+  openInspector(`RECEIVED ${layer.detail.toUpperCase()}`, `<h2>${esc(names[state.theater])}</h2><p><strong>${esc(availability.heading)}</strong></p><p>${esc(availability.detail)}</p><div class="vessel-list">${vessels.map(v => `<button class="vessel-row" data-vessel-detail="${esc(v.mmsi)}"><span><strong>${esc(v.name || 'Name not reported')}</strong><small>${esc(vesselTypeLabel(v.shipType))} · MMSI ${esc(v.mmsi)} · ${esc(names[v.theater])}</small></span><span>${esc(relative(v.positionTime))}<small>${v.stale ? 'Older position' : 'Under 10 minutes'}</small></span></button>`).join('')}</div>${availability.canShowAll?`<button id="show-all-vessels" class="text-button">${esc(availability.showAllLabel)}</button>`:''}<p><a href="${providerHref}" target="_blank" rel="noopener noreferrer">Source: ${esc(providerLabel)} ↗</a></p>`);
   $$('[data-vessel-detail]').forEach(b => b.onclick = () => showVessel(b.dataset.vesselDetail));
+  if(availability.canShowAll)$('#show-all-vessels').onclick=()=>{state.vesselFilter='all';renderVessels();showVesselList();};
 }
 function showVessel(mmsi,{refresh=false}={}) {
   const vessel = visibleVessels().find(v => v.mmsi === mmsi);
@@ -439,7 +445,7 @@ function refreshAges(){
   if(marker){const target=$$(`[${marker}]`).find(el=>el.getAttribute(marker)===value);target?.focus({preventScroll:true});}
   renderWeather();
   renderOilContext();renderMarket();
-  $$('[data-oil-state]').forEach(el=>{const source=allSourceStates().find(s=>s.id===el.dataset.oilState),p=state.oil?.series.find(s=>s.id===el.dataset.oilState)?.observations?.at(-1);el.textContent=p?`${fmtDate(p.date)} · ${source.label}`:'Source unavailable';});
+  $$('[data-oil-state]').forEach(el=>{el.textContent=oilQuoteState(state.oil?.series.find(s=>s.id===el.dataset.oilState)).label;});
   renderStatus();
   if(inspectorMode==='vessel'&&selectedMmsi){const selected=selectedMmsi,focused=document.activeElement?.id;showVessel(selected,{refresh:true});if(focused&&document.getElementById(focused))document.getElementById(focused).focus({preventScroll:true});}
 }
@@ -448,5 +454,5 @@ let reportingPollBusy=false;
 setInterval(async()=>{
   if(!state.auto||document.hidden||state.busy||reportingPollBusy||!state.news?.coverage?.discoveryPending)return;
   reportingPollBusy=true;
-  try{const response=await apiFetch('/api/news',{signal:AbortSignal.timeout(35000)});if(!response.ok)throw Error();state.latestNews=await response.json();state.news=monitoring.ingestNews(state.latestNews);delete state.failures.news;renderReports();renderStatus();}catch{state.failures.news=true;renderStatus();}finally{reportingPollBusy=false;}
+  try{const response=await apiFetch('/api/news',{signal:AbortSignal.timeout(35000)});if(!response.ok)throw Error();state.latestNews=await response.json();state.news=monitoring.ingestNews(state.latestNews);delete state.failures.news;renderReports();renderStatus();}catch{state.failures.news=true;renderReports();renderStatus();}finally{reportingPollBusy=false;}
 },30000);

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {normalizeOilObservations} from '../dist/oil-chart-view.mjs';
-import {renderMarketPulse} from '../dist/market-pulse.mjs';
+import {renderMarketPulse,oilObservationState} from '../dist/market-pulse.mjs';
 import {renderMarketContext} from '../dist/market-view.mjs';
 import {buildOilSystemState} from '../dist/oil-system-model.mjs';
 import {reportTime,reportTimeLabel} from '../dist/reporting-view.mjs';
@@ -17,7 +17,7 @@ function harness(){
   const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{innerHTML:'',scrollTop:90,contains:()=>false});return nodes.get(selector);};
   const state={auto:false,period:90,theater:'both',failures:{},oil:{series:[{id:'brent',name:'Brent',connection:'connected',retrievedAt:'2026-10-11T20:00:00Z',observations:[{date:'2026-10-02',value:100}]}]},market:{series:[{id:'crude-stocks',name:'Crude stocks',connection:'connected',retrievedAt:'2026-10-11T20:00:00Z',observations:[{date:'2026-09-28',value:420000}],scale:.001,units:'MBBL',displayUnit:'million barrels',url:'https://www.eia.gov/'}]}};
   class Clock extends Date {static now(){return now;}}
-  const context=vm.createContext({state,document,$,$$:()=>[],Date:Clock,normalizeOilObservations,renderMarketPulse,renderMarketContext,reportTime,reportTimeLabel,
+  const context=vm.createContext({state,document,$,$$:()=>[],Date:Clock,normalizeOilObservations,renderMarketPulse,oilObservationState,renderMarketContext,reportTime,reportTimeLabel,
     preserveViewFocus:()=>()=>{},oilChart:{update:(...args)=>chartUpdates.push(args)},oilSystem:{update:input=>systemUpdates.push(buildOilSystemState({...input,selected:'transport',expanded:true}))},
     esc:String,money:value=>String(value),fmtDate:value=>value,relative:value=>`${Math.floor((now-Date.parse(value))/86400000)}d ago`,allSourceStates:()=>[],
     renderExposureBaseline(){},renderReports(){},renderWeather(){},renderStatus(){},inspectorMode:null,selectedMmsi:null});
@@ -77,4 +77,50 @@ test('publication dates never acquire a discovery label or an invented clock pre
 test('Energy quote header shares future and missing-observation filtering with the chart',()=>{
  const h=harness();h.state.oil.series[0].observations.push({date:'2026-10-10',value:null},{date:'2026-10-20',value:999});h.context.renderOil();
  assert.match(h.$('#oil-summary').innerHTML,/>100</);assert.match(h.$('#oil-summary').innerHTML,/2026-10-02/);assert.doesNotMatch(h.$('#oil-summary').innerHTML,/999|2026-10-20/);
+});
+
+test('Energy quote and Watch pulse agree on pending, empty, failed and retained series',()=>{
+  const h=harness(),series=h.state.oil.series[0];
+  series.observations=[];series.connection='loading';h.context.renderOil();
+  assert.match(h.$('#oil-summary').innerHTML,/Checking daily prices/);
+  series.connection='connected';h.context.renderOil();
+  assert.match(h.$('#oil-summary').innerHTML,/No daily observations/);
+  assert.doesNotMatch(h.$('#oil-summary').innerHTML,/unavailable|Checking/);
+  h.state.failures.oil=true;h.context.renderOil();
+  assert.match(h.$('#oil-summary').innerHTML,/Daily prices unavailable/);
+  assert.doesNotMatch(h.$('#market-pulse').innerHTML,/pending|Checking/);
+  series.observations=[{date:'2026-10-02',value:100}];
+  const original=structuredClone(series);h.context.renderOil();
+  for(const selector of ['#oil-summary','#market-pulse']){
+    assert.match(h.$(selector).innerHTML,/Update failed · retained observation/);
+    assert.match(h.$(selector).innerHTML,/2026-10-02/);
+  }
+  assert.deepEqual(series,original);
+});
+
+test('age updates preserve failed oil labels and the last valid observation date',()=>{
+  const h=harness(),node={dataset:{oilState:'brent'},textContent:''};
+  h.context.$$=selector=>selector==='[data-oil-state]'?[node]:[];
+  h.state.failures.oil=true;
+  h.state.oil.series[0].observations.push({date:'2026-10-20',value:999});
+  h.context.refreshAges();
+  assert.match(node.textContent,/2026-10-02 · Update failed · retained observation/);
+  assert.doesNotMatch(node.textContent,/2026-10-20|999/);
+  h.state.oil.series[0].observations=[];h.context.refreshAges();
+  assert.equal(node.textContent,'Daily prices unavailable');
+  h.state.failures.oil=false;h.context.refreshAges();
+  assert.equal(node.textContent,'No daily observations');
+});
+
+test('a failed discovery follow-up immediately refreshes Reporting as well as diagnostics',async()=>{
+  const state={auto:true,failures:{},news:{coverage:{discoveryPending:true}}},calls=[];
+  let poll;
+  const context=vm.createContext({state,document:{hidden:false},AbortSignal,
+    setInterval:callback=>{poll=callback;},apiFetch:async()=>({ok:false}),
+    renderReports:()=>calls.push(['reports',state.failures.news]),
+    renderStatus:()=>calls.push(['status',state.failures.news])});
+  vm.runInContext(app.slice(app.indexOf('let reportingPollBusy=false;')),context);
+  await poll();
+  assert.deepEqual(calls,[['reports',true],['status',true]]);
+  assert.equal(state.news.coverage.discoveryPending,true);
 });
