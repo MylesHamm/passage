@@ -14,7 +14,7 @@ export function adjacentWorkspace(view, key) {
 }
 
 const guidance = [
-  ['Orient on the regional terrain', 'Choose a chokepoint and inspect its geographic reference. The priority selection highlights relevant reporting; it is not a count of incidents.'],
+  ['Start with recent reporting', 'Read original headlines and their publication dates. Filter by region, then inspect a source. The compact map below is geographic reference; changing its focus does not filter reporting.'],
   ['Follow a development', 'Search or choose an actor, then select a headline. The evidence drawer keeps the original source, its dates and the possible oil connection together.'],
   ['Compare the market', 'Inspect dated Brent and WTI observations. Use the chart’s date control, then compare the separately labelled market expectations.'],
   ['Check what supports it', 'Inspect official records, regional infrastructure and coverage. A successful refresh does not establish complete coverage.'],

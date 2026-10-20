@@ -1,6 +1,6 @@
 import {physicalClaimText} from './report-semantics.mjs';
 import {canonicalReportUrl} from './intelligence-data.mjs';
-import {reportContextLabel} from './reporting-view.mjs';
+import {reportContextLabel,inReportingWindow} from './reporting-view.mjs';
 
 const WINDOW_HOURS=72,MAX_RECORDS=2000,MAX_PER_CARD=4;
 const THEATRES=['hormuz','bab'].map(id=>({id,title:reportContextLabel(id)}));
@@ -80,14 +80,15 @@ const compare=(a,b)=>b.context.importance-a.context.importance||Number(b.direct)
 /**
  * Select up to four recent headline groups per theatre, plus a separate energy
  * context card when needed. Copies match normalized headline text inside this
- * 72-hour window and publication day. Unknown publication dates join a known
+ * selected reporting window and publication day. Unknown publication dates join a known
  * day only when it is unambiguous; otherwise they remain a separate group.
  * Matching headlines are not assumed to describe one event or corroborate it.
  * Input records and their original titles, URLs, qualifiers and provenance are
  * retained unchanged as `report` and `copies`. No article bodies are generated.
  */
-export function buildPriorityBrief(news,{now=Date.now(),theater='both',actor='all',includeDiscovery=false}={}){
+export function buildPriorityBrief(news,{now=Date.now(),theater='both',actor='all',hours=WINDOW_HOURS,includeDiscovery=false}={}){
   const rows=Array.isArray(news)?news:Array.isArray(news?.items)?news.items:[];
+  const windowHours=hours==='all'?'all':[24,72,168].includes(Number(hours))?Number(hours):WINDOW_HOURS;
   const validNow=Number.isFinite(now)&&Math.abs(now)<=8640000000000000;
   const groups=new Map(),selectedActor=String(actor||'all').toLowerCase();
   for(const report of rows.slice(0,MAX_RECORDS)){
@@ -96,7 +97,8 @@ export function buildPriorityBrief(news,{now=Date.now(),theater='both',actor='al
     const canonical=canonicalReportUrl(report.url),clock=clockFor(report),context=headlineContext(report.title);
     if(!canonical||!clock||!context)continue;
     const time=Date.parse(clock.value);
-    if(time>now||time<now-WINDOW_HOURS*3600000)continue;
+    // Apply the shared cutoff to the validated clock, including day-only aliases.
+    if(time>now||!inReportingWindow({publishedAt:clock.value},windowHours,now))continue;
     const key=normalizedTitle(report.title),candidate={report,canonical,clock,context,time,direct:directPublisher(report,clock)};
     if(!key)continue;
     if(!groups.has(key))groups.set(key,[]);
@@ -127,5 +129,5 @@ export function buildPriorityBrief(news,{now=Date.now(),theater='both',actor='al
   // to either waterway. Theatre-specific energy reports remain in their card.
   const energy=eligible.filter(item=>!item.context.theatres.length&&item.context.energyContext);
   if(energy.length)cards.push({id:'energy',title:'Regional energy & exports',items:energy.slice(0,MAX_PER_CARD).map(item=>item.group),groupCount:energy.length,selectedCount:Math.min(energy.length,MAX_PER_CARD)});
-  return {cards,uniqueGroupCount:new Set(cards.flatMap(item=>item.items.map(group=>group.id))).size,windowHours:WINDOW_HOURS,generatedAt:validNow?new Date(now).toISOString():null,inputTruncated:rows.length>MAX_RECORDS,discoveryExcluded:includeDiscovery?0:ranked.filter(item=>!item.direct).length,selectionBasis:'Editorial headline relevance rules, not severity or probability',scopeNote:'Selected recent direct publisher headlines; discovery-only links remain in Reporting and Evidence. Ranking is editorial relevance, not severity or probability; not a complete event record. Matching headlines are repeated coverage, not independent corroboration. Theatre labels indicate headline relevance, not incident location.'};
+  return {cards,uniqueGroupCount:new Set(cards.flatMap(item=>item.items.map(group=>group.id))).size,windowHours,generatedAt:validNow?new Date(now).toISOString():null,inputTruncated:rows.length>MAX_RECORDS,discoveryExcluded:includeDiscovery?0:ranked.filter(item=>!item.direct).length,selectionBasis:'Editorial headline relevance rules, not severity or probability',scopeNote:'Selected direct publisher headlines in the reporting window; discovery-only links remain in Reporting and Evidence. Ranking is editorial relevance, not severity or probability; not a complete event record. Matching headlines are repeated coverage, not independent corroboration. Theatre labels indicate headline relevance, not incident location.'};
 }

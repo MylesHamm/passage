@@ -8,14 +8,16 @@ The interface runs on GitHub Pages. A separate Cloudflare Worker and one SQLite 
 
 ## Explore the watch
 
-- **Watch**: orient on regional terrain, inspect priority developments, and check dated Brent/WTI prices.
+- **Watch**: start with recent publisher reporting and new links, then use compact regional geography and dated Brent/WTI observations for context.
 - **Reporting**: search and filter the source stream. New links wait in a visible notice until applied, preserving your reading position.
 - **Energy**: compare dated daily prices, inspect the interactive oil-system diagram, and read separately labelled market expectations. Select export availability, passage/freight, security/insurance or benchmarks to see the evidence needed to connect a development to oil.
 - **Evidence**: review official records, regional infrastructure, marine/conflict context, and source coverage.
 
+The neutral light interface gives reporting priority over geographic and energy reference material. Historical exposure remains supporting context: the H1 2025 oil-flow figures are dated baselines, not current throughput or available bypass capacity. Default reporting uses working publisher feeds; historical and retired-source records remain available through an explicit archive option.
+
 Theatre and reporting filters carry across workspaces. Select a report or place to open one evidence inspector; Escape closes it. A report keeps its original headline and source link before three progressive views: Claim, Confirm, and Oil connection. Publication, event, discovery and retrieval dates remain separate. Reports can open the oil-system anatomy with possible channels clearly distinguished from measured effects, and stay attached while you explore.
 
-The terrain focuses on Hormuz and Bab el-Mandeb, with static elevation and a derived coastline from attributed Mapzen Terrain Tiles. Relief is exaggerated 4×; lighting and colors are designed rather than satellite imagery. It is not a navigation chart or current-conditions layer. Controlled camera moves explain selection and then stop. WebGL provides the 3D view where available, with a truthful 2D reference fallback. There is no idle rotation, animated traffic simulation or invented incident coordinate. See [terrain sources and limits](docs/REGIONAL-TERRAIN.md).
+The compact terrain view focuses on Hormuz and Bab el-Mandeb, with geographic focus and reporting scope controlled separately. It uses static elevation and a derived coastline from attributed Mapzen Terrain Tiles. Relief is exaggerated 4×; lighting and colors are designed rather than satellite imagery. It is not a navigation chart or current-conditions layer. Controlled camera moves explain selection and then stop. WebGL provides the 3D view where available, with a truthful 2D reference fallback. There is no idle rotation, animated traffic simulation or invented incident coordinate. See [terrain sources and limits](docs/REGIONAL-TERRAIN.md).
 
 Keyboard users can switch workspaces, inspector tabs and diagram parts with arrow, Home and End keys, and inspect price dates with the chart slider. The optional Quick tour explains the same workspaces at your pace. Refreshes preserve reading state and do not replay entrance motion; reduced-motion preferences remove animated transitions.
 

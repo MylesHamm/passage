@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
+import {reportingEmptyState} from '../dist/reporting-view.mjs';
 import { preserveViewFocus } from '../dist/view-focus.mjs';
 
 const investigate = readFileSync(new URL('../dist/investigate.js', import.meta.url), 'utf8');
@@ -130,7 +131,7 @@ test('removing the last saved report moves bookmark focus to the visible feed he
   const h = harness(), feed = h.$('#feed'), report = { id: 'report:one', title: 'A saved report' };
   const state = { view: 'saved', saved: { [report.id]: report } };
   Object.assign(h.context, {
-    state, runtime: {}, reportingCoverageText: () => '', renderActors() {},
+    state, runtime: {}, reportingCoverageText: () => '', reportingEmptyState, esc: String, renderActors() {},
     reports: () => Object.values(state.saved), groupReporting: rows => rows.map(row => ({ reports: [row] })),
     coverage: () => ({ unknown: false }), allSourceStates: () => [], resetFilters() {},
     renderScope() {}, selectedContext: null, renderMetrics() {}, renderTheaters() {},

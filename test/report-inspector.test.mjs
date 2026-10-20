@@ -7,7 +7,7 @@ test('inspector starts with original source and keeps unknown event clock separa
  assert.ok(html.indexOf('Read original source')<html.indexOf('record-tabs'));
  assert.match(html,/Iran may suspend oil exports/);assert.match(html,/Event date<\/span><strong>Not established/);
  const rows=reportClockRows(report,{lastSuccessAt:'2026-10-17T05:00:00Z',lastAttemptAt:'2026-10-17T06:00:00Z'});
- assert.equal(rows[0].value,undefined);assert.equal(rows[1].value,report.publishedAt);assert.equal(rows[3].value,'2026-10-17T05:00:00Z');
+ assert.equal(rows.some(row=>row.label==='Event'),false);assert.equal(rows.find(row=>row.label==='Publication').value,report.publishedAt);assert.equal(rows.find(row=>row.label==='Source retrieval').value,'2026-10-17T05:00:00Z');
 });
 test('inspector preserves kinds, discovery access, source uncertainty and safe markup',()=>{
  const html=reportInspectorMarkup({...report,recordKind:'agency-assessment',contentAccess:'discovery-metadata',summary:'<script>x</script>',title:'Agency <claim>'});
@@ -38,10 +38,19 @@ test('archived record retrieval never advances to the publisher latest successfu
  for(const flag of ['retainedFromHistory','collectionRetired','retainedForReading']){
   const archived={...report,[flag]:true,lastSeenAt:'2026-10-18T08:00:00Z'},source={lastSuccessAt:'2026-10-19T10:00:00Z'};
   const rows=reportClockRows(archived,source);
-  assert.equal(rows[3].label,'Record retrieval');assert.equal(rows[3].value,archived.lastSeenAt);
+  assert.equal(rows.find(row=>row.label==='Record retrieval').value,archived.lastSeenAt);
   const html=reportInspectorMarkup(archived,{source});
   assert.match(html,/<dt>Record retrieval<\/dt><dd>18 Oct 2026 · 08:00 UTC/);
-  assert.match(html,/Latest successful source check: 19 Oct 2026 · 10:00 UTC/);
-  assert.equal(reportClockRows({...archived,lastSeenAt:null},source)[3].value,null);
+  assert.match(html,/<dt>Source retrieval<\/dt><dd>19 Oct 2026 · 10:00 UTC/);
+  assert.equal(reportClockRows({...archived,lastSeenAt:null},source).some(row=>row.label==='Record retrieval'),false);
  }
+});
+
+test('shared evidence block preserves report reading tabs, actions and private notes',()=>{
+ const html=reportInspectorMarkup({...report,summary:'Publisher summary'},{saved:true,note:'My <assessment>',source:{retrievedAt:'2026-10-19T12:00:00Z'}});
+ assert.match(html,/aria-label="Source and evidence"/);assert.match(html,/Verification limits/);
+ for(const id of ['record-tab-claim','record-tab-confirm','record-tab-oil','record-claim','record-confirm','record-oil','detail-save','analyst-note','save-note','inspect-official-records','inspect-report-system'])assert.match(html,new RegExp(`id="${id}"`));
+ assert.match(html,/Saved ✓/);assert.match(html,/My &lt;assessment&gt;/);
+ assert.match(html,/Possible oil-market connections are interpretation/);
+ assert.ok(html.indexOf('Read original source')<html.indexOf('record-tabs'));
 });

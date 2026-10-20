@@ -1,7 +1,32 @@
 /* An account reference within the live brief; not a collected social feed. */
-.preferred-source { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 16px; margin: 0; padding: 8px 16px; border-top: 1px solid var(--rule, var(--border)); color: var(--command-dim, var(--line)); font-size: 11px; line-height: 1.6; }
+.preferred-source { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 16px; margin: 0; padding: 12px 16px; border-top: 1px solid var(--border); color: var(--muted); background: var(--panel); font-size: 12px; line-height: 1.6; }
 .preferred-source > span { min-width: 0; }
-.preferred-source a { color: var(--mint); display: inline-block; padding-block: 4px; text-underline-offset: 3px; }
-.preferred-source small { font-size: 10px; }
-.preferred-source a:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
-@media (max-width: 700px) { .preferred-source { align-items: flex-start; flex-direction: column; gap: 0; } .preferred-source a { min-height: 32px; padding-block: 6px; } }
+.preferred-source a { color: var(--accent); display: inline-block; padding-block: 4px; text-underline-offset: 3px; }
+.preferred-source small { font-size: 12px; }
+.preferred-source a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* These states live behind Sources and its technical disclosure. */
+.regional-workspace #detail-dialog .dialog-top .eyebrow { font-size: 12px; line-height: 1.6; color: var(--muted); }
+.regional-workspace #detail-dialog .available-sources { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.regional-workspace #detail-dialog .available-sources li { min-width: 0; }
+.regional-workspace #detail-dialog .available-sources small { font-size: 12px; line-height: 1.6; }
+.regional-workspace #detail-dialog .source-card { color: var(--text); background: var(--panel); padding: 20px 0; }
+.regional-workspace #detail-dialog .source-card > div { flex-wrap: wrap; gap: 8px 16px; min-width: 0; }
+.regional-workspace #detail-dialog .source-card strong { color: var(--text); font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.regional-workspace #detail-dialog .source-card p { font-size: 13px; line-height: 1.7; color: var(--muted); }
+.regional-workspace #detail-dialog .source-state { font-size: 12px; line-height: 1.6; color: var(--muted); overflow-wrap: anywhere; }
+.regional-workspace #detail-dialog .source-state:is(.stale,.unavailable,.cached) { color: var(--warning, #854d0e); }
+.regional-workspace #detail-dialog .dialog-source-link { display: inline-block; font-size: 13px; padding-block: 6px; color: var(--accent); }
+.regional-workspace #detail-dialog .coverage-category-note { color: var(--warning, #854d0e); background: var(--warning-bg, #fff8e8); border-left-color: var(--warning, #854d0e); font-size: 13px; line-height: 1.7; }
+.regional-workspace #detail-dialog .diagnostics { min-width: 0; color: var(--text); font-size: 13px; }
+.regional-workspace #detail-dialog .diagnostics summary { color: var(--text); font-size: 14px; line-height: 1.6; padding: 12px 0; overflow-wrap: anywhere; }
+.regional-workspace #detail-dialog .diagnostics pre { max-width: 100%; max-height: 360px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; border: 1px solid var(--border); padding: 16px; background: #f3f6fa; color: var(--text); font: 12px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace; }
+.regional-workspace #detail-dialog .diagnostics li { font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
+.regional-workspace #detail-dialog .diagnostics :is(button,a,summary):focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 700px) {
+  .preferred-source { align-items: flex-start; flex-direction: column; gap: 0; }
+  .preferred-source a { min-height: 36px; padding-block: 8px; }
+  .regional-workspace #detail-dialog .available-sources { grid-template-columns: minmax(0,1fr); }
+  .regional-workspace #detail-dialog .source-card > div { flex-direction: column; }
+  .regional-workspace #detail-dialog .diagnostics pre { padding: 12px; }
+}

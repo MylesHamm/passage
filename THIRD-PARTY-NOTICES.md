@@ -18,7 +18,7 @@ News headlines remain attributable to their publishers. The dashboard links to t
 
 The supplied World Monitor archive identifies its package as version 2.10.0 with AGPL-3.0-only licensing. Its map-led organization and reporting concepts informed the design comparison. This repository contains an independently written application, with no World Monitor source code, copied logos, or proprietary assets. The original project is available at [koala73/worldmonitor](https://github.com/koala73/worldmonitor).
 
-Cyberhill palette and typography values were supplied as design guidance. Passage uses its own working title and simple interface mark; it does not reproduce the Cyberhill logo in the application.
+Cyberhill palette and typography values were supplied as earlier design guidance. Passage's current neutral light interface leads with source reporting, followed by compact geographic context and separately dated energy reference material. It uses its own working title and simple interface mark; it does not reproduce the Cyberhill logo in the application.
 
 ## 5 WebSocket client and AISStream
 
@@ -38,7 +38,7 @@ The conceptual oil-system figures use the [Anatomy SVG core](https://github.com/
 
 ## Discovery metadata
 
-Bounded headline/link discovery is attributed to [The GDELT Project](https://www.gdeltproject.org/), using its public [DOC 2.0 API](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/). Consult [GDELT's terms](https://www.gdeltproject.org/about.html#termsofuse). Article text and images retain their publishers' rights; Passage does not fetch or republish full article bodies through this integration. Only two maritime-route query families remain active. A discovery timestamp is not a publication or event timestamp, and capped results are not complete coverage.
+Retained headline/link discovery is attributed to [The GDELT Project](https://www.gdeltproject.org/), using its public [DOC 2.0 API](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/). Consult [GDELT's terms](https://www.gdeltproject.org/about.html#termsofuse). Article text and images retain their publishers' rights; Passage does not fetch or republish full article bodies through this integration. All five query families are retired after persistent production rate limits. Historical records retain their discovery attribution and original clocks, and appear through the bounded archive rather than default current reporting. A discovery timestamp is not a publication or event timestamp, and capped results are not complete coverage.
 
 ## U.S. maritime advisory metadata
 

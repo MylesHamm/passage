@@ -65,6 +65,31 @@ test('Pages artifact resolves its real assets, imports and navigation under /pas
   assert.equal(graph.buildIntelligence().nodes.length, 0);
   assert.equal(graph.mergeManualEvidence({ nodes: [], edges: [] }, []).review, null);
   assert.doesNotMatch(await readFile(resolve(output, 'energy-context.mjs'), 'utf8'), /shutdown reported Sep 11|September 11 shutdown notice/);
+
+  // Exercise the public Evidence renderer without a browser or preview server.
+  const {createSituationView}=await import(pathToFileURL(resolve(output,'situation-view.mjs')));
+  const ledger={innerHTML:'',contains:()=>false,querySelector:()=>null,querySelectorAll:()=>[]};
+  const previousDocument=globalThis.document,state={theater:'both',failures:{}};
+  globalThis.document={activeElement:null,getElementById:id=>id==='incident-ledger'?ledger:null};
+  try{
+    const view=createSituationView({getState:()=>state,getSources:()=>[],openDialog(){}});
+    view.update();
+    assert.match(ledger.innerHTML,/Waiting for official-source responses/);
+    assert.doesNotMatch(ledger.innerHTML,/No retrieved evidence matches|data-evidence-all|Review all 0/);
+    state.failures.maritime=true;view.update();
+    assert.match(ledger.innerHTML,/Official records are unavailable/);
+    assert.doesNotMatch(ledger.innerHTML,/Checking official|previously retrieved evidence|data-evidence-all/);
+    state.failures.maritime=false;state.maritime={events:[],advisories:[]};view.update();
+    assert.match(ledger.innerHTML,/No retrieved evidence matches/);
+    assert.doesNotMatch(ledger.innerHTML,/Checking official|data-evidence-all/);
+    state.maritime.events.push({id:'official',recordType:'incident',title:'Dated official record',eventDate:new Date().toISOString().slice(0,10),theaters:['hormuz']});
+    state.failures.maritime=true;view.update();
+    assert.match(ledger.innerHTML,/previously retrieved evidence; current coverage is unavailable/);
+    assert.match(ledger.innerHTML,/Review all 1 records/);
+  }finally{
+    if(previousDocument===undefined)delete globalThis.document;
+    else globalThis.document=previousDocument;
+  }
 }));
 test('unconfigured Pages preview remains public on localhost and cannot quietly call local /api', async () => withDirectory(async directory => {
   const output = resolve(directory, 'unconfigured');

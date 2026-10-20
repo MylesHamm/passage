@@ -1,6 +1,6 @@
 # Regional terrain
 
-The main Watch uses controlled regional views of Hormuz and Bab el-Mandeb. The dependency-free renderer uses WebGL where available and a 2D elevation-based plan when it is not. Camera movement is bounded, responds to a user action, then stops. Geographic labels and infrastructure are approximate references. Received positions retain their source timestamps; reporting does not invent map coordinates.
+Watch leads with recent publisher reporting and uses compact regional views of Hormuz and Bab el-Mandeb as supporting geographic context. Geographic focus and reporting scope have separate controls; inspecting a region does not establish where a reported event occurred. The dependency-free renderer uses WebGL where available and a 2D elevation-based plan when it is not. Camera movement is bounded, responds to a user action, then stops. Geographic labels and infrastructure are approximate references. Received positions retain their source timestamps; reporting does not invent map coordinates.
 
 ## Source and transformations
 

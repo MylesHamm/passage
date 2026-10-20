@@ -45,8 +45,12 @@ test('zero and negative finite prices remain valid and no percentage division is
 
 test('loading, empty, failed and retained prices have distinct states',()=>{
   assert.match(renderMarketPulse(null,{now}),/Checking daily prices/);
+  assert.match(renderMarketPulse(null,{now}),/Observation pending/);
   assert.match(renderMarketPulse(null,{now,failed:true}),/Daily prices unavailable/);
+  assert.doesNotMatch(renderMarketPulse(null,{now,failed:true}),/pending|Checking/);
   assert.match(render([]),/No daily observations/);
+  assert.doesNotMatch(render([]),/pending|Checking|unavailable/);
+  assert.doesNotMatch(render([],{connection:'unavailable'}),/pending|Checking|retained observation/);
   const retained=render([row('2026-09-29',101)],{}, {failed:true});
   assert.match(retained,/data-state="retained"/);
   assert.match(retained,/Update failed · retained observation/);

@@ -5,7 +5,7 @@ const DAY=86400000;
 const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const money=value=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(value);
 const date=value=>{const [year,month,day]=value.split('-');return `${Number(day)} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][Number(month)-1]} ${year}`;};
-function observationState(series,observations,{failed,now,loading}){
+export function oilObservationState(series,observations,{failed=false,now=Date.now(),loading=false}={}){
   const retained=failed||Boolean(series?.error||series?.localFailure)||['cached','unavailable','disconnected'].includes(series?.connection)||['retained','unavailable'].includes(series?.status);
   if(!observations.length)return retained?{id:'unavailable',label:'Daily prices unavailable'}:loading||series?.connection==='loading'?{id:'loading',label:'Checking daily prices'}:{id:'empty',label:'No daily observations'};
   if(retained)return {id:'retained',label:'Update failed · retained observation'};
@@ -28,10 +28,10 @@ function sparkline(rows,observations,name){
 /** Daily EIA observations only. This summary has no provider calls or motion. */
 export function renderMarketPulse(oil,{failed=false,now=Date.now()}={}){
   const series=Array.isArray(oil?.series)?oil.series:[];
-  return `<section class="market-pulse" aria-label="Daily oil market pulse"><header class="pulse-heading"><div><h2>Oil market pulse</h2><p>Daily spot · USD/barrel · publication lag</p></div><button type="button" class="pulse-open" data-workspace-view="energy" aria-label="Open full energy comparison">Compare <span aria-hidden="true">↗</span></button></header><div class="pulse-rows">${[['brent','Brent'],['wti','WTI']].map(([id,name])=>{
+  return `<section class="market-pulse" aria-label="Daily oil market pulse"><header class="pulse-heading"><div><h2>Oil price observations</h2><p>Daily spot · USD/barrel · publication lag</p></div><button type="button" class="pulse-open" data-workspace-view="energy" aria-label="Open full energy comparison">Compare <span aria-hidden="true">↗</span></button></header><div class="pulse-rows">${[['brent','Brent'],['wti','WTI']].map(([id,name])=>{
     const source=series.find(row=>row?.id===id),rows=normalizeOilObservations(source?.observations,{now}),observations=rows.filter(point=>point.value!==null),latest=observations.at(-1),previous=observations.at(-2);
-    const status=observationState(source,observations,{failed,now,loading:!oil}),delta=latest&&previous?latest.value-previous.value:null;
+    const status=oilObservationState(source,observations,{failed,now,loading:!oil}),delta=latest&&previous?latest.value-previous.value:null;
     const difference=delta===null?'No prior observation':`${delta>0?'+':''}${money(delta)} vs ${date(previous.date)}`;
-    return `<article class="pulse-row pulse-${id}" data-market-series="${id}" data-state="${status.id}"><div class="pulse-series"><h3>${name}</h3>${latest?`<time datetime="${esc(latest.date)}">${esc(date(latest.date))}</time>`:'<span>Observation pending</span>'}</div><div class="pulse-value"><strong>${latest?esc(money(latest.value)):'—'}</strong><span>${esc(difference)}</span></div><div class="pulse-history">${sparkline(rows,observations,name)}</div><p class="pulse-state">${esc(status.label)}</p></article>`;
+    return `<article class="pulse-row pulse-${id}" data-market-series="${id}" data-state="${status.id}"><div class="pulse-series"><h3>${name}</h3>${latest?`<time datetime="${esc(latest.date)}">${esc(date(latest.date))}</time>`:`<span>${status.id==='loading'?'Observation pending':'No dated observation'}</span>`}</div><div class="pulse-value"><strong>${latest?esc(money(latest.value)):'—'}</strong><span>${esc(difference)}</span></div><div class="pulse-history">${sparkline(rows,observations,name)}</div><p class="pulse-state">${esc(status.label)}</p></article>`;
   }).join('')}</div><p class="pulse-footnote">Price changes compare available daily observations. They do not measure an event’s effect.</p></section>`;
 }

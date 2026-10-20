@@ -6,6 +6,43 @@ test('source inventory stays stable through first load and configuration',()=>{
  const loading=collectSources({},now);assert.equal(loading.length,28);assert.equal(statusSummary(loading),'Checking source coverage');
  const configured=collectSources({config:{aisstream:true,reliefweb:false}},now);assert.equal(configured.length,28);assert.equal(statusSummary(configured),'Checking source coverage');assert.equal(configured.find(s=>s.id==='reliefweb').label,'Not configured');
 });
+test('failed configuration lookup remains unknown and stops claiming it is checking',()=>{
+ const optional=collectSources({failures:{config:true}},now).filter(s=>s.optional);
+ assert.ok(optional.length>0);
+ for(const source of optional){
+  assert.equal(source.configured,null,source.id);
+  assert.equal(source.configurationFailed,true,source.id);
+  assert.equal(source.status,'unavailable',source.id);
+  assert.equal(source.label,'Configuration unavailable',source.id);
+  assert.equal(source.connection,'unknown',source.id);
+  assert.equal(source.coverageStatus,'unknown',source.id);
+  assert.equal(source.checkStatus,'missing',source.id);
+  assert.equal(source.attentionReason,'configuration',source.id);
+  assert.equal(source.hasData,false,source.id);
+  assert.equal(source.retrievedAt,null,source.id);
+ }
+ assert.equal(statusSummary(optional),'Source configuration unavailable');
+ const pending=collectSources({},now).filter(s=>s.optional);
+ assert.ok(pending.every(s=>s.configured===null&&!s.configurationFailed&&s.label==='Checking configuration'));
+ assert.equal(statusSummary(pending),'Checking source coverage');
+});
+test('failed config lookup preserves known cached configuration and source payload flags',()=>{
+ const cached=collectSources({config:{eia:true,aisstream:true,reliefweb:false,acled:false},failures:{config:true}},now);
+ for(const [id,configured] of [['crude-stocks',true],['refinery-use',true],['aisstream',true],['reliefweb',false],['acled',false]]){
+  const source=cached.find(s=>s.id===id);
+  assert.equal(source.configured,configured,id);assert.equal(source.configurationFailed,false,id);
+ }
+ for(const configured of [true,false]){
+  const payload=collectSources({failures:{config:true},news:{sources:[{id:'reliefweb',configured,...connected,recordCount:0}]},vessels:{source:{id:'aisstream',configured,...connected}},acled:{source:{id:'acled',configured,...connected,recordCount:0}}},now);
+  for(const id of ['reliefweb','aisstream','acled']){
+   const source=payload.find(s=>s.id===id);
+   assert.equal(source.configured,configured,id);assert.equal(source.configurationFailed,false,id);
+   assert.equal(source.retrievedAt,connected.retrievedAt,id);
+  }
+ }
+ const topLevel=collectSources({failures:{config:true},vessels:{configured:false,source:{id:'aisstream',configured:true,...connected}}},now).find(s=>s.id==='aisstream');
+ assert.equal(topLevel.configured,false);assert.equal(topLevel.configurationFailed,false);
+});
 test('free regional publisher sources have unique public health identities',()=>{
  assert.equal(new Set(SOURCE_DEFINITIONS.map(source=>source.id)).size,SOURCE_DEFINITIONS.length);
  for(const [id,name] of [['mee','Middle East Eye'],['memo','Middle East Monitor'],['france24','France 24 Middle East']]){
@@ -16,10 +53,25 @@ test('free regional publisher sources have unique public health identities',()=>
 });
 test('cold failures are unknown coverage, not successful empty reporting',()=>{
  const sources=collectSources({config:{aisstream:false,reliefweb:false},failures:{news:true}},now);const c=coverage(sources);assert.equal(c.unknown,true);assert.equal(c.empty,false);assert.equal(c.label,'Reporting unavailable');assert.match(panelNotice(sources,'news'),/Current reporting is unavailable/);
+ const bbc=sources.find(s=>s.id==='bbc');
+ assert.equal(bbc.connection,'unavailable');assert.equal(bbc.hasData,false);
+ assert.match(bbc.error,/No retained data is available/);assert.doesNotMatch(bbc.error,/Previously retrieved data is retained/);
+ assert.doesNotMatch(panelNotice(sources,'news'),/Historical records remain in the archive/);
 });
 test('warm failures preserve readable data and identify incomplete coverage',()=>{
  const state={config:{reliefweb:false},news:{items:[{sourceId:'bbc',publishedAt:'2026-09-13T17:00:00Z'}],sources:[{id:'bbc',...connected}]},failures:{news:true}};
  const sources=collectSources(state,now),bbc=sources.find(s=>s.id==='bbc');assert.equal(bbc.status,'retained');assert.equal(bbc.hasData,true);assert.equal(coverage(sources).unknown,false);assert.equal(coverage(sources).incomplete,true);assert.match(panelNotice(sources,'news'),/Historical records remain in the archive/);
+ assert.match(bbc.error,/Previously retrieved data is retained/);
+ assert.equal(bbc.retrievedAt,connected.retrievedAt);assert.equal(bbc.latestRelevant,state.news.items[0].publishedAt);
+});
+test('an earlier successful empty response does not invent retained records after failure',()=>{
+ const source={id:'bbc',...connected,checkedAt:'2026-09-13T17:00:01Z',latest:'2026-09-13T16:00:00Z',recordCount:0};
+ const sources=collectSources({config:{reliefweb:false},news:{items:[],sources:[source]},failures:{news:true}},now);
+ const bbc=sources.find(s=>s.id==='bbc');
+ assert.equal(bbc.status,'unavailable');assert.equal(bbc.connection,'unavailable');
+ assert.equal(bbc.hasData,false);assert.match(bbc.error,/No retained data is available/);
+ assert.equal(bbc.retrievedAt,source.retrievedAt);assert.equal(bbc.checkedAt,source.checkedAt);assert.equal(bbc.latest,source.latest);
+ assert.doesNotMatch(panelNotice(sources,'news'),/Historical records remain in the archive/);
 });
 test('successful empty feeds and all-empty outage have distinct states',()=>{
  const news={items:[],sources:SOURCE_DEFINITIONS.filter(s=>['news','discovery'].includes(s.group)&&s.id!=='reliefweb').map(({id})=>({id,...connected,recordCount:0,latest:'2026-09-13T17:00:00Z',retrievedAt:'2026-09-13T17:59:00Z'}))};const sources=collectSources({config:{reliefweb:false},news},now);assert.equal(coverage(sources).empty,true);assert.equal(coverage(sources).unknown,false);

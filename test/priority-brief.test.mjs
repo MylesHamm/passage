@@ -1,11 +1,42 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {buildPriorityBrief} from '../dist/priority-brief.mjs';
+import {inReportingWindow} from '../dist/reporting-view.mjs';
 
 const NOW=Date.parse('2026-09-28T12:00:00Z');
 const report=(id,title,extra={})=>({id,title,url:`https://example.com/${id}`,source:'Example publisher',sourceId:'bbc',publishedAt:'2026-09-28T08:00:00Z',publicationPrecision:'timestamp',contentAccess:'publisher-summary',...extra});
 const card=(brief,id)=>brief.cards.find(item=>item.id===id);
 const titles=brief=>brief.cards.flatMap(item=>item.items.map(group=>group.title));
+
+test('Watch uses the supported reporting window without changing source clocks',()=>{
+  const rows=[
+    report('today','Iran tanker incident reported today'),
+    report('two-days','Iran pipeline outage reported',{publishedAt:'2026-09-26T12:00:00Z'}),
+    report('six-days','Iran oil exports suspended',{publishedAt:'2026-09-22T12:00:00Z'}),
+    report('older','Iran port terminal closed',{publishedAt:'2026-09-01T12:00:00Z'}),
+  ],original=structuredClone(rows);
+  for(const [hours,expected] of [['24',['today']],['72',['today','two-days']],['168',['today','two-days','six-days']],['all',['today','two-days','six-days','older']]]){
+    const brief=buildPriorityBrief({items:rows},{now:NOW,hours});
+    assert.deepEqual(new Set(card(brief,'hormuz').items.map(item=>item.report.id)),new Set(expected));
+    assert.equal(brief.windowHours,hours==='all'?'all':Number(hours));
+  }
+  assert.equal(buildPriorityBrief({items:rows},{now:NOW,hours:'unsupported'}).windowHours,72);
+  assert.deepEqual(rows,original);
+});
+
+test('day-only publication dates use the same cutoff as Reporting and all dates still exclude invalid futures',()=>{
+  const rows=[
+    report('day-today','Iran tanker incident reported today',{publishedAt:null,publishedDate:'2026-09-28',publicationPrecision:'day'}),
+    report('day-yesterday','Iran tanker incident reported yesterday',{publishedAt:null,publishedDate:'2026-09-27',publicationPrecision:'day'}),
+    report('day-future','Iran tanker incident reported tomorrow',{publishedAt:null,publishedDate:'2026-09-29',publicationPrecision:'day'}),
+    report('future','Iran tanker incident future',{publishedAt:'2026-09-28T12:00:01Z'}),
+    report('invalid','Iran tanker incident invalid',{publishedAt:'2026-02-30T12:00:00Z'}),
+  ];
+  const brief=buildPriorityBrief({items:rows},{now:NOW,hours:'24'});
+  assert.deepEqual(card(brief,'hormuz').items.map(item=>item.report.id),rows.slice(0,2).filter(row=>inReportingWindow(row,'24',NOW)).map(row=>row.id));
+  assert.equal(card(brief,'hormuz').items[0].clock.precision,'day');
+  assert.deepEqual(new Set(card(buildPriorityBrief({items:rows},{now:NOW,hours:'all'}),'hormuz').items.map(item=>item.report.id)),new Set(['day-today','day-yesterday']));
+});
 
 test('prioritizes explicit route and oil disruption while excluding unrelated Iran headlines',()=>{
   const brief=buildPriorityBrief({items:[

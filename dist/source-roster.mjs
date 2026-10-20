@@ -5,6 +5,10 @@ export function availableSources(sources=[]) {
 }
 export function sourceRosterMarkup(sources=[]) {
   const list=availableSources(sources);
-  if(!list.length)return '<p class="empty">No current source updates are available. Historical evidence retains its original dates; this does not establish that no events occurred.</p>';
+  if(!list.length){
+    const pending=sources.some(source=>!source.retired&&(source.configured===true&&source.status==='loading'||source.configured===null&&!source.configurationFailed));
+    if(pending)return '<p class="empty">Checking source updates. Coverage is not yet established.</p>';
+    return '<p class="empty">No current source updates are available. This does not establish that no events occurred.</p>';
+  }
   return `<ul class="available-sources">${list.map(source=>`<li><div><a data-available-source="${escape(source.id)}" href="${escape(source.home)}" target="_blank" rel="noopener noreferrer">${escape(source.name)} ↗</a><small>${source.group==='news'&&['stale','empty'].includes(source.status)?'No recent relevant reports':'Checked '+escape(checked(source.retrievedAt))}</small></div></li>`).join('')}</ul>`;
 }
