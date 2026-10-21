@@ -2,35 +2,26 @@
 
 [Open Passage](https://myleshamm.github.io/passage/)
 
-An evidence-first regional watch for maritime security, regional oil supply, and the relationship between reporting and energy markets. Covers Bab el-Mandeb, Hormuz, and related regional infrastructure.
+An operations-center view of the regional war from the Gulf to the Red Sea, centred on the Strait of Hormuz. It shows received tanker positions, dated war events across the region, daily transits through the straits, oil prices and market odds. Each figure carries its own date and source.
 
-The interface runs on GitHub Pages. A separate Cloudflare Worker and one SQLite Durable Object collect public-source metadata in the background, retain source timestamps, and provide a read-only API. Pages does not run a server or contain API keys.
+## What you see
 
-## Explore the watch
-
-- **Watch**: start with recent publisher reporting and new links, then use compact regional geography and dated Brent/WTI observations for context.
-- **Reporting**: search and filter the source stream. New links wait in a visible notice until applied, preserving your reading position.
-- **Energy**: compare dated daily prices, inspect the interactive oil-system diagram, and read separately labelled market expectations. Select export availability, passage/freight, security/insurance or benchmarks to see the evidence needed to connect a development to oil.
-- **Evidence**: review official records, regional infrastructure, marine/conflict context, and source coverage.
-
-The neutral light interface gives reporting priority over geographic and energy reference material. Historical exposure remains supporting context: the H1 2025 oil-flow figures are dated baselines, not current throughput or available bypass capacity. Default reporting uses working publisher feeds; historical and retired-source records remain available through an explicit archive option.
-
-Theatre and reporting filters carry across workspaces. Select a report or place to open one evidence inspector; Escape closes it. A report keeps its original headline and source link before three progressive views: Claim, Confirm, and Oil connection. Publication, event, discovery and retrieval dates remain separate. Reports can open the oil-system anatomy with possible channels clearly distinguished from measured effects, and stay attached while you explore.
-
-The compact terrain view focuses on Hormuz and Bab el-Mandeb, with geographic focus and reporting scope controlled separately. It uses static elevation and a derived coastline from attributed Mapzen Terrain Tiles. Relief is exaggerated 4×; lighting and colors are designed rather than satellite imagery. It is not a navigation chart or current-conditions layer. Controlled camera moves explain selection and then stop. WebGL provides the 3D view where available, with a truthful 2D reference fallback. There is no idle rotation, animated traffic simulation or invented incident coordinate. See [terrain sources and limits](docs/REGIONAL-TERRAIN.md).
-
-Keyboard users can switch workspaces, inspector tabs and diagram parts with arrow, Home and End keys, and inspect price dates with the chart slider. The optional Quick tour explains the same workspaces at your pace. Refreshes preserve reading state and do not replay entrance motion; reduced-motion preferences remove animated transitions.
+- **Hormuz map.** 3D terrain with every vessel position received from the free AIS feed. Tankers are drawn as detailed models turned to their reported heading, with a trail of their last hour of received positions. **Replay last hour** plays those received positions back in twelve seconds. The default view runs from the Dubai and Sharjah anchorages, where the feed's receivers are, to the strait itself.
+- **Regional war map.** 3D terrain from the Gulf to the Red Sea with dated, source-linked events in three layers: attacks on shipping, missile and drone strikes, and strikes on Iran and Yemen. Naval missions are drawn as approximate areas, only for the days they were under way. Select an event, in the map, the event list or the chart, and **show me** flies the map to it, marks its date on the price chart, and shows Brent and the related odds on the day and a few days later. Nearby events are drawn as numbered groups, and **Hormuz** and **Red Sea & Yemen** jump to each front.
+- **All events.** The full timeline by month, filterable by layer. It includes register incidents whose report gives no usable position: they are listed, never pinned.
+- **Daily transits.** IMF PortWatch counts for Hormuz and Bab el-Mandeb, split into tankers and all ships, against a labelled pre-disruption average.
+- **Oil prices.** Daily Brent and WTI spot prices from the U.S. Energy Information Administration, including the latest next-day close.
+- **Market odds.** Polymarket probabilities for questions about Hormuz, shipping attacks and the conflict, each linked to its market.
+- **Headlines.** The latest reporting from BBC, Al Jazeera, Middle East Eye, Middle East Monitor, France 24 and UN News, one click away.
+- **About the data.** Every source with its status and latest date, plus how to read each panel. Select the status indicator in the top bar to open it.
 
 ## What updates
 
-- Reporting and official maritime notices are collected on a five-minute background cycle, subject to each provider's refresh interval and retry instructions. The open dashboard checks for updates every minute.
-- Received AIS positions stream into the collector continuously when configured; the dashboard checks every ten seconds. Coverage can be incomplete. Positions expire after thirty minutes.
-- EIA daily spot observations and weekly supply statistics retain their observation dates. Rechecking them does not create a newer market observation. The Watch pulse and Energy chart share the same dated-observation contract; they never imply intraday or event-driven price changes.
-- Polymarket provides up to five relevant active prediction markets through free public snapshots. Exact questions, deadlines, liquidity and resolution rules remain visible; these are market expectations, not event confirmation.
-- The live briefing links to The Hormuz Letter as a preferred source. Its X account is not automatically collected; examples shared for context are not pinned as a fixed watchlist.
-- Weather is a dated model forecast. Geography, infrastructure locations, and possible oil-impact mechanisms are reference context.
+- Vessel positions refresh every ten seconds while the page is open. The collector receives them continuously. Positions older than ten minutes fade, and are dropped after thirty.
+- Odds and headlines refresh every minute, oil every ten minutes, and transits and war events every thirty. The curated event list is reviewed by hand and shows its review date. PortWatch publishes weekly, so the latest transit day is often several days old.
+- Nothing is extrapolated. A trail joins positions actually received, and a missing price or count stays missing.
 
-Reports, events, and market movements remain distinct. A graph connection is not proof that an actor caused an incident or that an incident moved oil prices. Provider failures show retained, unavailable, or delayed states rather than fabricated replacements.
+The free AIS feed covers part of Hormuz and none of Bab el-Mandeb. An empty stretch of water on the map does not mean no ships are there.
 
 ## Run locally
 
@@ -42,16 +33,13 @@ cp .env.example .env
 npm start
 ```
 
-Add optional keys only to the ignored `.env` file. On macOS, `start.command` starts Passage and opens Firefox. Local ACLED account connections remain local; the public collector never reads or shares them.
-
-## Publish
-
-Follow [Hosting](docs/HOSTING.md). Deploy the collector first, check unattended collection and source health, configure its HTTPS address in the repository's `PASSAGE_API_BASE` variable, then manually run **Publish reviewed Passage**. Publishing is separate from ordinary commits.
+Add optional keys only to the ignored `.env` file. On macOS, `start.command` starts Passage and opens Firefox.
 
 ```sh
 npm test
 npm run check
-npm run cloud:check
 ```
 
-The free deployment is designed for a personal public watch, not guaranteed uninterrupted service. Cloudflare quotas and provider limits can interrupt collection. See [source and dependency notices](THIRD-PARTY-NOTICES.md). No full paid articles are bundled or republished.
+## Publish
+
+Follow [Hosting](docs/HOSTING.md). Deploy the collector first and check its source health. Then set its HTTPS address in the repository's `PASSAGE_API_BASE` variable and run **Publish reviewed Passage** manually. Publishing is separate from ordinary commits.

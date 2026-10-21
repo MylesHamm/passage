@@ -1,0 +1,310 @@
+/* PASSAGE operations center. Dark, map-first, little text: each panel carries
+   one data-age stamp, and every caveat lives in "About the data". */
+@font-face { font-family: 'IBM Plex Sans'; src: url('/assets/plex-400.ttf'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'IBM Plex Sans'; src: url('/assets/plex-500.ttf'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'IBM Plex Sans'; src: url('/assets/plex-600.ttf'); font-weight: 600; font-display: swap; }
+
+:root {
+  color-scheme: dark;
+  --bg: #03080e;
+  --panel: #07111b;
+  --panel-raised: #0b1824;
+  --line: #142536;
+  --line-strong: #20384e;
+  --text: #e7eef5;
+  --dim: #94a8ba;
+  --faint: #5f7589;
+  --live: #3ee6a8;
+  --ship: #8fd3ff;
+  --tanker: #ffc069;
+  --alert: #ff5c50;
+  --odds: #b9a4ff;
+  --brent: #3ee6a8;
+  --wti: #8fd3ff;
+  --radius: 10px;
+  --gap: 14px;
+  /* Oil chart and shared component variables. */
+  --muted: var(--dim);
+  --border: var(--line-strong);
+  --accent: var(--brent);
+  --mint: var(--live);
+  font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+  background: var(--bg);
+  color: var(--text);
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: radial-gradient(1200px 600px at 30% -10%, #0b2236 0%, transparent 60%), var(--bg); }
+a { color: var(--ship); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font: inherit; color: inherit; background: transparent; border: 1px solid var(--line-strong); border-radius: 7px; padding: 6px 11px; cursor: pointer; }
+button:hover { background: #12263a; border-color: #2c4b66; }
+button[aria-pressed=true], button.is-active { background: #10283a; border-color: var(--ship); color: #fff; }
+button:disabled { opacity: .45; cursor: default; }
+:focus-visible { outline: 2px solid var(--live); outline-offset: 2px; }
+.skip { position: absolute; left: 12px; top: -48px; z-index: 50; background: var(--panel-raised); padding: 8px 12px; border-radius: 6px; }
+.skip:focus { top: 10px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Top bar */
+.ops-bar { display: flex; align-items: center; gap: 18px; height: 54px; padding: 0 20px; border-bottom: 1px solid var(--line); background: #040b13e6; backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 20; }
+.ops-brand { display: flex; align-items: baseline; gap: 12px; }
+.ops-brand strong { font-size: 17px; letter-spacing: .3em; font-weight: 600; }
+.ops-brand span { font-size: 12px; color: var(--dim); letter-spacing: .04em; }
+.ops-bar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.ops-clock { font-size: 13px; color: var(--dim); font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.ops-status { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
+.ops-status i { width: 8px; height: 8px; border-radius: 50%; background: var(--faint); box-shadow: 0 0 0 3px #ffffff0d; }
+.ops-status[data-state=live] i { background: var(--live); box-shadow: 0 0 0 3px #3ee6a826; }
+.ops-status[data-state=degraded] i { background: var(--tanker); box-shadow: 0 0 0 3px #ffc06926; }
+.ops-status[data-state=down] i { background: var(--alert); }
+
+/* Layout */
+.ops-grid { display: grid; grid-template-columns: minmax(0, 1fr) 372px; grid-template-rows: minmax(520px, calc(100vh - 54px - 252px - 3 * var(--gap))) auto; gap: var(--gap); padding: var(--gap) 20px 20px; }
+.hero { grid-column: 1; grid-row: 1; position: relative; scroll-margin-top: 64px; min-height: 520px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #041019; }
+.rail { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: var(--gap); min-height: 0; }
+/* The rail takes the height of the map and price strip and scrolls inside it, so a long list never stretches the strip. */
+@media (min-width: 1101px) { .rail { contain: size; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--line) transparent; } .rail > .card { flex-shrink: 0; } }
+.strip { grid-column: 1; grid-row: 2; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; min-width: 0; }
+.card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.card-head h2 { margin: 0; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+.stamp { font-size: 11px; color: var(--faint); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.stamp[data-state=stale] { color: var(--tanker); }
+.stamp[data-state=down] { color: var(--alert); }
+.empty-note { margin: 0; font-size: 13px; color: var(--faint); }
+
+/* Hero map */
+.hero-map { position: absolute; inset: 0; }
+/* Legibility scrims behind the overlay text; the map stays fully interactive. */
+.hero::before, .hero::after { content: ''; position: absolute; left: 0; right: 0; z-index: 2; pointer-events: none; }
+.hero::before { top: 0; height: 150px; background: linear-gradient(#03080ee0, #03080e00); }
+.hero::after { bottom: 0; height: 90px; background: linear-gradient(#03080e00, #03080ed0); }
+.hero-map canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+.hero-map canvas:active { cursor: grabbing; }
+.map-overlay { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.map-tracks { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map-track { fill: none; stroke: var(--tanker); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.map-label { position: absolute; transform: translate(-50%, -50%); font-size: 11px; letter-spacing: .18em; color: #c9d7e366; white-space: nowrap; text-shadow: 0 1px 6px #000; }
+.map-label[data-kind=place] { letter-spacing: .04em; color: #c9d7e399; }
+.map-label[data-kind=place]::before { content: ''; display: inline-block; width: 4px; height: 4px; margin-right: 6px; border-radius: 50%; background: #c9d7e3aa; vertical-align: middle; }
+.map-label[data-kind=water] { font-style: italic; letter-spacing: .3em; color: #8fd3ff40; }
+.vessel { position: absolute; left: 0; top: 0; pointer-events: auto; border: 0; padding: 0; background: none; border-radius: 50%; cursor: pointer; transition: opacity var(--motion-medium, 280ms) var(--ease-standard, ease); }
+.vessel:hover { background: none; }
+.vessel[data-kind=other] { width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; }
+.vessel[data-kind=other]::after { content: ''; position: absolute; inset: 2.5px; border-radius: 50%; background: var(--ship); opacity: .55; }
+.vessel[data-kind=tanker] img, .vessel[data-kind=tanker] svg { display: block; pointer-events: none; filter: drop-shadow(0 3px 5px #000a); }
+.vessel[data-kind=tanker-marker] { width: 14px; height: 14px; margin: -7px 0 0 -7px; }
+.vessel[data-kind=tanker-marker]::after { content: ''; position: absolute; inset: 2px; border-radius: 50%; border: 2px solid var(--tanker); }
+.vessel[data-stale=true] { opacity: .45; }
+.vessel[aria-pressed=true]::before { content: ''; position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%; border: 1px solid var(--live); box-shadow: 0 0 18px #3ee6a855; }
+.hud { position: absolute; z-index: 3; pointer-events: none; }
+.hud > * { pointer-events: auto; }
+.hud-tl { left: 18px; top: 16px; max-width: min(420px, 60%); }
+.hud-kicker { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: .2em; color: var(--dim); }
+.hud-kicker i { width: 7px; height: 7px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 0 #3ee6a888; }
+.hud-kicker[data-state=replay] i { background: var(--tanker); }
+.hud-title { margin: 6px 0 2px; font-size: clamp(26px, 2.6vw, 38px); font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
+.hud-counts { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--dim); }
+.hud-counts strong { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.hud-counts .tankers strong { color: var(--tanker); }
+.hud-tr { right: 14px; top: 14px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; max-width: 60%; }
+.hud-tr button { background: #06121ccc; backdrop-filter: blur(6px); font-size: 12px; }
+.hud-br { right: 14px; bottom: 14px; display: flex; gap: 6px; }
+.hud-br button { background: #06121ccc; width: 34px; height: 34px; padding: 0; font-size: 16px; }
+.hud-bl { left: 18px; bottom: 14px; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 11px; color: var(--dim); align-items: center; }
+.legend-key { display: inline-flex; align-items: center; gap: 6px; }
+.legend-key i { display: inline-block; }
+.legend-key .k-tanker { width: 16px; height: 6px; border-radius: 3px; background: var(--tanker); }
+.legend-key .k-other { width: 6px; height: 6px; border-radius: 50%; background: var(--ship); opacity: .7; }
+.legend-key .k-track { width: 16px; border-top: 2px solid var(--tanker); opacity: .7; }
+.replay-clock { position: absolute; z-index: 3; left: 50%; top: 18px; transform: translateX(-50%); padding: 6px 14px; border-radius: 999px; background: #1c1407e6; border: 1px solid #ffc06966; color: var(--tanker); font-size: 13px; font-variant-numeric: tabular-nums; }
+.map-fallback { position: absolute; inset: 0; display: grid; place-items: center; color: var(--dim); font-size: 14px; }
+
+/* Selected vessel card */
+.vessel-card { position: absolute; z-index: 4; right: 14px; top: 60px; width: 268px; background: #07131ef2; border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 14px; box-shadow: 0 20px 40px #0008; }
+.vessel-card h3 { margin: 0 24px 2px 0; font-size: 17px; font-weight: 500; }
+.vessel-card .vc-type { margin: 0 0 10px; font-size: 12px; color: var(--tanker); letter-spacing: .06em; }
+.vessel-card dl { display: grid; grid-template-columns: auto 1fr; gap: 5px 12px; margin: 0; font-size: 13px; }
+.vessel-card dt { color: var(--faint); }
+.vessel-card dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.vessel-card .vc-close { position: absolute; right: 8px; top: 8px; border: 0; width: 28px; height: 28px; padding: 0; font-size: 18px; color: var(--dim); }
+
+/* Transits */
+.transit-row + .transit-row { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.transit-name { display: flex; justify-content: space-between; font-size: 13px; color: var(--dim); }
+.transit-figures { display: flex; align-items: baseline; gap: 10px; margin-top: 4px; }
+.transit-figures strong { font-size: 30px; font-weight: 500; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.transit-figures span { font-size: 13px; color: var(--dim); }
+.transit-figures .tankers { color: var(--tanker); }
+.transit-baseline { margin: 2px 0 8px; font-size: 12px; color: var(--faint); }
+.transit-baseline b { color: var(--dim); font-weight: 500; }
+.transit-share { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--live); font-variant-numeric: tabular-nums; }
+.transit-share[data-low=true] { color: var(--alert); }
+.transit-bars { display: block; width: 100%; height: 44px; }
+.transit-bars rect.total { fill: #8fd3ff33; }
+.transit-bars rect.tanker { fill: var(--tanker); }
+.transit-bars line.baseline { stroke: var(--dim); stroke-dasharray: 3 3; stroke-width: 1; opacity: .7; }
+
+/* Odds */
+.odds-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.odds-item a { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; color: var(--text); }
+.odds-item a:hover { text-decoration: none; }
+.odds-item a:hover .odds-q { color: #fff; text-decoration: underline; }
+.odds-q { font-size: 13px; line-height: 1.35; color: #cdd9e4; }
+.odds-p { font-size: 18px; font-weight: 600; color: var(--odds); font-variant-numeric: tabular-nums; align-self: start; }
+.odds-bar { grid-column: 1 / -1; height: 3px; border-radius: 2px; background: #b9a4ff22; overflow: hidden; }
+.odds-bar i { display: block; height: 100%; background: var(--odds); }
+
+/* Headlines */
+.headline-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+.headline-item a { color: #d6e1ea; font-size: 13.5px; line-height: 1.35; }
+.headline-meta { display: block; margin-top: 2px; font-size: 11px; color: var(--faint); }
+.card-foot { margin-top: 12px; }
+.card-foot button { width: 100%; font-size: 12px; color: var(--dim); }
+
+/* Price strip */
+.strip { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 18px; align-items: stretch; }
+.price-latest { display: grid; align-content: start; gap: 14px; }
+.price-latest .px { display: grid; gap: 2px; }
+.price-latest .px span { font-size: 12px; color: var(--dim); display: flex; align-items: center; gap: 8px; }
+.price-latest .px span i { width: 14px; border-top: 2px solid var(--brent); }
+.price-latest .px.wti span i { border-top: 2px dashed var(--wti); }
+.price-latest .px strong { font-size: 26px; font-weight: 500; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.price-latest .px small { font-size: 11px; color: var(--faint); }
+.strip .oil-history-chart { min-width: 0; }
+.strip .oil-history-figure { display: grid; grid-template-columns: minmax(0, 1fr); }
+.strip .oil-history-plot, .strip .oil-history-plot svg { min-height: 0; height: 170px; }
+.strip .oil-history-readout { display: none; }
+.strip .oil-history-scrubber { display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--faint); }
+.strip .oil-history-scrubber input { flex: 1; accent-color: var(--brent); }
+.strip .oil-history-note { margin: 4px 0 0; font-size: 11px; color: var(--faint); }
+.oil-series-brent { --series-color: var(--brent); }
+.oil-series-wti { --series-color: var(--wti); }
+.oil-chart-grid { stroke: #1d3448; }
+.oil-chart-focus-dot { fill: var(--panel); }
+.period-switch { display: inline-flex; gap: 4px; }
+.period-switch button { padding: 3px 9px; font-size: 11px; }
+
+/* Dialogs */
+dialog { color: var(--text); background: var(--panel-raised); border: 1px solid var(--line-strong); border-radius: 12px; padding: 0; max-width: min(760px, calc(100vw - 32px)); width: 100%; box-shadow: 0 30px 80px #000c; }
+dialog::backdrop { background: #01050acc; backdrop-filter: blur(3px); }
+.dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--panel-raised); }
+.dialog-head h2 { margin: 0; font-size: 16px; font-weight: 500; }
+.dialog-body { padding: 16px 20px 20px; }
+.dialog-body h3 { margin: 18px 0 8px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); font-weight: 600; }
+.dialog-body h3:first-child { margin-top: 0; }
+.dialog-body p, .dialog-body li { font-size: 13.5px; color: #c6d3de; }
+.dialog-body ul { padding-left: 18px; margin: 6px 0; }
+.source-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.source-table th { text-align: left; font-weight: 500; color: var(--faint); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.source-table td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.source-table td:first-child { white-space: nowrap; }
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 8px; background: var(--faint); vertical-align: 1px; }
+.dot[data-state=live] { background: var(--live); }
+.dot[data-state=stale] { background: var(--tanker); }
+.dot[data-state=down] { background: var(--alert); }
+dialog.sheet { margin: 0 0 0 auto; height: 100vh; max-height: 100vh; border-radius: 12px 0 0 12px; max-width: min(520px, 100vw); }
+.region-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.region-filter button { font-size: 12px; }
+.dialog-close { border: 0; font-size: 20px; width: 34px; height: 34px; padding: 0; color: var(--dim); }
+
+/* Smaller screens: map first, then the rail, then prices. */
+@media (max-width: 1100px) {
+  .ops-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+  .hero { grid-column: 1; grid-row: auto; height: 72vh; min-height: 460px; }
+  .rail { grid-column: 1; grid-row: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .strip { grid-column: 1; grid-row: auto; }
+}
+@media (max-width: 640px) {
+  .ops-bar { gap: 10px; padding: 0 12px; }
+  .ops-brand span, .ops-clock { display: none; }
+  .ops-grid { padding: 10px; gap: 10px; }
+  .hero { height: 70vh; min-height: 420px; }
+  .hud-tl { left: 12px; top: 12px; max-width: calc(100% - 24px); }
+  .hud-tr { top: auto; bottom: 40px; left: 10px; right: 10px; max-width: none; flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; }
+  .hud-tr button { flex: none; font-size: 12px; padding: 6px 9px; }
+  .hud-br { top: 50%; bottom: auto; right: 10px; flex-direction: column; transform: translateY(-50%); }
+  .hud-bl { left: 12px; right: 12px; bottom: 10px; gap: 4px 10px; }
+  .hud-bl .stamp { display: none; }
+  .ops-status span { display: none; }
+  .vessel-card { left: 10px; right: 10px; width: auto; top: auto; bottom: 10px; }
+  .strip { grid-template-columns: 1fr; }
+  .price-latest { grid-template-columns: 1fr 1fr; }
+  .ops-bar-right button span.long { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vessel { transition: none; }
+}
+
+/* Phase 2: view switch, theatre events, missions, event card and chart ticks. */
+:root { --shipping: #ffc069; --missile: #ff5c50; --strike: #8fb8ff; --mission: #3ee6a8; }
+.view-switch { display: inline-flex; gap: 2px; padding: 3px; margin-left: 18px; border: 1px solid var(--line-strong); border-radius: 9px; background: #06101a; }
+.view-switch button { border: 0; border-radius: 7px; padding: 6px 14px; font-size: 13px; color: var(--dim); }
+.view-switch button[aria-selected=true] { background: #12283b; color: #fff; }
+.hud-set[hidden], .hero-map[hidden] { display: none; }
+.event { position: absolute; left: 0; top: 0; width: 14px; height: 14px; margin: -7px 0 0 -7px; padding: 0; border: 0; background: none; pointer-events: auto; cursor: pointer; }
+.event:hover { background: none; }
+.event::after { content: ''; position: absolute; inset: 2px; background: var(--strike); border: 2px solid var(--strike); box-shadow: 0 0 0 2px #03080ecc; }
+.event[data-layer=shipping]::after { background: var(--shipping); border-color: var(--shipping); transform: rotate(45deg) scale(.86); }
+.event[data-layer=missile-drone]::after { background: var(--missile); border-color: var(--missile); clip-path: polygon(50% 0, 100% 100%, 0 100%); box-shadow: none; inset: 1px; }
+.event[data-layer=strikes-on-iran-yemen]::after { border-radius: 50%; }
+.event[data-confidence=claimed]::after { background: #03080e; }
+.event[data-recent=true]::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid #ffffff55; }
+.event[aria-pressed=true]::before { inset: -10px; border: 2px solid var(--live); box-shadow: 0 0 18px #3ee6a866; }
+.mission-area { fill: #3ee6a812; stroke: #3ee6a866; stroke-width: 1.2; stroke-dasharray: 5 4; }
+.mission-label { fill: #3ee6a8aa; font: 600 10px 'IBM Plex Sans', sans-serif; letter-spacing: .12em; text-anchor: middle; text-transform: uppercase; }
+.mission-dates { fill: #3ee6a877; font-weight: 500; letter-spacing: .08em; text-transform: none; }
+.event-radius { fill: #ffc06910; stroke: var(--shipping); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; }
+.k-shipping { background: var(--shipping); transform: rotate(45deg) scale(.8); }
+.k-missile { background: var(--missile); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.k-strike { background: var(--strike); border-radius: 50%; }
+.k-mission { border: 1px dashed var(--mission); background: #3ee6a822; }
+.k-claimed { border: 2px solid var(--dim); border-radius: 50%; }
+.k-recent { border: 1px solid #ffffff88; border-radius: 50%; }
+.hud-tr button[data-layer-toggle][aria-pressed=false] { opacity: .5; }
+.event-card { width: 340px; max-height: calc(100% - 80px); overflow: auto; }
+.event-card .ec-meta { margin: 0 0 6px; font-size: 11px; letter-spacing: .08em; color: var(--dim); text-transform: uppercase; }
+.event-card .ec-meta b[data-layer=shipping] { color: var(--shipping); }
+.event-card .ec-meta b[data-layer=missile-drone] { color: var(--missile); }
+.event-card .ec-meta b[data-layer=strikes-on-iran-yemen] { color: var(--strike); }
+.event-card .ec-claimed { display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px solid var(--dim); border-radius: 4px; font-size: 10px; }
+.event-card p.ec-summary { margin: 8px 0 12px; font-size: 13px; color: #c6d3de; }
+.event-card .ec-move { margin: 10px 0 0; padding: 10px 0 0; border-top: 1px solid var(--line); }
+.event-card .ec-move h4 { margin: 0 0 4px; font-size: 11px; letter-spacing: .1em; color: var(--faint); font-weight: 600; text-transform: uppercase; }
+.event-card .ec-move p { margin: 0; font-size: 13px; font-variant-numeric: tabular-nums; }
+.event-card .ec-move .up { color: var(--missile); } .event-card .ec-move .down { color: var(--live); }
+.event-card .ec-sources { margin: 12px 0 0; padding: 0; list-style: none; font-size: 12px; display: grid; gap: 4px; }
+.event-card .ec-note { margin: 10px 0 0; font-size: 11px; color: var(--faint); }
+.event-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.event-list button { display: grid; grid-template-columns: 12px 1fr; gap: 2px 10px; width: 100%; padding: 6px 4px; border: 0; text-align: left; border-radius: 6px; }
+.event-list button i { margin-top: 4px; }
+.event-list .el-title { font-size: 13px; line-height: 1.35; color: #d6e1ea; }
+.event-list .el-meta { grid-column: 2; font-size: 11px; color: var(--faint); }
+.oil-chart-marker line { stroke: var(--strike); stroke-width: 2; opacity: .75; }
+.oil-chart-marker[data-layer=shipping] line { stroke: var(--shipping); }
+.oil-chart-marker[data-layer=missile-drone] line { stroke: var(--missile); }
+.oil-chart-marker { cursor: pointer; }
+.oil-chart-marker:hover line, .oil-chart-marker[data-selected=true] line { opacity: 1; stroke-width: 3; }
+.oil-chart-focus-band { fill: #3ee6a814; stroke: #3ee6a855; stroke-width: 1; }
+
+/* Phase 3: grouped markers, front jumps and the full timeline. */
+.event-group { position: absolute; left: 0; top: 0; min-width: 22px; height: 22px; margin: -11px 0 0 -11px; padding: 0 6px; border-radius: 11px; border: 2px solid var(--strike); background: #03080ee6; color: var(--text); font: 600 11px/18px 'IBM Plex Sans', sans-serif; font-variant-numeric: tabular-nums; pointer-events: auto; cursor: pointer; box-shadow: 0 0 0 2px #03080e99; }
+.event-group:hover { background: #0b1a28; }
+.event-group[data-layer=shipping] { border-color: var(--shipping); }
+.event-group[data-layer=missile-drone] { border-color: var(--missile); }
+.event-group[data-layer=mixed] { border-color: #c9d6e2; }
+.event-group[data-recent=true] { box-shadow: 0 0 0 2px #03080e99, 0 0 0 5px #ffffff33; }
+.event-group[hidden], .event[hidden] { display: none; }
+.hud-fronts { display: flex; gap: 6px; margin-top: 10px; }
+.hud-fronts button { background: #06121ccc; backdrop-filter: blur(6px); font-size: 12px; padding: 5px 10px; }
+.event-card .event-list { margin-top: 4px; }
+.timeline-note { margin: 0 0 6px; font-size: 12px; color: var(--faint); }
+#timeline-body h3 { display: flex; justify-content: space-between; position: sticky; top: 0; padding: 8px 0 6px; background: var(--panel-raised); }
+#timeline-body h3 span { color: var(--faint); font-weight: 500; letter-spacing: 0; }
+#timeline-body .event-list { padding-left: 0; }
+@media (max-width: 900px) { .view-switch { margin-left: auto; } .view-switch button { padding: 6px 10px; font-size: 12px; } }
+@media (max-width: 640px) { .ops-brand strong { font-size: 14px; letter-spacing: .18em; } #headlines-open { display: none; } .view-switch { margin-left: auto; } .event-card { left: 10px; right: 10px; width: auto; top: auto; bottom: 10px; max-height: 44%; } }

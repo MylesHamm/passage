@@ -35,7 +35,7 @@ test('a stalled asset fetch terminates at its deadline even when fetch ignores a
 
 test('the same deadline covers a stalled response body',async t=>{
  const h=harness(t);h.fetch=async()=>({ok:true,blob:()=>new Promise(()=>{})});
- const pending=loadSceneAssets(SCENES.bab,{planOnly:true});
+ const pending=loadSceneAssets(SCENES.theatre,{planOnly:true});
  const rejected=assert.rejects(pending,{name:'TimeoutError'});
  await settle();h.deadline();await rejected;
  assert.equal(h.requests[0].signal.aborted,true);assert.equal(h.timers.size,0);
@@ -56,7 +56,7 @@ test('aborting a full scene closes completed and late decodes and cancels its si
   if(blob.url.endsWith('normal.png'))return late.promise;
   const image={closed:0,close(){this.closed++;}};h.decoded.push(image);return image;
  };
- const pending=loadSceneAssets(SCENES.bab,{signal:parent.signal});
+ const pending=loadSceneAssets(SCENES.theatre,{signal:parent.signal});
  const rejected=assert.rejects(pending,{name:'AbortError'});
  await settle();assert.equal(h.decoded.length,2);
  parent.abort();await rejected;
@@ -86,7 +86,7 @@ test('successful scene loading transfers usable images and clears its deadline',
 
 test('a signal cancelled before loading starts performs no request',async t=>{
  const h=harness(t),parent=new AbortController();parent.abort();
- await assert.rejects(loadSceneAssets(SCENES.bab,{signal:parent.signal}),{name:'AbortError'});
+ await assert.rejects(loadSceneAssets(SCENES.theatre,{signal:parent.signal}),{name:'AbortError'});
  assert.equal(h.requests.length,0);assert.equal(h.timers.size,0);
 });
 
@@ -96,7 +96,7 @@ test('the image-element fallback also times out and releases its object URL',asy
  install(t,'Image',class {constructor(){images.push(this);}set src(value){this.source=value;}});
  t.mock.method(URL,'createObjectURL',()=> 'blob:terrain-test');
  t.mock.method(URL,'revokeObjectURL',url=>revoked.push(url));
- const pending=loadSceneAssets(SCENES.bab,{planOnly:true});
+ const pending=loadSceneAssets(SCENES.theatre,{planOnly:true});
  const rejected=assert.rejects(pending,{name:'TimeoutError'});
  await settle();assert.equal(images[0].source,'blob:terrain-test');
  h.deadline();await rejected;

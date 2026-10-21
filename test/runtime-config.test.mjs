@@ -15,10 +15,10 @@ test('local default API stays same-origin and site links stay under their module
 });
 test('hosted API supports an HTTPS origin or prefix while page links retain the project path', () => {
   const runtime = hosted({ apiBase: 'https://live.example.com/public/' });
-  assert.equal(runtime.apiUrl('/api/weather'), 'https://live.example.com/public/api/weather');
-  assert.equal(runtime.apiUrl('/api/acled/events?days=365'), 'https://live.example.com/public/api/acled/events?days=365');
+  assert.equal(runtime.apiUrl('/api/transits'), 'https://live.example.com/public/api/transits');
+  assert.equal(runtime.apiUrl('/api/vessels'), 'https://live.example.com/public/api/vessels');
+  for (const removed of ['/api/weather', '/api/acled/events', '/api/intelligence', '/api/market-context']) assert.throws(() => runtime.apiUrl(removed), /only available in local/);
   assert.equal(runtime.siteUrl('/'), 'https://example.github.io/passage/');
-  assert.equal(runtime.siteUrl('/investigate.html?source=https%3A%2F%2Fexample.org'), 'https://example.github.io/passage/investigate.html?source=https%3A%2F%2Fexample.org');
   assert.equal(runtime.privateConnectionsAllowed, false);
 });
 test('missing or malformed public API fails before a network call, including local hosted previews', async () => {

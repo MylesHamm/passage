@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {SOURCES} from '../lib/feeds.mjs';
 import {assessReportingReadiness,assessPassageReadiness} from '../lib/release-readiness.mjs';
 import {checkHostedApi} from '../scripts/check-hosted-api.mjs';
-import {backendFixture} from './fixtures/release-backend.mjs';
+import {backendFixture,mergeSources} from './fixtures/release-backend.mjs';
 
 const NOW=Date.parse('2026-09-28T19:00:00Z');
 const health={application:'passage-maritime-watch',status:'ready'};
@@ -96,14 +96,14 @@ test('wrong service, malformed diagnostics and an empty required set cannot pass
 
 test('hosted check reads existing public source contracts with the Pages origin and no forced refresh',async()=>{
   const requests=[],input=coreFixture(),backend=backendFixture(NOW);
-  input.diagnostics.sources.push(...backend.diagnostics.sources);
+  input.diagnostics.sources=mergeSources(input.diagnostics.sources,backend.diagnostics.sources);
   const payloads={...backend,...input};
   const result=await checkHostedApi({base:'https://live.example.com/',now:()=>NOW,fetchImpl:async(url,options)=>{
     requests.push({url:String(url),options});
     return Response.json(payloads[new URL(url).pathname.split('/').at(-1)],{headers:{'Access-Control-Allow-Origin':'https://myleshamm.github.io'}});
   }});
   assert.equal(result.ready,true);
-  assert.deepEqual(requests.map(request=>request.url),['health','config','news','maritime','diagnostics'].map(endpoint=>'https://live.example.com/api/'+endpoint));
+  assert.deepEqual(requests.map(request=>request.url),['health','config','news','maritime','transits','oil','diagnostics'].map(endpoint=>'https://live.example.com/api/'+endpoint));
   assert.ok(requests.every(({options})=>options.headers.Origin==='https://myleshamm.github.io'&&options.redirect==='error'));
 });
 
@@ -122,7 +122,6 @@ function coreFixture(){const input=fixture();input.diagnostics.sources.push(...[
 test('core release checks official registers and prices while respecting event and weekend lag',()=>{
  const input=coreFixture();assert.equal(assessPassageReadiness(input).ready,true);
  for(const id of ['imo-hormuz','imo-redsea','brent','wti']){const failed=structuredClone(input);failed.diagnostics.sources.find(source=>source.id===id).connection='cached';assert.equal(assessPassageReadiness(failed).ready,false,id);}
- input.diagnostics.sources.push({id:'marad-advisories',configured:true,connection:'unavailable'});assert.equal(assessPassageReadiness(input).ready,true,'supporting advisory gap remains disclosed without claiming core shutdown');
 });
 test('core gate refuses missing timestamps and old price observations without requiring new incident dates',()=>{
  const input=coreFixture();const price=input.diagnostics.sources.find(source=>source.id==='brent');price.latest='2026-09-18';assert.equal(assessPassageReadiness(input).ready,false);price.latest='2026-09-25';price.retrievedAt=null;assert.equal(assessPassageReadiness(input).ready,false);
@@ -130,26 +129,25 @@ test('core gate refuses missing timestamps and old price observations without re
 });
 
 
-test('hosted gate rejects the previous source rollout even when all nine core checks pass',async()=>{
-  const input=coreFixture(),backend=backendFixture(NOW);delete backend.config.capabilities;delete backend.news.capabilities;
-  delete backend.maritime.advisories;delete backend.maritime.coverage;
-  input.diagnostics.sources.push(...backend.diagnostics.sources.filter(source=>source.id!=='marad-advisories'));
-  for(const payload of [input.diagnostics,backend.news])for(const source of payload.sources)if(['centcom','gdelt-exports','gdelt-energy','gdelt-reuters'].includes(source.id))source.configured=true;
-  assert.equal(assessPassageReadiness(input).ready,true,'this is the exact blind spot in the old core-only gate');
+test('hosted gate rejects a previous collector rollout even when all nine core checks pass',async()=>{
+  const input=coreFixture(),backend=backendFixture(NOW);
+  input.diagnostics.sources=mergeSources(input.diagnostics.sources,backend.diagnostics.sources).filter(source=>source.id!=='portwatch');
+  input.diagnostics.sources.push({id:'centcom',configured:true},{id:'gdelt-energy',configured:true});
+  assert.equal(assessPassageReadiness(input).ready,true,'the core-only gate cannot see an outdated collector');
   const payloads={...backend,...input};
   await assert.rejects(checkHostedApi({base:'https://live.example.com/',now:()=>NOW,fetchImpl:async url=>Response.json(payloads[new URL(url).pathname.split('/').at(-1)],{headers:{'Access-Control-Allow-Origin':'https://myleshamm.github.io'}})}),error=>{
     assert.equal(error.result.verifiedCount,9);
     assert.equal(error.result.backend.compatible,false);
-    assert.ok(error.result.failures.some(failure=>failure.id==='marad-advisories'&&failure.category==='capability'));
-    assert.ok(error.result.failures.some(failure=>failure.id==='centcom'&&failure.category==='capability'));
+    assert.ok(error.result.failures.some(failure=>failure.category==='capability'&&/portwatch/.test(failure.reasons[0])));
+    assert.ok(error.result.failures.some(failure=>failure.category==='capability'&&/centcom/.test(failure.reasons[0])));
     return true;
   });
 });
 
 test('every additional public contract endpoint retains HTTP and CORS enforcement',async()=>{
-  const input=coreFixture(),backend=backendFixture(NOW);input.diagnostics.sources.push(...backend.diagnostics.sources);
+  const input=coreFixture(),backend=backendFixture(NOW);input.diagnostics.sources=mergeSources(input.diagnostics.sources,backend.diagnostics.sources);
   const payloads={...backend,...input};
-  for(const endpoint of ['config','news','maritime','diagnostics'])for(const mode of ['http','cors']){
+  for(const endpoint of ['config','news','maritime','transits','oil','diagnostics'])for(const mode of ['http','cors']){
     await assert.rejects(checkHostedApi({base:'https://live.example.com/',now:()=>NOW,fetchImpl:async url=>{
       const route=new URL(url).pathname.split('/').at(-1),failed=route===endpoint;
       if(failed&&mode==='http')return new Response('Unavailable',{status:503});

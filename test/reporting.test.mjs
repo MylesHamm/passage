@@ -56,56 +56,20 @@ for(const failure of ['index-http','index-markup','rss-http'])test(`Al Jazeera $
 test('aggregated reporting keeps regional context, source provenance and per-source failures',async()=>{
  const urls=[];const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>now,fetchImpl:async(url)=>{
    const u=new URL(url);urls.push(u.href);
-   if(u.hostname==='api.gdeltproject.org')return new Response(JSON.stringify({articles:[{title:'Saudi oil pipeline exports disrupted',url:'https://example.com/pipeline',seendate:'20260917T110000Z'}]}));
-   if(u.hostname==='www.centcom.mil')return new Response('>Public Releases</span><b><a href="https://www.centcom.mil/MEDIA/PUBLIC-RELEASES/Article/12345/example/">Forces escort tanker in Hormuz</a></b> Sept. 16, 2026<br></div>');
    if(u.hostname==='news.un.org')return new Response('Service unavailable',{status:503});
    return new Response(xml);
  }});
- let result=await loadReporting(runtime,{reliefweb:false,discoveryWaitMs:30000,discoverySpacingMs:0},{});
+ let result=await loadReporting(runtime,{},{});
  assert.ok(result.items.some(x=>x.relevanceScopes.includes('regional-energy')&&x.theaters.length===0));
  assert.equal(result.sources.find(x=>x.id==='un').connection,'unavailable');
- assert.equal(result.sources.find(x=>x.id==='centcom').configured,false);assert.equal(result.sources.find(x=>x.id==='centcom').retired,true);assert.ok(!urls.some(url=>new URL(url).hostname==='www.centcom.mil'));
- assert.equal(result.sources.length,15);assert.equal(result.coverage.complete,false);
- assert.ok(result.items.find(x=>x.url==='https://example.com/pipeline').provenance.length>1);
- assert.ok(result.items.find(x=>x.url==='https://example.com/pipeline').publishedAt);
+ assert.deepEqual(result.sources.map(x=>x.id).sort(),['aj','bbc','france24','mee','memo','un']);
+ assert.ok(!urls.some(url=>/gdeltproject|centcom|reliefweb|doomberg/.test(url)),'retired sources are never requested');
+ assert.equal(result.coverage.complete,false);
+ const pipeline=result.items.find(x=>x.url==='https://example.com/pipeline');
+ assert.ok(pipeline.provenance.length>1,'the same article from several publishers keeps each provenance entry');
+ assert.ok(pipeline.publishedAt);
  assert.ok(result.sources.every(x=>!('items' in x)));assert.ok(urls.every(x=>!x.includes('example.com')));
- const previous=urls.length;result=await loadReporting(runtime,{reliefweb:false,discoveryWaitMs:30000,discoverySpacingMs:0},{});assert.equal(urls.length,previous);
-});
-test('working regional publishers retain attributed reporting after GDELT retirement',async()=>{
- const current=Date.parse('2026-09-28T18:00:00Z');
- const publishers=[
-  {id:'mee',name:'Middle East Eye',feed:'https://www.middleeasteye.net/rss',title:'Iran says its forces seized a vessel near Hormuz',url:'https://www.middleeasteye.net/news/fixture-vessel',date:'Mon, 28 Sep 2026 16:21:32 GMT',publishedAt:'2026-09-28T16:21:32.000Z',summary:'The report attributes the vessel seizure to a statement by Iranian authorities.',actor:'Iran',theater:'hormuz'},
-  {id:'memo',name:'Middle East Monitor',feed:'https://www.middleeastmonitor.com/feed/',title:'Houthis say Saudi shipping restrictions remain in place',url:'https://www.middleeastmonitor.com/fixture-shipping/',date:'Mon, 28 Sep 2026 16:30:00 GMT',publishedAt:'2026-09-28T16:30:00.000Z',summary:'The report attributes the restrictions to a Houthi statement.',actor:'Houthis',theater:'bab'},
-  {id:'france24',name:'France 24 Middle East',feed:'https://www.france24.com/en/middle-east/rss',title:'Iran proposes reopening Hormuz for oil shipments',url:'https://www.france24.com/en/middle-east/fixture-hormuz',date:'Sun, 27 Sep 2026 22:10:44 GMT',publishedAt:'2026-09-27T22:10:44.000Z',summary:'The report discusses Iranian negotiations and crude shipments through the strait.',actor:'Iran',theater:'hormuz'},
- ];
- const requests=[];
- const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>current,fetchImpl:async url=>{
-  const address=new URL(url);requests.push(address.href);
-  if(address.hostname==='api.gdeltproject.org')return new Response('Rate limited',{status:429,headers:{'Retry-After':'900'}});
-  const publisher=publishers.find(source=>source.feed===address.href);
-  if(!publisher)return new Response('Unavailable',{status:503});
-  return new Response(`<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>${publisher.name}</title><item><title>${publisher.title}</title><link>${publisher.url}</link><pubDate>${publisher.date}</pubDate><description><![CDATA[<p>${publisher.summary}</p>]]></description><media:thumbnail url="https://example.com/unused-image"/></item>${publisher.id==='memo'?'<item><title>Qatar says LNG exports face new delays</title><link>https://www.middleeastmonitor.com/fixture-lng/</link><pubDate>Mon, 28 Sep 2026 16:35:00 GMT</pubDate><description>Officials discuss energy exports.</description></item>':''}<item><title>Local gardening exhibition opens</title><link>https://example.com/unrelated-${publisher.id}</link><pubDate>${publisher.date}</pubDate><description>Community planting projects.</description></item></channel></rss>`);
- }});
- const result=await loadReporting(runtime,{reliefweb:false,includeReviewedContext:false,discoveryWaitMs:30000,discoverySpacingMs:0});
- assert.equal(result.items.length,4);assert.equal(result.coverage.publisherSources,8);assert.equal(result.coverage.complete,false);
- for(const publisher of publishers){
-  const registered=SOURCES.find(source=>source.id===publisher.id),record=result.items.find(item=>item.url===publisher.url),health=result.sources.find(source=>source.id===publisher.id);
-  assert.equal(registered.url,publisher.feed);assert.equal(registered.interval,300);
-  assert.equal(record.title,publisher.title);assert.equal(record.publisher,publisher.name);assert.equal(record.source,publisher.name);
-  assert.equal(record.url,publisher.url);assert.equal(record.summary,publisher.summary);assert.equal(record.publishedAt,publisher.publishedAt);
-  assert.equal(record.eventDate,null);assert.equal(record.discoveredAt,null);assert.equal(record.dateBasis,'publisher-publication');assert.equal(record.contentAccess,'publisher-summary');
-  assert.ok(record.theaters.includes(publisher.theater));assert.ok(record.actors.includes(publisher.actor));
-  assert.equal(health.connection,'connected');assert.equal(health.recordCount,publisher.id==='memo'?2:1);assert.equal(health.parsedCount,publisher.id==='memo'?3:2);assert.equal(health.retrievedAt,new Date(current).toISOString());
-  assert.equal(record.provenance[0].sourceId,publisher.id);assert.equal(record.provenance[0].publishedAt,publisher.publishedAt);
- }
- const regional=result.items.find(item=>item.url.endsWith('/fixture-lng/'));
- assert.deepEqual(regional.theaters,[]);assert.ok(regional.relevanceScopes.includes('regional-energy'));assert.ok(regional.actors.includes('Qatar'));assert.equal(regional.energy,true);
- assert.equal(result.items.find(item=>item.sourceId==='france24').energy,true);
- assert.ok(!requests.some(url=>new URL(url).hostname==='www.arabnews.com'));
- assert.ok(!result.sources.some(source=>source.id==='arabnews'));
- assert.equal(requests.filter(url=>new URL(url).hostname==='api.gdeltproject.org').length,0);
- assert.ok(result.sources.filter(source=>source.group==='discovery').every(source=>source.configured===false&&source.retired===true));
- assert.ok(!JSON.stringify(result).includes('unused-image'));
+ const previous=urls.length;result=await loadReporting(runtime,{},{});assert.equal(urls.length,previous,'a second call is served from cache');
 });
 test('regional publisher failure retains dated records without disguising an outage as fresh coverage',async()=>{
  const current=Date.parse('2026-09-28T18:00:00Z');let tick=current,failed=false;
@@ -127,15 +91,6 @@ test('deduplication preserves publication metadata over discovery without claimi
  const b={id:'index',url:'https://example.com/story',sourceId:'gdelt-hormuz',publisher:'example.com',publishedAt:null,discoveredAt:'2026-09-17T11:00:00Z',dateBasis:'discovery'};
  const [row]=deduplicateReports([b,a]);assert.equal(row.id,'rss');assert.equal(row.provenance.length,2);assert.equal(row.discoveredAt,b.discoveredAt);assert.equal(row.dateBasis,a.dateBasis);assert.equal(row.independentConfirmationCount,undefined);
 });
-test('ReliefWeb retains its configured appname path without returning credential-bearing URLs',async()=>{
- const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>now,fetchImpl:async(url)=>{
-   const u=new URL(url);if(u.hostname==='api.reliefweb.int'){assert.equal(u.searchParams.get('appname'),'passage-test');return new Response(JSON.stringify({data:[{id:2,fields:{title:'Yemen fuel deliveries',url:'https://reliefweb.int/report/yemen/fuel',date:{created:'2026-09-17T09:00:00Z'}}}]}));}
-   if(u.hostname==='api.gdeltproject.org')return new Response('{"articles":[]}');
-   return new Response('Blocked',{status:403});
- }});
- const result=await loadReporting(runtime,{reliefweb:true,reliefwebAppname:'passage-test',discoveryWaitMs:30000,discoverySpacingMs:0},{});
- const rw=result.items.find(x=>x.sourceId==='reliefweb');assert.ok(rw);assert.equal(rw.dateBasis,'publisher-publication');assert.ok(!JSON.stringify(result).includes('passage-test'));assert.equal(SOURCE_DEFINITIONS.filter(s=>s.group==='discovery').length,5);
-});
 test('upgrade keeps original cache keys and retains dated headlines during an outage',async()=>{
  const saved={checkedAt:'2026-09-16T10:00:00Z',retrievedAt:'2026-09-16T10:00:00Z',items:[{id:'legacy',title:'Houthi Red Sea shipping report',url:'https://example.com/old',publishedAt:'2026-09-16T09:00:00Z',source:'BBC Middle East',sourceId:'bbc',type:'Reporting',theaters:['bab'],actors:['Houthis'],energy:false}]};
  const legacyStorage={...storage,readFile:async(file)=>{if(file.endsWith('/bbc.json'))return JSON.stringify(saved);throw Object.assign(Error(),{code:'ENOENT'});}};
@@ -154,62 +109,6 @@ test('retained archive applies current petroleum relevance without changing evid
  const fuel=result.items.find(row=>row.id==='fuel');assert.equal(fuel.firstSeenAt,rows[1].firstSeenAt);assert.equal(fuel.lastSeenAt,rows[1].lastSeenAt);assert.equal(fuel.publishedAt,rows[1].publishedAt);assert.equal(fuel.retainedFromHistory,true);
  assert.equal(rows[0].energy,true); // Display filtering does not erase the retained archive.
 });
-test('publisher analysis survives discovery dedup, caching and a later outage',async()=>{
- const xml='<rss><channel><item><title>A changing balance</title><link>https://newsletter.doomberg.com/p/example</link><pubDate>Thu, 17 Sep 2026 10:00:00 GMT</pubDate><description>Diesel and oil supplies are discussed.</description></item></channel></rss>';
- let clock=now,fail=false,doomRequests=0;const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>clock,fetchImpl:async url=>{
-  if(new URL(url).hostname==='newsletter.doomberg.com'){doomRequests++;return new Response(fail?'Unavailable':xml,{status:fail?503:200});}
-  return new Response('Unavailable',{status:503});
- }});
- const options={discoveryWaitMs:30000,discoverySpacingMs:0};const first=await loadReporting(runtime,options,{}),row=first.items.find(x=>x.sourceId==='doomberg');
- assert.ok(row);assert.match(row.evidenceStatus,/Independent energy analysis/);assert.equal(row.summary,'Diesel and oil supplies are discussed.');
- const indexed={...row,sourceId:'gdelt-energy',source:'Discovery',type:'Discovered headline',evidenceStatus:undefined,summary:null,publishedAt:null,discoveredAt:'2026-09-17T11:00:00Z'};
- for(const records of [[indexed,row],[row,indexed]]){const [merged]=deduplicateReports(records);assert.equal(merged.type,row.type);assert.equal(merged.evidenceStatus,row.evidenceStatus);assert.equal(merged.summary,row.summary);assert.equal(merged.sourceId,'doomberg');}
- await loadReporting(runtime,options,{});assert.equal(doomRequests,1);
- clock+=3601000;fail=true;const retained=await loadReporting(runtime,options,{}),source=retained.sources.find(x=>x.id==='doomberg');
- assert.equal(source.status,'retained');assert.equal(source.retrievedAt,first.sources.find(x=>x.id==='doomberg').retrievedAt);assert.equal(retained.items.find(x=>x.sourceId==='doomberg').publishedAt,row.publishedAt);
-});
-test('direct analysis preview outranks equally classified discovery in both dedup orders',()=>{
- const url='https://newsletter.doomberg.com/p/example';
- const direct={url,title:'Publisher title',sourceId:'doomberg',source:'Doomberg',type:'Independent energy analysis',evidenceStatus:'Independent energy analysis; publisher interpretation',summary:'Public diesel and refining preview.',contentAccess:'Public RSS preview',publishedAt:null,dateBasis:'publication-unknown'};
- const indexed={url,title:'Different indexed title',sourceId:'gdelt-energy',source:'Doomberg',type:'Independent energy analysis',evidenceStatus:'Independent energy analysis; index metadata',summary:null,contentAccess:'discovery-metadata',publishedAt:'2026-09-17T10:00:00Z',discoveredAt:'2026-09-17T11:00:00Z',dateBasis:'discovery'};
- for(const records of [[indexed,direct],[direct,indexed]]){
-  const [row]=deduplicateReports(records);assert.equal(row.sourceId,'doomberg');assert.equal(row.title,direct.title);assert.equal(row.summary,direct.summary);assert.equal(row.contentAccess,direct.contentAccess);assert.equal(row.publishedAt,null);assert.equal(row.evidenceStatus,direct.evidenceStatus);assert.equal(row.discoveredAt,indexed.discoveredAt);assert.equal(row.provenance.length,2);
- }
-});
-test('legacy discovery caches enter bounded history with analysis category but no preview access',async t=>{
- const item={id:'legacy-doomberg',title:'Iran oil supplies',url:'https://newsletter.doomberg.com/p/cache',source:'newsletter.doomberg.com',sourceId:'gdelt-energy',type:'Discovered reporting',publishedAt:null,discoveredAt:'2026-09-16T09:00:00Z',summary:null,contentAccess:'discovery-metadata',dateBasis:'discovery',discoveryProvider:'GDELT'};
- const cached={checkedAt:'2026-09-16T10:00:00Z',retrievedAt:'2026-09-16T10:00:00Z',items:[item]};
- const oldStorage={...storage,readFile:async file=>{if(file.endsWith('/gdelt-energy-metadata.json'))return JSON.stringify(cached);throw Object.assign(Error(),{code:'ENOENT'});}};
- const dir=await mkdtemp(path.join(tmpdir(),'passage-retired-'));t.after(()=>rm(dir,{recursive:true,force:true}));
- const runtime=new SourceRuntime({cacheDir:'/unused',storage:oldStorage,now:()=>now,fetchImpl:async()=>new Response('Unavailable',{status:503})});
- const options={includeReviewedContext:false,discoveryWaitMs:30000,discoverySpacingMs:0,reportArchive:new ReportArchive({file:path.join(dir,'reports.json'),now:()=>now})};
- const result=await loadReporting(runtime,options,{}),row=result.items.find(record=>record.id===item.id);
- assert.ok(row);assert.equal(row.type,'Independent energy analysis');assert.equal(row.source,'Doomberg');assert.equal(row.contentAccess,'discovery-metadata');assert.equal(row.summary,null);assert.equal(row.publishedAt,null);assert.equal(row.discoveredAt,new Date(item.discoveredAt).toISOString());assert.equal(row.dateBasis,'discovery');
- assert.equal(row.retainedFromHistory,true);assert.equal(row.lastSeenAt,'2026-09-16T10:00:00.000Z');assert.equal(result.coverage.archive.retainedCount,1);assert.equal(result.coverage.archive.recordCount,1);
- assert.ok(row.matchEvidence.every(match=>!match.field.includes('preview')));
- const withoutArchive=await loadReporting(runtime,{...options,reportArchive:null});
- assert.equal(withoutArchive.items.length,0);assert.equal(runtime.peek('gdelt-energy').items.length,1); // Original cache survives; it cannot bypass archive bounds.
- assert.equal(item.type,'Discovered reporting');
-});
-
-
-test('retired source cache cannot resurrect records outside archive retention or capacity',async t=>{
- const current=Date.parse('2026-10-17T00:00:00Z');
- const dir=await mkdtemp(path.join(tmpdir(),'passage-retired-bounds-'));t.after(()=>rm(dir,{recursive:true,force:true}));
- const runtime=new SourceRuntime({cacheDir:'/unused',storage,now:()=>current,fetchImpl:async()=>new Response('Unavailable',{status:503})});
- const item=(id)=>({id,title:'Iran oil supplies '+id,url:'https://example.com/'+id,source:'Discovery',sourceId:'gdelt-energy',type:'Discovered reporting',publishedAt:null,discoveredAt:'2025-01-01T00:00:00Z',contentAccess:'discovery-metadata'});
- runtime.memory.set('gdelt-energy',{id:'gdelt-energy',retrievedAt:'2025-01-01T00:00:00Z',items:[item('retired-old')],connection:'cached'});
- const options={includeReviewedContext:false,discoveryWaitMs:30000,discoverySpacingMs:0,reportArchive:new ReportArchive({file:path.join(dir,'reports.json'),now:()=>current,maxRecords:1,retentionDays:30})};
- let result=await loadReporting(runtime,options);
- assert.equal(result.items.length,0);assert.equal(result.coverage.archive.recordCount,0);assert.equal(result.coverage.archive.retainedCount,0);assert.equal(result.coverage.archive.truncated,false);
- runtime.memory.set('gdelt-energy',{id:'gdelt-energy',retrievedAt:'2026-10-16T00:00:00Z',items:[item('recent-a'),item('recent-b')],connection:'cached'});
- result=await loadReporting(runtime,options);
- assert.equal(result.items.length,1);assert.equal(result.coverage.archive.recordCount,1);assert.equal(result.coverage.archive.retainedCount,1);assert.equal(result.coverage.archive.truncated,true);
- assert.equal(result.items[0].lastSeenAt,'2026-10-16T00:00:00.000Z');assert.equal(result.items[0].retainedFromHistory,true);
- const restored=await new ReportArchive({file:path.join(dir,'reports.json'),now:()=>current,maxRecords:1,retentionDays:30}).merge([]);
- assert.equal(restored.items.length,1);assert.equal(restored.items[0].id,result.items[0].id);
-});
-
 test('same publisher tracking aliases collapse to the exact RSS publication clock in either input order',()=>{
   const url='https://www.aljazeera.com/news/2026/10/19/shabwa',precise={id:'rss',url:url+'?traffic_source=rss',sourceId:'aj',source:'Al Jazeera',title:'Houthi attack kills at least 53: reports',publishedAt:'2026-10-19T12:51:46.000Z',publicationPrecision:'timestamp',dateBasis:'publisher-publication',summary:'Publisher RSS preview.',eventDate:null};
   const day={...precise,id:'index',url,title:'Houthi attack reportedly kills at least 53',publishedAt:'2026-10-19T00:00:00.000Z',publishedDate:'2026-10-19',publicationPrecision:'day',dateBasis:'publisher-date',summary:'Index preview.'};

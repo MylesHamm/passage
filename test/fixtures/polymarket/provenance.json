@@ -1,0 +1,26 @@
+{
+  "capturedAt": "2026-10-21T14:52:21Z",
+  "method": "Normal unauthenticated HTTPS GET using Node fetch with the PassageLocal/0.3 User-Agent; no cookies or credentials sent",
+  "sanitization": "public-search-hormuz.json keeps two real events and three real markets with only the fields Passage reads; other events, markets and fields were removed. prices-history.json keeps the last 45 real points of the December 31 market's Yes-token series.",
+  "fixtures": [
+    {
+      "file": "public-search-hormuz.json",
+      "url": "https://gamma-api.polymarket.com/public-search?q=Hormuz&events_status=active&limit_per_type=8&search_profiles=false&search_tags=false",
+      "capturedAt": "2026-10-21T14:51:36Z",
+      "responseStatus": 200,
+      "contentType": "application/json",
+      "rawSha256": "ffadf705c1a5a5039633b6cfa7b48f100a77b6c57eab7de3e494f61c0e316088",
+      "fixtureSha256": "1bdd52bd3176a66b8dde7ddb1901ede3b1746b520e7be5f3a005ebc2f2a1a339"
+    },
+    {
+      "file": "prices-history.json",
+      "url": "https://clob.polymarket.com/prices-history?market=83783489454659420807679723574840032660002326710045123865554753994450797728825&interval=max&fidelity=1440",
+      "capturedAt": "2026-10-21T14:52:21Z",
+      "responseStatus": 200,
+      "contentType": "application/json",
+      "rawPoints": 162,
+      "rawSha256": "e2c5dcd233a920678417540ba745ea202d067a11bd4ed79a2d7f2623fabfd5d8",
+      "fixtureSha256": "c2b9c862ddf3a924d6c38c85f4438358454af96eb8e9b44bff9dad781f1b7a35"
+    }
+  ]
+}

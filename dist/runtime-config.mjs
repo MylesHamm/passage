@@ -1,6 +1,6 @@
 // Public deployment settings contain an API address only. Credentials stay on the server.
 export const LIVE_REFRESH_MS = 60000;
-const PUBLIC_ENDPOINTS = new Set(['/api/news', '/api/intelligence', '/api/maritime', '/api/oil', '/api/market-context', '/api/expectations', '/api/weather', '/api/vessels', '/api/config', '/api/diagnostics', '/api/acled', '/api/acled/events']);
+const PUBLIC_ENDPOINTS = new Set(['/api/news', '/api/maritime', '/api/oil', '/api/expectations', '/api/transits', '/api/vessels', '/api/config', '/api/diagnostics']);
 const localHost = hostname => hostname === 'localhost' || hostname === '[::1]' || /^127(?:\.\d{1,3}){3}$/.test(hostname);
 const publicHostname = hostname => {
   const host = hostname.toLowerCase().replace(/\.$/, '');
@@ -66,7 +66,8 @@ export function mountRuntimeNotice(doc = globalThis.document, config = runtime) 
   notice.dataset.state = config.configurationError ? 'unconfigured' : 'public';
   if (!config.configurationError && doc.body?.classList.contains('passage-workspace')) doc.querySelector('.page-footer')?.after(notice);
   notice.textContent = config.configurationError
-    ? `${config.configurationError} Live reports, EIA observations, forecasts and vessel positions are unavailable. Dated reference context and your saved sources are not live updates. The separate oil chart connects directly to its named provider.`
-    : 'Public source watch · this view checks while the page is open. Source dates and coverage limits still apply. Private account connections stay in local Passage.';
+    ? `${config.configurationError} Live vessels, prices, odds and headlines are unavailable.`
+    : '';
+  if (!notice.textContent) notice.remove();
 }
 if (globalThis.document) mountRuntimeNotice();

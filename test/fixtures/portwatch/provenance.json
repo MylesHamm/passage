@@ -1,0 +1,51 @@
+{
+  "capturedAt": "2026-10-20T20:47:10Z",
+  "method": "Normal unauthenticated HTTPS GET using curl against the keyless public ArcGIS table; no cookies, tokens or credentials sent",
+  "layer": "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Chokepoints_Data/FeatureServer/0",
+  "layerNotes": "Layer metadata (?f=json) reported type Table, maxRecordCount 1000, supportsStatistics true, dataLastEditDate 2026-10-20T10:51:40Z. `date` is esriFieldTypeDateOnly and is returned as a YYYY-MM-DD string, not epoch ms. The total-capacity field is `capacity`.",
+  "sanitization": "daily fixture keeps the real response envelope and real feature attributes, trimmed to dates 2026-10-05 through 2026-10-18 (28 of 96 features). Baseline fixtures are the complete, unmodified outStatistics responses.",
+  "fixtures": [
+    {
+      "file": "daily-2026-10-05-to-10-18.json",
+      "query": {
+        "where": "portid IN ('chokepoint4','chokepoint6') AND date >= DATE '2026-09-01'",
+        "outFields": "date,portid,portname,n_tanker,n_total,capacity_tanker,capacity",
+        "orderByFields": "date ASC",
+        "returnGeometry": "false",
+        "f": "json"
+      },
+      "responseStatus": 200,
+      "contentType": "application/json; charset=utf-8",
+      "rawSha256": "facbb138e5d2d6671c26539437aa08ce920f9aefd15ca6b7cf85c0eee9054c4f",
+      "fixtureSha256": "2d6d0b2693ad12b65fe5f8089eeaffe103eb55e8a00d82aaf13536a04106774a"
+    },
+    {
+      "file": "baseline-hormuz-2025.json",
+      "capturedAt": "2026-10-20T20:48:37Z",
+      "query": {
+        "where": "portid = 'chokepoint6' AND date >= DATE '2025-01-01' AND date <= DATE '2025-12-31'",
+        "outStatistics": "avg n_tanker, avg n_total, count n_tanker, count n_total, min date, max date",
+        "returnGeometry": "false",
+        "f": "json"
+      },
+      "responseStatus": 200,
+      "contentType": "application/json; charset=utf-8",
+      "rawSha256": "c7b09c4651f84aad0b8c692df92cdd509f5953108b02e65d1b798346f4ec8309",
+      "fixtureSha256": "c7b09c4651f84aad0b8c692df92cdd509f5953108b02e65d1b798346f4ec8309"
+    },
+    {
+      "file": "baseline-bab-2023-jan-oct.json",
+      "capturedAt": "2026-10-20T20:48:37Z",
+      "query": {
+        "where": "portid = 'chokepoint4' AND date >= DATE '2023-01-01' AND date <= DATE '2023-10-31'",
+        "outStatistics": "avg n_tanker, avg n_total, count n_tanker, count n_total, min date, max date",
+        "returnGeometry": "false",
+        "f": "json"
+      },
+      "responseStatus": 200,
+      "contentType": "application/json; charset=utf-8",
+      "rawSha256": "835f82d335e831fa438943817524bd1df3975748d0aaa1f3f82f5fb0c4024e57",
+      "fixtureSha256": "835f82d335e831fa438943817524bd1df3975748d0aaa1f3f82f5fb0c4024e57"
+    }
+  ]
+}

@@ -47,49 +47,13 @@ test('Pages artifact resolves its real assets, imports and navigation under /pas
     }
   }
   assert.ok(files.includes('.nojekyll'));
-  assert.equal(await readFile(resolve(output,'vendor/d3-ISC.txt'),'utf8'),await readFile(new URL('../licenses/d3-ISC.txt',import.meta.url),'utf8'));
-  assert.match(await readFile(resolve(output,'vendor/d3-ISC.txt'),'utf8'),/Permission to use, copy, modify/);
-  assert.deepEqual(files.filter(name => name.endsWith('.bin')).sort(), ['terrain/assets/bab-dem.bin', 'terrain/assets/hormuz-dem.bin']);
+  assert.deepEqual(files.filter(name => name.endsWith('.bin')).sort(), ['terrain/assets/hormuz-dem.bin', 'terrain/assets/theatre-dem.bin']);
   assert.ok(!files.some(name => name.startsWith('terrain/source/') || name.startsWith('terrain/test/') || /\.(py|headers)$/.test(name)));
-  for(const name of ['terrain/assets/bab-dem.bin','terrain/assets/hormuz-dem.bin'])assert.equal((await stat(resolve(output,name))).size,256*256*2);
+  for(const name of ['terrain/assets/hormuz-dem.bin','terrain/assets/theatre-dem.bin'])assert.equal((await stat(resolve(output,name))).size,256*256*2);
   assert.ok(!files.some(name => name.startsWith('connections/') || /(?:\.env|server\.mjs|cache|node_modules)/.test(name)));
-  assert.deepEqual(files.filter(name => name.endsWith('.json')).sort(), ['assets/region.json', 'assets/world-land.json', 'terrain/assets/provenance.json']);
-  const notes = await import(pathToFileURL(resolve(output, 'intelligence-context.mjs')));
-  const energy = await import(pathToFileURL(resolve(output, 'energy-context.mjs')));
-  const graph = await import(pathToFileURL(resolve(output, 'intelligence-data.mjs')));
-  assert.deepEqual(notes.COVERAGE_NOTES, []);
-  assert.equal(notes.COVERAGE_REVIEW_DATE, null);
-  assert.deepEqual(energy.MARKET_CONTEXT, []);
-  assert.equal(energy.REVIEW_DATE, null);
-  assert.ok(notes.ENERGY_ASSETS.length && energy.INFRASTRUCTURE.length);
-  assert.equal(graph.buildIntelligence().nodes.length, 0);
-  assert.equal(graph.mergeManualEvidence({ nodes: [], edges: [] }, []).review, null);
-  assert.doesNotMatch(await readFile(resolve(output, 'energy-context.mjs'), 'utf8'), /shutdown reported Sep 11|September 11 shutdown notice/);
-
-  // Exercise the public Evidence renderer without a browser or preview server.
-  const {createSituationView}=await import(pathToFileURL(resolve(output,'situation-view.mjs')));
-  const ledger={innerHTML:'',contains:()=>false,querySelector:()=>null,querySelectorAll:()=>[]};
-  const previousDocument=globalThis.document,state={theater:'both',failures:{}};
-  globalThis.document={activeElement:null,getElementById:id=>id==='incident-ledger'?ledger:null};
-  try{
-    const view=createSituationView({getState:()=>state,getSources:()=>[],openDialog(){}});
-    view.update();
-    assert.match(ledger.innerHTML,/Waiting for official-source responses/);
-    assert.doesNotMatch(ledger.innerHTML,/No retrieved evidence matches|data-evidence-all|Review all 0/);
-    state.failures.maritime=true;view.update();
-    assert.match(ledger.innerHTML,/Official records are unavailable/);
-    assert.doesNotMatch(ledger.innerHTML,/Checking official|previously retrieved evidence|data-evidence-all/);
-    state.failures.maritime=false;state.maritime={events:[],advisories:[]};view.update();
-    assert.match(ledger.innerHTML,/No retrieved evidence matches/);
-    assert.doesNotMatch(ledger.innerHTML,/Checking official|data-evidence-all/);
-    state.maritime.events.push({id:'official',recordType:'incident',title:'Dated official record',eventDate:new Date().toISOString().slice(0,10),theaters:['hormuz']});
-    state.failures.maritime=true;view.update();
-    assert.match(ledger.innerHTML,/previously retrieved evidence; current coverage is unavailable/);
-    assert.match(ledger.innerHTML,/Review all 1 records/);
-  }finally{
-    if(previousDocument===undefined)delete globalThis.document;
-    else globalThis.document=previousDocument;
-  }
+  assert.deepEqual(files.filter(name => name.endsWith('.json')).sort(), ['data/war-events.json', 'terrain/assets/provenance.json']);
+  for (const name of ['index.html', 'app.js', 'ops.css', 'ops/hero-map.mjs', 'ops/panels.mjs', 'vendor/anatomy/iso-kit.mjs', 'vendor/anatomy/LICENSE.txt']) assert.ok(files.includes(name), name);
+  assert.ok(!files.some(name => /^(?:investigate|research|data-upgrades)\.html$|^globe\/|oil-system|monitoring|priority-/.test(name)), 'removed pages and modules stay out of the public artifact');
 }));
 test('unconfigured Pages preview remains public on localhost and cannot quietly call local /api', async () => withDirectory(async directory => {
   const output = resolve(directory, 'unconfigured');
@@ -108,7 +72,7 @@ test('Pages root and nested project paths are supported; malformed bases are rej
   for (const [index, basePath] of ['/', '/group/passage/'].entries()) {
     const outputDir = resolve(directory, String(index));
     await buildPages({ outputDir, basePath });
-    const css = await readFile(resolve(outputDir, 'styles.css'), 'utf8');
+    const css = await readFile(resolve(outputDir, 'ops.css'), 'utf8');
     assert.ok(css.includes(`url('${basePath}assets/plex-400.ttf')`));
   }
   for (const path of ['passage/', '/passage', '/../', '//', '/p?x/', '/p%20x/']) assert.throws(() => normalizeBasePath(path));

@@ -15,9 +15,10 @@ test('fixed public GET routes reject credential mutation, arbitrary proxy and va
   assert.equal((await handlePublic(request('/api/news',{method:'POST'}),env,()=>{})).status,405);
 });
 test('forwarding drops incoming credentials/headers and CORS never enables cookies',async()=>{
-  const result=await handlePublic(request('/api/acled/events?days=90',{headers:{Origin:origin,Authorization:'Bearer secret',Cookie:'private=session'}}),env,internal=>{
-    assert.equal(internal.url,'https://collector.internal/api/acled/events?days=90');assert.equal([...internal.headers].length,0);return json({configured:false});
+  const result=await handlePublic(request('/api/transits',{headers:{Origin:origin,Authorization:'Bearer secret',Cookie:'private=session'}}),env,internal=>{
+    assert.equal(internal.url,'https://collector.internal/api/transits');assert.equal([...internal.headers].length,0);return json({daily:[]});
   });
+  for(const blocked of ['/api/transits?days=90','/api/acled/events','/api/weather'])assert.equal((await handlePublic(request(blocked,{headers:{Origin:origin}}),env,()=>assert.fail())).status,404,blocked);
   assert.equal(result.status,200);assert.equal(result.headers.get('access-control-allow-origin'),origin);assert.equal(result.headers.get('access-control-allow-credentials'),null);assert.equal(result.headers.get('cache-control'),'no-store');assert.equal(result.headers.get('x-content-type-options'),'nosniff');
 });
 test('preflight permits only a simple GET from configured origin; no-origin public requests remain read-only',async()=>{

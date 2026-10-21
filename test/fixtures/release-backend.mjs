@@ -1,9 +1,20 @@
-import {SOURCE_CAPABILITIES,RETIRED_REPORTING_SOURCE_IDS} from '../../dist/source-policy.mjs';
+import {SOURCE_CAPABILITIES} from '../../dist/source-policy.mjs';
+import {SOURCE_DEFINITIONS} from '../../dist/source-health.mjs';
 
+// A collector whose public contract matches this frontend.
 export function backendFixture(now=Date.parse('2026-09-28T19:00:00Z')){
   const retrievedAt=new Date(now-60000).toISOString();
-  const advisory={id:'marad-advisories:2026-011',advisoryId:'2026-011',sourceId:'marad-advisories',recordKind:'official-advisory',recordType:'advisory',sourceStatus:'active',validityState:'active',effectiveDate:'2026-09-09',expiresDate:'2027-03-08',eventDate:null,publishedDate:null,collectionRetired:true,retainedFromHistory:true};
-  const marad={id:'marad-advisories',configured:false,retired:true,capability:'supporting',connection:'cached',status:'disabled',retrievedAt,checkedAt:retrievedAt,recordCount:1};
-  const newsSources=RETIRED_REPORTING_SOURCE_IDS.map(id=>({id,configured:false,retired:true,connection:'cached',retrievedAt:'2026-08-01T00:00:00Z',recordCount:3}));
-  return structuredClone({now,config:{capabilities:SOURCE_CAPABILITIES},diagnostics:{sources:[marad,...newsSources]},news:{sources:newsSources,capabilities:SOURCE_CAPABILITIES,coverage:{discoveryFamilies:0,retiredSources:RETIRED_REPORTING_SOURCE_IDS,reuters:{mode:'retained-links-only'}}},maritime:{events:[],advisories:[advisory],sources:[marad],coverage:{complete:false,advisories:{status:'unavailable',collection:'retired',complete:false,recordKind:'official-advisory',incidentCoverage:false,activeListedCount:1,cancelledListedCount:0,cancelledArchiveComplete:false,publicationDateKnown:false}}}});
+  const sources=SOURCE_DEFINITIONS.map(source=>({id:source.id,configured:true,connection:'connected',status:'current',retrievedAt,recordCount:3,capability:source.capability}));
+  return structuredClone({now,
+    config:{capabilities:SOURCE_CAPABILITIES},
+    diagnostics:{sources},
+    news:{items:[],sources:[],capabilities:SOURCE_CAPABILITIES,coverage:{complete:false}},
+    maritime:{events:[],sources:[],coverage:{complete:false}},
+    transits:{daily:[{chokepoint:'hormuz',date:'2026-09-27',tankers:2,total:4}],baselines:{hormuz:{label:'2025 daily average',total:85.5,tankers:48.2}}},
+    oil:{series:[],latestCloses:[]},
+  });
+}
+/** Diagnostics with each id once: explicit test entries win over the fixture's. */
+export function mergeSources(primary=[],secondary=[]){
+  return [...primary,...secondary.filter(source=>!primary.some(entry=>entry.id===source.id))];
 }

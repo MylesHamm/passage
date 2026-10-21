@@ -1,0 +1,15 @@
+{
+  "capturedAt": "2026-10-21T14:44:16Z",
+  "method": "Normal unauthenticated HTTPS GET using Node fetch with the PassageLocal/0.3 User-Agent; no cookies or credentials sent",
+  "sanitization": "Fixture keeps the real article heading, the dated confirmed-incident count list and the complete incident table markup. Navigation, scripts, styles, other page sections and inline style attributes were removed.",
+  "fixtures": [
+    {
+      "file": "middle-east-highlighted-incidents.html",
+      "url": "https://www.imo.org/en/mediacentre/hottopics/pages/middle-east-highlighted-incidents.aspx",
+      "responseStatus": 200,
+      "contentType": "text/html; charset=utf-8",
+      "rawSha256": "d2bea0dfc6854497c46cabfe84bd811d5f852c364f14e7311753d28f96200e90",
+      "fixtureSha256": "5777707e1a3f39895357cfa80a80d8f96b70e62402a25be5ede1df62454fa324"
+    }
+  ]
+}
