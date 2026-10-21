@@ -14,7 +14,7 @@ Tanker models are drawn with the [Anatomy SVG core](https://github.com/wheresrya
 
 ## 4 Regional terrain
 
-Locally bundled [Mapzen Terrain Tiles](https://registry.opendata.aws/terrain-tiles/) cover the Strait of Hormuz and Bab el-Mandeb. SRTM and GMTED2010 data are courtesy of the U.S. Geological Survey, with global ETOPO1 data from NOAA. See the [upstream attribution](https://github.com/tilezen/joerd/blob/master/docs/attribution.md). Exact tile URLs, hashes and transformations are recorded in `dist/terrain/assets/provenance.json` and `dist/terrain/ATTRIBUTION.txt`. The terrain is static reference geography, not a nautical chart.
+Locally bundled [Mapzen Terrain Tiles](https://registry.opendata.aws/terrain-tiles/) cover the Strait of Hormuz and the Gulf-to-Red Sea theatre. SRTM and GMTED2010 data are courtesy of the U.S. Geological Survey, with global ETOPO1 data from NOAA. See the [upstream attribution](https://github.com/tilezen/joerd/blob/master/docs/attribution.md). Exact tile URLs, hashes and transformations are recorded in `dist/terrain/assets/provenance.json` and `dist/terrain/ATTRIBUTION.txt`. The terrain is static reference geography, not a nautical chart.
 
 ## 5 Data sources
 

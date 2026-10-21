@@ -1,8 +1,8 @@
 {
   "retrieved": "2026-10-17",
   "dataset": "Mapzen Terrain Tiles",
-  "encoding": "Terrarium: R \u00d7 256 + G + B/256 \u2212 32768 metres",
-  "display": "Terrain uses vertical exaggeration (4\u00d7 for the straits, 24\u00d7 for the theatre). Water is flattened to sea level and shows no bathymetry. GPU normals use 0.65-pixel Gaussian display smoothing. Surface colors are a designed elevation palette, not satellite imagery. Coordinates follow Web Mercator; horizontal kilometre scale is local to scene center. DEM grid is 256 \u00d7 256; normal and coast textures retain 1024 \u00d7 1024 samples.",
+  "encoding": "Terrarium: R × 256 + G + B/256 − 32768 metres",
+  "display": "Terrain uses vertical exaggeration (4× for the straits, 24× for the theatre). Water is flattened to sea level and shows no bathymetry. GPU normals use 0.65-pixel Gaussian display smoothing. Surface colors are a designed elevation palette, not satellite imagery. Coordinates follow Web Mercator; horizontal kilometre scale is local to scene center. DEM grid is 256 × 256; normal and coast textures retain 1024 × 1024 samples.",
   "sources": [
     "https://registry.opendata.aws/terrain-tiles/",
     "https://github.com/tilezen/joerd/blob/master/docs/formats.md",
@@ -50,57 +50,6 @@
         "Sat, 18 Nov 2017 00:16:29 GMT",
         "Sat, 18 Nov 2017 00:21:42 GMT",
         "Sat, 18 Nov 2017 00:21:46 GMT"
-      ]
-    },
-    "bab": {
-      "x": 157,
-      "y": 117,
-      "center": [
-        43.33,
-        12.58
-      ],
-      "zoom": 8,
-      "tileCount": 16,
-      "width": 1024,
-      "height": 1024,
-      "meshSize": 256,
-      "bounds": {
-        "west": 40.78125,
-        "east": 46.40625,
-        "north": 15.284185114076433,
-        "south": 9.795677582829734
-      },
-      "sampleSpacingMetresAtSceneCenter": 596.8,
-      "meshSpacingMetresAtSceneCenter": 2394.3,
-      "maxElevationMetres": 6803.0,
-      "landFraction": 0.6486,
-      "sourceModifiedDates": [
-        "Fri, 17 Nov 2017 09:11:19 GMT",
-        "Fri, 17 Nov 2017 09:12:15 GMT",
-        "Fri, 17 Nov 2017 09:18:17 GMT",
-        "Fri, 17 Nov 2017 09:24:26 GMT",
-        "Fri, 17 Nov 2017 11:44:17 GMT",
-        "Fri, 17 Nov 2017 11:44:50 GMT",
-        "Fri, 17 Nov 2017 11:49:46 GMT",
-        "Fri, 17 Nov 2017 11:50:43 GMT",
-        "Fri, 17 Nov 2017 11:54:46 GMT",
-        "Fri, 17 Nov 2017 11:55:35 GMT",
-        "Fri, 17 Nov 2017 12:00:26 GMT",
-        "Fri, 17 Nov 2017 12:00:50 GMT",
-        "Fri, 17 Nov 2017 14:02:32 GMT",
-        "Fri, 17 Nov 2017 14:11:46 GMT",
-        "Fri, 17 Nov 2017 14:18:08 GMT",
-        "Fri, 17 Nov 2017 14:28:53 GMT"
-      ],
-      "sourceAnomalies": [
-        {
-          "description": "One isolated 6,803 m source sample at mosaic x361,y293, outside the focused strait. Not validated as a physical peak and not sampled by the display mesh. Raw source is retained; normal-texture display smoothing applies.",
-          "pixel": [
-            361,
-            293
-          ],
-          "rawElevationMetres": 6803
-        }
       ]
     },
     "theatre": {
@@ -280,150 +229,6 @@
       "file": "hormuz-8-169-109.png",
       "sha256": "a3a914d3225f39db29b54ec892abd8e832af836f41ebad177be8e23b5738b92e",
       "header": "x-amz-id-2: GrhFHIYP9G9+RFTOOhNFopAJFf6eFV68qk3L7dTvA3/Ty8LumU1QRlpR1ZnQC93VgRidgXy9lNCJqtpndCgEolruprjo0Xy+\nx-amz-request-id: QXC2Q0N4CRG27CE5\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:15 GMT\nlast-modified: Sat, 18 Nov 2017 00:16:29 GMT\netag: \"333d779c05cbb2a1d8d4a01fd638b8f1\"\nx-amz-meta-x-imagery-sources: srtm/N25E058.tif, srtm/N25E057.tif, srtm/N25E059.tif, gmted/10N030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: xobW4LvrhP0jlmiMIX5..yGoAozxCAQB\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 124297\nx-envoy-upstream-service-time: 160\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 157,
-      "y": 117,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/157/117.png",
-      "file": "bab-8-157-117.png",
-      "sha256": "f4777eb42445051bc2088f63df7c5aa565541fa93c1cff04f8785f8d6906078f",
-      "header": "x-amz-request-id: 58P1GX3WEBKR03EV\nx-amz-id-2: fBo+w9Ph1ge7MTrFnB14C0gbXEVnv2zD0asXYsEcrhzfZN+IbqL017ugTPJSQc6/QIo348OKX7pV3V8Lg/3VJtShLhjSaF1l\ncontent-length: 112033\naccept-ranges: bytes\ndate: Sat, 17 Oct 2026 04:48:16 GMT\nserver: envoy\nlast-modified: Fri, 17 Nov 2017 09:11:19 GMT\netag: \"4a1a9b42c87293cc47b5e14d1acd72f0\"\nx-amz-meta-x-imagery-sources: srtm/N14E041.tif, srtm/N14E040.tif, srtm/N13E041.tif, srtm/N13E040.tif, srtm/N15E042.tif, gmted/10N030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: 401xIzNMVQpLZro7v0YEtKzRzoX87cIW\ncontent-type: image/png\nx-envoy-upstream-service-time: 112\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 158,
-      "y": 117,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/158/117.png",
-      "file": "bab-8-158-117.png",
-      "sha256": "fab9d9e918fae6cd8e762780e5481cd53592f643797e41e45a5c56fd020683b0",
-      "header": "x-amz-id-2: Q4/4YjU9Cy/zweun5tsQrGoDMgPFnJh0vF9eKlVWIUKsYq+ZkFh6PlGCvp0XNeuqsTOX5QhWPCIf5rmN1i9Uu8CD6Su5/eow\nx-amz-request-id: 58P442A54GX4W98H\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:17 GMT\nlast-modified: Fri, 17 Nov 2017 12:00:50 GMT\netag: \"374ba3060504977814fdd60e921170f8\"\nx-amz-meta-x-imagery-sources: srtm/N14E042.tif, srtm/N14E043.tif, srtm/N15E042.tif, srtm/N15E043.tif, srtm/N13E043.tif, srtm/N13E042.tif, gmted/10N030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: AHnz2rGOw21dbfKKGIfjOlt5Z4D4AgGE\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 101568\nx-envoy-upstream-service-time: 144\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 159,
-      "y": 117,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/159/117.png",
-      "file": "bab-8-159-117.png",
-      "sha256": "807d37a5f16cd8ad18287f1e5b4e85750db2028147fe7b120c7db38bfc25de13",
-      "header": "x-amz-id-2: D27QbCCGW/m5mRZgUkoMia3PdLi8VB73a+SQxZkzyXiDR8J6ojf3H81go9m+ji+LEARyC7adur+iVWxLD6itlylYZTljxh7j\nx-amz-request-id: 58P4MJ1PT3WTGNT5\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:17 GMT\nlast-modified: Fri, 17 Nov 2017 11:54:46 GMT\netag: \"bafa1c8f7a8e69f68dfdb8576cd7255e\"\nx-amz-meta-x-imagery-sources: srtm/N14E044.tif, srtm/N14E043.tif, srtm/N15E044.tif, srtm/N13E044.tif, srtm/N15E043.tif, srtm/N14E045.tif, srtm/N13E043.tif\nx-amz-version-id: QaENlMlbYX2e20EzrsK3rEzwFlk5p8nB\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 96665\nx-envoy-upstream-service-time: 100\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 160,
-      "y": 117,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/160/117.png",
-      "file": "bab-8-160-117.png",
-      "sha256": "d0130e1f4a8f7b9d1537b35e7c25c67a0429c8e5c8668016c59943ea4ebe56bf",
-      "header": "x-amz-id-2: +CpIH4E76CFBM1AT8uJt+PABbcrXHEpoKyxckK/BhXUf8JrKX2bJOrraJuQ6wgTiTi8NIhFRpEiFyXTJ7G5/HXFO/lyic0E2\nx-amz-request-id: 58P0DJ8ACQTECPPY\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:17 GMT\nlast-modified: Fri, 17 Nov 2017 14:28:53 GMT\netag: \"ef2283106be8542d2d042517c0298ff3\"\nx-amz-meta-x-imagery-sources: srtm/N14E045.tif, srtm/N14E046.tif, srtm/N15E045.tif, srtm/N13E045.tif, srtm/N13E046.tif, srtm/N15E046.tif\nx-amz-version-id: OGfFEhRzIXPR50jhnY6hgMsOcE0YgYPR\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 87925\nx-envoy-upstream-service-time: 92\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 157,
-      "y": 118,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/157/118.png",
-      "file": "bab-8-157-118.png",
-      "sha256": "c49c4025619fa0952ec55e0a4b80af65cf2a1d14bcb3857f14c5d2e8f67430ce",
-      "header": "x-amz-id-2: rrbFPmQ1xy0KoVTzJ/XsTfw6Zcnw+saL2uF0VJm60S1AAhZrc9dxW3GJmaNvZctWAghMvYXPYGh416ryngGanmIdeqGTLT9b\nx-amz-request-id: 58PA0T0C8CFQNRX8\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:17 GMT\nlast-modified: Fri, 17 Nov 2017 09:12:15 GMT\netag: \"04c19b20057734c9cadeb27d4ab9e201\"\nx-amz-meta-x-imagery-sources: srtm/N13E041.tif, srtm/N12E041.tif, srtm/N13E042.tif, srtm/N13E040.tif, srtm/N12E040.tif, srtm/N12E042.tif, gmted/10N030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: IOAKeqxWNSd04X7cmhXl_wegLkDXL6pj\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 77616\nx-envoy-upstream-service-time: 132\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 158,
-      "y": 118,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/158/118.png",
-      "file": "bab-8-158-118.png",
-      "sha256": "52a000674a3ce24847a51bccad701563981fb42f23207c6c6f14a12c36b19874",
-      "header": "x-amz-request-id: 58P34BKS75M7YY79\nx-amz-id-2: 0oD8Wal6YvGAOXnQYPqAPFBvsoSFERY/Ahqc0s7QOkWbuwissZ7vnAslhxEv9/lBtukJNPLo3sR7MwP2wpCrccZOtXL7AlFQ\ncontent-length: 98444\naccept-ranges: bytes\ndate: Sat, 17 Oct 2026 04:48:16 GMT\nserver: envoy\nlast-modified: Fri, 17 Nov 2017 11:44:17 GMT\netag: \"a9804ffe3116051b13287e4e910d904f\"\nx-amz-meta-x-imagery-sources: srtm/N13E042.tif, srtm/N13E043.tif, srtm/N12E042.tif, srtm/N12E043.tif, gmted/10N030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: gKHUy3N.XPxET.d6GlIs1OHIfQREGqzr\ncontent-type: image/png\nx-envoy-upstream-service-time: 117\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 159,
-      "y": 118,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/159/118.png",
-      "file": "bab-8-159-118.png",
-      "sha256": "613e1ae53e9a2719e38f5b2a6cfd11846ee06daeca23405a59da53ab7836ff66",
-      "header": "x-amz-request-id: 58P76PHHG2R2G25C\nx-amz-id-2: 4FqZsaoW1aRJqcwc177dWpYYpcg0ix6/LfISa7Ub2yYn0DvjpnX5K4Ouno5kLmoUpA2f/XW2M7blsLxO+W9tZ8VTk5dM2FkP\ncontent-length: 90488\naccept-ranges: bytes\ndate: Sat, 17 Oct 2026 04:48:16 GMT\nserver: envoy\nlast-modified: Fri, 17 Nov 2017 11:49:46 GMT\netag: \"98d32e33ae71a310d63860a7160deb74\"\nx-amz-meta-x-imagery-sources: srtm/N13E044.tif, srtm/N12E044.tif, srtm/N13E043.tif, srtm/N12E045.tif, srtm/N12E043.tif, srtm/N13E045.tif, gmted/10N030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: s4mukIGvrTUO9wEWtVOFcPaZn_HiFOk_\ncontent-type: image/png\nx-envoy-upstream-service-time: 123\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 160,
-      "y": 118,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/160/118.png",
-      "file": "bab-8-160-118.png",
-      "sha256": "1dac5cdecec9973147f234264d407677fa3277918b07f57074563f5f6269211d",
-      "header": "x-amz-id-2: QLbxRKLjKXTtoO9a+bR/GRnNxtYF3fjdVeu2jZct5U2DCwF193uPfzT/LJc7eSwUiNYwMNHNQbg=\nx-amz-request-id: 58P43QRX6SFFSAY3\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:17 GMT\nlast-modified: Fri, 17 Nov 2017 14:02:32 GMT\netag: \"5ea53917421f25ef14f18e38359a388b\"\nx-amz-meta-x-imagery-sources: srtm/N13E045.tif, srtm/N12E045.tif, srtm/N13E046.tif, srtm/N13E044.tif, srtm/N12E044.tif, gmted/10N030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: txm9CrelSH0Ik70iigXjoI.aIW9HZQID\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 112491\nx-envoy-upstream-service-time: 145\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 157,
-      "y": 119,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/157/119.png",
-      "file": "bab-8-157-119.png",
-      "sha256": "ad56e2cbaba11a7ad4c3510f88e864bb038b61787a39bfce4d777f6b9c0433a8",
-      "header": "x-amz-id-2: 5lnx7Re7zXdU9oM+yFM9sGsCUCqap7UdtqElieMFG/CN5VG8F1H6tQ5+TISIKOLEDI33Urz+ZKo=\nx-amz-request-id: T2HB6474WQZPV0XP\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:19 GMT\nlast-modified: Fri, 17 Nov 2017 09:18:17 GMT\netag: \"1de7426d38c948b517016e470df8ade7\"\nx-amz-meta-x-imagery-sources: srtm/N11E041.tif, srtm/N12E041.tif, srtm/N11E040.tif, srtm/N11E042.tif, srtm/N12E040.tif, srtm/N12E042.tif, gmted/10N030E_20101117_gmted_mea075.tif\nx-amz-version-id: I3_NLzM.yGvtcIk.uY2bFS8qxsAN_QWl\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 75471\nx-envoy-upstream-service-time: 159\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 158,
-      "y": 119,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/158/119.png",
-      "file": "bab-8-158-119.png",
-      "sha256": "bd5a01f780d7d2e21c7c157b8681d77979a0e17abbbe7142efaeca8883ffea80",
-      "header": "x-amz-request-id: T2H1Y7GVN8C29X4A\nx-amz-id-2: prvmbsu7aamZagGUQx9tIKl3UCo0Oin4w3d3VxKhIoYK4wNfpDjYYuW0LskowOF73nyuuCK2UxlvMNm1lb08GmCv1eK6dP/A\ncontent-length: 97822\naccept-ranges: bytes\ndate: Sat, 17 Oct 2026 04:48:18 GMT\nserver: envoy\nlast-modified: Fri, 17 Nov 2017 12:00:26 GMT\netag: \"f5ac12d326e8fd4ccf5601087377b2de\"\nx-amz-meta-x-imagery-sources: srtm/N11E042.tif, srtm/N11E043.tif, srtm/N12E042.tif, srtm/N12E043.tif, gmted/10N030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: Jo6WfP8eN6K8na1rEyx0h2ADZkn1wYlP\ncontent-type: image/png\nx-envoy-upstream-service-time: 128\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 159,
-      "y": 119,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/159/119.png",
-      "file": "bab-8-159-119.png",
-      "sha256": "df1b38999f3e8aaf525186ed2dc7a2fa6021423be6c34a9179bd9cfaf8eed825",
-      "header": "x-amz-id-2: IQFz3Z8poRE/f2JItDeduNstWa8hXiX/rjFXyBMl+DL0JW8R4RRrju+iqjWExdxTfbnAWXCHz2WX22qu9CeGt6sve7SOR5ju\nx-amz-request-id: T2HDTHP0VV9FF6X5\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:19 GMT\nlast-modified: Fri, 17 Nov 2017 11:55:35 GMT\netag: \"53165875604a8c4fd7afa1981e1d285a\"\nx-amz-meta-x-imagery-sources: gmted/10N030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: IOvYNALHi_G93oGa7wOFHQBzp_QRLz9V\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 130326\nx-envoy-upstream-service-time: 147\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 160,
-      "y": 119,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/160/119.png",
-      "file": "bab-8-160-119.png",
-      "sha256": "c54a44c82e69abc672bd8f252be25ba0cf56f4afd2bcb2383f3ec1f4217d9c9c",
-      "header": "x-amz-id-2: USSqgsoPqhvyE6zo8bTA1wmTeWFzL2az5z/36RTYfB2fMobWJV7kQkK3d8dab7nEFXY0KA+oYo6vnkoLfXlFHkXYZe0EyiyS\nx-amz-request-id: T2H2AZCQ0Y4QRV6G\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:19 GMT\nlast-modified: Fri, 17 Nov 2017 14:18:08 GMT\netag: \"e36b88e281c4bd5b4e74b03c898635e5\"\nx-amz-meta-x-imagery-sources: gmted/10N030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: HbDw_s9iviWee7EKg9C5Ct38ZoOQ1R8m\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 137150\nx-envoy-upstream-service-time: 103\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 157,
-      "y": 120,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/157/120.png",
-      "file": "bab-8-157-120.png",
-      "sha256": "de3f273004927957358f0e7ee0c4c274ee81f9934aeb3944cadf7ec7cedda71f",
-      "header": "x-amz-id-2: TK6ceCcWw1fZ7jKHi9gHdCZFgeJq6rNk7yYWbbSEhWSjTslU0C9cujft5BkDnAxK2asNSGJTkcz79RmPGRhtsAXsA0BQDzPr\nx-amz-request-id: T2H7TM910N5F0GE0\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:19 GMT\nlast-modified: Fri, 17 Nov 2017 09:24:26 GMT\netag: \"5d35c58bc3fe197cca503921d27a780e\"\nx-amz-meta-x-imagery-sources: srtm/N10E041.tif, srtm/N10E040.tif, srtm/N09E041.tif, srtm/N10E042.tif, srtm/N11E041.tif, srtm/N09E040.tif, srtm/N11E040.tif, srtm/N09E042.tif, srtm/N11E042.tif, gmted/10S030E_20101117_gmted_mea075.tif, gmted/10N030E_20101117_gmted_mea075.tif\nx-amz-version-id: Ahr_d.25_k7EGfpIiQ2NSVgfK5ACs7Wg\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 64460\nx-envoy-upstream-service-time: 161\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 158,
-      "y": 120,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/158/120.png",
-      "file": "bab-8-158-120.png",
-      "sha256": "3921deeabfcc426117e883914e2dc97b6947c8f23bebada95822700667822b84",
-      "header": "x-amz-id-2: zuf4lF8lR8E1+3gop2q4l8CYYjmDiWzVnYBPZWNj9gD8MAycsQbjWHrJxc9rjh9KyniSxkeGRSX+5wImBwki+B9CZQnkL6Hy\nx-amz-request-id: T2HCVJVQYSPHNGSK\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:19 GMT\nlast-modified: Fri, 17 Nov 2017 11:44:50 GMT\netag: \"7baa9a96eda8270f5940ecae25816e1a\"\nx-amz-meta-x-imagery-sources: srtm/N10E042.tif, srtm/N10E043.tif, srtm/N11E043.tif, srtm/N09E042.tif, srtm/N11E042.tif, srtm/N09E043.tif, gmted/10S030E_20101117_gmted_mea075.tif, gmted/10N030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: 0aJ.7EwS43eJTG8KelaUuSo4eF4vnwE_\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 74115\nx-envoy-upstream-service-time: 118\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 159,
-      "y": 120,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/159/120.png",
-      "file": "bab-8-159-120.png",
-      "sha256": "f2636930ad27f91cc76d8a4187a9fb011e8213c27607e04a4a500c6696163933",
-      "header": "x-amz-id-2: tBKxCEjwS05NITdYIqCIrVcnw9FKV79r2rOamP3YeQyVLJxtVMDl2ZlhlhBcSGEq4hM9UvqdWgeeTSJf1j8bMKcUmhecCJxA\nx-amz-request-id: T2H2ZW41MD8W0F77\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:19 GMT\nlast-modified: Fri, 17 Nov 2017 11:50:43 GMT\netag: \"ed2642004af0322fa44449bc810b31e8\"\nx-amz-meta-x-imagery-sources: srtm/N10E044.tif, srtm/N10E043.tif, srtm/N09E044.tif, srtm/N10E045.tif, srtm/N09E043.tif, srtm/N11E043.tif, srtm/N09E045.tif, gmted/10N030E_20101117_gmted_mea075.tif, gmted/10S030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: FUDGog54zc4IB4s0498XSUS9BOfVSDPr\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 100345\nx-envoy-upstream-service-time: 113\nconnection: close\n\n"
-    },
-    {
-      "name": "bab",
-      "x": 160,
-      "y": 120,
-      "url": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/8/160/120.png",
-      "file": "bab-8-160-120.png",
-      "sha256": "f0095b19598079f62fab22409020ffaa27458381d89f34a49e5f33e8a0577d64",
-      "header": "x-amz-id-2: 0vROoGLqiJ9EOgdCjWy0H9GadTXuG2VCef8K/eOt/1ZTVjluXwg8kzXFU/vpB86Q5qu58QNam/8xx3wbywWwH6kUYKsS7It+\nx-amz-request-id: T2HBV3GGC9RP14ZK\nserver: envoy\ndate: Sat, 17 Oct 2026 04:48:19 GMT\nlast-modified: Fri, 17 Nov 2017 14:11:46 GMT\netag: \"e254764608459920ea3096fd8bda3036\"\nx-amz-meta-x-imagery-sources: srtm/N10E045.tif, srtm/N10E046.tif, srtm/N09E045.tif, srtm/N10E044.tif, srtm/N09E046.tif, srtm/N09E044.tif, gmted/10N030E_20101117_gmted_mea075.tif, gmted/10S030E_20101117_gmted_mea075.tif, etopo1/ETOPO1_Bed_g.tif\nx-amz-version-id: U_vl1Jdf.0LX3wKoK5PY9iAEXh_zEP67\naccept-ranges: bytes\ncontent-type: image/png\ncontent-length: 103278\nx-envoy-upstream-service-time: 125\nconnection: close\n\n"
     },
     {
       "name": "theatre",

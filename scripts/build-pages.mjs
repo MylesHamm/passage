@@ -7,7 +7,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const staticExtensions = new Set(['.html', '.css', '.js', '.mjs', '.json', '.svg', '.ttf', '.woff', '.woff2', '.png', '.jpg', '.webp', '.ico', '.txt']);
 // Bundled JSON is limited to reference geography and the curated, source-linked war events.
 const geography = new Set(['terrain/assets/provenance.json', 'data/war-events.json']);
-const terrainGrids = new Set(['terrain/assets/hormuz-dem.bin', 'terrain/assets/bab-dem.bin', 'terrain/assets/theatre-dem.bin']);
+const terrainGrids = new Set(['terrain/assets/hormuz-dem.bin', 'terrain/assets/theatre-dem.bin']);
 const escapeAttribute = text => text.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const inside = (parent, child) => child === parent || child.startsWith(parent + sep);
 

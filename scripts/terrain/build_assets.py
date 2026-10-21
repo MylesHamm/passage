@@ -10,12 +10,12 @@ from scipy.ndimage import gaussian_filter, distance_transform_edt
 ROOT=Path(__file__).resolve().parents[2]
 CACHE=Path(os.environ.get('TERRAIN_TILE_CACHE','/tmp/passage-terrain-source-tiles')); CACHE.mkdir(exist_ok=True)
 ASSETS=ROOT/'dist'/'terrain'/'assets'; ASSETS.mkdir(exist_ok=True)
-ALL_SCENES={'hormuz':{'x':166,'y':106,'center':[56.25,26.57]},'bab':{'x':157,'y':117,'center':[43.33,12.58]},
+ALL_SCENES={'hormuz':{'x':166,'y':106,'center':[56.25,26.57]},
  # Gulf to Red Sea theatre: 4 x 4 zoom-5 tiles, 22.5-67.5 E and 0-41 N.
  'theatre':{'x':18,'y':12,'zoom':5,'exaggeration':24,'center':[45.0,21.94]}}
 # PASSAGE_TERRAIN_SCENES=theatre rebuilds only that scene and merges its provenance,
 # leaving other scenes' assets and records untouched.
-WANTED=[n for n in os.environ.get('PASSAGE_TERRAIN_SCENES','hormuz,bab').split(',') if n in ALL_SCENES]
+WANTED=[n for n in os.environ.get('PASSAGE_TERRAIN_SCENES','hormuz,theatre').split(',') if n in ALL_SCENES]
 SCENES={n:dict(ALL_SCENES[n]) for n in WANTED}
 for s in SCENES.values(): s.setdefault('zoom',8); s.setdefault('exaggeration',4)
 def fetch(job):
@@ -69,7 +69,7 @@ for name,s in SCENES.items():
  n=2**s['zoom']
  north=math.degrees(math.atan(math.sinh(math.pi*(1-2*s['y']/n))))
  south=math.degrees(math.atan(math.sinh(math.pi*(1-2*(s['y']+4)/n))))
- s.update({'tileCount':16,'width':1024,'height':1024,'meshSize':256,'retrieved':datetime.date.today().isoformat(),'bounds':{'west':s['x']/n*360-180,'east':(s['x']+4)/n*360-180,'north':north,'south':south},'sampleSpacingMetresAtSceneCenter':round(spacing,1),'meshSpacingMetresAtSceneCenter':round(spacing*1023/255,1),'maxElevationMetres':round(float(h.max()),1),'landFraction':round(float(land.mean()),4),'sourceAnomalies':([{'description':'One isolated 6,803 m source sample at mosaic x361,y293, outside the focused strait. Not validated as a physical peak and not sampled by the display mesh. Raw source is retained; normal-texture display smoothing applies.','pixel':[361,293],'rawElevationMetres':6803}] if name=='bab' else []),'sourceModifiedDates':sorted(set(m.group(1).strip() for r in records if r['name']==name for m in [re.search(r'(?im)^last-modified:\s*(.+)$',r['header'])] if m))})
+ s.update({'tileCount':16,'width':1024,'height':1024,'meshSize':256,'retrieved':datetime.date.today().isoformat(),'bounds':{'west':s['x']/n*360-180,'east':(s['x']+4)/n*360-180,'north':north,'south':south},'sampleSpacingMetresAtSceneCenter':round(spacing,1),'meshSpacingMetresAtSceneCenter':round(spacing*1023/255,1),'maxElevationMetres':round(float(h.max()),1),'landFraction':round(float(land.mean()),4),'sourceAnomalies':[],'sourceModifiedDates':sorted(set(m.group(1).strip() for r in records if r['name']==name for m in [re.search(r'(?im)^last-modified:\s*(.+)$',r['header'])] if m))})
  print(name,json.dumps(s))
 previous=json.loads((ASSETS/'provenance.json').read_text()) if (ASSETS/'provenance.json').exists() else {}
 provenance={'retrieved':'2026-10-17','dataset':'Mapzen Terrain Tiles','encoding':'Terrarium: R × 256 + G + B/256 − 32768 metres','display':'Terrain uses vertical exaggeration (4× for the straits, 24× for the theatre). Water is flattened to sea level and shows no bathymetry. GPU normals use 0.65-pixel Gaussian display smoothing. Surface colors are a designed elevation palette, not satellite imagery. Coordinates follow Web Mercator; horizontal kilometre scale is local to scene center. DEM grid is 256 × 256; normal and coast textures retain 1024 × 1024 samples.','sources':['https://registry.opendata.aws/terrain-tiles/','https://github.com/tilezen/joerd/blob/master/docs/formats.md','https://github.com/tilezen/joerd/blob/master/docs/attribution.md'],'credit':'Mapzen Terrain Tiles. SRTM and GMTED2010 terrain data courtesy of the U.S. Geological Survey. Global ETOPO1 terrain data: U.S. National Oceanic and Atmospheric Administration.','limitations':'Static reference geography, not current observations. Mixed source years and resolutions. Tile modification dates are not survey dates. Encoding precision does not establish accuracy. Not for navigation.','scenes':{**previous.get('scenes',{}),**SCENES},'tiles':[t for t in previous.get('tiles',[]) if t['name'] not in SCENES]+records}

@@ -14,17 +14,6 @@ export const SCENES = {
       {name:'GULF OF OMAN',point:[57.38,25.96],kind:'water'},
       {name:'PERSIAN GULF',point:[54.96,26.65],kind:'water'}
     ] },
-  bab: { id:'bab', name:'Bab el-Mandeb', shortName:'Bab el-Mandeb', center:[43.33,12.58], tileOrigin:[157,117], zoom:8, tileSpan:4, extent:310,
-    coordinates:'12.58° N / 43.33° E',
-    labels:[
-      {name:'YEMEN',point:[44.03,13.03],kind:'country'},
-      {name:'DJIBOUTI',point:[42.64,12.18],kind:'country'},
-      {name:'ERITREA',point:[42.45,13.08],kind:'country'},
-      {name:'Djibouti',point:[43.14,11.6],kind:'place'},
-      {name:'Assab',point:[42.74,13.01],kind:'place'},
-      {name:'RED SEA',point:[42.96,13.54],kind:'water'},
-      {name:'GULF OF ADEN',point:[44.25,12.05],kind:'water'}
-    ] },
   // Regional war theatre, Gulf to Red Sea. Labels are static reference names.
   theatre: { id:'theatre', name:'Gulf to Red Sea', shortName:'Regional war', center:[45.0,21.94], tileOrigin:[18,12], zoom:5, tileSpan:4, extent:3600, exaggeration:24,
     coordinates:'22.5–67.5° E / 0–41° N',
