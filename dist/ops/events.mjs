@@ -35,9 +35,14 @@ export function curatedMissions(json) {
     const polygon = (Array.isArray(m?.polygon) ? m.polygon : []).filter(p => Array.isArray(p) && inRange(p[1], p[0]));
     const sources = safeSources(m?.sources);
     if (!m || !isDay(m.start) || polygon.length < 3 || !sources.length) return [];
-    return [{ id: 'mission:' + text(m.id, 120), name: text(m.name, 120), operator: text(m.operator, 120), start: m.start, end: isDay(m.end) ? m.end : null, area: text(m.area, 240), polygon, sources }];
+    const labelAt = Array.isArray(m.labelAt) && inRange(m.labelAt[1], m.labelAt[0]) ? m.labelAt
+      : [polygon.reduce((s, p) => s + p[0], 0) / polygon.length, polygon.reduce((s, p) => s + p[1], 0) / polygon.length];
+    return [{ id: 'mission:' + text(m.id, 120), name: text(m.name, 120), operator: text(m.operator, 120), start: m.start, end: isDay(m.end) ? m.end : null, area: text(m.area, 240), polygon, labelAt, sources }];
   });
 }
+
+/** Missions under way on a given day: a mission that ended earlier is not drawn as current. */
+export const activeMissions = (missions, date) => (Array.isArray(missions) ? missions : []).filter(m => isDay(date) && m.start <= date && (!m.end || m.end >= date));
 
 /** IMO register incidents that the collector could place, flagged approximate. */
 export function registerEvents(maritime, { from = WAR_START } = {}) {

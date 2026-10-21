@@ -3365,6 +3365,10 @@
           27.9
         ]
       ],
+      "labelAt": [
+        47.5,
+        12.6
+      ],
       "precision": "approximate",
       "sources": [
         {
@@ -3448,6 +3452,10 @@
           29.9
         ]
       ],
+      "labelAt": [
+        61.0,
+        23.8
+      ],
       "precision": "approximate",
       "sources": [
         {
@@ -3524,6 +3532,10 @@
           48.9,
           29.9
         ]
+      ],
+      "labelAt": [
+        61.0,
+        23.8
       ],
       "precision": "approximate",
       "sources": [
@@ -3603,6 +3615,10 @@
           54.8,
           25.6
         ]
+      ],
+      "labelAt": [
+        57.8,
+        24.9
       ],
       "precision": "approximate",
       "sources": [

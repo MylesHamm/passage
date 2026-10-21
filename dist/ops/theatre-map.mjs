@@ -2,11 +2,13 @@
 // source-linked events and approximate naval mission areas.
 import { SCENES, geographicPoint } from '../terrain/geometry.mjs';
 import { createTerrainView } from './terrain-view.mjs';
-import { esc } from './panels.mjs';
+import { esc, dayLabel } from './panels.mjs';
 
 const SCENE = SCENES.theatre;
 const FRAME_CENTER = [46.2, 20.6];
 const RECENT_MS = 7 * 86_400_000;
+/** Day and month, plus the year when it is not the current one (Aspides began in 2024). */
+const missionDay = day => day.slice(0, 4) === String(new Date().getUTCFullYear()) ? dayLabel(day) : `${dayLabel(day)} ${day.slice(0, 4)}`;
 export function theatrePose() {
   const [x, , z] = geographicPoint(FRAME_CENTER, SCENE);
   return { zoom: .92, tilt: .72, yaw: -.1, panX: x, panZ: z, topDown: false };
@@ -42,8 +44,10 @@ export async function createTheatreMap(root, { onSelect } = {}) {
       const pts = m.polygon.map(p => project(p, .05));
       if (pts.every(p => !p.visible)) continue;
       shapes.push(`<path class="mission-area" d="${pts.map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('')}Z"/>`);
-      const c = project([m.polygon.reduce((s, p) => s + p[0], 0) / m.polygon.length, m.polygon.reduce((s, p) => s + p[1], 0) / m.polygon.length], .05);
-      if (c.visible) shapes.push(`<text class="mission-label" x="${c.x.toFixed(1)}" y="${c.y.toFixed(1)}">${esc(m.name)}</text>`);
+      const c = project(m.labelAt, .05);
+      if (!c.visible) continue;
+      const x = c.x.toFixed(1), dates = m.end ? `${missionDay(m.start)} – ${missionDay(m.end)}` : `Since ${missionDay(m.start)}`;
+      shapes.push(`<text class="mission-label" x="${x}" y="${c.y.toFixed(1)}">${esc(m.name)}<tspan class="mission-dates" x="${x}" dy="12">${esc(dates)}</tspan></text>`);
     }
     const seen = new Set();
     for (const e of events) {

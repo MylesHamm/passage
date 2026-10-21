@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { curatedEvents, curatedMissions, registerEvents, mergeEvents, visibleEvents, countsByLayer, priceMove, oddsMove, relatedMarkets, WAR_START } from '../dist/ops/events.mjs';
+import { curatedEvents, curatedMissions, activeMissions, registerEvents, mergeEvents, visibleEvents, countsByLayer, priceMove, oddsMove, relatedMarkets, WAR_START } from '../dist/ops/events.mjs';
 
 const source = { publisher: 'Reuters', title: 'Report', url: 'https://www.reuters.com/x', date: '2026-03-02' };
 const event = (fields = {}) => ({ id: '2026-03-02-test', date: '2026-03-02', layer: 'strikes-on-iran-yemen', type: 'air-strike', actor: 'United States', target: 'Air base', place: 'Bandar Abbas', country: 'Iran', lat: 27.18, lon: 56.28, precision: 'city', confidence: 'confirmed', title: 'Strike near Bandar Abbas', summary: 'A strike was reported.', sources: [source], ...fields });
@@ -28,6 +28,21 @@ test('missions need a dated start, a real polygon and a source', () => {
   ] });
   assert.deepEqual(missions.map(m => m.id), ['mission:aspides']);
   assert.equal(missions[0].end, null);
+  assert.deepEqual(missions[0].labelAt, [42, 14], 'without a label point the label sits at the vertex average');
+  const placed = curatedMissions({ missions: [{ id: 'p', start: '2026-05-04', polygon: [[40, 12], [44, 12], [44, 16]], labelAt: [43, 13], sources: [source] }] });
+  assert.deepEqual(placed[0].labelAt, [43, 13]);
+});
+
+test('only missions under way on the day are drawn', () => {
+  const polygon = [[56, 24], [58, 24], [58, 26]];
+  const missions = curatedMissions({ missions: [
+    { id: 'escort', start: '2026-05-04', end: '2026-05-05', polygon, sources: [source] },
+    { id: 'blockade', start: '2026-07-14', end: null, polygon, sources: [source] },
+  ] });
+  assert.deepEqual(activeMissions(missions, '2026-05-05').map(m => m.id), ['mission:escort'], 'the end day is still active');
+  assert.deepEqual(activeMissions(missions, '2026-06-01'), []);
+  assert.deepEqual(activeMissions(missions, '2026-10-21').map(m => m.id), ['mission:blockade']);
+  assert.deepEqual(activeMissions(missions, 'today'), []);
 });
 
 test('register incidents appear only when the collector could place them, and stay approximate', () => {

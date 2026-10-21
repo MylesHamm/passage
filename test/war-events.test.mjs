@@ -12,7 +12,7 @@ const TYPES = ['shipping-attack', 'seizure', 'mine', 'missile', 'drone', 'air-st
 const PRECISIONS = ['facility', 'city', 'area', 'sea-area'];
 const CONFIDENCE = ['confirmed', 'claimed'];
 const EVENT_KEYS = ['id', 'date', 'time', 'layer', 'type', 'actor', 'target', 'place', 'country', 'lat', 'lon', 'precision', 'confidence', 'title', 'summary', 'sources'];
-const MISSION_KEYS = ['id', 'name', 'operator', 'start', 'end', 'area', 'polygon', 'precision', 'sources'];
+const MISSION_KEYS = ['id', 'name', 'operator', 'start', 'end', 'area', 'polygon', 'labelAt', 'precision', 'sources'];
 const SOURCE_KEYS = ['publisher', 'title', 'url', 'date'];
 
 const isDate = value => {
@@ -22,6 +22,10 @@ const isDate = value => {
 };
 const nonEmpty = value => typeof value === 'string' && value.trim().length > 0;
 const inBounds = (lon, lat) => Number.isFinite(lon) && Number.isFinite(lat) && lon >= BOUNDS.minLon && lon <= BOUNDS.maxLon && lat >= BOUNDS.minLat && lat <= BOUNDS.maxLat;
+const inside = ([x, y], ring) => ring.reduce((acc, [x1, y1], i) => {
+  const [x2, y2] = ring[(i + 1) % ring.length];
+  return (y1 > y) !== (y2 > y) && x < (x2 - x1) * (y - y1) / (y2 - y1) + x1 ? !acc : acc;
+}, false);
 const host = url => new URL(url).hostname.toLowerCase();
 const isWikipedia = url => host(url) === 'wikipedia.org' || host(url).endsWith('.wikipedia.org');
 
@@ -132,6 +136,7 @@ test('missions have valid dates, sources and closed or 3+ point polygons inside 
     const distinct = new Set(mission.polygon.map(point => point.join(','))).size;
     assert.ok(closed || mission.polygon.length >= 3, `${mission.id}: polygon must be closed or have at least 3 points`);
     assert.ok(distinct >= 3, `${mission.id}: polygon needs at least 3 distinct points`);
+    assert.ok(Array.isArray(mission.labelAt) && inside(mission.labelAt, mission.polygon), `${mission.id}: label point must sit inside its own area`);
     checkSources(mission.sources, mission.id);
   }
 });
