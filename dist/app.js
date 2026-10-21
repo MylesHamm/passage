@@ -7,7 +7,7 @@ import {
   vesselCounts, heroCountsMarkup, vesselCardMarkup, oddsMarkup, headlinesMarkup, latestPrices, money, dayLabel,
   clockLabel, ageLabel, transitRowMarkup, statusSummary, aboutMarkup, chartSeries, eventCardMarkup, eventListMarkup, esc,
 } from './ops/panels.mjs';
-import { WAR_START, LAYERS, curatedEvents, curatedMissions, registerEvents, mergeEvents, visibleEvents, countsByLayer, priceMove, oddsMove, relatedMarkets } from './ops/events.mjs';
+import { WAR_START, LAYERS, curatedEvents, curatedMissions, activeMissions, registerEvents, mergeEvents, visibleEvents, countsByLayer, priceMove, oddsMove, relatedMarkets } from './ops/events.mjs';
 
 const $ = selector => document.querySelector(selector);
 const state = {
@@ -96,35 +96,50 @@ const shownEvents = () => visibleEvents(state.events, { layers: [...state.layers
 function renderEvents() {
   const shown = shownEvents(), counts = countsByLayer(shown);
   $('#theatre-counts').innerHTML = state.events.length
-    ? `<span><strong>${shown.length}</strong> events since ${esc(dayLabel(WAR_START))}</span>` + Object.entries(LAYERS).filter(([id]) => state.layers.has(id)).map(([id]) => `<span><strong>${counts[id]}</strong> ${esc(LAYERS[id].label.toLowerCase())}</span>`).join('')
+    ? `<span><strong>${shown.length}</strong> events since ${esc(dayLabel(WAR_START))}</span>` + Object.entries(LAYERS).filter(([id]) => state.layers.has(id)).map(([id]) => `<span><strong>${counts[id]}</strong> ${esc(LAYERS[id].label[0].toLowerCase() + LAYERS[id].label.slice(1))}</span>`).join('')
     : '<span>No events loaded</span>';
   $('#event-list').innerHTML = eventListMarkup(state.events, { limit: 6 });
   const newest = state.events[0]?.date;
   stamp($('#latest-events-stamp'), newest ? `Latest ${dayLabel(newest)}` : '');
   theatre?.setEvents(shown);
-  theatre?.setMissions(state.missions, state.layers.has('missions'));
+  renderMissions();
   renderChartMarkers();
+}
+/** Mission areas under way on the selected event's day, or today when nothing is selected. */
+function renderMissions() {
+  const day = state.events.find(e => e.id === state.selectedEvent)?.date || new Date().toISOString().slice(0, 10);
+  theatre?.setMissions(activeMissions(state.missions, day), state.layers.has('missions'));
 }
 function renderChartMarkers() {
   oilChart?.setMarkers(shownEvents().map(e => ({ id: e.id, date: e.date, layer: e.layer, label: `${dayLabel(e.date)} · ${e.title}` })));
 }
 
 function brentObservations() { return chartSeries(state.oil).find(s => s.id === 'brent')?.observations || []; }
+/** Widen the chart to "Since war" when an event falls before the window on screen, so its band is visible. */
+function widenChartFor(date) {
+  const last = brentObservations().filter(o => Number.isFinite(o.value)).at(-1)?.date;
+  if (state.period === 'war' || !last) return;
+  if (Date.parse(date) < Date.parse(last) - (state.period - 1) * DAY) $('[data-period="war"]').click();
+}
 /** "Show me": the theatre flies to the event, the chart marks the window, the card shows what happened next. */
 async function showMe(id) {
   const event = state.events.find(e => e.id === id);
   if (!event) return;
   state.selectedEvent = event.id;
+  // On a phone the list and chart sit below the map: bring the map back into view first.
+  const top = $('#hero').getBoundingClientRect().top;
+  if (top < 0 || top > innerHeight / 2) $('#hero').scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   await setView('theatre');
-  theatre?.select(event.id);
+  theatre?.select(event.id); renderMissions();
   const brent = priceMove(brentObservations(), event.date);
   const odds = relatedMarkets(state.expectations?.markets, event).map(m => ({ question: m.question, move: oddsMove(m.history, event.date) }));
+  widenChartFor(event.date);
   oilChart?.focus({ id: event.id, date: event.date, endDate: brent?.after?.date || null });
   const card = $('#event-card');
   card.innerHTML = eventCardMarkup(event, { brent, odds }); card.hidden = false;
 }
 function closeEvent() {
-  state.selectedEvent = null; theatre?.select(null, { fly: false }); oilChart?.focus(null);
+  state.selectedEvent = null; theatre?.select(null, { fly: false }); renderMissions(); oilChart?.focus(null);
   $('#event-card').hidden = true; $('#event-card').innerHTML = '';
 }
 

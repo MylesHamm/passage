@@ -63,8 +63,10 @@ button:disabled { opacity: .45; cursor: default; }
 
 /* Layout */
 .ops-grid { display: grid; grid-template-columns: minmax(0, 1fr) 372px; grid-template-rows: minmax(520px, calc(100vh - 54px - 252px - 3 * var(--gap))) auto; gap: var(--gap); padding: var(--gap) 20px 20px; }
-.hero { grid-column: 1; grid-row: 1; position: relative; min-height: 520px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #041019; }
+.hero { grid-column: 1; grid-row: 1; position: relative; scroll-margin-top: 64px; min-height: 520px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #041019; }
 .rail { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: var(--gap); min-height: 0; }
+/* The rail takes the height of the map and price strip and scrolls inside it, so a long list never stretches the strip. */
+@media (min-width: 1101px) { .rail { contain: size; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--line) transparent; } .rail > .card { flex-shrink: 0; } }
 .strip { grid-column: 1; grid-row: 2; }
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; min-width: 0; }
 .card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
@@ -254,6 +256,7 @@ dialog.sheet { margin: 0 0 0 auto; height: 100vh; max-height: 100vh; border-radi
 .event[aria-pressed=true]::before { inset: -10px; border: 2px solid var(--live); box-shadow: 0 0 18px #3ee6a866; }
 .mission-area { fill: #3ee6a812; stroke: #3ee6a866; stroke-width: 1.2; stroke-dasharray: 5 4; }
 .mission-label { fill: #3ee6a8aa; font: 600 10px 'IBM Plex Sans', sans-serif; letter-spacing: .12em; text-anchor: middle; text-transform: uppercase; }
+.mission-dates { fill: #3ee6a877; font-weight: 500; letter-spacing: .08em; text-transform: none; }
 .event-radius { fill: #ffc06910; stroke: var(--shipping); stroke-width: 1.2; stroke-dasharray: 3 3; }
 .k { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; }
 .k-shipping { background: var(--shipping); transform: rotate(45deg) scale(.8); }
@@ -288,4 +291,4 @@ dialog.sheet { margin: 0 0 0 auto; height: 100vh; max-height: 100vh; border-radi
 .oil-chart-marker:hover line, .oil-chart-marker[data-selected=true] line { opacity: 1; stroke-width: 3; }
 .oil-chart-focus-band { fill: #3ee6a814; stroke: #3ee6a855; stroke-width: 1; }
 @media (max-width: 900px) { .view-switch { margin-left: auto; } .view-switch button { padding: 6px 10px; font-size: 12px; } }
-@media (max-width: 640px) { .ops-brand strong { font-size: 14px; letter-spacing: .18em; } #headlines-open { display: none; } .view-switch { margin-left: auto; } .event-card { left: 10px; right: 10px; width: auto; top: auto; bottom: 10px; max-height: 60%; } }
+@media (max-width: 640px) { .ops-brand strong { font-size: 14px; letter-spacing: .18em; } #headlines-open { display: none; } .view-switch { margin-left: auto; } .event-card { left: 10px; right: 10px; width: auto; top: auto; bottom: 10px; max-height: 44%; } }
