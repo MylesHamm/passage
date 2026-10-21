@@ -166,3 +166,37 @@ export function aboutMarkup(sources = []) {
     <h3>How to read this</h3><ul>${ABOUT_NOTES.map(([k, v]) => `<li><strong>${esc(k)}.</strong> ${esc(v)}</li>`).join('')}</ul>
     <h3>Credits</h3><p>Sources: UN Global Platform; IMF PortWatch (portwatch.imf.org). Oil prices: U.S. Energy Information Administration. Vessel positions: AISStream. Market odds: Polymarket. Terrain: Mapzen Terrain Tiles (USGS SRTM, GMTED2010; NOAA ETOPO1). Ship model drawn with the Anatomy kit (MIT).</p>`;
 }
+
+const LAYER_NAMES = { shipping: 'Attack on shipping', 'missile-drone': 'Missile & drone strike', 'strikes-on-iran-yemen': 'Strike on Iran or Yemen' };
+const PRECISION_NAMES = { facility: 'facility location', city: 'city location', area: 'approximate area', 'sea-area': 'sea area' };
+const signed = (value, digits = 2) => `${value >= 0 ? '+' : '−'}${Math.abs(value).toFixed(digits)}`;
+
+/** "Show me" card. Figures are dated observations around the event, never a measured effect. */
+export function eventCardMarkup(event, { brent = null, odds = [] } = {}) {
+  if (!event) return '';
+  const who = [event.actor, event.target].filter(Boolean).join(' → ');
+  let price = '<p>No Brent observation on or before this date.</p>';
+  if (brent?.before && brent.after) {
+    const dir = brent.change > 0 ? 'up' : brent.change < 0 ? 'down' : '';
+    price = `<p>${money(brent.before.value)} on ${esc(dayLabel(brent.before.date))} → ${money(brent.after.value)} on ${esc(dayLabel(brent.after.date))} <span class="${dir}">${esc(signed(brent.change))} (${esc(signed(brent.percent, 1))}%)</span></p>`;
+  } else if (brent?.before) price = `<p>${money(brent.before.value)} on ${esc(dayLabel(brent.before.date))}. Later prices are not yet published.</p>`;
+  const pct = p => `${Math.round(p * 1000) / 10}%`;
+  const oddsMarkup = odds.filter(o => o.move?.before).map(o => `<p>${esc(o.question)}: ${pct(o.move.before.p)}${o.move.after ? ` → ${pct(o.move.after.p)}` : ''}</p>`).join('');
+  return `<button type="button" class="vc-close" data-close-event aria-label="Close event details">×</button>
+    <p class="ec-meta"><b data-layer="${esc(event.layer)}">${esc(LAYER_NAMES[event.layer] || 'Event')}</b> · ${esc(dayLabel(event.date))}${event.time ? ' ' + esc(event.time.replace('Z', ' UTC')) : ''}${event.confidence === 'claimed' ? '<span class="ec-claimed">Claimed</span>' : ''}</p>
+    <h3>${esc(event.title)}</h3>
+    ${who ? `<p class="vc-type">${esc(who.toUpperCase())}</p>` : ''}
+    <dl><dt>Place</dt><dd>${esc(event.place || '—')}</dd><dt>Location</dt><dd>${esc(PRECISION_NAMES[event.precision] || 'approximate area')}${Number.isFinite(event.radiusNm) ? ` · within ${Math.round(event.radiusNm)} NM` : ''}</dd></dl>
+    ${event.summary ? `<p class="ec-summary">${esc(event.summary)}</p>` : ''}
+    <div class="ec-move"><h4>Brent over the next ${brent?.days || 3} trading days</h4>${price}</div>
+    ${oddsMarkup ? `<div class="ec-move"><h4>Market odds over the next 3 days</h4>${oddsMarkup}</div>` : ''}
+    <ul class="ec-sources">${event.sources.map(src => `<li><a href="${esc(src.url)}" target="_blank" rel="noopener noreferrer">${esc(src.publisher)}${src.title ? ' · ' + esc(src.title) : ''} ↗</a></li>`).join('')}</ul>
+    <p class="ec-note">Prices and odds move for many reasons; these figures show what happened next, not what caused it.</p>`;
+}
+
+export function eventListMarkup(events, { limit = 6 } = {}) {
+  const list = (Array.isArray(events) ? events : []).slice(0, limit);
+  if (!list.length) return '<li class="empty-note">No events to show.</li>';
+  const keys = { shipping: 'k-shipping', 'missile-drone': 'k-missile', 'strikes-on-iran-yemen': 'k-strike' };
+  return list.map(e => `<li><button type="button" data-event-id="${esc(e.id)}"><i class="k ${keys[e.layer] || 'k-strike'}" aria-hidden="true"></i><span class="el-title">${esc(e.title)}</span><span class="el-meta">${esc(dayLabel(e.date))} · ${esc(e.place)}${e.confidence === 'claimed' ? ' · claimed' : ''}</span></button></li>`).join('');
+}

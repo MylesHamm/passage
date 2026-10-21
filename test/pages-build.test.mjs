@@ -47,9 +47,9 @@ test('Pages artifact resolves its real assets, imports and navigation under /pas
     }
   }
   assert.ok(files.includes('.nojekyll'));
-  assert.deepEqual(files.filter(name => name.endsWith('.bin')).sort(), ['terrain/assets/bab-dem.bin', 'terrain/assets/hormuz-dem.bin']);
+  assert.deepEqual(files.filter(name => name.endsWith('.bin')).sort(), ['terrain/assets/bab-dem.bin', 'terrain/assets/hormuz-dem.bin', 'terrain/assets/theatre-dem.bin']);
   assert.ok(!files.some(name => name.startsWith('terrain/source/') || name.startsWith('terrain/test/') || /\.(py|headers)$/.test(name)));
-  for(const name of ['terrain/assets/bab-dem.bin','terrain/assets/hormuz-dem.bin'])assert.equal((await stat(resolve(output,name))).size,256*256*2);
+  for(const name of ['terrain/assets/bab-dem.bin','terrain/assets/hormuz-dem.bin','terrain/assets/theatre-dem.bin'])assert.equal((await stat(resolve(output,name))).size,256*256*2);
   assert.ok(!files.some(name => name.startsWith('connections/') || /(?:\.env|server\.mjs|cache|node_modules)/.test(name)));
   assert.deepEqual(files.filter(name => name.endsWith('.json')).sort(), ['terrain/assets/provenance.json']);
   for (const name of ['index.html', 'app.js', 'ops.css', 'ops/hero-map.mjs', 'ops/panels.mjs', 'vendor/anatomy/iso-kit.mjs', 'vendor/anatomy/LICENSE.txt']) assert.ok(files.includes(name), name);

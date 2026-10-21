@@ -183,3 +183,18 @@ test('isolated oil observations render as visible circles without an invalid pat
   assert.match(html,/<circle[^>]+class="oil-chart-observation oil-series-brent"/);
   assert.doesNotMatch(html,/<path[^>]+class="oil-chart-line|d="L|NaN|undefined/);
 });
+
+test('event ticks sit only on plotted dates and a focus window reads out its event date', t => {
+  const h = chartHarness(t), plot = h.q('[data-chart-plot]');
+  const series = [{ id: 'brent', name: 'Brent', observations: [{ date: '2026-09-01', value: 80 }, { date: '2026-09-02', value: 81 }, { date: '2026-09-03', value: 82 }, { date: '2026-09-04', value: 83 }] }];
+  h.view.update(series, { period: 90, now: Date.parse('2026-09-05T00:00:00Z') });
+  h.view.setMarkers([{ id: 'in', date: '2026-09-02', layer: 'shipping', label: 'Inside' }, { id: 'out', date: '2026-10-01', layer: 'shipping' }, { id: 'bad', date: 'x' }]);
+  assert.match(plot.innerHTML, /data-marker-id="in"/);
+  assert.doesNotMatch(plot.innerHTML, /data-marker-id="out"/, 'events after the last observation are not placed on the axis');
+  h.view.focus({ id: 'in', date: '2026-09-02', endDate: '2026-09-04' });
+  assert.match(plot.innerHTML, /oil-chart-focus-band/);
+  assert.match(plot.innerHTML, /data-marker-id="in" data-selected="true"/);
+  assert.equal(h.q('input').getAttribute('aria-valuetext').startsWith('Sep 2, 2026'), true);
+  h.view.focus(null);
+  assert.doesNotMatch(plot.innerHTML, /oil-chart-focus-band/);
+});

@@ -1,4 +1,4 @@
-import {buildTerrainMesh,cameraMatrix,geographicPoint,project,longitudeLatitudeToUV,sceneWidthKm,clamp} from './geometry.mjs';
+import {buildTerrainMesh,cameraMatrix,geographicPoint,project,longitudeLatitudeToUV,sceneWidthKm,clamp,exaggerationOf} from './geometry.mjs';
 const VERTEX=`
 attribute vec3 a_position;
 attribute vec2 a_uv;
@@ -13,6 +13,7 @@ varying vec3 v_position;
 uniform sampler2D u_height;
 uniform sampler2D u_normal;
 uniform vec3 u_eye;
+uniform float u_scale;
 void main(){
  vec4 data=texture2D(u_height,v_uv);
  float elevation=(data.r*65280.0+data.g*255.0);
@@ -31,12 +32,12 @@ void main(){
  float shore=exp(-data.a*9.0);
  vec3 water=mix(vec3(0.025,0.105,0.15),vec3(0.055,0.22,0.255),shore*0.63);
  // Static water shading carries no current, depth, or traffic meaning.
- float horizon=clamp((v_position.z+250.0)/600.0,0.0,1.0);
+ float horizon=clamp((v_position.z+250.0*u_scale)/(600.0*u_scale),0.0,1.0);
  water*=0.91+horizon*0.16;
  vec3 color=mix(water,land,smoothstep(0.36,0.64,data.b));
  float edge=min(min(v_uv.x,1.0-v_uv.x),min(v_uv.y,1.0-v_uv.y));
  float edgeFade=smoothstep(0.0,0.065,edge);
- float fog=clamp(length(v_position-u_eye)/1100.0,0.0,0.55);
+ float fog=clamp(length(v_position-u_eye)/(1100.0*u_scale),0.0,0.55);
  color=mix(color,vec3(0.025,0.085,0.125),fog*fog*0.5);
  color=mix(vec3(0.025,0.105,0.15),color,edgeFade);
  gl_FragColor=vec4(color,1.0);
@@ -51,7 +52,7 @@ export function createWebGLRenderer(canvas){
  if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error('Terrain GPU program unavailable');
  gl.useProgram(program);gl.enable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);gl.clearColor(.025,.105,.15,1);
  const position=gl.getAttribLocation(program,'a_position'),uv=gl.getAttribLocation(program,'a_uv');
- const uniforms=Object.fromEntries(['matrix','height','normal','eye'].map(name=>[name,gl.getUniformLocation(program,`u_${name}`)]));
+ const uniforms=Object.fromEntries(['matrix','height','normal','eye','scale'].map(name=>[name,gl.getUniformLocation(program,`u_${name}`)]));
  const vertexBuffer=gl.createBuffer(),indexBuffer=gl.createBuffer();let count=0,textures=[],scene,data,width=1,height=1,lastMatrix,lastSpan;
  function setScene(next,assets){
   scene=next;data=assets;const mesh=buildTerrainMesh(assets.heights,scene);
@@ -63,11 +64,11 @@ export function createWebGLRenderer(canvas){
  function draw(pose){if(!scene)return;const camera=cameraMatrix(pose,scene,width,height);lastMatrix=camera.matrix;lastSpan=camera.span;
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.useProgram(program);
   gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffer);gl.enableVertexAttribArray(position);gl.vertexAttribPointer(position,3,gl.FLOAT,false,20,0);gl.enableVertexAttribArray(uv);gl.vertexAttribPointer(uv,2,gl.FLOAT,false,20,12);
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indexBuffer);gl.uniformMatrix4fv(uniforms.matrix,false,camera.matrix);gl.uniform3fv(uniforms.eye,camera.eye);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,indexBuffer);gl.uniformMatrix4fv(uniforms.matrix,false,camera.matrix);gl.uniform3fv(uniforms.eye,camera.eye);gl.uniform1f(uniforms.scale,scene.extent/340);
   textures.forEach((t,i)=>{gl.activeTexture(gl.TEXTURE0+i);gl.bindTexture(gl.TEXTURE_2D,t);gl.uniform1i(i===0?uniforms.height:uniforms.normal,i);});
   gl.drawElements(gl.TRIANGLES,count,gl.UNSIGNED_SHORT,0);
  }
- function elevation(point){const [u,v]=longitudeLatitudeToUV(point,scene);if(u<0||u>1||v<0||v>1)return 0;return data.heights[Math.round(v*255)*256+Math.round(u*255)]*.004;}
+ function elevation(point){const [u,v]=longitudeLatitudeToUV(point,scene);if(u<0||u>1||v<0||v>1)return 0;return data.heights[Math.round(v*255)*256+Math.round(u*255)]/1000*exaggerationOf(scene);}
  return {mode:'webgl',setScene,resize,draw,
    point(point,offset=.4){return lastMatrix?project(geographicPoint(point,scene,elevation(point)+offset),lastMatrix,width,height):{visible:false};},
    localPoint(point){return project(point,lastMatrix,width,height);},

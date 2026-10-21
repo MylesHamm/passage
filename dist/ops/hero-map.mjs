@@ -1,8 +1,8 @@
 // Hormuz hero map: WebGL terrain with received vessels, last-hour tracks and a
 // replay of received positions. Nothing is extrapolated between reports.
-import { SCENES, geographicPoint, cameraMatrix, clamp } from '../terrain/geometry.mjs';
-import { createWebGLRenderer, createPlanRenderer, loadSceneAssets } from '../terrain/renderer.mjs';
+import { SCENES, geographicPoint, clamp } from '../terrain/geometry.mjs';
 import { shipSprite, localView } from '../terrain/ship-sprites.mjs';
+import { createTerrainView } from './terrain-view.mjs';
 import { isCurrentVesselPosition, POSITION_STALE_MS } from '../vessel-data.mjs';
 import { isTanker, esc } from './panels.mjs';
 
@@ -21,9 +21,6 @@ const HERO_LABELS = [
 ];
 export const REPLAY_WINDOW_MS = 60 * 60_000;
 export const REPLAY_DURATION_MS = 12_000;
-// Camera sway: a slow look around the strait, pausable, off under reduced
-// motion, and paused for a while after any direct interaction.
-const SWAY_AMPLITUDE = .3, SWAY_PERIOD_MS = 80_000, SWAY_RESUME_MS = 20_000, SWAY_RAMP_MS = 1200;
 
 const ms = value => typeof value === 'string' && Number.isFinite(Date.parse(value)) ? Date.parse(value) : null;
 export function heroPose() {
@@ -79,71 +76,23 @@ export function projectedVesselAngle(vessel, degrees, project) {
 }
 
 export async function createHeroMap(root, { onSelect } = {}) {
-  let canvas = root.querySelector('canvas');
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const overlay = Object.assign(document.createElement('div'), { className: 'map-overlay' });
-  const tracksSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  tracksSvg.setAttribute('class', 'map-tracks'); tracksSvg.setAttribute('aria-hidden', 'true');
-  overlay.append(tracksSvg); root.append(overlay);
-  const labels = [...SCENE.labels.filter(l => l.name !== 'UAE'), ...HERO_LABELS].map(label => {
-    const node = Object.assign(document.createElement('span'), { className: 'map-label', textContent: label.name });
-    node.dataset.kind = label.kind; node.setAttribute('aria-hidden', 'true'); overlay.append(node);
-    return { label, node };
-  });
-
-  let renderer = null, pose = heroPose(), width = 1, height = 1, frame = 0, dirty = true, destroyed = false;
-  let vessels = [], showAll = true, selected = null, paused = false, inView = true, lastInteraction = -Infinity;
-  let drag = null, swayClock = 0, swayRamp = 0, last = 0, replay = null;
+  let vessels = [], showAll = true, selected = null, replay = null, view = null;
   const nodes = new Map();
+  const sizeFor = pose => clamp(40 * Math.sqrt(pose.zoom), 34, 92);
 
-  try { renderer = createWebGLRenderer(canvas); }
-  catch { canvas.replaceWith(canvas = Object.assign(document.createElement('canvas'), { className: canvas.className })); renderer = createPlanRenderer(canvas); }
-  const assets = await loadSceneAssets(SCENE, { planOnly: renderer.mode === 'plan' });
-  renderer.setScene(SCENE, assets);
-
-  function resize() {
-    const box = root.getBoundingClientRect();
-    width = Math.max(1, Math.round(box.width)); height = Math.max(1, Math.round(box.height));
-    renderer.resize(width, height); tracksSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-    dirty = true; schedule();
-  }
-  const swaying = () => !reduced.matches && !paused && inView && !document.hidden && !drag && renderer.mode === 'webgl' && !pose.topDown && performance.now() - lastInteraction > SWAY_RESUME_MS;
-  const animating = () => replay || drag || swaying() || dirty;
-  function schedule() { if (!frame && !destroyed && animating()) frame = requestAnimationFrame(tick); }
-
-  function tick(now) {
-    frame = 0;
-    const dt = last ? Math.min(64, now - last) : 0; last = now;
-    if (swaying()) {
-      swayRamp = Math.min(1, swayRamp + dt / SWAY_RAMP_MS);
-      const w = 2 * Math.PI / SWAY_PERIOD_MS;
-      pose.yaw += SWAY_AMPLITUDE * w * Math.cos(w * swayClock) * dt * swayRamp * swayRamp;
-      swayClock += dt * swayRamp;
-    } else swayRamp = 0;
-    if (replay) {
-      replay.elapsed = Math.min(REPLAY_DURATION_MS, replay.elapsed + (reduced.matches ? REPLAY_DURATION_MS : dt));
-      if (replay.elapsed >= REPLAY_DURATION_MS) { stopReplay(); }
-    }
-    renderer.draw(pose); place(); dirty = false;
-    if (animating()) schedule(); else last = 0;
-  }
-
-  function project(point, offset) { return renderer.point(point, offset); }
-  const sizeFor = () => clamp(40 * Math.sqrt(pose.zoom), 34, 92);
-
-  function vesselNode(vessel) {
+  function vesselNode(vessel, overlay) {
     let node = nodes.get(vessel.mmsi);
     if (!node) {
       node = Object.assign(document.createElement('button'), { type: 'button', className: 'vessel' });
       node.dataset.mmsi = vessel.mmsi;
-      node.addEventListener('click', () => { selected = selected === vessel.mmsi ? null : vessel.mmsi; dirty = true; schedule(); onSelect?.(selected ? vessels.find(v => v.mmsi === selected) || null : null); });
+      node.addEventListener('click', () => { selected = selected === vessel.mmsi ? null : vessel.mmsi; view.invalidate(); onSelect?.(selected ? vessels.find(v => v.mmsi === selected) || null : null); });
       overlay.append(node); nodes.set(vessel.mmsi, node);
     }
     return node;
   }
 
-  function paintVessel(node, vessel, at, bearing, now, eye) {
-    const tanker = isTanker(vessel), length = sizeFor();
+  function paintVessel(node, vessel, at, bearing, now, { project, pose, eye, renderer }) {
+    const tanker = isTanker(vessel), length = sizeFor(pose);
     const p = project([at.longitude, at.latitude], .25);
     node.hidden = !p.visible;
     if (!p.visible) return;
@@ -154,8 +103,8 @@ export async function createHeroMap(root, { onSelect } = {}) {
     if (kind === 'tanker') {
       // The model is drawn from this vessel's own line of sight, so perspective
       // near the frame edges still shows the side of the hull the camera sees.
-      const view = eye ? localView({ eye, point: geographicPoint([at.longitude, at.latitude], SCENE, .25) }) : { cameraYawDegrees: pose.yaw * 180 / Math.PI, cameraTiltDegrees: pose.tilt * 180 / Math.PI };
-      const sprite = shipSprite({ headingDegrees: bearing, cameraYawDegrees: view.cameraYawDegrees, cameraTiltDegrees: pose.topDown || renderer.mode === 'plan' ? 0 : view.cameraTiltDegrees, lengthPx: length, screenBowDegrees: angle });
+      const look = eye ? localView({ eye, point: geographicPoint([at.longitude, at.latitude], SCENE, .25) }) : { cameraYawDegrees: pose.yaw * 180 / Math.PI, cameraTiltDegrees: pose.tilt * 180 / Math.PI };
+      const sprite = shipSprite({ headingDegrees: bearing, cameraYawDegrees: look.cameraYawDegrees, cameraTiltDegrees: pose.topDown || renderer.mode === 'plan' ? 0 : look.cameraTiltDegrees, lengthPx: length, screenBowDegrees: angle });
       if (sprite) {
         if (node.dataset.sprite !== sprite.key) { node.innerHTML = `<img alt="" draggable="false" src="${sprite.dataUrl}" width="${sprite.width}" height="${sprite.height}">`; node.dataset.sprite = sprite.key; }
         transform += ` translate(${(-sprite.anchor.x).toFixed(1)}px, ${(-sprite.anchor.y).toFixed(1)}px)` + (sprite.rotationDeg ? ` rotate(${sprite.rotationDeg.toFixed(2)}deg)` : '');
@@ -171,17 +120,10 @@ export async function createHeroMap(root, { onSelect } = {}) {
     if (node.getAttribute('aria-label') !== label) node.setAttribute('aria-label', label);
   }
 
-  function place() {
-    const now = Date.now();
-    for (const { label, node } of labels) {
-      const p = project(label.point, label.kind === 'water' ? .05 : .6);
-      node.hidden = !p.visible;
-      if (p.visible) node.style.transform = `translate3d(${p.x.toFixed(0)}px, ${p.y.toFixed(0)}px, 0) translate(-50%, -50%)`;
-    }
+  function place(ctx) {
+    const { project, overlay, svg } = ctx, now = Date.now();
     const t = replay ? replay.from + replay.elapsed / REPLAY_DURATION_MS * (replay.to - replay.from) : now;
-    const eye = renderer.mode === 'webgl' && !pose.topDown ? cameraMatrix(pose, SCENE, width, height).eye : null;
-    const lines = [];
-    const seen = new Set();
+    const lines = [], seen = new Set();
     for (const vessel of vessels) {
       const tanker = isTanker(vessel);
       if (!replay && !tanker && !showAll) continue;
@@ -195,98 +137,66 @@ export async function createHeroMap(root, { onSelect } = {}) {
         at = vessel; bearing = Number.isFinite(vessel.headingDegrees) && vessel.headingDegrees < 360 ? vessel.headingDegrees : Number.isFinite(vessel.courseDegrees) && vessel.courseDegrees < 360 ? vessel.courseDegrees : null;
       }
       seen.add(vessel.mmsi);
-      paintVessel(vesselNode(vessel), vessel, at, bearing, now, eye);
+      paintVessel(vesselNode(vessel, overlay), vessel, at, bearing, now, ctx);
       if (tanker && points.length > 1) {
-        const visible = points.filter(p => p[2] <= t);
-        for (let i = 1; i < visible.length; i++) {
-          const a = project(visible[i - 1], .2), b = project(visible[i], .2);
+        const shown = points.filter(p => p[2] <= t);
+        for (let i = 1; i < shown.length; i++) {
+          const a = project(shown[i - 1], .2), b = project(shown[i], .2);
           if (!a.visible && !b.visible) continue;
-          const age = (t - visible[i][2]) / REPLAY_WINDOW_MS;
+          const age = (t - shown[i][2]) / REPLAY_WINDOW_MS;
           lines.push(`<line class="map-track" x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke-opacity="${(.85 - .7 * clamp(age, 0, 1)).toFixed(2)}"/>`);
         }
-        if (replay && visible.length) {
-          const a = project(visible.at(-1), .2), b = project([at.longitude, at.latitude], .2);
+        if (replay && shown.length) {
+          const a = project(shown.at(-1), .2), b = project([at.longitude, at.latitude], .2);
           lines.push(`<line class="map-track" x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke-opacity=".85"/>`);
         }
       }
     }
     for (const [mmsi, node] of nodes) if (!seen.has(mmsi)) node.hidden = true;
-    tracksSvg.innerHTML = lines.join('');
+    svg.innerHTML = lines.join('');
     if (replay) replay.onClock?.(t);
   }
 
-  function interact() { lastInteraction = performance.now(); swayRamp = 0; }
-  function animateTo(target) { Object.assign(pose, target); dirty = true; schedule(); }
-  canvas.addEventListener('pointerdown', event => {
-    if (event.button !== 0 && event.button !== 2) return;
-    interact(); canvas.setPointerCapture(event.pointerId);
-    drag = { x: event.clientX, y: event.clientY, pan: event.shiftKey || event.button === 2 || pose.topDown || renderer.mode === 'plan', pose: { ...pose } };
-    schedule();
+  function stopReplay() { const done = replay?.onEnd; replay = null; view?.invalidate(); done?.(); }
+  view = await createTerrainView(root, {
+    scene: SCENE, pose: heroPose(),
+    labels: [...SCENE.labels.filter(l => l.name !== 'UAE'), ...HERO_LABELS],
+    onPlace: place,
+    isAnimating: () => Boolean(replay),
+    onTick: (dt, reduced) => {
+      if (!replay) return;
+      replay.elapsed = Math.min(REPLAY_DURATION_MS, replay.elapsed + (reduced ? REPLAY_DURATION_MS : dt));
+      if (replay.elapsed >= REPLAY_DURATION_MS) queueMicrotask(stopReplay);
+    },
   });
-  canvas.addEventListener('pointermove', event => {
-    if (!drag) return;
-    const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
-    if (drag.pan) {
-      const scale = (renderer.span || SCENE.extent) / Math.max(1, width), c = Math.cos(pose.yaw), s = Math.sin(pose.yaw);
-      pose.panX = clamp(drag.pose.panX - (dx * c + dy * s) * scale, -SCENE.extent / 2, SCENE.extent / 2);
-      pose.panZ = clamp(drag.pose.panZ - (-dx * s + dy * c) * scale, -SCENE.extent / 2, SCENE.extent / 2);
-    } else {
-      pose.yaw = drag.pose.yaw - dx * .006;
-      pose.tilt = clamp(drag.pose.tilt + dy * .004, .2, 1.18);
-    }
-    dirty = true;
-  });
-  const endDrag = event => { if (!drag) return; drag = null; interact(); if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId); dirty = true; schedule(); };
-  canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
-  canvas.addEventListener('contextmenu', event => event.preventDefault());
-  canvas.addEventListener('wheel', event => { event.preventDefault(); interact(); pose.zoom = clamp(pose.zoom * Math.exp(-event.deltaY * .0015), .8, 6); dirty = true; schedule(); }, { passive: false });
-  canvas.addEventListener('keydown', event => {
-    const key = event.key.toLowerCase(), step = event.shiftKey ? 8 : 0;
-    if (['arrowleft', 'arrowright', 'arrowup', 'arrowdown'].includes(key)) {
-      event.preventDefault(); interact();
-      if (step) { const d = (renderer.span || SCENE.extent) / 30; if (key === 'arrowleft') pose.panX -= d; if (key === 'arrowright') pose.panX += d; if (key === 'arrowup') pose.panZ -= d; if (key === 'arrowdown') pose.panZ += d; }
-      else { if (key === 'arrowleft') pose.yaw += .08; if (key === 'arrowright') pose.yaw -= .08; if (key === 'arrowup') pose.tilt = clamp(pose.tilt - .06, .2, 1.18); if (key === 'arrowdown') pose.tilt = clamp(pose.tilt + .06, .2, 1.18); }
-    } else if (['+', '=', '-'].includes(key)) { event.preventDefault(); api.zoom(key === '-' ? 1 / 1.25 : 1.25); }
-    else if (key === 'r') { event.preventDefault(); api.reset(); }
-    else if (key === 't') { event.preventDefault(); api.toggleTopDown(); }
-    else return;
-    dirty = true; schedule();
-  });
-  new ResizeObserver(resize).observe(root);
-  new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; schedule(); }, { threshold: .1 }).observe(root);
-  document.addEventListener('visibilitychange', () => { last = 0; schedule(); });
-  reduced.addEventListener('change', () => { dirty = true; schedule(); });
-  resize();
 
-  function stopReplay() { const done = replay?.onEnd; replay = null; dirty = true; done?.(); schedule(); }
-
-  const api = {
-    mode: renderer.mode,
+  return {
+    mode: view.mode,
     setVessels(list) {
       vessels = (Array.isArray(list) ? list : []).filter(v => v?.theater === 'hormuz' && isCurrentVesselPosition(v));
       if (selected && !vessels.some(v => v.mmsi === selected)) { selected = null; onSelect?.(null); }
-      dirty = true; schedule();
+      view.invalidate();
     },
     vessel(mmsi) { return vessels.find(v => v.mmsi === mmsi) || null; },
-    select(mmsi) { selected = mmsi; dirty = true; schedule(); },
-    setShowAll(value) { showAll = Boolean(value); dirty = true; schedule(); },
-    setPaused(value) { paused = Boolean(value); last = 0; schedule(); },
-    zoom(factor) { interact(); animateTo({ zoom: clamp(pose.zoom * factor, .8, 6) }); },
-    reset() { interact(); lastInteraction = -Infinity; animateTo(heroPose()); },
-    toggleTopDown() { interact(); animateTo({ topDown: !pose.topDown }); return pose.topDown; },
+    select(mmsi) { selected = mmsi; view.invalidate(); },
+    setShowAll(value) { showAll = Boolean(value); view.invalidate(); },
+    setPaused: value => view.setPaused(value),
+    zoom: factor => view.zoom(factor),
+    reset: () => view.reset(),
+    toggleTopDown: () => view.toggleTopDown(),
+    flyTo: (point, options) => view.flyTo(point, options),
     /** Replays received tanker positions from the last hour; returns false if none. */
     replay({ onClock, onEnd } = {}) {
       const now = Date.now(), withTracks = vessels.filter(v => isTanker(v) && trackPoints(v, now).length > 1);
       if (!withTracks.length) return false;
       const from = Math.min(...withTracks.map(v => trackPoints(v, now)[0][2]));
-      replay = { from, to: now, elapsed: 0, onClock, onEnd }; dirty = true; schedule();
+      replay = { from, to: now, elapsed: 0, onClock, onEnd }; view.invalidate();
       return true;
     },
     stopReplay,
     get replaying() { return Boolean(replay); },
-    destroy() { destroyed = true; cancelAnimationFrame(frame); renderer.destroy?.(); overlay.remove(); },
+    destroy: () => view.destroy(),
   };
-  return api;
 }
 
 export const vesselLabel = vessel => `${isTanker(vessel) ? 'Tanker' : 'Vessel'} ${vessel.name || vessel.mmsi}`;

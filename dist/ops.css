@@ -236,3 +236,56 @@ dialog.sheet { margin: 0 0 0 auto; height: 100vh; max-height: 100vh; border-radi
 @media (prefers-reduced-motion: reduce) {
   .vessel { transition: none; }
 }
+
+/* Phase 2: view switch, theatre events, missions, event card and chart ticks. */
+:root { --shipping: #ffc069; --missile: #ff5c50; --strike: #8fb8ff; --mission: #3ee6a8; }
+.view-switch { display: inline-flex; gap: 2px; padding: 3px; margin-left: 18px; border: 1px solid var(--line-strong); border-radius: 9px; background: #06101a; }
+.view-switch button { border: 0; border-radius: 7px; padding: 6px 14px; font-size: 13px; color: var(--dim); }
+.view-switch button[aria-selected=true] { background: #12283b; color: #fff; }
+.hud-set[hidden], .hero-map[hidden] { display: none; }
+.event { position: absolute; left: 0; top: 0; width: 14px; height: 14px; margin: -7px 0 0 -7px; padding: 0; border: 0; background: none; pointer-events: auto; cursor: pointer; }
+.event:hover { background: none; }
+.event::after { content: ''; position: absolute; inset: 2px; background: var(--strike); border: 2px solid var(--strike); box-shadow: 0 0 0 2px #03080ecc; }
+.event[data-layer=shipping]::after { background: var(--shipping); border-color: var(--shipping); transform: rotate(45deg) scale(.86); }
+.event[data-layer=missile-drone]::after { background: var(--missile); border-color: var(--missile); clip-path: polygon(50% 0, 100% 100%, 0 100%); box-shadow: none; inset: 1px; }
+.event[data-layer=strikes-on-iran-yemen]::after { border-radius: 50%; }
+.event[data-confidence=claimed]::after { background: #03080e; }
+.event[data-recent=true]::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid #ffffff55; }
+.event[aria-pressed=true]::before { inset: -10px; border: 2px solid var(--live); box-shadow: 0 0 18px #3ee6a866; }
+.mission-area { fill: #3ee6a812; stroke: #3ee6a866; stroke-width: 1.2; stroke-dasharray: 5 4; }
+.mission-label { fill: #3ee6a8aa; font: 600 10px 'IBM Plex Sans', sans-serif; letter-spacing: .12em; text-anchor: middle; text-transform: uppercase; }
+.event-radius { fill: #ffc06910; stroke: var(--shipping); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.k { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; }
+.k-shipping { background: var(--shipping); transform: rotate(45deg) scale(.8); }
+.k-missile { background: var(--missile); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.k-strike { background: var(--strike); border-radius: 50%; }
+.k-mission { border: 1px dashed var(--mission); background: #3ee6a822; }
+.k-claimed { border: 2px solid var(--dim); border-radius: 50%; }
+.k-recent { border: 1px solid #ffffff88; border-radius: 50%; }
+.hud-tr button[data-layer-toggle][aria-pressed=false] { opacity: .5; }
+.event-card { width: 340px; max-height: calc(100% - 80px); overflow: auto; }
+.event-card .ec-meta { margin: 0 0 6px; font-size: 11px; letter-spacing: .08em; color: var(--dim); text-transform: uppercase; }
+.event-card .ec-meta b[data-layer=shipping] { color: var(--shipping); }
+.event-card .ec-meta b[data-layer=missile-drone] { color: var(--missile); }
+.event-card .ec-meta b[data-layer=strikes-on-iran-yemen] { color: var(--strike); }
+.event-card .ec-claimed { display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px solid var(--dim); border-radius: 4px; font-size: 10px; }
+.event-card p.ec-summary { margin: 8px 0 12px; font-size: 13px; color: #c6d3de; }
+.event-card .ec-move { margin: 10px 0 0; padding: 10px 0 0; border-top: 1px solid var(--line); }
+.event-card .ec-move h4 { margin: 0 0 4px; font-size: 11px; letter-spacing: .1em; color: var(--faint); font-weight: 600; text-transform: uppercase; }
+.event-card .ec-move p { margin: 0; font-size: 13px; font-variant-numeric: tabular-nums; }
+.event-card .ec-move .up { color: var(--missile); } .event-card .ec-move .down { color: var(--live); }
+.event-card .ec-sources { margin: 12px 0 0; padding: 0; list-style: none; font-size: 12px; display: grid; gap: 4px; }
+.event-card .ec-note { margin: 10px 0 0; font-size: 11px; color: var(--faint); }
+.event-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.event-list button { display: grid; grid-template-columns: 12px 1fr; gap: 2px 10px; width: 100%; padding: 6px 4px; border: 0; text-align: left; border-radius: 6px; }
+.event-list button i { margin-top: 4px; }
+.event-list .el-title { font-size: 13px; line-height: 1.35; color: #d6e1ea; }
+.event-list .el-meta { grid-column: 2; font-size: 11px; color: var(--faint); }
+.oil-chart-marker line { stroke: var(--strike); stroke-width: 2; opacity: .75; }
+.oil-chart-marker[data-layer=shipping] line { stroke: var(--shipping); }
+.oil-chart-marker[data-layer=missile-drone] line { stroke: var(--missile); }
+.oil-chart-marker { cursor: pointer; }
+.oil-chart-marker:hover line, .oil-chart-marker[data-selected=true] line { opacity: 1; stroke-width: 3; }
+.oil-chart-focus-band { fill: #3ee6a814; stroke: #3ee6a855; stroke-width: 1; }
+@media (max-width: 900px) { .view-switch { margin-left: auto; } .view-switch button { padding: 6px 10px; font-size: 12px; } }
+@media (max-width: 640px) { .ops-brand strong { font-size: 14px; letter-spacing: .18em; } #headlines-open { display: none; } .view-switch { margin-left: auto; } .event-card { left: 10px; right: 10px; width: auto; top: auto; bottom: 10px; max-height: 60%; } }

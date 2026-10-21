@@ -12,6 +12,10 @@
 <a class="skip" href="#hero">Skip to the Hormuz map</a>
 <header class="ops-bar">
   <div class="ops-brand"><strong>PASSAGE</strong><span>Regional war monitor · Gulf to Red Sea</span></div>
+  <div class="view-switch" role="tablist" aria-label="Map view">
+    <button type="button" role="tab" id="view-hormuz" data-view="hormuz" aria-selected="true" aria-controls="hero">Hormuz live</button>
+    <button type="button" role="tab" id="view-theatre" data-view="theatre" aria-selected="false" aria-controls="hero" tabindex="-1">Regional war</button>
+  </div>
   <div class="ops-bar-right">
     <time id="utc-clock" class="ops-clock" aria-label="Current UTC time"></time>
     <button id="headlines-open" type="button" aria-haspopup="dialog">Headlines</button>
@@ -20,8 +24,10 @@
 </header>
 
 <main class="ops-grid">
-  <section id="hero" class="hero" aria-labelledby="hero-title" tabindex="-1">
-    <div id="hero-map" class="hero-map"><canvas aria-label="3D terrain map of the Strait of Hormuz with received vessel positions. Drag to rotate and tilt, Shift-drag to pan, plus and minus to zoom." tabindex="0"></canvas></div>
+  <section id="hero" class="hero" data-view="hormuz" aria-labelledby="hero-title" tabindex="-1">
+    <div id="hero-map" class="hero-map" data-map="hormuz"><canvas aria-label="3D terrain map of the Strait of Hormuz with received vessel positions. Drag to rotate and tilt, Shift-drag to pan, plus and minus to zoom." tabindex="0"></canvas></div>
+    <div id="theatre-map" class="hero-map" data-map="theatre" hidden><canvas aria-label="3D terrain map from the Gulf to the Red Sea with dated war events. Drag to rotate and tilt, Shift-drag to pan, plus and minus to zoom." tabindex="0"></canvas></div>
+    <div class="hud-set" data-for="hormuz">
     <div class="hud hud-tl">
       <p class="hud-kicker" id="hero-kicker"><i aria-hidden="true"></i><span>STRAIT OF HORMUZ · RECEIVED AIS</span></p>
       <h1 class="hud-title" id="hero-title">Hormuz traffic</h1>
@@ -46,12 +52,41 @@
     </div>
     <div id="replay-clock" class="replay-clock" hidden></div>
     <aside id="vessel-card" class="vessel-card" hidden aria-live="polite"></aside>
+    </div>
+    <div class="hud-set" data-for="theatre" hidden>
+      <div class="hud hud-tl">
+        <p class="hud-kicker"><i aria-hidden="true"></i><span>REGIONAL WAR · GULF TO RED SEA</span></p>
+        <h1 class="hud-title">Regional war</h1>
+        <p class="hud-counts" id="theatre-counts" role="status"><span>Loading events…</span></p>
+      </div>
+      <div class="hud hud-tr" role="group" aria-label="Event layers">
+        <button type="button" data-layer-toggle="shipping" aria-pressed="true"><i class="k k-shipping" aria-hidden="true"></i>Shipping</button>
+        <button type="button" data-layer-toggle="missile-drone" aria-pressed="true"><i class="k k-missile" aria-hidden="true"></i>Missiles &amp; drones</button>
+        <button type="button" data-layer-toggle="strikes-on-iran-yemen" aria-pressed="true"><i class="k k-strike" aria-hidden="true"></i>Strikes on Iran &amp; Yemen</button>
+        <button type="button" data-layer-toggle="missions" aria-pressed="true"><i class="k k-mission" aria-hidden="true"></i>Naval missions</button>
+      </div>
+      <div class="hud hud-br" role="group" aria-label="Zoom">
+        <button type="button" id="theatre-zoom-out" aria-label="Zoom out">−</button>
+        <button type="button" id="theatre-zoom-in" aria-label="Zoom in">+</button>
+        <button type="button" id="theatre-reset" aria-label="Reset view">⟲</button>
+      </div>
+      <div class="hud hud-bl" aria-label="Legend">
+        <span class="legend-key"><i class="k k-claimed"></i>Claimed, not confirmed</span>
+        <span class="legend-key"><i class="k k-recent"></i>Last 7 days</span>
+        <span class="stamp" id="events-stamp"></span>
+      </div>
+      <aside id="event-card" class="vessel-card event-card" hidden aria-live="polite"></aside>
+    </div>
   </section>
 
   <aside class="rail" aria-label="Context">
     <section class="card" id="transits" aria-labelledby="transits-title">
       <div class="card-head"><h2 id="transits-title">Daily transits</h2><span class="stamp" id="transits-stamp"></span></div>
       <div id="transits-body"><p class="empty-note">Loading transit counts…</p></div>
+    </section>
+    <section class="card" id="latest-events" aria-labelledby="latest-events-title">
+      <div class="card-head"><h2 id="latest-events-title">Latest events</h2><span class="stamp" id="latest-events-stamp"></span></div>
+      <ul class="event-list" id="event-list"><li class="empty-note">Loading events…</li></ul>
     </section>
     <section class="card" id="odds" aria-labelledby="odds-title">
       <div class="card-head"><h2 id="odds-title">Market odds</h2><span class="stamp" id="odds-stamp"></span></div>
@@ -69,7 +104,7 @@
       <div class="card-head"><h2 id="prices-title">Oil prices</h2></div>
       <div class="px brent"><span><i aria-hidden="true"></i>Brent</span><strong id="brent-latest">—</strong><small id="brent-date"></small></div>
       <div class="px wti"><span><i aria-hidden="true"></i>WTI</span><strong id="wti-latest">—</strong><small id="wti-date"></small></div>
-      <div class="period-switch" role="group" aria-label="Price history window"><button type="button" data-period="30">1M</button><button type="button" data-period="90" aria-pressed="true">3M</button><button type="button" data-period="180">6M</button></div>
+      <div class="period-switch" role="group" aria-label="Price history window"><button type="button" data-period="30">1M</button><button type="button" data-period="90" aria-pressed="true">3M</button><button type="button" data-period="180">6M</button><button type="button" data-period="war">Since war</button></div>
     </div>
     <div id="oil-chart"></div>
   </section>

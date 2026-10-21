@@ -1,16 +1,22 @@
 // PASSAGE operations center. Each panel loads on its own clock and shows one
 // data-age stamp; a failed source leaves its last good data with a clear stamp.
-import { apiFetch, runtime } from './runtime-config.mjs';
+import { apiFetch, siteUrl, runtime } from './runtime-config.mjs';
 import { createOilChart } from './oil-chart-view.mjs';
 import { createHeroMap } from './ops/hero-map.mjs';
 import {
   vesselCounts, heroCountsMarkup, vesselCardMarkup, oddsMarkup, headlinesMarkup, latestPrices, money, dayLabel,
-  clockLabel, ageLabel, transitRowMarkup, statusSummary, aboutMarkup, chartSeries,
+  clockLabel, ageLabel, transitRowMarkup, statusSummary, aboutMarkup, chartSeries, eventCardMarkup, eventListMarkup, esc,
 } from './ops/panels.mjs';
+import { WAR_START, LAYERS, curatedEvents, curatedMissions, registerEvents, mergeEvents, visibleEvents, countsByLayer, priceMove, oddsMove, relatedMarkets } from './ops/events.mjs';
 
 const $ = selector => document.querySelector(selector);
-const state = { vessels: null, vesselsAt: 0, vesselError: false, news: null, expectations: null, oil: null, transits: null, diagnostics: null, period: 90, region: 'all' };
-let hero = null, oilChart = null;
+const state = {
+  vessels: null, vesselsAt: 0, vesselError: false, news: null, expectations: null, oil: null, transits: null, diagnostics: null, period: 90, region: 'all',
+  view: 'hormuz', curated: null, maritime: null, events: [], missions: [], layers: new Set([...Object.keys(LAYERS), 'missions']), selectedEvent: null,
+};
+let hero = null, theatre = null, theatreLoading = null, oilChart = null;
+const DAY = 86_400_000;
+const warDays = () => Math.ceil((Date.now() - Date.parse(WAR_START + 'T00:00:00Z')) / DAY) + 1;
 
 async function load(path) {
   const response = await apiFetch(path, { headers: { accept: 'application/json' } });
@@ -68,7 +74,76 @@ function renderOil() {
     $(`#${id}-latest`).textContent = latest[id] ? money(latest[id].value) : '—';
     $(`#${id}-date`).textContent = latest[id] ? `${dayLabel(latest[id].date)} · ${latest[id].basis}` : 'No observation';
   }
-  oilChart?.update(chartSeries(state.oil), { period: state.period, loading: !state.oil });
+  oilChart?.update(chartSeries(state.oil), { period: state.period === 'war' ? warDays() : state.period, loading: !state.oil });
+  renderChartMarkers();
+}
+
+/* War events */
+async function loadEvents() {
+  const [curated, maritime] = await Promise.allSettled([
+    fetch(siteUrl('data/war-events.json'), { headers: { accept: 'application/json' } }).then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); }),
+    load('/api/maritime'),
+  ]);
+  if (curated.status === 'fulfilled') state.curated = curated.value;
+  if (maritime.status === 'fulfilled') state.maritime = maritime.value;
+  state.events = mergeEvents(curatedEvents(state.curated), registerEvents(state.maritime));
+  state.missions = curatedMissions(state.curated);
+  const reviewed = state.curated?.reviewedAt;
+  stamp($('#events-stamp'), reviewed ? `Curated · reviewed ${dayLabel(reviewed)}` : curated.status === 'rejected' ? 'Curated events unavailable' : '', curated.status === 'rejected' ? 'down' : 'live');
+  renderEvents();
+}
+const shownEvents = () => visibleEvents(state.events, { layers: [...state.layers].filter(id => LAYERS[id]) });
+function renderEvents() {
+  const shown = shownEvents(), counts = countsByLayer(shown);
+  $('#theatre-counts').innerHTML = state.events.length
+    ? `<span><strong>${shown.length}</strong> events since ${esc(dayLabel(WAR_START))}</span>` + Object.entries(LAYERS).filter(([id]) => state.layers.has(id)).map(([id]) => `<span><strong>${counts[id]}</strong> ${esc(LAYERS[id].label.toLowerCase())}</span>`).join('')
+    : '<span>No events loaded</span>';
+  $('#event-list').innerHTML = eventListMarkup(state.events, { limit: 6 });
+  const newest = state.events[0]?.date;
+  stamp($('#latest-events-stamp'), newest ? `Latest ${dayLabel(newest)}` : '');
+  theatre?.setEvents(shown);
+  theatre?.setMissions(state.missions, state.layers.has('missions'));
+  renderChartMarkers();
+}
+function renderChartMarkers() {
+  oilChart?.setMarkers(shownEvents().map(e => ({ id: e.id, date: e.date, layer: e.layer, label: `${dayLabel(e.date)} · ${e.title}` })));
+}
+
+function brentObservations() { return chartSeries(state.oil).find(s => s.id === 'brent')?.observations || []; }
+/** "Show me": the theatre flies to the event, the chart marks the window, the card shows what happened next. */
+async function showMe(id) {
+  const event = state.events.find(e => e.id === id);
+  if (!event) return;
+  state.selectedEvent = event.id;
+  await setView('theatre');
+  theatre?.select(event.id);
+  const brent = priceMove(brentObservations(), event.date);
+  const odds = relatedMarkets(state.expectations?.markets, event).map(m => ({ question: m.question, move: oddsMove(m.history, event.date) }));
+  oilChart?.focus({ id: event.id, date: event.date, endDate: brent?.after?.date || null });
+  const card = $('#event-card');
+  card.innerHTML = eventCardMarkup(event, { brent, odds }); card.hidden = false;
+}
+function closeEvent() {
+  state.selectedEvent = null; theatre?.select(null, { fly: false }); oilChart?.focus(null);
+  $('#event-card').hidden = true; $('#event-card').innerHTML = '';
+}
+
+/* Views */
+async function setView(view) {
+  state.view = view === 'theatre' ? 'theatre' : 'hormuz';
+  $('#hero').dataset.view = state.view;
+  for (const tab of document.querySelectorAll('.view-switch [data-view]')) {
+    const on = tab.dataset.view === state.view;
+    tab.setAttribute('aria-selected', String(on)); tab.tabIndex = on ? 0 : -1;
+  }
+  for (const node of document.querySelectorAll('[data-map]')) node.hidden = node.dataset.map !== state.view;
+  for (const node of document.querySelectorAll('.hud-set')) node.hidden = node.dataset.for !== state.view;
+  if (state.view === 'theatre' && !theatre) {
+    theatreLoading ||= import('./ops/theatre-map.mjs').then(({ createTheatreMap }) => createTheatreMap($('#theatre-map'), { onSelect: event => event ? showMe(event.id) : closeEvent() }))
+      .then(map => { theatre = map; renderEvents(); return map; })
+      .catch(() => { $('#theatre-map').insertAdjacentHTML('beforeend', '<p class="map-fallback">The regional map could not load on this device. The event list and chart still work.</p>'); });
+    await theatreLoading;
+  }
 }
 async function loadTransits() {
   try { state.transits = await load('/api/transits'); }
@@ -111,7 +186,7 @@ function bindControls() {
     kicker.dataset.state = 'replay'; kicker.querySelector('span').textContent = 'STRAIT OF HORMUZ · REPLAY OF RECEIVED POSITIONS';
   });
   document.querySelectorAll('[data-period]').forEach(button => button.addEventListener('click', () => {
-    state.period = Number(button.dataset.period);
+    state.period = button.dataset.period === 'war' ? 'war' : Number(button.dataset.period);
     document.querySelectorAll('[data-period]').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
     renderOil();
   }));
@@ -128,6 +203,25 @@ function bindControls() {
     dialog.addEventListener('click', event => { if (event.target === dialog || event.target.closest('[data-close]')) dialog.close(); });
   });
   $('#vessel-card').addEventListener('click', event => { if (event.target.closest('[data-close-vessel]')) { hero?.select(null); showVessel(null); } });
+  // Views: WAI-ARIA tabs with arrow-key movement.
+  const tabs = [...document.querySelectorAll('.view-switch [data-view]')];
+  for (const tab of tabs) {
+    tab.addEventListener('click', () => setView(tab.dataset.view));
+    tab.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      event.preventDefault(); const next = tabs[(tabs.indexOf(tab) + 1) % tabs.length]; next.focus(); setView(next.dataset.view);
+    });
+  }
+  document.querySelectorAll('[data-layer-toggle]').forEach(button => button.addEventListener('click', () => {
+    const id = button.dataset.layerToggle, on = !state.layers.has(id);
+    if (on) state.layers.add(id); else state.layers.delete(id);
+    pressed(button, on); renderEvents();
+  }));
+  $('#theatre-zoom-in').addEventListener('click', () => theatre?.zoom(1.25));
+  $('#theatre-zoom-out').addEventListener('click', () => theatre?.zoom(1 / 1.25));
+  $('#theatre-reset').addEventListener('click', () => theatre?.reset());
+  $('#event-list').addEventListener('click', event => { const button = event.target.closest('[data-event-id]'); if (button) showMe(button.dataset.eventId); });
+  $('#event-card').addEventListener('click', event => { if (event.target.closest('[data-close-event]')) closeEvent(); });
 }
 function showVessel(vessel) {
   const card = $('#vessel-card');
@@ -139,7 +233,7 @@ function tickClock() { $('#utc-clock').textContent = new Date().toLocaleTimeStri
 async function start() {
   tickClock(); setInterval(tickClock, 1000);
   bindControls();
-  oilChart = createOilChart($('#oil-chart'), { height: 170 });
+  oilChart = createOilChart($('#oil-chart'), { height: 170, onMarker: id => showMe(id) });
   if (runtime.configurationError) { $('#status-text').textContent = 'Live data not configured'; $('#status-open').dataset.state = 'down'; }
   createHeroMap($('#hero-map'), { onSelect: showVessel }).then(map => { hero = map; renderVessels(); })
     .catch(() => { $('#hero-map').insertAdjacentHTML('beforeend', '<p class="map-fallback">The 3D map could not load on this device. Vessel counts and other panels still update.</p>'); });
@@ -149,6 +243,7 @@ async function start() {
   every(600_000, loadOil);
   every(1_800_000, loadTransits);
   every(60_000, loadDiagnostics);
+  every(1_800_000, loadEvents);
   setInterval(() => { if (!document.hidden) renderVessels(); }, 5000);
 }
 start();

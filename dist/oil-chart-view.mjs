@@ -127,7 +127,7 @@ export function revealChart(svg, reason, { scope = globalThis } = {}) {
  * values and descriptions: https://www.w3.org/WAI/tutorials/images/complex/
  * Keep this instance alive across updates so the date control retains focus.
  */
-export function createOilChart(mount, { onReadout, height: chartHeight = 280 } = {}) {
+export function createOilChart(mount, { onReadout, onMarker, height: chartHeight = 280 } = {}) {
   const id = `oil-history-${++chartSequence}`;
   let model = buildOilChartModel();
   let sourceState = { loading: true, failed: false };
@@ -138,6 +138,8 @@ export function createOilChart(mount, { onReadout, height: chartHeight = 280 } =
   let destroyed = false;
   let revealed = false;
   let visible = false;
+  // Event ticks along the time axis and an optional highlighted window ("show me").
+  let markers = [], focusWindow = null;
   mount.classList.add('oil-history-chart');
   mount.innerHTML = `<figure class="oil-history-figure">
     <figcaption class="oil-history-caption"><span>DAILY SPOT · USD / BARREL</span><span data-chart-window></span></figcaption>
@@ -220,12 +222,19 @@ export function createOilChart(mount, { onReadout, height: chartHeight = 280 } =
     }
     const labels = endpoints.map(s => `<g class="oil-chart-endpoint oil-series-${s.id === 'wti' ? 'wti' : 'brent'}"><circle cx="${x(s.point.ms)}" cy="${y(s.point.value)}" r="3"/>${compact ? '' : `<path d="M${x(s.point.ms)},${y(s.point.value)} L${right + 5},${s.labelY}" class="oil-chart-leader"/><text x="${right + 10}" y="${s.labelY - 2}"><tspan>${esc(s.id === 'brent' ? 'Brent' : s.id === 'wti' ? 'WTI' : s.name)}</tspan><tspan x="${right + 10}" dy="16">${esc(dollars.format(s.point.value))}</tspan></text>`}</g>`).join('');
     const dateRange = `${shortDate.format(model.begin)} – ${dateFormat.format(model.latest)}`;
+    const onAxis = date => { const ms = dateMillis(date); return ms !== null && ms >= model.begin && ms <= model.latest ? x(ms) : null; };
+    const ticksMarkup = markers.length ? `<g data-chart-markers>${markers.map(m => {
+      const cx = onAxis(m.date); if (cx === null) return '';
+      return `<g class="oil-chart-marker" data-layer="${esc(m.layer)}" data-marker-id="${esc(m.id)}"${m.id === focusWindow?.id ? ' data-selected="true"' : ''}><line x1="${cx.toFixed(1)}" x2="${cx.toFixed(1)}" y1="${bottom - 12}" y2="${bottom}"/><rect x="${(cx - 4).toFixed(1)}" y="${bottom - 16}" width="8" height="18" fill="transparent"><title>${esc(m.label || m.date)}</title></rect></g>`;
+    }).join('')}</g>` : '';
+    const bandStart = focusWindow ? onAxis(focusWindow.date) : null, bandEnd = focusWindow ? onAxis(focusWindow.endDate) ?? (bandStart === null ? null : right) : null;
+    const band = bandStart !== null ? `<rect class="oil-chart-focus-band" x="${bandStart.toFixed(1)}" y="${top}" width="${Math.max(2, bandEnd - bandStart).toFixed(1)}" height="${bottom - top}"/>` : '';
     windowLabel.textContent = dateRange;
     plot.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="${id}-title ${id}-description" data-oil-svg>
       <title id="${id}-title">Daily Brent and WTI spot prices, U.S. dollars per barrel</title>
-      <desc id="${id}-description">${esc(dateRange)}. Brent is a solid blue line; WTI is a dashed slate line. ${model.dates.length} observed dates. ${esc(OIL_GAP_POLICY)} Use the date control below for exact observations. Shared timing with news does not establish causation.</desc>
-      <g data-chart-grid>${grid}${ticks}</g>${lines}<g data-chart-endpoints>${labels}</g><g data-chart-focus aria-hidden="true"></g>
-      <rect x="${left}" y="${top}" width="${Math.max(1, right - left)}" height="${bottom - top}" fill="transparent" data-chart-hit/>
+      <desc id="${id}-description">${esc(dateRange)}. Brent is a solid line; WTI is a dashed line. ${model.dates.length} observed dates. ${esc(OIL_GAP_POLICY)} Use the date control below for exact observations. Shared timing with news does not establish causation.</desc>
+      <g data-chart-grid>${grid}${ticks}</g>${band}${lines}<g data-chart-endpoints>${labels}</g><g data-chart-focus aria-hidden="true"></g>
+      <rect x="${left}" y="${top}" width="${Math.max(1, right - left)}" height="${bottom - top}" fill="transparent" data-chart-hit/>${ticksMarkup}
     </svg>`;
     const sourceNote = sourceState.failed ? 'Update failed · showing retained observations. Inspect Sources for the EIA connection. '
       : sourceState.loading ? 'Checking for updates · showing retained observations. ' : '';
@@ -248,9 +257,14 @@ export function createOilChart(mount, { onReadout, height: chartHeight = 280 } =
     const fraction = Math.max(0, Math.min(1, (cursor - geometry.left) / (geometry.right - geometry.left)));
     select(nearestOilDate(model, model.begin + fraction * (model.latest - model.begin)));
   }
+  function onClick(event) {
+    const tick = event.target.closest?.('[data-marker-id]');
+    if (tick && typeof onMarker === 'function') onMarker(tick.dataset.markerId);
+  }
   input.addEventListener('input', onInput);
   plot.addEventListener('pointermove', onPointer);
   plot.addEventListener('pointerdown', onPointer);
+  plot.addEventListener('click', onClick);
   const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(() => {
     if (Math.abs((plot.clientWidth || width) - width) > 1) draw();
   }) : null;
@@ -276,8 +290,20 @@ export function createOilChart(mount, { onReadout, height: chartHeight = 280 } =
       draw();
       reveal(previous);
     },
+    /** Event ticks: [{id, date, layer, label}]. */
+    setMarkers(list) { markers = Array.isArray(list) ? list.filter(m => m && m.id && dateMillis(m.date) !== null) : []; draw(); },
+    /** Highlights an event window and reads out the last observation on or before its date. */
+    focus(windowInput) {
+      focusWindow = windowInput && dateMillis(windowInput.date) !== null ? { ...windowInput } : null;
+      draw();
+      if (focusWindow) {
+        const date = model.dates.filter(d => d <= focusWindow.date).at(-1);
+        if (date) { selectedLatest = false; select(date, false); }
+      }
+    },
     destroy() {
       destroyed = true;
+      plot.removeEventListener('click', onClick);
       observer?.disconnect();
       viewport?.disconnect();
       input.removeEventListener('input', onInput);
