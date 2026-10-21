@@ -5,14 +5,14 @@ import { createOilChart } from './oil-chart-view.mjs';
 import { createHeroMap } from './ops/hero-map.mjs';
 import {
   vesselCounts, heroCountsMarkup, vesselCardMarkup, oddsMarkup, headlinesMarkup, latestPrices, money, dayLabel,
-  clockLabel, ageLabel, transitRowMarkup, statusSummary, aboutMarkup, chartSeries, eventCardMarkup, eventListMarkup, esc,
+  clockLabel, ageLabel, transitRowMarkup, statusSummary, aboutMarkup, chartSeries, eventCardMarkup, eventListMarkup, eventTimelineMarkup, eventGroupMarkup, esc,
 } from './ops/panels.mjs';
-import { WAR_START, LAYERS, curatedEvents, curatedMissions, activeMissions, registerEvents, mergeEvents, visibleEvents, countsByLayer, priceMove, oddsMove, relatedMarkets } from './ops/events.mjs';
+import { WAR_START, LAYERS, curatedEvents, curatedMissions, activeMissions, registerEvents, unplacedRegisterEvents, located, mergeEvents, visibleEvents, countsByLayer, priceMove, oddsMove, relatedMarkets } from './ops/events.mjs';
 
 const $ = selector => document.querySelector(selector);
 const state = {
   vessels: null, vesselsAt: 0, vesselError: false, news: null, expectations: null, oil: null, transits: null, diagnostics: null, period: 90, region: 'all',
-  view: 'hormuz', curated: null, maritime: null, events: [], missions: [], layers: new Set([...Object.keys(LAYERS), 'missions']), selectedEvent: null,
+  view: 'hormuz', curated: null, maritime: null, events: [], missions: [], layers: new Set([...Object.keys(LAYERS), 'missions']), selectedEvent: null, timelineLayer: 'all',
 };
 let hero = null, theatre = null, theatreLoading = null, oilChart = null;
 const DAY = 86_400_000;
@@ -86,7 +86,7 @@ async function loadEvents() {
   ]);
   if (curated.status === 'fulfilled') state.curated = curated.value;
   if (maritime.status === 'fulfilled') state.maritime = maritime.value;
-  state.events = mergeEvents(curatedEvents(state.curated), registerEvents(state.maritime));
+  state.events = mergeEvents(curatedEvents(state.curated), [...registerEvents(state.maritime), ...unplacedRegisterEvents(state.maritime)]);
   state.missions = curatedMissions(state.curated);
   const reviewed = state.curated?.reviewedAt;
   stamp($('#events-stamp'), reviewed ? `Curated · reviewed ${dayLabel(reviewed)}` : curated.status === 'rejected' ? 'Curated events unavailable' : '', curated.status === 'rejected' ? 'down' : 'live');
@@ -94,7 +94,7 @@ async function loadEvents() {
 }
 const shownEvents = () => visibleEvents(state.events, { layers: [...state.layers].filter(id => LAYERS[id]) });
 function renderEvents() {
-  const shown = shownEvents(), counts = countsByLayer(shown);
+  const shown = located(shownEvents()), counts = countsByLayer(shown);
   $('#theatre-counts').innerHTML = state.events.length
     ? `<span><strong>${shown.length}</strong> events since ${esc(dayLabel(WAR_START))}</span>` + Object.entries(LAYERS).filter(([id]) => state.layers.has(id)).map(([id]) => `<span><strong>${counts[id]}</strong> ${esc(LAYERS[id].label[0].toLowerCase() + LAYERS[id].label.slice(1))}</span>`).join('')
     : '<span>No events loaded</span>';
@@ -102,6 +102,7 @@ function renderEvents() {
   const newest = state.events[0]?.date;
   stamp($('#latest-events-stamp'), newest ? `Latest ${dayLabel(newest)}` : '');
   theatre?.setEvents(shown);
+  if ($('#events-dialog').open) renderTimeline();
   renderMissions();
   renderChartMarkers();
 }
@@ -109,6 +110,18 @@ function renderEvents() {
 function renderMissions() {
   const day = state.events.find(e => e.id === state.selectedEvent)?.date || new Date().toISOString().slice(0, 10);
   theatre?.setMissions(activeMissions(state.missions, day), state.layers.has('missions'));
+}
+/** The full timeline, including incidents listed without a map position. */
+function renderTimeline() {
+  const all = state.timelineLayer === 'all' ? state.events : state.events.filter(e => e.layer === state.timelineLayer);
+  const unplaced = all.filter(e => e.precision === 'unplaced').length;
+  $('#timeline-note').textContent = `${all.length} events since ${dayLabel(WAR_START)}${unplaced ? ` · ${unplaced} listed without a map position, because their reports give none` : ''}`;
+  $('#timeline-body').innerHTML = eventTimelineMarkup(all);
+}
+/** Several events at one spot: the card lists them, and each opens as usual. */
+function showGroup(events) {
+  const card = $('#event-card');
+  card.innerHTML = eventGroupMarkup(events); card.hidden = false;
 }
 function renderChartMarkers() {
   oilChart?.setMarkers(shownEvents().map(e => ({ id: e.id, date: e.date, layer: e.layer, label: `${dayLabel(e.date)} · ${e.title}` })));
@@ -154,7 +167,7 @@ async function setView(view) {
   for (const node of document.querySelectorAll('[data-map]')) node.hidden = node.dataset.map !== state.view;
   for (const node of document.querySelectorAll('.hud-set')) node.hidden = node.dataset.for !== state.view;
   if (state.view === 'theatre' && !theatre) {
-    theatreLoading ||= import('./ops/theatre-map.mjs').then(({ createTheatreMap }) => createTheatreMap($('#theatre-map'), { onSelect: event => event ? showMe(event.id) : closeEvent() }))
+    theatreLoading ||= import('./ops/theatre-map.mjs').then(({ createTheatreMap }) => createTheatreMap($('#theatre-map'), { onSelect: event => event ? showMe(event.id) : closeEvent(), onGroup: showGroup }))
       .then(map => { theatre = map; renderEvents(); return map; })
       .catch(() => { $('#theatre-map').insertAdjacentHTML('beforeend', '<p class="map-fallback">The regional map could not load on this device. The event list and chart still work.</p>'); });
     await theatreLoading;
@@ -236,7 +249,19 @@ function bindControls() {
   $('#theatre-zoom-out').addEventListener('click', () => theatre?.zoom(1 / 1.25));
   $('#theatre-reset').addEventListener('click', () => theatre?.reset());
   $('#event-list').addEventListener('click', event => { const button = event.target.closest('[data-event-id]'); if (button) showMe(button.dataset.eventId); });
-  $('#event-card').addEventListener('click', event => { if (event.target.closest('[data-close-event]')) closeEvent(); });
+  $('#event-card').addEventListener('click', event => {
+    if (event.target.closest('[data-close-event]')) { closeEvent(); return; }
+    const item = event.target.closest('[data-event-id]'); if (item) showMe(item.dataset.eventId);
+  });
+  const timeline = $('#events-dialog');
+  $('#events-more').addEventListener('click', () => { renderTimeline(); timeline.showModal(); });
+  document.querySelectorAll('[data-timeline-layer]').forEach(button => button.addEventListener('click', () => {
+    state.timelineLayer = button.dataset.timelineLayer;
+    document.querySelectorAll('[data-timeline-layer]').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+    renderTimeline();
+  }));
+  $('#timeline-body').addEventListener('click', event => { const item = event.target.closest('[data-event-id]'); if (item) { timeline.close(); showMe(item.dataset.eventId); } });
+  document.querySelectorAll('[data-front]').forEach(button => button.addEventListener('click', async () => { await setView('theatre'); theatre?.front(button.dataset.front); }));
 }
 function showVessel(vessel) {
   const card = $('#vessel-card');

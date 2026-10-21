@@ -58,6 +58,7 @@
         <p class="hud-kicker"><i aria-hidden="true"></i><span>REGIONAL WAR · GULF TO RED SEA</span></p>
         <h1 class="hud-title">Regional war</h1>
         <p class="hud-counts" id="theatre-counts" role="status"><span>Loading events…</span></p>
+        <div class="hud-fronts" role="group" aria-label="Jump to a front"><button type="button" data-front="hormuz">Hormuz</button><button type="button" data-front="red-sea">Red Sea &amp; Yemen</button></div>
       </div>
       <div class="hud hud-tr" role="group" aria-label="Event layers">
         <button type="button" data-layer-toggle="shipping" aria-pressed="true"><i class="k k-shipping" aria-hidden="true"></i>Shipping</button>
@@ -87,6 +88,7 @@
     <section class="card" id="latest-events" aria-labelledby="latest-events-title">
       <div class="card-head"><h2 id="latest-events-title">Latest events</h2><span class="stamp" id="latest-events-stamp"></span></div>
       <ul class="event-list" id="event-list"><li class="empty-note">Loading events…</li></ul>
+      <div class="card-foot"><button type="button" id="events-more">All events</button></div>
     </section>
     <section class="card" id="odds" aria-labelledby="odds-title">
       <div class="card-head"><h2 id="odds-title">Market odds</h2><span class="stamp" id="odds-stamp"></span></div>
@@ -119,6 +121,15 @@
   <div class="dialog-body">
     <div class="region-filter" role="group" aria-label="Region"><button type="button" data-region="all" aria-pressed="true">All</button><button type="button" data-region="hormuz" aria-pressed="false">Hormuz &amp; Gulf</button><button type="button" data-region="bab" aria-pressed="false">Red Sea &amp; Yemen</button></div>
     <ul class="headline-list" id="headline-drawer-list"></ul>
+  </div>
+</dialog>
+
+<dialog id="events-dialog" class="sheet" aria-labelledby="events-dialog-title">
+  <div class="dialog-head"><h2 id="events-dialog-title">All events</h2><button type="button" class="dialog-close" data-close aria-label="Close">×</button></div>
+  <div class="dialog-body">
+    <div class="region-filter" role="group" aria-label="Layer"><button type="button" data-timeline-layer="all" aria-pressed="true">All</button><button type="button" data-timeline-layer="shipping" aria-pressed="false">Shipping</button><button type="button" data-timeline-layer="missile-drone" aria-pressed="false">Missiles &amp; drones</button><button type="button" data-timeline-layer="strikes-on-iran-yemen" aria-pressed="false">Strikes on Iran &amp; Yemen</button></div>
+    <p class="timeline-note" id="timeline-note"></p>
+    <div id="timeline-body"></div>
   </div>
 </dialog>
 

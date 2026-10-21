@@ -290,5 +290,21 @@ dialog.sheet { margin: 0 0 0 auto; height: 100vh; max-height: 100vh; border-radi
 .oil-chart-marker { cursor: pointer; }
 .oil-chart-marker:hover line, .oil-chart-marker[data-selected=true] line { opacity: 1; stroke-width: 3; }
 .oil-chart-focus-band { fill: #3ee6a814; stroke: #3ee6a855; stroke-width: 1; }
+
+/* Phase 3: grouped markers, front jumps and the full timeline. */
+.event-group { position: absolute; left: 0; top: 0; min-width: 22px; height: 22px; margin: -11px 0 0 -11px; padding: 0 6px; border-radius: 11px; border: 2px solid var(--strike); background: #03080ee6; color: var(--text); font: 600 11px/18px 'IBM Plex Sans', sans-serif; font-variant-numeric: tabular-nums; pointer-events: auto; cursor: pointer; box-shadow: 0 0 0 2px #03080e99; }
+.event-group:hover { background: #0b1a28; }
+.event-group[data-layer=shipping] { border-color: var(--shipping); }
+.event-group[data-layer=missile-drone] { border-color: var(--missile); }
+.event-group[data-layer=mixed] { border-color: #c9d6e2; }
+.event-group[data-recent=true] { box-shadow: 0 0 0 2px #03080e99, 0 0 0 5px #ffffff33; }
+.event-group[hidden], .event[hidden] { display: none; }
+.hud-fronts { display: flex; gap: 6px; margin-top: 10px; }
+.hud-fronts button { background: #06121ccc; backdrop-filter: blur(6px); font-size: 12px; padding: 5px 10px; }
+.event-card .event-list { margin-top: 4px; }
+.timeline-note { margin: 0 0 6px; font-size: 12px; color: var(--faint); }
+#timeline-body h3 { display: flex; justify-content: space-between; position: sticky; top: 0; padding: 8px 0 6px; background: var(--panel-raised); }
+#timeline-body h3 span { color: var(--faint); font-weight: 500; letter-spacing: 0; }
+#timeline-body .event-list { padding-left: 0; }
 @media (max-width: 900px) { .view-switch { margin-left: auto; } .view-switch button { padding: 6px 10px; font-size: 12px; } }
 @media (max-width: 640px) { .ops-brand strong { font-size: 14px; letter-spacing: .18em; } #headlines-open { display: none; } .view-switch { margin-left: auto; } .event-card { left: 10px; right: 10px; width: auto; top: auto; bottom: 10px; max-height: 44%; } }

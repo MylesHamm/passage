@@ -158,3 +158,20 @@ test('the event card states what happened next without claiming cause, and escap
   assert.match(list, /data-event-id="war:x"/); assert.match(list, /· claimed/); assert.match(list, /k-missile/);
   assert.match(eventListMarkup([]), /No events/);
 });
+
+test('the timeline groups events by month and lists unplaced incidents without a position', async () => {
+  const { eventTimelineMarkup, eventGroupMarkup, eventCardMarkup } = await import('../dist/ops/panels.mjs');
+  const base = { layer: 'shipping', confidence: 'confirmed', title: 'Incident', place: 'Strait of Hormuz', precision: 'area', sources: [] };
+  const events = [
+    { ...base, id: 'imo:a', date: '2026-10-13', precision: 'unplaced', place: '6NM from the coast of Oman' },
+    { ...base, id: 'war:b', date: '2026-10-02' },
+    { ...base, id: 'war:c', date: '2026-09-29' },
+  ];
+  const html = eventTimelineMarkup(events);
+  assert.match(html, /October 2026 <span>2<\/span>[\s\S]*September 2026 <span>1<\/span>/);
+  assert.match(html, /6NM from the coast of Oman · not on the map/);
+  assert.match(eventTimelineMarkup([]), /No events/);
+  assert.match(eventCardMarkup(events[0], {}), /not placed on the map/);
+  const group = eventGroupMarkup([{ ...base, id: 'war:d', date: '2026-10-13', place: 'Sanaa' }, { ...base, id: 'war:e', date: '2026-10-01', place: 'Sanaa' }]);
+  assert.match(group, /2 events · Sanaa/); assert.match(group, /data-event-id="war:d"[\s\S]*data-event-id="war:e"/); assert.match(group, /data-close-event/);
+});

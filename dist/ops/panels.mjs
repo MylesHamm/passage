@@ -171,7 +171,7 @@ export function aboutMarkup(sources = []) {
 }
 
 const LAYER_NAMES = { shipping: 'Attack on shipping', 'missile-drone': 'Missile & drone strike', 'strikes-on-iran-yemen': 'Strike on Iran or Yemen' };
-const PRECISION_NAMES = { facility: 'facility location', city: 'city location', area: 'approximate area', 'sea-area': 'sea area' };
+const PRECISION_NAMES = { facility: 'facility location', city: 'city location', area: 'approximate area', 'sea-area': 'sea area', unplaced: 'not placed on the map' };
 const signed = (value, digits = 2) => `${value >= 0 ? '+' : '−'}${Math.abs(value).toFixed(digits)}`;
 
 /** "Show me" card. Figures are dated observations around the event, never a measured effect. */
@@ -203,5 +203,24 @@ export function eventListMarkup(events, { limit = 6 } = {}) {
   const list = (Array.isArray(events) ? events : []).slice(0, limit);
   if (!list.length) return '<li class="empty-note">No events to show.</li>';
   const keys = { shipping: 'k-shipping', 'missile-drone': 'k-missile', 'strikes-on-iran-yemen': 'k-strike' };
-  return list.map(e => `<li><button type="button" data-event-id="${esc(e.id)}"><i class="k ${keys[e.layer] || 'k-strike'}" aria-hidden="true"></i><span class="el-title">${esc(e.title)}</span><span class="el-meta">${esc(dayLabel(e.date))} · ${esc(e.place)}${e.confidence === 'claimed' ? ' · claimed' : ''}</span></button></li>`).join('');
+  return list.map(e => `<li><button type="button" data-event-id="${esc(e.id)}"><i class="k ${keys[e.layer] || 'k-strike'}" aria-hidden="true"></i><span class="el-title">${esc(e.title)}</span><span class="el-meta">${esc(dayLabel(e.date))} · ${esc(e.place)}${e.confidence === 'claimed' ? ' · claimed' : ''}${e.precision === 'unplaced' ? ' · not on the map' : ''}</span></button></li>`).join('');
+}
+
+const monthFormat = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+/** The full timeline, newest first, under a heading per month. */
+export function eventTimelineMarkup(events) {
+  const list = Array.isArray(events) ? events : [];
+  if (!list.length) return '<p class="empty-note">No events to show.</p>';
+  const months = new Map();
+  for (const e of list) { const key = e.date.slice(0, 7); if (!months.has(key)) months.set(key, []); months.get(key).push(e); }
+  return [...months].map(([key, rows]) => `<h3>${esc(monthFormat.format(Date.parse(key + '-01T00:00:00Z')))} <span>${rows.length}</span></h3><ul class="event-list">${eventListMarkup(rows, { limit: Infinity })}</ul>`).join('');
+}
+/** Several events drawn at one spot on the map: list them so each can be opened. */
+export function eventGroupMarkup(events) {
+  const list = Array.isArray(events) ? events : [];
+  if (!list.length) return '';
+  const places = [...new Set(list.map(e => e.place).filter(Boolean))];
+  return `<button type="button" class="vc-close" data-close-event aria-label="Close the list">×</button>
+    <p class="ec-meta">${list.length} events${places.length === 1 ? ' · ' + esc(places[0]) : ' close together'}</p>
+    <ul class="event-list">${eventListMarkup(list, { limit: Infinity })}</ul>`;
 }
