@@ -198,3 +198,21 @@ test('event ticks sit only on plotted dates and a focus window reads out its eve
   h.view.focus(null);
   assert.doesNotMatch(plot.innerHTML, /oil-chart-focus-band/);
 });
+
+test('a mouse leaving the plot returns the reading to its resting date, a lifted finger keeps it', t => {
+  const h = chartHarness(t), plot = h.q('[data-chart-plot]');
+  const series = [{ id: 'brent', name: 'Brent', observations: [{ date: '2026-09-01', value: 80 }, { date: '2026-09-02', value: 81 }, { date: '2026-09-03', value: 82 }] }];
+  h.view.update(series, { period: 90, now: Date.parse('2026-09-05T00:00:00Z') });
+  const input = h.q('input');
+  input.value = '0'; input.dispatchEvent(new Event('input'));
+  assert.equal(h.readouts.at(-1).date, '2026-09-01');
+  const leave = type => { const event = new Event('pointerleave'); event.pointerType = type; plot.dispatchEvent(event); };
+  leave('touch');
+  assert.equal(h.readouts.at(-1).date, '2026-09-01', 'a lifted finger keeps its reading');
+  leave('mouse');
+  assert.equal(h.readouts.at(-1), null, 'the page is told the reading is back at rest');
+  assert.equal(input.value, '2', 'the chart is back on the latest date');
+  h.view.focus({ id: 'e', date: '2026-09-02', endDate: null });
+  input.value = '0'; input.dispatchEvent(new Event('input')); leave('mouse');
+  assert.equal(input.value, '1', 'with an event in focus, the reading rests on the event date');
+});
