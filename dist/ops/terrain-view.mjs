@@ -6,7 +6,8 @@ import { createWebGLRenderer, createPlanRenderer, loadSceneAssets } from '../ter
 
 // A slow look around the scene: pausable, off under reduced motion, and paused
 // for a while after any direct interaction.
-const SWAY_AMPLITUDE = .3, SWAY_PERIOD_MS = 80_000, SWAY_RESUME_MS = 20_000, SWAY_RAMP_MS = 1200;
+export const SWAY_AMPLITUDE = .3;
+const SWAY_PERIOD_MS = 80_000, SWAY_RESUME_MS = 20_000, SWAY_RAMP_MS = 1200;
 export const FLY_DURATION_MS = 1100;
 
 /** Camera pose between two poses; zoom moves in log space so a push feels even. */
@@ -16,7 +17,7 @@ export function poseBetween(from, to, t) {
   return { ...to, zoom, panX: from.panX + (to.panX - from.panX) * e, panZ: from.panZ + (to.panZ - from.panZ) * e, yaw: from.yaw + (to.yaw - from.yaw) * e, tilt: from.tilt + (to.tilt - from.tilt) * e };
 }
 
-export async function createTerrainView(root, { scene, labels = [], pose: initialPose, onPlace, onTick, isAnimating = () => false } = {}) {
+export async function createTerrainView(root, { scene, labels = [], pose: initialPose, minZoom = .8, swayAmplitude = SWAY_AMPLITUDE, onPlace, onTick, isAnimating = () => false } = {}) {
   let canvas = root.querySelector('canvas');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const overlay = Object.assign(document.createElement('div'), { className: 'map-overlay' });
@@ -58,7 +59,7 @@ export async function createTerrainView(root, { scene, labels = [], pose: initia
     } else if (swaying()) {
       swayRamp = Math.min(1, swayRamp + dt / SWAY_RAMP_MS);
       const w = 2 * Math.PI / SWAY_PERIOD_MS;
-      pose.yaw += SWAY_AMPLITUDE * w * Math.cos(w * swayClock) * dt * swayRamp * swayRamp;
+      pose.yaw += swayAmplitude * w * Math.cos(w * swayClock) * dt * swayRamp * swayRamp;
       swayClock += dt * swayRamp;
     } else swayRamp = 0;
     onTick?.(dt, reduced.matches);
@@ -97,7 +98,7 @@ export async function createTerrainView(root, { scene, labels = [], pose: initia
   const endDrag = event => { if (!drag) return; drag = null; interact(); if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId); invalidate(); };
   canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
   canvas.addEventListener('contextmenu', event => event.preventDefault());
-  canvas.addEventListener('wheel', event => { event.preventDefault(); interact(); pose.zoom = clamp(pose.zoom * Math.exp(-event.deltaY * .0015), .8, 8); invalidate(); }, { passive: false });
+  canvas.addEventListener('wheel', event => { event.preventDefault(); interact(); pose.zoom = clamp(pose.zoom * Math.exp(-event.deltaY * .0015), minZoom, 8); invalidate(); }, { passive: false });
   canvas.addEventListener('keydown', event => {
     const key = event.key.toLowerCase();
     if (['arrowleft', 'arrowright', 'arrowup', 'arrowdown'].includes(key)) {
@@ -119,15 +120,19 @@ export async function createTerrainView(root, { scene, labels = [], pose: initia
     mode: renderer.mode,
     get pose() { return pose; },
     project, invalidate, schedule,
-    zoom(factor) { interact(); pose.zoom = clamp(pose.zoom * factor, .8, 8); invalidate(); },
+    zoom(factor) { interact(); pose.zoom = clamp(pose.zoom * factor, minZoom, 8); invalidate(); },
     reset() { interact(); lastInteraction = -Infinity; pose = { ...initialPose }; invalidate(); },
+    /** True once the reader has moved the camera since the last reset. */
+    get interacted() { return lastInteraction !== -Infinity; },
+    /** Replaces the view that reset returns to, and moves there unless told not to. */
+    home(next, { move = true } = {}) { initialPose = { ...next }; if (move) { flight = null; pose = { ...initialPose }; } invalidate(); },
     toggleTopDown() { interact(); pose.topDown = !pose.topDown; invalidate(); return pose.topDown; },
     setPaused(value) { paused = Boolean(value); last = 0; schedule(); },
     /** Glides the camera to a place; zoom is relative to the scene's full extent. */
     flyTo([longitude, latitude], { zoom = pose.zoom } = {}) {
       const [x, , z] = geographicPoint([longitude, latitude], scene);
       lastInteraction = performance.now();
-      flight = { from: { ...pose }, to: { ...pose, panX: clamp(x, -scene.extent / 2, scene.extent / 2), panZ: clamp(z, -scene.extent / 2, scene.extent / 2), zoom: clamp(zoom, .8, 8), topDown: false }, elapsed: 0 };
+      flight = { from: { ...pose }, to: { ...pose, panX: clamp(x, -scene.extent / 2, scene.extent / 2), panZ: clamp(z, -scene.extent / 2, scene.extent / 2), zoom: clamp(zoom, minZoom, 8), topDown: false }, elapsed: 0 };
       invalidate();
     },
     destroy() { destroyed = true; cancelAnimationFrame(frame); renderer.destroy?.(); overlay.remove(); },

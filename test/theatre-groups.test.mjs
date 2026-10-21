@@ -27,3 +27,20 @@ test('a tap also zooms in when that separates the markers, but not when they sha
   assert.deepEqual(groupAction(spread, 7.5), { kind: 'list' }, 'already close: list instead of zooming past the limit');
   assert.ok(FRONTS.hormuz && FRONTS['red-sea']);
 });
+
+test('the opening view frames every event clear of the overlays, on a desktop and a phone', async () => {
+  const { fitPose, MIN_ZOOM } = await import('../dist/ops/theatre-map.mjs');
+  const { SCENES, geographicPoint, cameraMatrix, project } = await import('../dist/terrain/geometry.mjs');
+  // The outermost events: Tel Aviv, the Caspian coast, the northern Arabian Sea and Bab el-Mandeb.
+  const points = [[34.78, 32.09], [49.46, 37.47], [62.32, 18], [43.33, 12.58], [56.3, 26.5]];
+  for (const [width, height] of [[999, 552], [1400, 720], [353, 568]]) {
+    const pose = fitPose(points, width, height);
+    assert.ok(pose.zoom >= MIN_ZOOM, `${width}×${height} zoom ${pose.zoom}`);
+    const { matrix } = cameraMatrix(pose, SCENES.theatre, width, height);
+    for (const p of points) {
+      const s = project(geographicPoint(p, SCENES.theatre, 0), matrix, width, height);
+      assert.ok(s.x > 0 && s.x < width && s.y > Math.min(110, height * .24) - 1 && s.y < height, `${p} on screen at ${width}×${height}`);
+    }
+  }
+  assert.equal(fitPose([], 999, 552).zoom, .92, 'no events keeps the default view');
+});

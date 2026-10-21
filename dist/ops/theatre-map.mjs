@@ -1,6 +1,6 @@
 // Regional war theatre: 3D terrain from the Gulf to the Red Sea with dated,
 // source-linked events and approximate naval mission areas.
-import { SCENES, geographicPoint } from '../terrain/geometry.mjs';
+import { SCENES, geographicPoint, cameraMatrix, project as projectPoint } from '../terrain/geometry.mjs';
 import { createTerrainView } from './terrain-view.mjs';
 import { esc, dayLabel } from './panels.mjs';
 
@@ -10,11 +10,43 @@ const RECENT_MS = 7 * 86_400_000;
 /** Markers closer than this on screen are drawn as one numbered group. */
 export const GROUP_PX = 16;
 const MAX_ZOOM = 8;
+/** The theatre zooms out further than the Hormuz map, far enough to see every front. */
+export const MIN_ZOOM = .32;
+/** A gentler look around than Hormuz, so the framed events stay on screen as it turns. */
+export const SWAY = .12;
 /** Day and month, plus the year when it is not the current one (Aspides began in 2024). */
 const missionDay = day => day.slice(0, 4) === String(new Date().getUTCFullYear()) ? dayLabel(day) : `${dayLabel(day)} ${day.slice(0, 4)}`;
 export function theatrePose() {
   const [x, , z] = geographicPoint(FRAME_CENTER, SCENE);
   return { zoom: .92, tilt: .72, yaw: -.1, panX: x, panZ: z, topDown: false };
+}
+/**
+ * The opening view: centred on the events and as close as it can be while
+ * every one stays on screen, clear of the overlays at the top and bottom.
+ */
+export function fitPose(points, width, height, { base = theatrePose(), margins = null } = {}) {
+  const located = (Array.isArray(points) ? points : []).filter(p => Number.isFinite(p?.[0]) && Number.isFinite(p?.[1]));
+  if (!located.length || !(width > 1) || !(height > 1)) return base;
+  // On a phone the zoom buttons stand down the right edge, so keep clear of them too.
+  const m = margins || { top: Math.min(110, height * .24), bottom: Math.min(56, height * .14), left: Math.min(24, width * .06), right: width < 640 ? 60 : Math.min(24, width * .06) };
+  const lons = located.map(p => p[0]), lats = located.map(p => p[1]);
+  const [cx, , cz] = geographicPoint([(Math.min(...lons) + Math.max(...lons)) / 2, (Math.min(...lats) + Math.max(...lats)) / 2], SCENE);
+  const world = located.map(p => geographicPoint(p, SCENE, 0));
+  // The camera sways by SWAY either side of its yaw, so the fit must hold across the swing.
+  const fits = pose => [-SWAY, 0, SWAY].every(turn => {
+    const { matrix } = cameraMatrix({ ...pose, yaw: pose.yaw + turn }, SCENE, width, height);
+    return world.every(w => { const p = projectPoint(w, matrix, width, height); return p.x >= m.left && p.x <= width - m.right && p.y >= m.top && p.y <= height - m.bottom; });
+  });
+  // The top overlay is taller than the bottom one, so also try nudging the
+  // centre north, which moves the events down the screen.
+  for (let zoom = 1.6; zoom >= MIN_ZOOM; zoom *= .97) {
+    const span = SCENE.extent / zoom;
+    for (const shift of [0, -.03, -.06, -.09, .03]) {
+      const pose = { ...base, zoom, panX: cx, panZ: cz + shift * span };
+      if (fits(pose)) return pose;
+    }
+  }
+  return { ...base, zoom: MIN_ZOOM, panX: cx, panZ: cz };
 }
 /** Zoom used when "show me" flies to an event: closer for precise places. */
 export const focusZoom = event => event.precision === 'facility' || event.precision === 'city' ? 3.3 : 2.7;
@@ -62,8 +94,13 @@ const layerOf = members => {
 };
 
 export async function createTheatreMap(root, { onSelect, onGroup } = {}) {
-  let events = [], missions = [], selected = null, view = null, showMissions = true;
+  let events = [], missions = [], selected = null, view = null, showMissions = true, fitPoints = null;
   const nodes = new Map(), groupNodes = new Map(), groupMembers = new Map();
+  // Frame every event once they arrive, and again on resize until the reader moves the camera.
+  function fit() {
+    const box = root.getBoundingClientRect();
+    view.home(fitPose(fitPoints, box.width, box.height), { move: !view.interacted });
+  }
 
   function node(event, overlay) {
     let el = nodes.get(event.id);
@@ -139,10 +176,16 @@ export async function createTheatreMap(root, { onSelect, onGroup } = {}) {
     svg.innerHTML = shapes.join('');
   }
 
-  view = await createTerrainView(root, { scene: SCENE, pose: theatrePose(), labels: SCENE.labels, onPlace: place });
+  view = await createTerrainView(root, { scene: SCENE, pose: theatrePose(), minZoom: MIN_ZOOM, swayAmplitude: SWAY, labels: SCENE.labels, onPlace: place });
+  new ResizeObserver(() => { if (fitPoints && !view.interacted) fit(); }).observe(root);
   const api = {
     mode: view.mode,
-    setEvents(list) { events = Array.isArray(list) ? list : []; if (selected && !events.some(e => e.id === selected)) selected = null; view.invalidate(); },
+    setEvents(list) {
+      events = Array.isArray(list) ? list : [];
+      if (selected && !events.some(e => e.id === selected)) selected = null;
+      if (!fitPoints && events.length) { fitPoints = events.map(e => [e.lon, e.lat]); fit(); }
+      view.invalidate();
+    },
     setMissions(list, visible = showMissions) { missions = Array.isArray(list) ? list : []; showMissions = visible; view.invalidate(); },
     setShowMissions(value) { showMissions = Boolean(value); view.invalidate(); },
     select(id, { fly = true } = {}) {
