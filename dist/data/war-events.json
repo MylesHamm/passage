@@ -2066,6 +2066,43 @@
       ]
     },
     {
+      "id": "2026-07-13-sanaa-airport-runway-strike",
+      "date": "2026-07-13",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Yemeni government (Saudi-backed PLC)",
+      "target": "Runway of Houthi-held Sanaa International Airport",
+      "place": "Sanaa International Airport",
+      "country": "Yemen",
+      "lat": 15.4764,
+      "lon": 44.2197,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Yemeni government strikes Sanaa airport runway to stop an Iranian plane landing",
+      "summary": "Yemen's Saudi-backed government said its forces struck the runway at Houthi-held Sanaa airport to stop an Iranian plane landing; it diverted to Hodeidah. The Houthis blamed Saudi Arabia. No casualties were reported.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Tension rising as Yemen gov't attacks Sanaa airport, Houthis fire missiles",
+          "url": "https://www.aljazeera.com/news/2026/7/13/yemen-govt-says-its-forces-attacked-sanaa-airport",
+          "date": "2026-07-13"
+        },
+        {
+          "publisher": "France 24 (AFP)",
+          "title": "Yemen govt says hit Sanaa airport, Houthis attack Saudi Arabia",
+          "url": "https://www.france24.com/en/live-news/20260713-yemen-government-says-attacked-sanaa-airport-reviving-dormant-conflict",
+          "date": "2026-07-13"
+        },
+        {
+          "publisher": "NBC News (AP)",
+          "title": "Saudi airstrikes hit Sanaa International Airport, Iran-backed Houthi rebels in Yemen say",
+          "url": "https://www.nbcnews.com/world/yemen/yemen-saudi-arabia-air-strike-sanna-airport-houthi-rebels-rcna587273",
+          "date": "2026-07-13"
+        }
+      ]
+    },
+    {
       "id": "2026-07-14-vlccs-mombasa-b-al-bahyah-off-musandam",
       "date": "2026-07-14",
       "time": null,
@@ -2229,6 +2266,43 @@
           "title": "Saudi says tanker bow catches fire in Red Sea after Houthis claim attack on vessels",
           "url": "https://www.khaleejtimes.com/world/gulf/saudi-arabia-tanker-bow-fire-red-sea-houthis-claim-attack-vessels",
           "date": "2026-07-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-24-hodeidah-kamaran-strikes",
+      "date": "2026-07-24",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi military sites in Hodeidah governorate; Houthi media say telecom facilities and Kamaran Island",
+      "place": "Hodeidah",
+      "country": "Yemen",
+      "lat": 14.8022,
+      "lon": 42.9511,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition strikes Houthi targets in Hodeidah after attacks on Red Sea shipping",
+      "summary": "The coalition said it hit Houthi military targets in Hodeidah governorate after attacks on Saudi ships. Houthi-run Al Masirah said telecom sites in Hodeidah and on Kamaran Island were hit and a woman injured.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Saudi Arabia strikes Houthi-held Hodeidah, Yemeni group says",
+          "url": "https://www.aljazeera.com/news/2026/7/24/saudis-strike-yemens-houthi-held-hodeida-rebel-media",
+          "date": "2026-07-24"
+        },
+        {
+          "publisher": "The National",
+          "title": "Saudi strikes hit Yemen's Hodeidah after attacks on Red Sea vessel",
+          "url": "https://www.thenationalnews.com/news/2026/07/24/houthi-official-says-saudi-strike-targets-hodeidah-port-after-attack-on-saudi-vessel/",
+          "date": "2026-07-24"
+        },
+        {
+          "publisher": "The Times of Israel (AFP)",
+          "title": "Saudi-led coalition says it struck Houthis after attacks on Red Sea shipping",
+          "url": "https://www.timesofisrael.com/liveblog_entry/saudi-led-coalition-says-it-struck-houthis-after-attacks-on-red-sea-shipping/",
+          "date": "2026-07-25"
         }
       ]
     },
@@ -2672,6 +2746,43 @@
       ]
     },
     {
+      "id": "2026-09-07-al-hazm-prison-strike",
+      "date": "2026-09-07",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Central Corrective Facility (prison) in al-Hazm",
+      "place": "al-Hazm, al-Jawf",
+      "country": "Yemen",
+      "lat": 16.1642,
+      "lon": 44.7767,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis say Saudi air strike on al-Hazm prison in al-Jawf killed seven",
+      "summary": "The Houthi-run health ministry claimed an air strike on the prison in al-Hazm killed seven, including a child, and wounded seven; on 9 September the Houthis said at least 32 had died. Saudi Arabia did not comment.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Houthis accuse Saudi Arabia of killing seven in Yemen prison air strike",
+          "url": "https://www.aljazeera.com/news/2026/9/7/houthis-accuse-saudi-arabia-of-killing-seven-in-yemen-prison-attack",
+          "date": "2026-09-07"
+        },
+        {
+          "publisher": "The Times of Israel (AFP)",
+          "title": "Houthis say 7 killed in Saudi strike on Yemen prison as Bab el-Mandeb battle intensifies",
+          "url": "https://www.timesofisrael.com/houthis-say-7-killed-in-saudi-strike-on-yemen-prison-as-bab-al-mandab-battle-intensifies/",
+          "date": "2026-09-07"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Fighting escalates in Yemen; Houthi attacks trigger alerts in Saudi Arabia",
+          "url": "https://www.aljazeera.com/news/2026/9/10/fighting-escalates-in-yemen-houthi-attacks-trigger-alerts-in-saudi-arabia",
+          "date": "2026-09-10"
+        }
+      ]
+    },
+    {
       "id": "2026-09-08-houthi-strikes-southern-saudi-cities",
       "date": "2026-09-08",
       "time": null,
@@ -2901,6 +3012,37 @@
       ]
     },
     {
+      "id": "2026-09-22-mokha-air-strikes-civilians",
+      "date": "2026-09-22",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition (claimed by the Houthis)",
+      "target": "Residence in Houthi-held Mokha",
+      "place": "Mokha",
+      "country": "Yemen",
+      "lat": 13.3203,
+      "lon": 43.25,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthi media say Saudi-led air strikes on Mokha killed six civilians",
+      "summary": "Houthi-affiliated Saba claimed, citing local medical sources, that Saudi-led air strikes on the port of Mokha killed six civilians, including two children and a woman, and wounded eight. Not independently verified.",
+      "sources": [
+        {
+          "publisher": "The Times of Israel (agencies)",
+          "title": "Houthis say Saudi strike killed 6 in Mokha, as G7 urges Iran-backed group to halt fire",
+          "url": "https://www.timesofisrael.com/houthis-say-saudi-strike-killed-6-in-mokha-as-g7-urges-iran-backed-group-to-halt-fire/",
+          "date": "2026-09-22"
+        },
+        {
+          "publisher": "Yeni Safak (Anadolu)",
+          "title": "Saudi airstrikes kill 6 in Yemen's Red Sea port of Mokha",
+          "url": "https://en.yenisafak.com/world/saudi-airstrikes-kill-6-civilians-in-yemens-mokha-port-3723542",
+          "date": "2026-09-22"
+        }
+      ]
+    },
+    {
       "id": "2026-09-23-bulk-carrier-cape-dao-off-khasab",
       "date": "2026-09-23",
       "time": null,
@@ -2934,6 +3076,37 @@
           "title": "India condemns attack on commercial vessel MV Cape Dao off Oman coast",
           "url": "https://newsonair.gov.in/india-condemns-attack-on-commercial-vessel-mv-cape-dao-off-oman-coast/",
           "date": "2026-09-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-27-taiz-mawiyah-market-strike",
+      "date": "2026-09-27",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Yemeni government forces (the Houthis blame Saudi Arabia)",
+      "target": "Market at the Mawiyah junction; the government says a Houthi camp and vehicles",
+      "place": "Mawiyah junction, at-Ta'iziyah district, Taiz",
+      "country": "Yemen",
+      "lat": 13.6947,
+      "lon": 44.0092,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Strike on market at Taiz's Mawiyah junction kills seven, Houthi health ministry says",
+      "summary": "The Houthi-run health ministry said a strike on a market at the Mawiyah junction killed seven and injured 40, and blamed Saudi jets. Yemen's government said its forces hit a Houthi camp and vehicles there.",
+      "sources": [
+        {
+          "publisher": "The Jerusalem Post (Reuters)",
+          "title": "Houthis warn Saudi Arabia after strikes in Taiz killed seven, left 40 wounded",
+          "url": "https://www.jpost.com/middle-east/article-909875",
+          "date": "2026-09-27"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Deadly strike hits market in Yemen's Taiz",
+          "url": "https://www.aljazeera.com/video/newsfeed/2026/9/27/deadly-strike-hits-market-in-yemens-taiz",
+          "date": "2026-09-27"
         }
       ]
     },
@@ -2975,6 +3148,43 @@
       ]
     },
     {
+      "id": "2026-10-01-sanaa-first-strikes",
+      "date": "2026-10-01",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Unspecified sites in the Houthi-held capital",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3483,
+      "lon": 44.2064,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Blasts in Sanaa as the Houthis report the first Saudi strikes on the capital in years",
+      "summary": "An AFP correspondent heard explosions in Houthi-held Sanaa on the evening of 1 October; Houthi-affiliated Saba claimed it was \"Saudi aggression\". No targets or casualties were reported.",
+      "sources": [
+        {
+          "publisher": "The Times of Israel (AFP)",
+          "title": "Loud blasts heard in Houthi-run Yemeni capital Sanaa amid reported Saudi attack",
+          "url": "https://www.timesofisrael.com/liveblog_entry/loud-blasts-heard-in-houthi-run-yemeni-capital-sanaa-amid-reported-saudi-attack/",
+          "date": "2026-10-02"
+        },
+        {
+          "publisher": "France 24 (AFP)",
+          "title": "Houthis claim strike on oil facilty near Riyadh, accuse Saudi forces of pounding Yemen's capital",
+          "url": "https://www.france24.com/en/middle-east/20261003-houthis-blame-saudi-air-strikes-loud-blasts-rock-yemen-capital-sanaa",
+          "date": "2026-10-03"
+        },
+        {
+          "publisher": "The Times of Israel (AFP)",
+          "title": "Houthis say Saudi Arabia launched 26 strikes on Sanaa today",
+          "url": "https://www.timesofisrael.com/liveblog_entry/houthis-say-saudi-arabia-launched-26-strikes-on-sanaa-today/",
+          "date": "2026-10-03"
+        }
+      ]
+    },
+    {
       "id": "2026-10-03-houthi-claimed-strike-aramco-riyadh",
       "date": "2026-10-03",
       "time": null,
@@ -3006,6 +3216,43 @@
       ]
     },
     {
+      "id": "2026-10-03-sanaa-26-strikes",
+      "date": "2026-10-03",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition / Yemeni government forces",
+      "target": "Unspecified Houthi sites in Sanaa",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3483,
+      "lon": 44.2064,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Warplanes strike Sanaa as Houthi media report 26 Saudi strikes in a day",
+      "summary": "AFP correspondents heard explosions and saw warplanes firing missiles at Sanaa. Houthi-run Al-Masirah said Saudi aircraft carried out 26 strikes; Yemen's army said its operations hit Sanaa. No casualty figures.",
+      "sources": [
+        {
+          "publisher": "France 24 (AFP)",
+          "title": "Houthis claim strike on oil facilty near Riyadh, accuse Saudi forces of pounding Yemen's capital",
+          "url": "https://www.france24.com/en/middle-east/20261003-houthis-blame-saudi-air-strikes-loud-blasts-rock-yemen-capital-sanaa",
+          "date": "2026-10-03"
+        },
+        {
+          "publisher": "The Times of Israel (AFP)",
+          "title": "Houthis say Saudi Arabia launched 26 strikes on Sanaa today",
+          "url": "https://www.timesofisrael.com/liveblog_entry/houthis-say-saudi-arabia-launched-26-strikes-on-sanaa-today/",
+          "date": "2026-10-03"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Yemen's army says targets Houthis in hundreds of strikes, killing 700",
+          "url": "https://www.aljazeera.com/news/2026/10/3/over-1500-houthi-casualties-in-past-24-hours-yemeni-army-says",
+          "date": "2026-10-03"
+        }
+      ]
+    },
+    {
       "id": "2026-10-04-lng-carrier-maran-gas-mystras-hormuz",
       "date": "2026-10-04",
       "time": null,
@@ -3032,6 +3279,105 @@
           "publisher": "The National Herald",
           "title": "Greek-Owned Tanker Struck by Unidentified Projectile Near the Strait of Hormuz",
           "url": "https://www.thenationalherald.com/greek-owned-tanker-struck-by-unidentified-projectile-near-the-strait-of-hormuz/",
+          "date": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-05-dawn-of-yemen-air-campaign",
+      "date": "2026-10-05",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi positions and forces around Bab al-Mandeb, Dhubab and Mokha",
+      "place": "Bab al-Mandeb and Dhubab area, Taiz",
+      "country": "Yemen",
+      "lat": 12.9435,
+      "lon": 43.4108,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition puts 100 jets behind the 'Dawn of Yemen' offensive at Bab al-Mandeb",
+      "summary": "Coalition spokesman Turki al-Maliki said 100 jets were giving air cover over Bab al-Mandeb and that 324 \"high-value\" Houthi targets had been destroyed. Government forces claimed gains near Dhubab; the Houthis denied it.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Saudi Arabia says three people wounded in attacks on southern airports",
+          "url": "https://www.aljazeera.com/news/2026/10/5/yemen-forces-claim-to-seize-dhubab-sites-near-bab-al-mandeb-from-houthis",
+          "date": "2026-10-05"
+        },
+        {
+          "publisher": "The National",
+          "title": "Yemeni forces claim control of Bab Al Mandeb strait and Mokha in major offensive against Houthis",
+          "url": "https://www.thenationalnews.com/news/gulf/2026/10/05/yemen-government-forces-claim-bab-al-mandeb-gains-as-saudi-coalition-says-100-jets-join-houthi-offensive/",
+          "date": "2026-10-05"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-05-hodeidah-naval-strikes",
+      "date": "2026-10-05",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "naval-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi weapons depots and storage for explosive-laden boats and naval mines",
+      "place": "Hodeidah governorate",
+      "country": "Yemen",
+      "lat": 14.8022,
+      "lon": 42.9511,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Coalition naval forces strike Houthi explosive-boat and mine depots in Hodeidah",
+      "summary": "Coalition spokesman Turki al-Maliki said its naval forces destroyed Houthi depots for explosive-laden boats and naval mines in Hodeidah governorate, foiling imminent attacks on shipping. No casualties were reported.",
+      "sources": [
+        {
+          "publisher": "Yemen Monitor",
+          "title": "Coalition: Naval Operation in Hudaidah Foiled Imminent Houthi Attacks in Southern Red Sea",
+          "url": "https://www.yemenmonitor.com/en/Details/ArtMID/908/ArticleID/184008",
+          "date": "2026-10-06"
+        },
+        {
+          "publisher": "The Express Tribune (Anadolu/AFP)",
+          "title": "Saudi-led coalition says it destroyed depot housing 20 ballistic missiles in northwestern Yemen",
+          "url": "https://tribune.com.pk/story/2633255/saudi-led-coalition-says-it-destroyed-depot-housing-20-ballistic-missiles-in-northwestern-yemen",
+          "date": "2026-10-06"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Yemen forces claim key gains near Bab al-Mandeb: What's the latest?",
+          "url": "https://www.aljazeera.com/news/2026/10/6/yemen-war-whats-the-latest-on-the-battlefield",
+          "date": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-05-saada-missile-depot-strike",
+      "date": "2026-10-05",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Depot housing 20 ballistic missiles in Saada; ballistic missile launch platform in Sanaa",
+      "place": "Saada governorate",
+      "country": "Yemen",
+      "lat": 16.94,
+      "lon": 43.7592,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Coalition says it destroyed a Saada depot holding 20 ballistic missiles",
+      "summary": "The coalition said, in remarks reported early on 6 October, that it destroyed a depot housing 20 ballistic missiles at a mountain site in Saada and a ballistic missile launch platform in Sanaa. No casualty figures.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Saudi-led coalition claims destruction of depot housing 20 ballistic missiles in northern Yemen",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/saudi-led-coalition-claims-destruction-depot-housing-20-ballistic",
+          "date": "2026-10-06"
+        },
+        {
+          "publisher": "The Express Tribune (Anadolu/AFP)",
+          "title": "Saudi-led coalition says it destroyed depot housing 20 ballistic missiles in northwestern Yemen",
+          "url": "https://tribune.com.pk/story/2633255/saudi-led-coalition-says-it-destroyed-depot-housing-20-ballistic-missiles-in-northwestern-yemen",
           "date": "2026-10-06"
         }
       ]
@@ -3136,6 +3482,68 @@
       ]
     },
     {
+      "id": "2026-10-09-coalition-136-targets-operation",
+      "date": "2026-10-09",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi personnel and military capabilities in Houthi-held areas",
+      "place": "Saada governorate",
+      "country": "Yemen",
+      "lat": 16.94,
+      "lon": 43.7592,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition announces large-scale operation, says 136 Houthi targets destroyed",
+      "summary": "Coalition spokesman Turki al-Maliki announced on the night of 9 October a large-scale operation that had destroyed 136 military targets in Houthi-held areas. Houthi-run Almasirah said Saudi missiles hit Saada.",
+      "sources": [
+        {
+          "publisher": "Gulf News (AFP)",
+          "title": "Saudi-led coalition launches large-scale operation, destroys 136 Houthi targets",
+          "url": "https://gulfnews.com/world/mena/saudi-led-coalition-launches-large-scale-operation-destroys-136-houthi-targets-1.500705261",
+          "date": "2026-10-10"
+        },
+        {
+          "publisher": "The Express Tribune (Anadolu)",
+          "title": "Saudi-led coalition announces large-scale operation against Houthis in Yemen, says 136 military targets destroyed",
+          "url": "https://tribune.com.pk/story/2634058/saudi-led-coalition-announces-operation-against-houthis-says-136-military-targets-destroyed",
+          "date": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-09-sanaa-airport-strike",
+      "date": "2026-10-09",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Sanaa airport",
+      "place": "Sanaa International Airport",
+      "country": "Yemen",
+      "lat": 15.4764,
+      "lon": 44.2197,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthi media say Saudi strikes on Sanaa airport killed two",
+      "summary": "Houthi media claimed Saudi strikes on Sanaa airport killed two, a day after Houthi strikes on Riyadh's airport. Sanaa civil defence said it put out four fires, one of which destroyed a factory. Not independently verified.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Two killed in Saudi strike on Sanaa airport, Houthi media says",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/two-killed-saudi-strike-sanaa-airport-houthi-media-says",
+          "date": "2026-10-09"
+        },
+        {
+          "publisher": "Gulf News (AFP)",
+          "title": "Saudi-led coalition launches large-scale operation, destroys 136 Houthi targets",
+          "url": "https://gulfnews.com/world/mena/saudi-led-coalition-launches-large-scale-operation-destroys-136-houthi-targets-1.500705261",
+          "date": "2026-10-10"
+        }
+      ]
+    },
+    {
       "id": "2026-10-10-houthi-strike-king-khalid-airport-riyadh",
       "date": "2026-10-10",
       "time": null,
@@ -3200,6 +3608,43 @@
           "title": "Saudi Airports Hit Again By Houthi Missiles",
           "url": "https://aviationweek.com/air-transport/airports-networks/saudi-airports-hit-again-houthi-missiles",
           "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-11-sanaa-hamdan-salt-factory-strike",
+      "date": "2026-10-11",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Salt factory in Hamdan district and a house; Airport Road area of al-Thawra district",
+      "place": "Hamdan district, Sanaa",
+      "country": "Yemen",
+      "lat": 15.5,
+      "lon": 44.083,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis say strikes on Sanaa hit a salt factory in Hamdan district, killing one",
+      "summary": "The Houthi-run health ministry claimed Saudi strikes around midnight on 11-12 October hit a salt factory in Hamdan, killing a man and wounding eight, and a house, wounding four. Saudi media said forces responded to attacks.",
+      "sources": [
+        {
+          "publisher": "ABC News (Australia), wires",
+          "title": "Australians in Riyadh told to shelter in place as Saudis and Houthis trade attacks",
+          "url": "https://www.abc.net.au/news/2026-10-12/saudi-arabia-and-yemen-houthis-trade-new-attacks/107257992",
+          "date": "2026-10-12"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Why are the Houthis striking Saudi airports?",
+          "url": "https://www.aljazeera.com/news/2026/10/12/why-are-the-houthis-striking-saudi-airports",
+          "date": "2026-10-12"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Saudis launch new strikes on Houthis; Iran-backed group threatens U.S. if it joins in",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-trump-saudi-arabia-houthi/",
+          "date": "2026-10-13"
         }
       ]
     },
@@ -3299,6 +3744,266 @@
           "title": "Houthis targets Saudi oil giant Aramco, vow more attacks",
           "url": "https://www.hurriyetdailynews.com/houthis-targets-saudi-oil-giant-aramco-vow-more-attacks-228122",
           "date": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-13-ras-isa-oil-facility-strike",
+      "date": "2026-10-13",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Oil facility and storage tanks near Ras Isa port",
+      "place": "Ras Isa port, Hodeidah",
+      "country": "Yemen",
+      "lat": 15.2516,
+      "lon": 42.6078,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthis say air strike on oil facility near Ras Isa port killed two",
+      "summary": "The Houthi-run health ministry claimed a Saudi air strike on an oil facility near Ras Isa port killed two civilians and wounded two. Al Jazeera's correspondent reported strikes on oil tanks there. No Saudi confirmation.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthi health ministry says Saudi attack killed two people in Hodeidah",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthi-health-ministry-says-saudi-attack-killed-two-people-killed",
+          "date": "2026-10-13"
+        },
+        {
+          "publisher": "PBS NewsHour (AP)",
+          "title": "Iran-backed Houthis strike Saudi oil company Aramco's headquarters, officials say",
+          "url": "https://www.pbs.org/newshour/world/iran-backed-houthis-strike-saudi-oil-company-aramcos-headquarters-officials-say",
+          "date": "2026-10-14"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Houthis strike Aramco hours after Saudi-led coalition hits Sanaa oil site",
+          "url": "https://www.aljazeera.com/news/2026/10/13/houthis-threaten-saudi-arabias-aramco-facilities-and-airports",
+          "date": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-13-sabaha-oil-facility-strike",
+      "date": "2026-10-13",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Yemen Petroleum Company central fuel station at al-Sabaha; also sites in Saada and Dhamar",
+      "place": "al-Sabaha, west of Sanaa",
+      "country": "Yemen",
+      "lat": 15.338,
+      "lon": 44.116,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition strikes oil company fuel station at al-Sabaha, west of Sanaa",
+      "summary": "After telling civilians to leave, the coalition struck an oil company site at al-Sabaha on Sanaa's western edge, and sites in Saada and Dhamar, saying they fed the Houthi war effort. The company said its tanks were empty.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Houthis strike Aramco hours after Saudi-led coalition hits Sanaa oil site",
+          "url": "https://www.aljazeera.com/news/2026/10/13/houthis-threaten-saudi-arabias-aramco-facilities-and-airports",
+          "date": "2026-10-13"
+        },
+        {
+          "publisher": "The Times of Israel (agencies)",
+          "title": "Saudi Arabia strikes oil facility in Yemen capital Sanaa as Houthis up threats",
+          "url": "https://www.timesofisrael.com/saudi-arabia-strikes-oil-facility-in-yemen-capital-sanaa-as-houthis-up-threats/",
+          "date": "2026-10-13"
+        },
+        {
+          "publisher": "Arab News Pakistan",
+          "title": "How significant is Al-Sabahah oil facility to the Houthis?",
+          "url": "https://www.arabnews.pk/middle-east/how-significant-is-al-sabahah-oil-facility-to-the-houthis-3004034",
+          "date": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-15-aden-maashiq-palace-missiles",
+      "date": "2026-10-15",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Al-Maashiq Presidential Palace, seat of the internationally recognised government",
+      "place": "Al-Maashiq Palace, Aden",
+      "country": "Yemen",
+      "lat": 12.7644,
+      "lon": 45.0542,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Houthi missiles hit Aden's al-Maashiq presidential palace, killing five",
+      "summary": "Minister Moammar al-Eryani said the Houthis fired five missiles at the palace; the health minister said five were killed and 16 injured. Houthi spokesman Yahya Saree said they hit a \"Saudi military operations headquarters\".",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "At least 5 killed in Houthi attack on Yemen's presidential palace in Aden",
+          "url": "https://www.aljazeera.com/news/2026/10/15/houthis-target-yemens-presidential-palace-in-aden-with-missiles",
+          "date": "2026-10-15"
+        },
+        {
+          "publisher": "Al Jazeera (with Reuters)",
+          "title": "Houthis strike Yemen's Aden: What that means",
+          "url": "https://www.aljazeera.com/news/2026/10/17/iran-backed-houthis-strike-yemens-aden-what-that-means",
+          "date": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-16-dhamar-al-ar-village-strike",
+      "date": "2026-10-16",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Houses in al-Ar village",
+      "place": "al-Ar village, Dawran Aness district, Dhamar",
+      "country": "Yemen",
+      "lat": 14.8286,
+      "lon": 44.1142,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis say Saudi strikes on homes in Dhamar's al-Ar village killed three children",
+      "summary": "The Houthi-run health ministry claimed Saudi strikes on houses in al-Ar village killed three children and wounded more than a dozen (AP); Houthi media cited 17 wounded (MEE). Saudi Arabia did not immediately comment.",
+      "sources": [
+        {
+          "publisher": "The Times of Israel (AP)",
+          "title": "Saudi airstrikes killed three children in Yemen, Houthis say",
+          "url": "https://www.timesofisrael.com/liveblog_entry/saudi-airstrikes-killed-three-children-in-yemen-houthis-say/",
+          "date": "2026-10-17"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "Saudi strikes on Yemen kill at least 12, Houthi media report",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/saudi-strikes-yemen-kill-12-houthis-say",
+          "date": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-16-hodeidah-smuggling-strikes",
+      "date": "2026-10-16",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi weapons-smuggling operation: trucks, small boats and storage structures",
+      "place": "Hodeidah",
+      "country": "Yemen",
+      "lat": 14.8022,
+      "lon": 42.9511,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Coalition releases footage of strikes on Houthi smuggling boats and trucks in Hodeidah",
+      "summary": "The Saudi-led coalition released aerial footage dated 16 October of strikes it said hit a Houthi weapons-smuggling operation in Hodeidah, showing hits on trucks, small boats and storage. No casualty details.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Coalition releases footage of strikes on Houthi weapons-smuggling operation in Hodeidah",
+          "url": "https://www.arabnews.com/middle-east/coalition-releases-footage-of-strikes-on-houthi-weapons-smuggling-operation-in-hodeidah-3006788",
+          "date": "2026-10-17"
+        },
+        {
+          "publisher": "Asharq Al-Awsat",
+          "title": "Coalition Destroys Two Ballistic Missile Launch Platforms in Saada",
+          "url": "https://english.aawsat.com/gulf/5330447-coalition-destroys-two-ballistic-missile-launch-platforms-saada",
+          "date": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-18-saada-house-strike",
+      "date": "2026-10-18",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "A home in Saada governorate",
+      "place": "Saada governorate",
+      "country": "Yemen",
+      "lat": 16.94,
+      "lon": 43.7592,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi media say Saudi strike on a home in Saada killed nine",
+      "summary": "Houthi-run Saba claimed an alleged Saudi air strike on a home in Saada governorate killed at least nine and wounded 16, most of them women and children. Not independently verified; no coalition comment was reported.",
+      "sources": [
+        {
+          "publisher": "The Times of Israel (AFP)",
+          "title": "Houthi media says Saudi strike killed 9 in northern Yemen",
+          "url": "https://www.timesofisrael.com/liveblog_entry/houthi-media-says-saudi-strike-killed-9-in-northern-yemen/",
+          "date": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-19-shabwa-al-alam-camp-missiles",
+      "date": "2026-10-19",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Al-Alam training camp of Yemeni government security forces",
+      "place": "Al-Alam camp, Jardan district, Shabwa",
+      "country": "Yemen",
+      "lat": 14.9535,
+      "lon": 46.7407,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Houthi ballistic missiles hit al-Alam training camp in Shabwa, killing 73 recruits",
+      "summary": "Three Houthi ballistic missiles hit recruits at al-Alam camp north of Ataq. On 20 October a senior government official put the toll at 73, with more than 200 wounded (AP). The Houthis said they hit a \"Saudi-backed\" base.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Houthi attack on Yemen army camp in Shabwa kills at least 53: Reports",
+          "url": "https://www.aljazeera.com/news/2026/10/19/at-least-18-killed-in-houthi-attack-on-military-camp-in-yemens-shabwa",
+          "date": "2026-10-19"
+        },
+        {
+          "publisher": "The National",
+          "title": "Yemen fighting threatens to widen after 73 killed in Houthi attack on training camp",
+          "url": "https://www.thenationalnews.com/news/mena/2026/10/19/at-least-18-killed-in-houthi-attack-on-yemeni-government-military-camp-in-shabwa-sources-say/",
+          "date": "2026-10-19"
+        },
+        {
+          "publisher": "The Korea Times (AP)",
+          "title": "Death toll rises to 73 in Houthi strike on Yemen training camp in deadliest attack in months",
+          "url": "https://www.koreatimes.co.kr/world/20261020/death-toll-rises-to-73-in-houthi-strike-on-yemen-training-camp-in-deadliest-attack-in-months",
+          "date": "2026-10-20"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-20-dhubab-fishermen-strike",
+      "date": "2026-10-20",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Two fishing boats",
+      "place": "Waters off al-Kadha, Dhubab district, Taiz",
+      "country": "Yemen",
+      "lat": 12.9435,
+      "lon": 43.4108,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis say Saudi strikes on two fishing boats off Dhubab killed eight fishermen",
+      "summary": "The Houthi-run health ministry claimed Saudi strikes on two fishing boats off al-Kadha in Dhubab district killed eight fishermen, the second strike hitting survivors in another boat. Saudi Arabia did not immediately comment.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Saudi attacks on boats in Yemen's Taiz kills eight fishermen",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/saudi-attacks-boats-yemens-taiz-kills-eight-fishermen",
+          "date": "2026-10-21"
+        },
+        {
+          "publisher": "Xinhua (Chinese state media)",
+          "title": "Houthis say 8 fishermen killed as 93 Saudi air, missile strikes hit Yemen",
+          "url": "https://english.news.cn/20261021/ec15e8acfa314bd786e60d8420e101bf/c.html",
+          "date": "2026-10-21"
         }
       ]
     }

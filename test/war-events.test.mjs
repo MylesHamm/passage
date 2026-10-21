@@ -47,7 +47,7 @@ test('top-level schema', () => {
   assert.ok(isDate(data.reviewedAt));
   assert.equal(data.reviewedAt, LAST_DAY);
   assert.ok(nonEmpty(data.basis));
-  assert.ok(Array.isArray(data.events) && data.events.length >= 70 && data.events.length <= 120, `event count ${data.events.length}`);
+  assert.ok(Array.isArray(data.events) && data.events.length >= 70 && data.events.length <= 200, `event count ${data.events.length}`);
   assert.ok(Array.isArray(data.missions) && data.missions.length > 0);
 });
 
