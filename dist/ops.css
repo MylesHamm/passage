@@ -174,6 +174,8 @@ button:disabled { opacity: .45; cursor: default; }
 .price-latest .px.wti span i { border-top: 2px dashed var(--wti); }
 .price-latest .px strong { font-size: 26px; font-weight: 500; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 .price-latest .px small { font-size: 11px; color: var(--faint); }
+/* While a date is inspected on the chart, its date reads in the accent so it is not taken for the latest close. */
+#prices[data-inspecting=true] .price-latest .px small { color: var(--live); }
 .strip .oil-history-chart { min-width: 0; }
 .strip .oil-history-figure { display: grid; grid-template-columns: minmax(0, 1fr); }
 .strip .oil-history-plot, .strip .oil-history-plot svg { min-height: 0; height: 170px; }

@@ -86,6 +86,22 @@ export function headlinesMarkup(items, options) {
 }
 
 /** Latest close per series; the newest of daily history and next-day closes wins. */
+/**
+ * The left-hand prices: the latest close, or the values on the date being
+ * inspected on the chart. A date with no observation says so; nothing carries over.
+ */
+export function shownPrices(oil, detail = null) {
+  const latest = latestPrices(oil), newest = Object.values(latest).map(p => p.date).sort().at(-1);
+  const inspecting = Boolean(detail?.date) && detail.date !== newest;
+  const out = { inspecting };
+  for (const id of ['brent', 'wti']) {
+    if (!inspecting) { const p = latest[id]; out[id] = p ? { value: money(p.value), date: `${dayLabel(p.date)} · ${p.basis}` } : { value: '—', date: oil ? 'No observation' : '' }; continue; }
+    const value = detail.values?.find(v => v.id === id)?.value ?? null;
+    const basis = latest[id]?.date === detail.date ? latest[id].basis : 'EIA daily spot';
+    out[id] = value === null ? { value: '—', date: `No observation on ${dayLabel(detail.date)}` } : { value: money(value), date: `${dayLabel(detail.date)} · ${basis}` };
+  }
+  return out;
+}
 export function latestPrices(oil) {
   const out = {};
   for (const series of Array.isArray(oil?.series) ? oil.series : []) {

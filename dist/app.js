@@ -4,7 +4,7 @@ import { apiFetch, siteUrl, runtime } from './runtime-config.mjs';
 import { createOilChart } from './oil-chart-view.mjs';
 import { createHeroMap } from './ops/hero-map.mjs';
 import {
-  vesselCounts, heroCountsMarkup, vesselCardMarkup, oddsMarkup, headlinesMarkup, latestPrices, money, dayLabel,
+  vesselCounts, heroCountsMarkup, vesselCardMarkup, oddsMarkup, headlinesMarkup, shownPrices, dayLabel,
   clockLabel, ageLabel, transitRowMarkup, statusSummary, aboutMarkup, chartSeries, eventCardMarkup, eventListMarkup, eventTimelineMarkup, eventGroupMarkup, esc,
 } from './ops/panels.mjs';
 import { WAR_START, LAYERS, curatedEvents, curatedMissions, activeMissions, registerEvents, unplacedRegisterEvents, located, mergeEvents, visibleEvents, countsByLayer, priceMove, oddsMove, relatedMarkets } from './ops/events.mjs';
@@ -12,7 +12,7 @@ import { WAR_START, LAYERS, curatedEvents, curatedMissions, activeMissions, regi
 const $ = selector => document.querySelector(selector);
 const state = {
   vessels: null, vesselsAt: 0, vesselError: false, news: null, expectations: null, oil: null, transits: null, diagnostics: null, period: 90, region: 'all',
-  view: 'hormuz', curated: null, maritime: null, events: [], missions: [], layers: new Set([...Object.keys(LAYERS), 'missions']), selectedEvent: null, timelineLayer: 'all',
+  view: 'hormuz', curated: null, maritime: null, events: [], missions: [], layers: new Set([...Object.keys(LAYERS), 'missions']), selectedEvent: null, timelineLayer: 'all', inspected: null,
 };
 let hero = null, theatre = null, theatreLoading = null, oilChart = null;
 const DAY = 86_400_000;
@@ -68,12 +68,15 @@ async function loadOil() {
   catch { oilChart?.update(state.oil?.series || [], { period: state.period, failed: true }); return; }
   renderOil();
 }
+/** The left-hand prices follow the date inspected on the chart, and show the latest close otherwise. */
+function renderPrices(detail = state.inspected) {
+  state.inspected = detail;
+  const shown = shownPrices(state.oil, detail);
+  for (const id of ['brent', 'wti']) { $(`#${id}-latest`).textContent = shown[id].value; $(`#${id}-date`).textContent = shown[id].date; }
+  $('#prices').dataset.inspecting = String(shown.inspecting);
+}
 function renderOil() {
-  const latest = latestPrices(state.oil);
-  for (const id of ['brent', 'wti']) {
-    $(`#${id}-latest`).textContent = latest[id] ? money(latest[id].value) : '—';
-    $(`#${id}-date`).textContent = latest[id] ? `${dayLabel(latest[id].date)} · ${latest[id].basis}` : 'No observation';
-  }
+  renderPrices();
   oilChart?.update(chartSeries(state.oil), { period: state.period === 'war' ? warDays() : state.period, loading: !state.oil });
   renderChartMarkers();
 }
@@ -273,7 +276,7 @@ function tickClock() { $('#utc-clock').textContent = new Date().toLocaleTimeStri
 async function start() {
   tickClock(); setInterval(tickClock, 1000);
   bindControls();
-  oilChart = createOilChart($('#oil-chart'), { height: 170, onMarker: id => showMe(id) });
+  oilChart = createOilChart($('#oil-chart'), { height: 170, onMarker: id => showMe(id), onReadout: detail => renderPrices(detail) });
   if (runtime.configurationError) { $('#status-text').textContent = 'Live data not configured'; $('#status-open').dataset.state = 'down'; }
   createHeroMap($('#hero-map'), { onSelect: showVessel }).then(map => { hero = map; renderVessels(); })
     .catch(() => { $('#hero-map').insertAdjacentHTML('beforeend', '<p class="map-fallback">The 3D map could not load on this device. Vessel counts and other panels still update.</p>'); });

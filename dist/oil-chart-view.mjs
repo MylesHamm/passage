@@ -241,7 +241,10 @@ export function createOilChart(mount, { onReadout, onMarker, height: chartHeight
     note.textContent = `${sourceNote}${model.dates.length} observed dates · Daily spot prices, published with a lag. ${model.breakCount ? `${model.breakCount} line break${model.breakCount === 1 ? '' : 's'} for missing values or gaps over 4 days.` : 'Gaps over 4 days and missing values are not connected.'}`;
     input.max = String(model.dates.length - 1);
     input.disabled = model.dates.length < 2;
-    select(selectedDate && model.dates.includes(selectedDate) ? selectedDate : model.dates.at(-1), false);
+    const keep = Boolean(selectedDate) && model.dates.includes(selectedDate);
+    select(keep ? selectedDate : model.dates.at(-1), false);
+    // The inspected date left the window, so the reading is back on the latest date.
+    if (!keep && typeof onReadout === 'function') onReadout(null);
   }
 
   // Direct manipulation ends any reveal at once: the reading is never delayed.
@@ -257,6 +260,14 @@ export function createOilChart(mount, { onReadout, onMarker, height: chartHeight
     const fraction = Math.max(0, Math.min(1, (cursor - geometry.left) / (geometry.right - geometry.left)));
     select(nearestOilDate(model, model.begin + fraction * (model.latest - model.begin)));
   }
+  // A mouse leaving the plot puts the reading back where it rests: the event in
+  // focus, or the latest date. A finger lifting keeps its reading on screen.
+  function onLeave(event) {
+    if (event.pointerType === 'touch' || !model.hasData) return;
+    const home = focusWindow ? model.dates.filter(d => d <= focusWindow.date).at(-1) : model.dates.at(-1);
+    if (home) { selectedLatest = !focusWindow; select(home, false); }
+    if (typeof onReadout === 'function') onReadout(null);
+  }
   function onClick(event) {
     const tick = event.target.closest?.('[data-marker-id]');
     if (tick && typeof onMarker === 'function') onMarker(tick.dataset.markerId);
@@ -264,6 +275,7 @@ export function createOilChart(mount, { onReadout, onMarker, height: chartHeight
   input.addEventListener('input', onInput);
   plot.addEventListener('pointermove', onPointer);
   plot.addEventListener('pointerdown', onPointer);
+  plot.addEventListener('pointerleave', onLeave);
   plot.addEventListener('click', onClick);
   const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(() => {
     if (Math.abs((plot.clientWidth || width) - width) > 1) draw();
@@ -308,6 +320,7 @@ export function createOilChart(mount, { onReadout, onMarker, height: chartHeight
       viewport?.disconnect();
       input.removeEventListener('input', onInput);
       plot.removeEventListener('pointermove', onPointer);
+      plot.removeEventListener('pointerleave', onLeave);
       plot.removeEventListener('pointerdown', onPointer);
       mount.replaceChildren();
       mount.classList.remove('oil-history-chart');

@@ -175,3 +175,20 @@ test('the timeline groups events by month and lists unplaced incidents without a
   const group = eventGroupMarkup([{ ...base, id: 'war:d', date: '2026-10-13', place: 'Sanaa' }, { ...base, id: 'war:e', date: '2026-10-01', place: 'Sanaa' }]);
   assert.match(group, /2 events · Sanaa/); assert.match(group, /data-event-id="war:d"[\s\S]*data-event-id="war:e"/); assert.match(group, /data-close-event/);
 });
+
+test('the left-hand prices follow an inspected date and never carry a price over a gap', async () => {
+  const { shownPrices } = await import('../dist/ops/panels.mjs');
+  const oil = { series: [
+    { id: 'brent', observations: [{ date: '2026-10-13', value: 120 }, { date: '2026-10-14', value: 126.55 }] },
+    { id: 'wti', observations: [{ date: '2026-10-14', value: 112 }] },
+  ], latestCloses: [{ id: 'brent', value: 115.22, date: '2026-10-20', basis: 'Wholesale spot close (Refinitiv)' }, { id: 'wti', value: 107.89, date: '2026-10-20', basis: 'Wholesale spot close (Refinitiv)' }] };
+  const latest = shownPrices(oil);
+  assert.equal(latest.inspecting, false);
+  assert.equal(latest.brent.value, '$115.22'); assert.match(latest.brent.date, /20 Oct · Wholesale spot close/);
+  const past = shownPrices(oil, { date: '2026-10-13', values: [{ id: 'brent', value: 120 }, { id: 'wti', value: null }] });
+  assert.equal(past.inspecting, true);
+  assert.equal(past.brent.value, '$120.00'); assert.equal(past.brent.date, '13 Oct · EIA daily spot');
+  assert.equal(past.wti.value, '—'); assert.equal(past.wti.date, 'No observation on 13 Oct');
+  assert.equal(shownPrices(oil, { date: '2026-10-20', values: [] }).inspecting, false, 'the newest date is the latest view');
+  assert.deepEqual(shownPrices(null).brent, { value: '—', date: '' }, 'still loading says nothing yet');
+});
