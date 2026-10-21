@@ -89,3 +89,13 @@ test('oil adds next-day closes and keeps daily history when the close page fails
   assert.deepEqual(degraded.latestCloses,[]);
   assert.ok(degraded.series.every(series=>series.observations.length===1),'history is independent of the close page');
 });
+
+test('register incidents carry an approximate position only when their location text can be placed',async t=>{
+  const html=await fixture('imo/middle-east-highlighted-incidents.html');
+  const f=await service(t,async input=>{const url=new URL(input);if(url.hostname==='www.imo.org')return new Response(html);return provider()(input);});
+  const maritime=await f.service.get('/api/maritime');
+  const placed=maritime.events.filter(e=>e.location),unplaced=maritime.events.filter(e=>!e.location);
+  assert.ok(placed.length>0&&unplaced.length>0,'some register text is deliberately left unplaced');
+  assert.ok(placed.every(e=>e.location.precision==='approximate'&&Number.isFinite(e.location.radiusNm)));
+  assert.ok(placed.every(e=>e.location.lon>22.5&&e.location.lon<67.5&&e.location.lat>0&&e.location.lat<41),'positions stay in the theatre');
+});

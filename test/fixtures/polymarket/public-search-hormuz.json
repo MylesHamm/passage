@@ -1,0 +1,84 @@
+{
+ "events": [
+  {
+   "id": "455875",
+   "slug": "strait-of-hormuz-traffic-returns-to-normal-by-december-31",
+   "title": "Strait of Hormuz traffic returns to normal by December 31?",
+   "active": true,
+   "closed": false,
+   "archived": false,
+   "markets": [
+    {
+     "id": "2176270",
+     "question": "Strait of Hormuz traffic returns to normal by December 31?",
+     "slug": "strait-of-hormuz-traffic-returns-to-normal-by-december-31",
+     "description": "This market will resolve to “Yes” if IMF Portwatch publishes a 7-day moving average of transit calls (“Arrivals of Ships”) for the Strait of Hormuz equal to or above 60 for any date between market creation and December 31, 2026. Otherwise, this market will resolve to “No”.\n\nDaily transit calls include container, dry bulk, roll-on/roll-off, general cargo, and tanker ships. Ships not reported by IMF Portwatch will not be considered.\n\nThis market will resolve as soon as IMF Portwatch publishes a 7-day moving average of transit calls equal to or above the specified level, or once data has been published for the final date in the specified period and no such value has been published. If no data has been published for the final date of the specified period within 14 calendar days (ET) after the end of that period, this market will resolve based on data published up to that point.\n\nRevisions to previously published data points made within this market’s timeframe will be considered. However, they will not disqualify a previously published data point from qualifying. Revisions to previously published data points after data is published for December 31, 2026, however, will not be considered.\n\nIn case of obvious data integrity issues (i.e., erroneous data), the market may remain open until the end of the third calendar day (ET) after the date on which such data is first released to allow for corrections. Data integrity issues refer only to clerical or other similar errors in the underlying data, and do not include cases where IMF Portwatch differs from alternative sources.\n\nThe resolution source for this market will be IMF Portwatch, specifically the transit calls data published for the Strait of Hormuz at https://portwatch.imf.org/pages/cb5856222a5b4105adc6ee7e880a1730, both in the chart and through downloadable files.",
+     "endDate": "2027-01-01T04:59:00Z",
+     "outcomes": "[\"Yes\", \"No\"]",
+     "active": true,
+     "closed": false,
+     "archived": false,
+     "acceptingOrders": true,
+     "liquidity": "590768.9667",
+     "liquidityNum": 590768.9667,
+     "bestBid": 0.11,
+     "bestAsk": 0.12,
+     "lastTradePrice": 0.12,
+     "volume24hr": 99493.40949599998,
+     "updatedAt": "2026-10-21T14:50:58.280123Z",
+     "clobTokenIds": "[\"83783489454659420807679723574840032660002326710045123865554753994450797728825\", \"48727431314333088243693016929623363710488980152833544156961659445129455301311\"]"
+    }
+   ]
+  },
+  {
+   "id": "1181963",
+   "slug": "how-many-ships-transit-the-strait-of-hormuz-week-of-october-19",
+   "title": "How many ships transit the Strait of Hormuz week of October 19?",
+   "active": true,
+   "closed": false,
+   "archived": false,
+   "markets": [
+    {
+     "id": "5645623",
+     "question": "Will fewer than 20 ships transit the Strait of Hormuz between October 19-October 25?",
+     "slug": "will-fewer-than-20-ships-transit-the-strait-of-hormuz-between-october-19-october-25",
+     "description": "This market will resolve according to the total number of transit calls that IMF Portwatch reports for the Strait of Hormuz for all days from October 19, 2026, through October 25, 2026, inclusive.\n\nTransit calls include container, dry bulk, roll-on/roll-off, general cargo, and tanker ships. Ships not reported by IMF Portwatch will not be considered.\n\nThis market will resolve as soon as all relevant data has been published. If the relevant data is not published within 14 calendar days of the specified date, this market will resolve based on the most recent data published up to that point.\n\nIn case of obvious data integrity issues (i.e., erroneous data), the market may remain open until the end of the third calendar day (ET) after the date on which such data is first released to allow for corrections. Data integrity issues refer only to clerical or other similar errors in the underlying data, and do not include cases where IMF Portwatch differs from alternative sources.\n\nOnly revisions to previously published data points made before all relevant data has been published will be considered.\n\nThe resolution source for this market will be IMF Portwatch, specifically the transit calls data published for the Strait of Hormuz at https://portwatch.imf.org/pages/cb5856222a5b4105adc6ee7e880a1730, both in the chart and through downloadable files.",
+     "endDate": "2026-10-26T03:59:00Z",
+     "outcomes": "[\"Yes\", \"No\"]",
+     "active": true,
+     "closed": false,
+     "archived": false,
+     "acceptingOrders": true,
+     "liquidity": "11415.1936",
+     "liquidityNum": 11415.1936,
+     "bestBid": 0.08,
+     "bestAsk": 0.12,
+     "lastTradePrice": 0.14,
+     "volume24hr": 2554.6459330000002,
+     "updatedAt": "2026-10-21T14:50:58.280123Z",
+     "clobTokenIds": "[\"8883126386863219542798793513463453984418381268098341931568927834116957572314\", \"103520443130686663070210496535331314320909331006407011469541434879155911512599\"]"
+    },
+    {
+     "id": "5645625",
+     "question": "Will 25-29 ships transit the Strait of Hormuz between October 19-October 25?",
+     "slug": "will-25-29-ships-transit-the-strait-of-hormuz-between-october-19-october-25",
+     "description": "This market will resolve according to the total number of transit calls that IMF Portwatch reports for the Strait of Hormuz for all days from October 19, 2026, through October 25, 2026, inclusive.\n\nTransit calls include container, dry bulk, roll-on/roll-off, general cargo, and tanker ships. Ships not reported by IMF Portwatch will not be considered.\n\nThis market will resolve as soon as all relevant data has been published. If the relevant data is not published within 14 calendar days of the specified date, this market will resolve based on the most recent data published up to that point.\n\nIn case of obvious data integrity issues (i.e., erroneous data), the market may remain open until the end of the third calendar day (ET) after the date on which such data is first released to allow for corrections. Data integrity issues refer only to clerical or other similar errors in the underlying data, and do not include cases where IMF Portwatch differs from alternative sources.\n\nOnly revisions to previously published data points made before all relevant data has been published will be considered.\n\nThe resolution source for this market will be IMF Portwatch, specifically the transit calls data published for the Strait of Hormuz at https://portwatch.imf.org/pages/cb5856222a5b4105adc6ee7e880a1730, both in the chart and through downloadable files.",
+     "endDate": "2026-10-26T03:59:00Z",
+     "outcomes": "[\"Yes\", \"No\"]",
+     "active": true,
+     "closed": false,
+     "archived": false,
+     "acceptingOrders": true,
+     "liquidity": "27838.0207",
+     "liquidityNum": 27838.0207,
+     "bestBid": 0.33,
+     "bestAsk": 0.35,
+     "lastTradePrice": 0.35,
+     "volume24hr": 836.359285,
+     "updatedAt": "2026-10-21T14:50:58.280123Z",
+     "clobTokenIds": "[\"11873521478325360315795447778721173200314351446748779410933741938331344154615\", \"97714484693097248573563750911636204360603071596132826837003144841422929517973\"]"
+    }
+   ]
+  }
+ ]
+}

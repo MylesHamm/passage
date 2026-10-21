@@ -32,7 +32,7 @@ test('missions need a dated start, a real polygon and a source', () => {
 
 test('register incidents appear only when the collector could place them, and stay approximate', () => {
   const maritime = { events: [
-    { id: 'imo-1', title: 'Tanker hit', eventDate: '2026-03-02', url: 'https://www.imo.org/x', locationText: '20 NM west of Fujairah', location: { lat: 25.1, lon: 56, radiusNm: 5, reference: 'Fujairah' } },
+    { id: 'imo-1', title: 'TEST SHIP · maritime incident', shipName: 'TEST SHIP', eventDate: '2026-03-02', url: 'https://www.imo.org/x', locationText: '20 NM west of Fujairah', location: { lat: 25.1, lon: 56, radiusNm: 5, reference: 'Fujairah' } },
     { id: 'imo-2', title: 'Unplaced', eventDate: '2026-03-03', location: null },
     { id: 'imo-3', title: 'Before the war', eventDate: '2026-01-10', location: { lat: 25, lon: 56 } },
   ] };
@@ -40,6 +40,7 @@ test('register incidents appear only when the collector could place them, and st
   assert.deepEqual(located.map(e => e.id), ['imo:imo-1']);
   assert.equal(located[0].precision, 'area'); assert.equal(located[0].radiusNm, 5);
   assert.equal(located[0].sources[0].publisher, 'IMO');
+  assert.equal(located[0].title, 'Incident involving TEST SHIP'); assert.equal(located[0].target, 'TEST SHIP');
 });
 
 test('a register incident matching a curated shipping event merges into it instead of duplicating', () => {

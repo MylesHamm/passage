@@ -47,9 +47,9 @@ export function registerEvents(maritime, { from = WAR_START } = {}) {
     const url = /^https:\/\//.test(e.url || '') ? e.url : null;
     return [{
       id: 'imo:' + text(e.id || `${date}-${e.title}`, 160), origin: 'imo', date, time: null, layer: 'shipping', type: 'shipping-attack',
-      actor: '', target: text(e.vessel || e.ship || '', 120) || 'Merchant vessel', place: text(e.locationText || loc.reference || '', 120), country: '',
+      actor: '', target: text(e.shipName, 80) || 'Merchant vessel', place: text(e.locationText || loc.reference || '', 120), country: '',
       lat: loc.lat, lon: loc.lon, precision: 'area', radiusNm: Number.isFinite(loc.radiusNm) ? loc.radiusNm : null, confidence: 'confirmed',
-      title: text(e.title, 120) || 'Incident in the IMO register', summary: text(e.summary || e.description, 280),
+      title: text(e.shipName, 80) ? `Incident involving ${text(e.shipName, 80)}` : 'Incident in the IMO register', summary: text(e.summary || e.description, 280),
       sources: url ? [{ publisher: 'IMO', title: 'Middle East highlighted incidents', url, date }] : [],
     }];
   });
