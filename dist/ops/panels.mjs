@@ -181,7 +181,9 @@ export function eventCardMarkup(event, { brent = null, odds = [] } = {}) {
     price = `<p>${money(brent.before.value)} on ${esc(dayLabel(brent.before.date))} → ${money(brent.after.value)} on ${esc(dayLabel(brent.after.date))} <span class="${dir}">${esc(signed(brent.change))} (${esc(signed(brent.percent, 1))}%)</span></p>`;
   } else if (brent?.before) price = `<p>${money(brent.before.value)} on ${esc(dayLabel(brent.before.date))}. Later prices are not yet published.</p>`;
   const pct = p => `${Math.round(p * 1000) / 10}%`;
-  const oddsMarkup = odds.filter(o => o.move?.before).map(o => `<p>${esc(o.question)}: ${pct(o.move.before.p)}${o.move.after ? ` → ${pct(o.move.after.p)}` : ''}</p>`).join('');
+  // Each value carries its own date, so a window that has not finished yet reads as such.
+  const on = t => esc(dayLabel(new Date(t * 1000).toISOString()));
+  const oddsMarkup = odds.filter(o => o.move?.before).map(o => `<p>${esc(o.question)}: ${pct(o.move.before.p)} (${on(o.move.before.t)})${o.move.after ? ` → ${pct(o.move.after.p)} (${on(o.move.after.t)})` : ''}</p>`).join('');
   return `<button type="button" class="vc-close" data-close-event aria-label="Close event details">×</button>
     <p class="ec-meta"><b data-layer="${esc(event.layer)}">${esc(LAYER_NAMES[event.layer] || 'Event')}</b> · ${esc(dayLabel(event.date))}${event.time ? ' ' + esc(event.time.replace('Z', ' UTC')) : ''}${event.confidence === 'claimed' ? '<span class="ec-claimed">Claimed</span>' : ''}</p>
     <h3>${esc(event.title)}</h3>

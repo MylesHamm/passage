@@ -145,11 +145,12 @@ test('a compass bearing projects to the matching clockwise screen angle', async 
 test('the event card states what happened next without claiming cause, and escapes its text', async () => {
   const { eventCardMarkup, eventListMarkup } = await import('../dist/ops/panels.mjs');
   const event = { id: 'war:x', layer: 'shipping', date: '2026-03-02', time: '04:10Z', title: 'Tanker <b>hit</b>', actor: 'Houthis', target: 'Commercial tanker', place: 'Red Sea off Mocha', precision: 'sea-area', radiusNm: null, confidence: 'claimed', summary: 'Claimed attack.', sources: [{ publisher: 'Reuters', title: 'Report', url: 'https://www.reuters.com/x' }] };
-  const card = eventCardMarkup(event, { brent: { before: { date: '2026-03-02', value: 80 }, after: { date: '2026-03-05', value: 83 }, change: 3, percent: 3.75, days: 3 }, odds: [{ question: 'Will shipping attacks continue?', move: { before: { p: .4 }, after: { p: .55 } } }] });
+  const t = d => Date.parse(d + 'T12:00:00Z') / 1000;
+  const card = eventCardMarkup(event, { brent: { before: { date: '2026-03-02', value: 80 }, after: { date: '2026-03-05', value: 83 }, change: 3, percent: 3.75, days: 3 }, odds: [{ question: 'Will shipping attacks continue?', move: { before: { p: .4, t: t('2026-03-02') }, after: { p: .55, t: t('2026-03-04') } } }] });
   assert.doesNotMatch(card, /<b>hit<\/b>/);
   assert.match(card, /Claimed/); assert.match(card, /04:10 UTC/); assert.match(card, /sea area/);
   assert.match(card, /\$80\.00 on 2 Mar → \$83\.00 on 5 Mar <span class="up">\+3\.00 \(\+3\.8%\)<\/span>/);
-  assert.match(card, /Will shipping attacks continue\?: 40% → 55%/);
+  assert.match(card, /Will shipping attacks continue\?: 40% \(2 Mar\) → 55% \(4 Mar\)/, 'each odds value names its own date');
   assert.match(card, /not what caused it/);
   assert.match(eventCardMarkup(event, { brent: { before: { date: '2026-03-02', value: 80 }, after: null, days: 3 } }), /Later prices are not yet published/);
   assert.match(eventCardMarkup(event, {}), /No Brent observation/);
