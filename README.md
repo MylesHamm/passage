@@ -2,11 +2,12 @@
 
 [Open Passage](https://myleshamm.github.io/passage/)
 
-An operations-center view of the regional war from the Gulf to the Red Sea, centred on the Strait of Hormuz. It shows received tanker positions, daily transits through the straits, oil prices and market odds. Each figure carries its own date and source.
+An operations-center view of the regional war from the Gulf to the Red Sea, centred on the Strait of Hormuz. It shows received tanker positions, dated war events across the region, daily transits through the straits, oil prices and market odds. Each figure carries its own date and source.
 
 ## What you see
 
 - **Hormuz map.** 3D terrain with every vessel position received from the free AIS feed. Tankers are drawn as detailed models turned to their reported heading, with a trail of their last hour of received positions. **Replay last hour** plays those received positions back in twelve seconds. The default view runs from the Dubai and Sharjah anchorages, where the feed's receivers are, to the strait itself.
+- **Regional war map.** 3D terrain from the Gulf to the Red Sea with dated, source-linked events in three layers: attacks on shipping, missile and drone strikes, and strikes on Iran and Yemen. Naval missions are drawn as approximate areas, only for the days they were under way. Select an event, in the map, the event list or the chart, and **show me** flies the map to it, marks its date on the price chart, and shows Brent and the related odds on the day and a few days later.
 - **Daily transits.** IMF PortWatch counts for Hormuz and Bab el-Mandeb, split into tankers and all ships, against a labelled pre-disruption average.
 - **Oil prices.** Daily Brent and WTI spot prices from the U.S. Energy Information Administration, including the latest next-day close.
 - **Market odds.** Polymarket probabilities for questions about Hormuz, shipping attacks and the conflict, each linked to its market.
@@ -16,7 +17,7 @@ An operations-center view of the regional war from the Gulf to the Red Sea, cent
 ## What updates
 
 - Vessel positions refresh every ten seconds while the page is open. The collector receives them continuously. Positions older than ten minutes fade, and are dropped after thirty.
-- Odds and headlines refresh every minute, oil every ten minutes and transits every thirty. PortWatch publishes weekly, so the latest transit day is often several days old.
+- Odds and headlines refresh every minute, oil every ten minutes, and transits and war events every thirty. The curated event list is reviewed by hand and shows its review date. PortWatch publishes weekly, so the latest transit day is often several days old.
 - Nothing is extrapolated. A trail joins positions actually received, and a missing price or count stays missing.
 
 The free AIS feed covers part of Hormuz and none of Bab el-Mandeb. An empty stretch of water on the map does not mean no ships are there.

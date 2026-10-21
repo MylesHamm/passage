@@ -155,6 +155,9 @@ export const ABOUT_NOTES = [
   ['Transits', 'IMF PortWatch daily counts are derived from satellite AIS. They are released weekly, so the latest day is often several days old.'],
   ['Oil prices', 'Daily Brent and WTI spot prices from the U.S. Energy Information Administration. EIA publishes history weekly and next-day closes on Today in Energy. These are not live trading quotes.'],
   ['Market odds', 'Polymarket prices show what traders expect, not what has happened. Each question resolves on its own published rules.'],
+  ['War events', 'The regional map shows a curated list of dated events, each linked to the reporting it comes from, plus incidents from the IMO register placed from their text. A point marks the named place, not an exact impact point; register incidents show their likely radius. Events reported by only one side are marked as claimed.'],
+  ['Naval missions', 'Mission areas are approximate outlines of published operating areas. Only missions under way on the day are drawn: today, or the day of the event you select.'],
+  ['Show me', 'Selecting an event shows Brent and the related odds on the event day and a few days later. Prices and odds move for many reasons; this is what happened next, not what caused it.'],
   ['Headlines', 'Original reporting from BBC, Al Jazeera, Middle East Eye, Middle East Monitor, France 24 and UN News, linked to the publisher.'],
 ];
 export function aboutMarkup(sources = []) {
@@ -164,7 +167,7 @@ export function aboutMarkup(sources = []) {
   }).join('');
   return `<h3>Sources</h3><table class="source-table"><thead><tr><th>Source</th><th>Status</th><th>Latest</th></tr></thead><tbody>${rows || '<tr><td colspan="3">Checking…</td></tr>'}</tbody></table>
     <h3>How to read this</h3><ul>${ABOUT_NOTES.map(([k, v]) => `<li><strong>${esc(k)}.</strong> ${esc(v)}</li>`).join('')}</ul>
-    <h3>Credits</h3><p>Sources: UN Global Platform; IMF PortWatch (portwatch.imf.org). Oil prices: U.S. Energy Information Administration. Vessel positions: AISStream. Market odds: Polymarket. Terrain: Mapzen Terrain Tiles (USGS SRTM, GMTED2010; NOAA ETOPO1). Ship model drawn with the Anatomy kit (MIT).</p>`;
+    <h3>Credits</h3><p>Sources: UN Global Platform; IMF PortWatch (portwatch.imf.org). Oil prices: U.S. Energy Information Administration. Vessel positions: AISStream. Market odds: Polymarket. War events: curated from linked reporting and the IMO Middle East highlighted incidents register. Terrain: Mapzen Terrain Tiles (USGS SRTM, GMTED2010; NOAA ETOPO1). Ship model drawn with the Anatomy kit (MIT).</p>`;
 }
 
 const LAYER_NAMES = { shipping: 'Attack on shipping', 'missile-drone': 'Missile & drone strike', 'strikes-on-iran-yemen': 'Strike on Iran or Yemen' };
