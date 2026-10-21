@@ -1,0 +1,3630 @@
+{
+  "schema": "passage-war-events/v1",
+  "reviewedAt": "2026-10-21",
+  "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
+  "events": [
+    {
+      "id": "2026-02-28-iran-drones-erbil-airport-consulate",
+      "date": "2026-02-28",
+      "time": "10:25Z",
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (reported)",
+      "target": "US consulate and Erbil International Airport",
+      "place": "Erbil",
+      "country": "Iraq (Kurdistan Region)",
+      "lat": 36.1911,
+      "lon": 44.0092,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Erbil: US consulate and airport targeted; incoming drones and missiles shot down",
+      "summary": "Kurdistan's counter-terrorism directorate said coalition air defences downed missiles and explosive drones aimed at the US consulate and Erbil airport at 1:25 pm local time on 28 February, reportedly fired by Iran. No damage was reported.",
+      "sources": [
+        {
+          "publisher": "Kurdistan24",
+          "title": "Coalition Forces Intercept Iranian Missiles and Drones Targeting U.S. Sites in Erbil",
+          "url": "https://www.kurdistan24.net/en/story/896868",
+          "date": "2026-02-28"
+        },
+        {
+          "publisher": "Kurdistan24",
+          "title": "Drones Shot Down Over Erbil Near U.S. Consulate as Iran-Israel Conflict Expands to Iraqi Kurdistan",
+          "url": "https://www.kurdistan24.net/en/story/896852",
+          "date": "2026-02-28"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Multiple Arab states that host US assets targeted in Iran retaliation",
+          "url": "https://www.aljazeera.com/news/2026/2/28/multiple-gulf-arab-states-that-host-us-assets-targeted-in-iran-retaliation",
+          "date": "2026-02-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-02-28-iran-missile-nsa-bahrain-fifth-fleet",
+      "date": "2026-02-28",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "US Navy Fifth Fleet headquarters",
+      "place": "NSA Bahrain (Juffair, Manama)",
+      "country": "Bahrain",
+      "lat": 26.2097,
+      "lon": 50.6095,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iranian missile attack hits US Fifth Fleet headquarters in Bahrain",
+      "summary": "Bahrain said an Iranian missile attack on the morning of 28 February targeted the US Navy Fifth Fleet headquarters in Manama's Juffair district. Video showed a drone striking a nearby tower block; residential buildings were also hit.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Iranian missiles strike Gulf countries as Bahrain says US Fifth Fleet base attacked",
+          "url": "https://www.middleeasteye.net/news/iranian-missiles-strike-gulf-countries-bahrain-says-us-fifth-fleet-base-attacked",
+          "date": "2026-02-28"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Multiple Arab states that host US assets targeted in Iran retaliation",
+          "url": "https://www.aljazeera.com/news/2026/2/28/multiple-gulf-arab-states-that-host-us-assets-targeted-in-iran-retaliation",
+          "date": "2026-02-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-02-28-iran-missiles-abu-dhabi-dubai",
+      "date": "2026-02-28",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "UAE (Abu Dhabi, Dubai; Al Dhafra AB named by Iran)",
+      "place": "Abu Dhabi",
+      "country": "United Arab Emirates",
+      "lat": 24.4539,
+      "lon": 54.3773,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Iranian missiles over UAE: death in Abu Dhabi, fire near Dubai hotel",
+      "summary": "Iranian media said Al Dhafra air base was a target. UAE air defences intercepted several missiles on 28 February; at least one person was killed in Abu Dhabi and a fire broke out near a hotel on Dubai's Palm islands.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Multiple Arab states that host US assets targeted in Iran retaliation",
+          "url": "https://www.aljazeera.com/news/2026/2/28/multiple-gulf-arab-states-that-host-us-assets-targeted-in-iran-retaliation",
+          "date": "2026-02-28"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "Iranian missiles strike Gulf countries as Bahrain says US Fifth Fleet base attacked",
+          "url": "https://www.middleeasteye.net/news/iranian-missiles-strike-gulf-countries-bahrain-says-us-fifth-fleet-base-attacked",
+          "date": "2026-02-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-02-28-iran-missiles-kuwait-ali-al-salem",
+      "date": "2026-02-28",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "Ali Al Salem Air Base; Kuwait International Airport",
+      "place": "Ali Al Salem Air Base",
+      "country": "Kuwait",
+      "lat": 29.3467,
+      "lon": 47.5208,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iranian missiles target Kuwait's Ali Al Salem base; drone hits airport",
+      "summary": "On 28 February ballistic missiles were fired at Ali Al Salem Air Base, which Iranian media named as a target; Kuwait said all were intercepted. A drone struck Kuwait International Airport, damaging the passenger building.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Multiple Arab states that host US assets targeted in Iran retaliation",
+          "url": "https://www.aljazeera.com/news/2026/2/28/multiple-gulf-arab-states-that-host-us-assets-targeted-in-iran-retaliation",
+          "date": "2026-02-28"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "Iranian missiles strike Gulf countries as Bahrain says US Fifth Fleet base attacked",
+          "url": "https://www.middleeasteye.net/news/iranian-missiles-strike-gulf-countries-bahrain-says-us-fifth-fleet-base-attacked",
+          "date": "2026-02-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-02-28-iran-missiles-tel-aviv",
+      "date": "2026-02-28",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "Israel (Tel Aviv)",
+      "place": "Tel Aviv",
+      "country": "Israel",
+      "lat": 32.0853,
+      "lon": 34.7818,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Iranian ballistic missile hits beside Tel Aviv apartment block",
+      "summary": "Iran answered the opening strikes with ballistic missile salvos at Israel. Late on 28 February a missile landed next to a residential building in Tel Aviv, killing one woman and injuring others, Israeli officials said.",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "Woman killed, dozens injured as Iranian missile strikes Tel Aviv residential block",
+          "url": "https://www.timesofisrael.com/woman-killed-dozens-injured-as-iranian-missile-strikes-tel-aviv-residential-block/",
+          "date": "2026-03-01"
+        },
+        {
+          "publisher": "Al-Monitor (AFP)",
+          "title": "Iran leader Khamenei killed in massive US and Israeli attack",
+          "url": "https://www.al-monitor.com/originals/2026/02/us-and-israel-launch-strikes-iran-explosions-reported-across-region",
+          "date": "2026-02-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-02-28-strike-hits-girls-school-minab",
+      "date": "2026-02-28",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States (likely; under US investigation)",
+      "target": "Girls' school beside an IRGC compound",
+      "place": "Minab",
+      "country": "Iran",
+      "lat": 27.1467,
+      "lon": 57.0801,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Opening-day strike hits girls' school in Minab next to an IRGC compound",
+      "summary": "A strike on 28 February hit the Shajareh Tayyebeh girls' school in Minab, beside an IRGC compound. Reuters reported a preliminary US probe found a US Tomahawk was likely used with outdated targeting data; the Pentagon has not confirmed.",
+      "sources": [
+        {
+          "publisher": "Al-Monitor (Reuters)",
+          "title": "Pentagon elevates investigation into Iran school strike",
+          "url": "https://www.al-monitor.com/originals/2026/03/pentagon-elevates-investigation-iran-school-strike",
+          "date": "2026-03-13"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "US responsible for deadly attack on Iranian school: Amnesty International",
+          "url": "https://www.aljazeera.com/news/2026/3/16/us-responsible-for-deadly-attack-on-iranian-school-amnesty-international",
+          "date": "2026-03-16"
+        }
+      ]
+    },
+    {
+      "id": "2026-02-28-us-israel-strikes-tehran-khamenei",
+      "date": "2026-02-28",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States and Israel",
+      "target": "Iranian leadership and military sites",
+      "place": "Tehran",
+      "country": "Iran",
+      "lat": 35.6892,
+      "lon": 51.389,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "US and Israel open air campaign on Iran; Khamenei killed in Tehran",
+      "summary": "Joint US-Israeli strikes began across Iran early on 28 February. Iranian state media later confirmed Supreme Leader Ali Khamenei died when his compound in central Tehran was hit; strikes were reported in many provinces.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran confirms Supreme Leader Ali Khamenei dead after US-Israeli attacks",
+          "url": "https://www.aljazeera.com/news/2026/2/28/irans-supreme-leader-ali-khamenei-killed-in-us-israeli-attacks-reports",
+          "date": "2026-02-28"
+        },
+        {
+          "publisher": "Times of Israel",
+          "title": "Iran state media announces 40 days of mourning for Khamenei, confirms he was killed at his Tehran compound",
+          "url": "https://www.timesofisrael.com/liveblog_entry/iran-state-media-announces-40-days-of-mourning-for-khamenei-confirms-he-was-killed-at-his-tehran-compound/",
+          "date": "2026-03-01"
+        },
+        {
+          "publisher": "Al-Monitor (AFP)",
+          "title": "Iran leader Khamenei killed in massive US and Israeli attack",
+          "url": "https://www.al-monitor.com/originals/2026/02/us-and-israel-launch-strikes-iran-explosions-reported-across-region",
+          "date": "2026-02-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-01-iran-missile-beit-shemesh",
+      "date": "2026-03-01",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "Israel (Beit Shemesh residential area)",
+      "place": "Beit Shemesh",
+      "country": "Israel",
+      "lat": 31.75,
+      "lon": 34.9886,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Unintercepted Iranian missile hits Beit Shemesh homes and synagogue; nine dead",
+      "summary": "An Iranian ballistic missile was not intercepted and struck a residential area of Beit Shemesh, west of Jerusalem, shortly before 2 pm local time on 1 March, destroying a synagogue and damaging a shelter beneath it. Nine people died.",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "9 killed as Iranian missile destroys synagogue, smashes bomb shelter in Beit Shemesh",
+          "url": "https://www.timesofisrael.com/nine-people-killed-in-iranian-missile-strike-on-residential-area-in-beit-shemesh/",
+          "date": "2026-03-01"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "At least nine killed after Iranian strike on Israel's Beit Shemesh",
+          "url": "https://www.aljazeera.com/news/2026/3/1/at-least-nine-killed-after-iranian-strike-on-israels-beit-shemesh",
+          "date": "2026-03-01"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-01-strikes-natanz-entrance-buildings",
+      "date": "2026-03-01",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States and Israel",
+      "target": "Natanz Fuel Enrichment Plant entrances",
+      "place": "Natanz enrichment site",
+      "country": "Iran",
+      "lat": 33.7244,
+      "lon": 51.7275,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Strikes damage entrance buildings at Natanz enrichment plant",
+      "summary": "Iran said Natanz was struck twice on 1 March. The IAEA confirmed from satellite imagery that entrance buildings of the underground enrichment plant were damaged, with no radiological impact. Neither the US nor Israel confirmed it.",
+      "sources": [
+        {
+          "publisher": "Al-Monitor (Reuters)",
+          "title": "IAEA confirms entrances to Iran's Natanz enrichment plant were bombed",
+          "url": "https://www.al-monitor.com/originals/2026/03/iaea-confirms-entrances-irans-natanz-enrichment-plant-were-bombed",
+          "date": "2026-03-03"
+        },
+        {
+          "publisher": "Institute for Science and International Security",
+          "title": "Damage at the Natanz Uranium Enrichment Plant",
+          "url": "https://isis-online.org/isis-reports/damage-at-the-natanz-uranium-enrichment-plant",
+          "date": "2026-03-03"
+        },
+        {
+          "publisher": "NucNet",
+          "title": "IAEA Says Recent Damage Seen To Natanz Entrance Buildings, No Radiological Impact",
+          "url": "https://www.nucnet.org/news/iaea-says-recent-damage-seen-to-natanz-entrance-buildings-no-radiological-impact-3-2-2026",
+          "date": "2026-03-03"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-01-tanker-mkd-vyom-off-muscat",
+      "date": "2026-03-01",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Commercial crude tanker (MKD Vyom)",
+      "place": "Gulf of Oman, about 50 nm north of Muscat",
+      "country": "Gulf of Oman",
+      "lat": 24.5,
+      "lon": 58.5,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Tanker MKD Vyom struck by drone boat in Gulf of Oman off Muscat",
+      "summary": "The Marshall Islands-flagged tanker MKD Vyom was hit about 50 nm north of Muscat, starting an engine-room fire. Oman's Maritime Security Centre said a drone boat was used and the crew were evacuated; one crew member was killed.",
+      "sources": [
+        {
+          "publisher": "The Maritime Executive",
+          "title": "Iran-Linked Product Tanker Hit in Attack off Oman",
+          "url": "https://maritime-executive.com/article/iran-attacks-gulf-shipping-hitting-product-tanker-off-oman",
+          "date": "2026-03-01"
+        },
+        {
+          "publisher": "Euronews",
+          "title": "Another oil tanker hit by drone boat as Strait of Hormuz tensions rise",
+          "url": "https://www.euronews.com/business/2026/03/02/another-oil-tanker-hit-by-drone-boat-as-strait-of-hormuz-tensions-rise",
+          "date": "2026-03-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-01-tanker-skylight-off-khasab",
+      "date": "2026-03-01",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran (suspected)",
+      "target": "Commercial product tanker (Skylight)",
+      "place": "Strait of Hormuz off Khasab, Musandam",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.1797,
+      "lon": 56.2475,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Tanker Skylight hit off Khasab on second day of the war",
+      "summary": "Oman's Maritime Security Centre said the Palau-listed tanker Skylight was hit about 5 nm north of Khasab port; its 20 crew were evacuated and four were hurt. No attacker was officially named; trackers and social media blamed Iran.",
+      "sources": [
+        {
+          "publisher": "Al-Monitor (Reuters)",
+          "title": "US-sanctioned oil tanker hit off Oman coast",
+          "url": "https://www.al-monitor.com/originals/2026/03/us-sanctioned-oil-tanker-hit-oman-coast",
+          "date": "2026-03-01"
+        },
+        {
+          "publisher": "The Maritime Executive",
+          "title": "Iran-Linked Product Tanker Hit in Attack off Oman",
+          "url": "https://maritime-executive.com/article/iran-attacks-gulf-shipping-hitting-product-tanker-off-oman",
+          "date": "2026-03-01"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-02-iran-drones-ras-laffan-mesaieed",
+      "date": "2026-03-02",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (IRGC)",
+      "target": "QatarEnergy facilities",
+      "place": "Ras Laffan Industrial City",
+      "country": "Qatar",
+      "lat": 25.9136,
+      "lon": 51.5378,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Drones from Iran hit Ras Laffan and Mesaieed; QatarEnergy halts LNG",
+      "summary": "Qatar said two drones launched from Iran on 2 March hit a QatarEnergy site at Ras Laffan and a power-plant water tank at Mesaieed, without casualties. QatarEnergy halted LNG output. Iranian officials denied targeting Gulf energy sites.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Gas prices soar as QatarEnergy halts LNG production after Iran attacks",
+          "url": "https://www.aljazeera.com/news/2026/3/2/qatarenergy-worlds-largest-lng-firm-halts-production-after-iran-attacks",
+          "date": "2026-03-02"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Which oil and gas facilities in the Gulf have been attacked?",
+          "url": "https://www.aljazeera.com/news/2026/3/4/which-oil-and-gas-facilities-in-the-gulf-have-been-attacked",
+          "date": "2026-03-04"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-02-strikes-bandar-abbas-naval-base",
+      "date": "2026-03-02",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "naval-strike",
+      "actor": "United States and Israel",
+      "target": "Iranian Navy ships at Bandar Abbas naval base",
+      "place": "Bandar Abbas naval base",
+      "country": "Iran",
+      "lat": 27.1832,
+      "lon": 56.2666,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Overnight strikes set Iran's Bandar Abbas naval base on fire",
+      "summary": "Satellite imagery from 2 March showed Iran's Bandar Abbas naval base burning after overnight strikes in the US-Israeli campaign. The sea base ship IRIS Makran and at least one frigate appeared to have been hit.",
+      "sources": [
+        {
+          "publisher": "The War Zone",
+          "title": "Iran's Key Naval Base On Strait Of Hormuz Set Ablaze From Strikes",
+          "url": "https://www.twz.com/news-features/irans-key-naval-base-on-strait-of-hormuz-set-ablaze-from-strikes",
+          "date": "2026-03-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-03-iran-drones-us-embassy-riyadh",
+      "date": "2026-03-03",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (IRGC)",
+      "target": "US Embassy, Riyadh",
+      "place": "Riyadh (Diplomatic Quarter)",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Drones strike US Embassy in Riyadh, causing small fire",
+      "summary": "Early on 3 March at least two drones hit the US Embassy compound in Riyadh's diplomatic quarter, causing a limited fire and minor damage, Saudi Arabia's defence ministry said. The building was reportedly empty; no injuries were reported.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "US Embassy in Riyadh, Omani port hit by drones; US base in Bahrain targeted",
+          "url": "https://www.aljazeera.com/news/2026/3/3/us-embassy-in-saudi-capital-riyadh-hit-by-drones-fire-reported-ministry",
+          "date": "2026-03-03"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "Iran hits US embassy in Riyadh as American citizens urged to leave Middle East",
+          "url": "https://www.middleeasteye.net/news/trump-threatens-retaliate-soon-after-iran-strike-saudi-embassy",
+          "date": "2026-03-03"
+        },
+        {
+          "publisher": "Times of Israel (AFP)",
+          "title": "Saudis say attack using multiple drones on US embassy in Riyadh sparked 'limited' fire",
+          "url": "https://www.timesofisrael.com/liveblog_entry/saudis-say-attack-using-multiple-drones-on-us-embassy-in-riyadh-sparked-limited-fire/",
+          "date": "2026-03-03"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-03-iran-missile-al-udeid",
+      "date": "2026-03-03",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "Al Udeid Air Base (US forces)",
+      "place": "Al Udeid Air Base",
+      "country": "Qatar",
+      "lat": 25.1173,
+      "lon": 51.315,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iranian ballistic missile strikes Al Udeid air base in Qatar",
+      "summary": "Qatar's defence ministry said two Iranian ballistic missiles were fired at Qatar; one was intercepted and the other hit Al Udeid air base, which hosts US forces, without casualties.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (AFP)",
+          "title": "Iranian missile hits US base at Al-Udeid, no casualties — Qatari Defense Ministry",
+          "url": "https://www.timesofisrael.com/liveblog_entry/iranian-missile-hits-us-base-at-al-udeid-no-casualties-qatari-defense-ministry/",
+          "date": "2026-03-03"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran targets Israeli embassy in Bahrain, Al Udeid Air Base in Qatar",
+          "url": "https://www.aljazeera.com/news/2026/3/6/iran-targets-israeli-embassy-in-bahrain-saudi-arabia-intercepts-missile",
+          "date": "2026-03-06"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-03-israel-strike-minzadehei-nuclear-site",
+      "date": "2026-03-03",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Israel",
+      "target": "Minzadehei underground nuclear site",
+      "place": "Minzadehei site, outskirts of Tehran",
+      "country": "Iran",
+      "lat": 35.6892,
+      "lon": 51.389,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "IDF says it destroyed covert Minzadehei nuclear site near Tehran",
+      "summary": "The Israeli military claimed its jets destroyed the partly underground Minzadehei compound on the outskirts of Tehran on 3 March, saying scientists worked there on nuclear weapons capabilities. There was no independent confirmation.",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "IDF says it destroyed secret underground site where Iran moved nuclear project after June war",
+          "url": "https://www.timesofisrael.com/idf-says-it-destroyed-secret-underground-site-where-iran-moved-nuclear-project-after-june-war/",
+          "date": "2026-03-04"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-06-israel-strikes-mehrabad-airport",
+      "date": "2026-03-06",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Israel",
+      "target": "Quds Force aircraft at Mehrabad Airport",
+      "place": "Mehrabad International Airport, Tehran",
+      "country": "Iran",
+      "lat": 35.6894,
+      "lon": 51.3133,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Israeli jets strike Tehran's Mehrabad airport, hitting Quds Force planes",
+      "summary": "In overnight strikes on Tehran ending on 7 March local time, the Israeli Air Force hit Mehrabad International Airport. The IDF said it destroyed 16 aircraft used by the IRGC Quds Force to supply allies, plus several fighter jets.",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "IDF says it destroyed 16 aircraft used by Revolutionary Guard's Quds Force in Tehran airport strikes",
+          "url": "https://www.timesofisrael.com/liveblog_entry/idf-says-it-destroyed-16-aircraft-used-by-revolutionary-guards-quds-force-in-tehran-airport-strikes/",
+          "date": "2026-03-07"
+        },
+        {
+          "publisher": "Times of Israel",
+          "title": "Israel pounds Iran missile sites, airport as Tehran fires back repeated salvos, threatens Europe",
+          "url": "https://www.timesofisrael.com/israel-pounds-iran-missile-sites-as-tehran-fires-back-repeated-salvos/",
+          "date": "2026-03-07"
+        },
+        {
+          "publisher": "Times of Israel",
+          "title": "Iranian F-14s destroyed in Isfahan airstrikes, military says",
+          "url": "https://www.timesofisrael.com/liveblog_entry/iranian-f-14s-destroyed-in-isfahan-airstrikes-military-says/",
+          "date": "2026-03-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-06-tug-mussafah-2-sinks-off-khasab",
+      "date": "2026-03-06",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "UAE salvage tug (Mussafah 2)",
+      "place": "Strait of Hormuz off Khasab, Musandam",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.1797,
+      "lon": 56.2475,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "UAE salvage tug Mussafah 2 hit and sunk near Khasab",
+      "summary": "A UAE-flagged salvage tug heading to assist the damaged containership Safeen Prestige was hit, reportedly by two missiles, about 18 nm from Khasab and sank. Indonesia said three of its nationals were missing.",
+      "sources": [
+        {
+          "publisher": "The Maritime Executive",
+          "title": "Salvage Tug Reported Attacked Near Straits of Hormuz with Crew Feared Dead",
+          "url": "https://maritime-executive.com/article/salvage-tug-reported-attacked-near-straits-of-hormuz-with-crew-feared-dead",
+          "date": "2026-03-06"
+        },
+        {
+          "publisher": "The Jakarta Post",
+          "title": "Three Indonesian crew missing after tugboat sinks in Strait of Hormuz",
+          "url": "https://www.thejakartapost.com/world/2026/03/09/three-indonesian-crew-missing-after-tugboat-sinks-in-strait-of-hormuz.html",
+          "date": "2026-03-09"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-07-israel-strikes-tehran-fuel-depots",
+      "date": "2026-03-07",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Israel",
+      "target": "Fuel storage depots and Tehran refinery",
+      "place": "Tehran (Shahran and Aghdasieh depots)",
+      "country": "Iran",
+      "lat": 35.6892,
+      "lon": 51.389,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Israel hits Tehran-area fuel depots in first strikes on Iranian oil sites",
+      "summary": "On the night of 7 March Israel struck fuel storage sites in and around Tehran, including the Shahran and Aghdasieh depots, the Tehran refinery and a depot in Karaj, causing fires. The IDF said the depots served Iran's military.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran oil facilities hit for first time as war with US-Israel enters day 9",
+          "url": "https://www.aljazeera.com/news/2026/3/8/israel-strikes-irans-oil-facilities-for-first-time-as-war-enters-ninth-day",
+          "date": "2026-03-08"
+        },
+        {
+          "publisher": "Times of Israel",
+          "title": "Black clouds over Tehran rain down oil drops after Israel strikes oil facilities",
+          "url": "https://www.timesofisrael.com/black-clouds-over-tehran-rain-down-oil-drops-after-israel-strikes-oil-facilities/",
+          "date": "2026-03-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-10-iran-drone-ruwais-refinery",
+      "date": "2026-03-10",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (IRGC)",
+      "target": "ADNOC Ruwais refinery complex",
+      "place": "Ruwais Industrial Complex",
+      "country": "United Arab Emirates",
+      "lat": 24.1103,
+      "lon": 52.7306,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Drone strike starts fire at Ruwais complex; ADNOC shuts refinery",
+      "summary": "A drone strike on 10 March started a fire at a facility in the Ruwais Industrial Complex, about 240 km west of Abu Dhabi city. Emirati officials linked it to Iran; ADNOC shut its refinery there as a precaution. No injuries were reported.",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "Iran keeps up attacks on Gulf states, says not a 'single liter of oil' will ship out",
+          "url": "https://www.timesofisrael.com/iran-keeps-up-attacks-on-gulf-states-says-not-a-single-liter-of-oil-will-ship-out/",
+          "date": "2026-03-10"
+        },
+        {
+          "publisher": "The National",
+          "title": "Fire breaks out at Ruwais complex in UAE after drone strike",
+          "url": "https://www.thenationalnews.com/business/energy/2026/03/10/fire-breaks-out-at-al-ruwais-refinery-in-uae-after-drone-strike/",
+          "date": "2026-03-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-11-bulk-carrier-mayuree-naree-hormuz",
+      "date": "2026-03-11",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran (IRGC)",
+      "target": "Thai bulk carrier (Mayuree Naree)",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "IRGC fires on Thai bulk carrier Mayuree Naree in Strait of Hormuz",
+      "summary": "Two projectiles hit the Thai-flagged Mayuree Naree off the Omani coast, setting the engine room on fire; Oman's navy rescued 20 crew and three were missing. The IRGC said it fired on the ship. Two other ships were hit off the UAE that day.",
+      "sources": [
+        {
+          "publisher": "gCaptain",
+          "title": "Three Crew Missing from Thai Cargo Ship Hit in Hormuz",
+          "url": "https://gcaptain.com/three-crew-missing-from-thai-cargo-ship-hit-in-hormuz/",
+          "date": "2026-03-11"
+        },
+        {
+          "publisher": "gCaptain",
+          "title": "Three More Vessels Hit by Projectiles in Strait of Hormuz, Showing Merchant Ships Remain in Firing Line",
+          "url": "https://gcaptain.com/three-more-vessels-hit-by-projectiles-in-strait-of-hormuz-showing-merchant-ships-remain-in-firing-line/",
+          "date": "2026-03-11"
+        },
+        {
+          "publisher": "Al-Monitor (AFP)",
+          "title": "Thai navy says cargo ship attacked in Strait of Hormuz",
+          "url": "https://www.al-monitor.com/originals/2026/03/thai-navy-says-cargo-ship-attacked-strait-hormuz",
+          "date": "2026-03-11"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-11-tankers-safesea-vishnu-zefyros-off-umm-qasr",
+      "date": "2026-03-11",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran (suspected)",
+      "target": "Commercial tankers (Safesea Vishnu, Zefyros)",
+      "place": "Iraqi waters off Umm Qasr and Khor al-Zubair, near Basra",
+      "country": "Iraq (northern Persian Gulf)",
+      "lat": 30.0534,
+      "lon": 47.9376,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Two tankers attacked during ship-to-ship loading in Iraqi waters",
+      "summary": "Safesea Vishnu was hit during a ship-to-ship transfer off Khor al-Zubair, reportedly by an explosive-laden uncrewed boat, and Zefyros reported a projectile strike at Umm Qasr anchorage. One seafarer died. Iran was suspected.",
+      "sources": [
+        {
+          "publisher": "Riviera Maritime Media",
+          "title": "One seafarer killed as tankers attacked during STS operation near Iraq",
+          "url": "https://www.rivieramm.com/news-content-hub/one-seafarer-killed-as-tankers-attacked-during-sts-operation-near-iraq-88105",
+          "date": "2026-03-12"
+        },
+        {
+          "publisher": "Iraq Business News",
+          "title": "Iraq Condemns Attacks on Oil Tankers in Territorial Waters",
+          "url": "https://www.iraq-businessnews.com/2026/03/12/iraq-condemns-attacks-on-oil-tankers-in-territorial-waters/",
+          "date": "2026-03-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-12-iran-drone-muharraq-fuel-tanks",
+      "date": "2026-03-12",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (IRGC)",
+      "target": "Fuel tanks near Bahrain International Airport",
+      "place": "Muharraq",
+      "country": "Bahrain",
+      "lat": 26.2572,
+      "lon": 50.6119,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Attack sets fuel tanks ablaze in Muharraq near Bahrain airport",
+      "summary": "Bahrain's interior ministry blamed Iran for an attack, reported as a drone strike, that set fuel tanks on fire at a facility in Muharraq, home to Bahrain International Airport, early on 12 March. Nearby residents were told to stay indoors.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Bahrain says Iranian assault targeted fuel tanks at Muharraq facility",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/bahrain-says-iranian-assault-targeted-fuel-tanks-muharraq-facility",
+          "date": "2026-03-12"
+        },
+        {
+          "publisher": "Times of Israel (AFP)",
+          "title": "Iran attacks fuel tanks in Bahrain; local residents told to stay home, close windows",
+          "url": "https://www.timesofisrael.com/liveblog_entry/iran-attacks-fuel-tanks-in-bahrain-local-residents-told-to-stay-home-close-windows/",
+          "date": "2026-03-12"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran war: What is happening on day 13 of US-Israel attacks?",
+          "url": "https://www.aljazeera.com/news/2026/3/12/iran-war-what-is-happening-on-day-13-of-us-israel-attacks",
+          "date": "2026-03-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-13-us-strikes-kharg-island",
+      "date": "2026-03-13",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "Military sites on Kharg Island",
+      "place": "Kharg Island",
+      "country": "Iran",
+      "lat": 29.2333,
+      "lon": 50.3167,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "US bombs military targets on Kharg Island, sparing oil terminal",
+      "summary": "US forces struck more than 90 military targets on Kharg Island, Iran's main crude export hub, including mine and missile storage, CENTCOM said. Trump said oil infrastructure was spared for now; Iranian media said exports continued.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "US attacks military sites on Iran's Kharg island, home to vast oil facility",
+          "url": "https://www.aljazeera.com/news/2026/3/14/us-attacks-military-sites-on-irans-kharg-island-home-to-vast-oil-facility",
+          "date": "2026-03-14"
+        },
+        {
+          "publisher": "Times of Israel",
+          "title": "Trump threatens Iran's oil infrastructure after US bombs military sites on key fuel island",
+          "url": "https://www.timesofisrael.com/trump-threatens-irans-oil-infrastructure-after-us-bombs-military-sites-on-key-island/",
+          "date": "2026-03-14"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-14-iran-drone-fujairah-oil-terminal",
+      "date": "2026-03-14",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (IRGC)",
+      "target": "Fujairah oil bunkering and export terminal",
+      "place": "Fujairah",
+      "country": "United Arab Emirates",
+      "lat": 25.1288,
+      "lon": 56.3265,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Drone attack sparks fire at Fujairah oil hub; some loadings halted",
+      "summary": "On 14 March debris from an intercepted drone set off a fire at Fujairah's oil bunkering and export hub outside the Strait of Hormuz, lightly injuring one person. Some oil-loading operations were suspended.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran continues intensified attacks across Gulf in US-Israeli war fallout",
+          "url": "https://www.aljazeera.com/news/2026/3/14/iran-continues-intensified-attacks-across-gulf-in-us-israel-war-fallout",
+          "date": "2026-03-14"
+        },
+        {
+          "publisher": "Times of Israel (Reuters)",
+          "title": "Some Fujairah oil operations suspended after drone attack and fire — report",
+          "url": "https://www.timesofisrael.com/liveblog_entry/some-fujairah-oil-operations-suspended-after-drone-attack-and-fire-report/",
+          "date": "2026-03-14"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-17-israeli-strike-kills-larijani-tehran",
+      "date": "2026-03-17",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Israel",
+      "target": "Iranian security leadership",
+      "place": "Tehran",
+      "country": "Iran",
+      "lat": 35.6892,
+      "lon": 51.389,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Israeli strikes in Tehran kill security chief Ali Larijani and Basij commander",
+      "summary": "Israeli jets struck a Tehran apartment overnight into 17 March, killing Supreme National Security Council head Ali Larijani; a separate strike near the capital killed Basij chief Gholamreza Soleimani. Iran confirmed both deaths.",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "Israel kills Iran's 'de facto leader' Ali Larijani, Basij force chief in Tehran airstrikes",
+          "url": "https://www.timesofisrael.com/israel-says-irans-de-facto-leader-ali-larijani-basij-force-chief-killed-overnight/",
+          "date": "2026-03-17"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran confirms security chief Larijani, Basij commander Soleimani killed",
+          "url": "https://www.aljazeera.com/news/2026/3/17/israel-says-it-has-killed-ali-larijani-irans-top-security-official",
+          "date": "2026-03-17"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Israel kills 2 senior Iran leaders as allies reject Trump's call for Strait of Hormuz help",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-israel-kills-larijani-eu-rejects-trump-strait-of-hormuz-oil-gas-prices/",
+          "date": "2026-03-18"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-17-us-strikes-hormuz-coastal-antiship-missile-sites",
+      "date": "2026-03-17",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "Iranian anti-ship cruise missile sites",
+      "place": "Iranian coast of the Strait of Hormuz",
+      "country": "Iran",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "US bombs Iranian anti-ship missile sites on the Strait of Hormuz coast",
+      "summary": "CENTCOM said US forces used 5,000-pound deep-penetrator bombs on hardened Iranian anti-ship cruise missile sites along the coast near the Strait of Hormuz, citing the risk to shipping. The sites were not named.",
+      "sources": [
+        {
+          "publisher": "The Maritime Executive",
+          "title": "U.S. Hits Iran's Antiship Missile Sites in the Strait of Hormuz",
+          "url": "https://maritime-executive.com/article/u-s-hits-iran-s-antiship-missile-sites-in-the-strait-of-hormuz",
+          "date": "2026-03-17"
+        },
+        {
+          "publisher": "NBC News",
+          "title": "Iran's intelligence minister killed by Israel; U.S. unleashes bunker busters",
+          "url": "https://www.nbcnews.com/world/iran/live-blog/live-updates-iran-war-bunker-busters-israel-beirut-lebanon-hezbollah-rcna264012",
+          "date": "2026-03-19"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-18-iranian-missiles-hit-ras-laffan-qatar",
+      "date": "2026-03-18",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran",
+      "target": "Qatar LNG facilities",
+      "place": "Ras Laffan Industrial City",
+      "country": "Qatar",
+      "lat": 25.9136,
+      "lon": 51.5378,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iranian missiles hit Qatar's Ras Laffan LNG hub after South Pars strike",
+      "summary": "Iranian missiles struck Ras Laffan Industrial City, Qatar's main LNG site about 80 km north of Doha, causing fires and what QatarEnergy called extensive damage; no injuries were reported. More LNG units were hit early on 19 March.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Qatar says Iran attack caused significant damage at Ras Laffan gas facility",
+          "url": "https://www.aljazeera.com/news/2026/3/18/qatar-says-iran-missile-attack-sparks-fire-causes-damage-at-gas-facility",
+          "date": "2026-03-18"
+        },
+        {
+          "publisher": "Al-Monitor (Reuters)",
+          "title": "Qatar says Iran attacked LNG hub; UAE shuts gas facilities",
+          "url": "https://www.al-monitor.com/originals/2026/03/qatar-says-iran-attacked-lng-hub-uae-shuts-gas-facilities",
+          "date": "2026-03-18"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-18-israeli-strike-south-pars-asaluyeh",
+      "date": "2026-03-18",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Israel",
+      "target": "South Pars gas processing facilities",
+      "place": "Asaluyeh (South Pars gas complex)",
+      "country": "Iran",
+      "lat": 27.4761,
+      "lon": 52.6075,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Israel strikes South Pars gas facilities at Asaluyeh",
+      "summary": "Israeli Air Force jets hit South Pars gas field facilities at Asaluyeh in Bushehr province; Iranian media also reported strikes on oil facilities there. Iran answered with threats against Gulf energy sites and an attack on Ras Laffan.",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "Israel strikes major Iranian gas field; Tehran vows to hit Gulf energy sites in kind",
+          "url": "https://www.timesofisrael.com/israel-strikes-major-iranian-gas-field-tehran-vows-to-hit-gulf-energy-sites-in-kind/",
+          "date": "2026-03-18"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran threatens to strike Gulf energy facilities after South Pars attack",
+          "url": "https://www.aljazeera.com/news/2026/3/18/iran-threatens-to-strike-gulf-energy-facilities-after-south-pars-attack",
+          "date": "2026-03-18"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-18-israeli-strikes-iranian-navy-bandar-anzali",
+      "date": "2026-03-18",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "naval-strike",
+      "actor": "Israel",
+      "target": "Iranian Navy vessels and shipyard",
+      "place": "Bandar Anzali (Caspian Sea)",
+      "country": "Iran",
+      "lat": 37.4727,
+      "lon": 49.4622,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Israel strikes Iranian Navy vessels at Bandar Anzali on the Caspian Sea",
+      "summary": "The IDF claimed overnight strikes at Bandar Anzali port and at sea destroyed a corvette, four missile boats, support and guard boats, a command centre and a shipyard. Iran did not confirm. It was Israel's first strike on the Caspian coast.",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "IDF: Four Iranian Navy missile boats, a corvette, and naval infrastructure destroyed in north Iran strikes last night",
+          "url": "https://www.timesofisrael.com/liveblog_entry/idf-four-iranian-navy-missile-boats-a-corvette-and-naval-infrastructure-destroyed-in-north-iran-strikes-last-night/",
+          "date": "2026-03-19"
+        },
+        {
+          "publisher": "Times of Israel",
+          "title": "Hegseth calls IDF strike on gas field a 'warning,' as Trump says he told Netanyahu: 'Don't do that'",
+          "url": "https://www.timesofisrael.com/hegseth-calls-idf-strike-on-iranian-gas-field-a-warning-as-israel-hits-irans-navy/",
+          "date": "2026-03-19"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-20-iranian-drones-hit-mina-al-ahmadi-refinery",
+      "date": "2026-03-20",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran",
+      "target": "Kuwaiti oil refinery",
+      "place": "Mina al-Ahmadi refinery (Ahmadi)",
+      "country": "Kuwait",
+      "lat": 29.077,
+      "lon": 48.084,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Iranian drones strike Kuwait's Mina al-Ahmadi refinery for a second day",
+      "summary": "Drones hit Kuwait's largest refinery, Mina al-Ahmadi, early on 20 March, a day after a first strike, starting fires and forcing several units to shut; no casualties were reported. Drones hit the refinery again on 3 April.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran hits Kuwaiti oil refinery as Israel renews attacks on Tehran",
+          "url": "https://www.aljazeera.com/news/2026/3/20/kuwait-oil-refinery-hit-again-as-iran-targets-gulf-energy-infrastructure",
+          "date": "2026-03-20"
+        },
+        {
+          "publisher": "Al-Monitor (AFP)",
+          "title": "Trump says considering 'winding down' Iran war, US eases oil sanctions",
+          "url": "https://www.al-monitor.com/originals/2026/03/kuwait-refinery-hit-iran-marks-new-year-under-shadow-war",
+          "date": "2026-03-20"
+        },
+        {
+          "publisher": "Times of Israel (AFP)",
+          "title": "Iranian drone attack sparks fires at Kuwait oil refinery, state media says",
+          "url": "https://www.timesofisrael.com/liveblog_entry/iranian-drone-attack-sparks-fires-at-kuwait-oil-refinery-state-media-says/",
+          "date": "2026-04-03"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-21-iranian-missiles-hit-dimona-and-arad",
+      "date": "2026-03-21",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran",
+      "target": "Israel (Dimona, Arad)",
+      "place": "Dimona",
+      "country": "Israel",
+      "lat": 31.07,
+      "lon": 35.0333,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Iranian ballistic missiles hit Dimona and Arad in southern Israel",
+      "summary": "Iranian missiles struck residential areas of Dimona, home to Israel's main nuclear research centre, and nearby Arad after air defences failed to stop them. Iran called it a response to an attack on Natanz; the IAEA saw no damage at Dimona.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran strikes towns near Israel's key nuclear site, at least 180 wounded",
+          "url": "https://www.aljazeera.com/news/2026/3/21/iran-strikes-towns-near-israels-nuclear-site-in-escalating-tit-for-tat",
+          "date": "2026-03-21"
+        },
+        {
+          "publisher": "The New Arab",
+          "title": "Iran missiles hit southern Israel, injuring more than 100",
+          "url": "https://www.newarab.com/news/iran-missiles-hit-southern-israel-injuring-more-100-0",
+          "date": "2026-03-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-26-israeli-strike-kills-irgc-navy-chief-bandar-abbas",
+      "date": "2026-03-26",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Israel",
+      "target": "IRGC Navy leadership",
+      "place": "Bandar Abbas",
+      "country": "Iran",
+      "lat": 27.1832,
+      "lon": 56.2666,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Israeli strike in Bandar Abbas kills IRGC Navy commander Alireza Tangsiri",
+      "summary": "The IDF said an overnight Israeli Air Force strike in the port city of Bandar Abbas killed IRGC Navy commander Alireza Tangsiri and the navy's intelligence chief. Israel's defence minister blamed Tangsiri for closing the Strait of Hormuz.",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "IDF confirms killing IRGC Navy commander, says strike also killed Navy's intel chief and rest of the Navy leadership",
+          "url": "https://www.timesofisrael.com/liveblog_entry/idf-confirms-killing-irgc-navy-commander-says-strike-also-killed-navys-intel-chief/",
+          "date": "2026-03-26"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iranian naval commander Alireza Tangsiri killed in attack, Israel says",
+          "url": "https://www.aljazeera.com/news/2026/3/26/iranian-naval-commander-alireza-tangsiri-killed-in-attack-says-israel",
+          "date": "2026-03-26"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-27-iranian-attack-prince-sultan-air-base",
+      "date": "2026-03-27",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran",
+      "target": "US forces at Prince Sultan Air Base",
+      "place": "Prince Sultan Air Base",
+      "country": "Saudi Arabia",
+      "lat": 24.0627,
+      "lon": 47.5805,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iranian missiles and drones hit Prince Sultan Air Base, wounding US troops",
+      "summary": "Iran attacked Prince Sultan Air Base, about 96 km from Riyadh and used by US forces, with at least six ballistic missiles and 29 drones according to AP, wounding US service members. Iran claimed it destroyed a refuelling aircraft.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "At least 15 US troops wounded in Iran strike on Saudi airbase: Reports",
+          "url": "https://www.aljazeera.com/news/2026/3/28/at-least-15-us-troops-wounded-in-iran-strike-on-saudi-airbase-reports",
+          "date": "2026-03-28"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "10 Americans injured in Iranian attack on Saudi air base",
+          "url": "https://www.cbsnews.com/news/10-americans-injured-in-iranian-attack-on-saudi-airbase/",
+          "date": "2026-03-27"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-27-israeli-strikes-arak-heavy-water-reactor-yazd",
+      "date": "2026-03-27",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Israel",
+      "target": "Iranian nuclear facilities",
+      "place": "Arak (Khondab heavy water reactor)",
+      "country": "Iran",
+      "lat": 34.3734,
+      "lon": 49.2408,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Israel strikes Arak heavy water reactor and Yazd yellowcake plant",
+      "summary": "The IDF said it struck the Khondab heavy water reactor near Arak and a uranium yellowcake plant near Yazd. Reports also cited strikes the same day on the Mobarakeh steel plant in Isfahan and the Khuzestan steel plant near Ahvaz.",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "Israel bombs 2 IRGC-linked steel plants, 2 nuclear facilities as Iran vows revenge",
+          "url": "https://www.timesofisrael.com/israel-bombs-2-irgc-linked-steel-plants-2-nuclear-facilities-as-iran-vows-revenge/",
+          "date": "2026-03-27"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "As war rages, Iranian politicians push for exit from nuclear weapons treaty",
+          "url": "https://www.aljazeera.com/news/2026/3/28/lawmakers-push-npt-exit-as-us-israel-hit-irans-nuclear-sites-steel-plants",
+          "date": "2026-03-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-03-28-houthi-missile-beersheba",
+      "date": "2026-03-28",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Israel (southern Israel, Beersheba area)",
+      "place": "Beersheba",
+      "country": "Israel",
+      "lat": 31.2518,
+      "lon": 34.7913,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Houthis join the war with a missile launch at southern Israel",
+      "summary": "Israel's military said it intercepted a missile launched from Yemen early on 28 March as sirens sounded around Beersheba. The Houthis said they fired ballistic missiles at military sites in southern Israel, joining the war.",
+      "sources": [
+        {
+          "publisher": "PBS NewsHour (Associated Press)",
+          "title": "Yemen's Houthis claim first missile attack on Israel since war began",
+          "url": "https://www.pbs.org/newshour/world/yemens-houthis-claim-first-missile-attack-on-israel-since-war-began",
+          "date": "2026-03-28"
+        },
+        {
+          "publisher": "Free Malaysia Today (AFP)",
+          "title": "Israeli army reports war's first missile attack from Yemen",
+          "url": "https://www.freemalaysiatoday.com/category/world/2026/03/28/israeli-army-reports-wars-first-missile-attack-from-yemen",
+          "date": "2026-03-28"
+        },
+        {
+          "publisher": "The New Arab",
+          "title": "Yemen's Houthis enter Iran war with first missile strike on Israel",
+          "url": "https://www.newarab.com/news/yemens-houthis-enter-iran-war-missile-strike-israel",
+          "date": "2026-03-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-04-02-us-strike-hits-karaj-b1-bridge",
+      "date": "2026-04-02",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "B1 highway bridge",
+      "place": "Karaj (B1 bridge)",
+      "country": "Iran",
+      "lat": 35.8287,
+      "lon": 51.0367,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "US strike hits the B1 highway bridge in Karaj, west of Tehran",
+      "summary": "A US strike hit the unfinished B1 bridge linking Tehran and Karaj, and Trump posted footage of it. Iranian media said the bridge was struck a second time while rescuers were treating the wounded at the site.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran condemns US-Israeli 'moral collapse' after attacks on civilian sites",
+          "url": "https://www.aljazeera.com/news/2026/4/3/iran-condemns-us-israeli-moral-collapse-after-attacks-on-civilian-sites",
+          "date": "2026-04-03"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "Tehran-Karaj bridge hit again by US-Israeli strike while medics attend to injured",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/tehran-karaj-bridge-hit-again-us-israeli-strike-while-medics-attend",
+          "date": "2026-04-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-04-05-iranian-missile-hits-haifa-residential-building",
+      "date": "2026-04-05",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran",
+      "target": "Israel (Haifa)",
+      "place": "Haifa",
+      "country": "Israel",
+      "lat": 32.794,
+      "lon": 34.9896,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Haifa apartment building struck by Iranian ballistic missile",
+      "summary": "An Iranian ballistic missile struck a residential building in Haifa on 5 April, killing members of one family; rescue teams worked through the rubble into the following day.",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "4 bodies found in wreckage of Haifa residential building hit by Iranian missile",
+          "url": "https://www.timesofisrael.com/2-dead-pulled-from-wreckage-of-haifa-building-hit-by-missile-2-more-people-still-missing/",
+          "date": "2026-04-06"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Trump warns of \"critical period\" in Iran war, threatening severe strikes if there's no deal by Tuesday night",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-trump-deadline-power-plants-bridges-ceasefire-push-air-force-rescue/",
+          "date": "2026-04-07"
+        }
+      ]
+    },
+    {
+      "id": "2026-04-06-houthi-drones-eilat",
+      "date": "2026-04-06",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Israel (Eilat)",
+      "place": "Eilat",
+      "country": "Israel",
+      "lat": 29.5577,
+      "lon": 34.9519,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Drones launched from Yemen at Eilat area intercepted",
+      "summary": "The IDF said several drones launched from Yemen at the Eilat area on the afternoon of 6 April were intercepted and contact was lost with others. The Houthis claimed a cruise missile and drone attack with Iran and Hezbollah.",
+      "sources": [
+        {
+          "publisher": "The Times of Israel",
+          "title": "Houthis claim drone fire at Eilat area in 'joint op' with Iran, Hezbollah",
+          "url": "https://www.timesofisrael.com/liveblog_entry/houthis-claim-drone-fire-at-eilat-area-in-joint-op-with-iran-hezbollah/",
+          "date": "2026-04-06"
+        }
+      ]
+    },
+    {
+      "id": "2026-04-06-iranian-drone-strike-ali-al-salem-air-base",
+      "date": "2026-04-06",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran",
+      "target": "US forces at Ali Al Salem Air Base",
+      "place": "Ali Al Salem Air Base",
+      "country": "Kuwait",
+      "lat": 29.3467,
+      "lon": 47.5208,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iranian drone strike on Ali Al Salem Air Base in Kuwait wounds Americans",
+      "summary": "An overnight Iranian drone strike on Ali Al Salem Air Base, a US hub about 37 km from the Iraqi border, wounded American personnel, two US officials told CBS News; most later returned to duty.",
+      "sources": [
+        {
+          "publisher": "CBS News",
+          "title": "Trump warns of \"critical period\" in Iran war, threatening severe strikes if there's no deal by Tuesday night",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-trump-deadline-power-plants-bridges-ceasefire-push-air-force-rescue/",
+          "date": "2026-04-07"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "Report: 15 Americans wounded in Iranian drone strike on Kuwait base",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/report-15-americans-wounded-iranian-drone-strike-kuwait-base",
+          "date": "2026-04-07"
+        }
+      ]
+    },
+    {
+      "id": "2026-04-07-iranian-missiles-target-jubail-petrochemical-hub",
+      "date": "2026-04-07",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "Saudi petrochemical facilities",
+      "place": "Jubail",
+      "country": "Saudi Arabia",
+      "lat": 27.0046,
+      "lon": 49.646,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Iranian missiles target Saudi Arabia's Jubail petrochemical hub",
+      "summary": "Saudi Arabia said it intercepted seven ballistic missiles fired at its Eastern region, with debris falling near energy sites. The IRGC claimed missile and drone hits on the Sadara complex in Jubail, citing Israeli strikes on Asaluyeh.",
+      "sources": [
+        {
+          "publisher": "Al-Monitor (Reuters)",
+          "title": "Iran has attacked Saudi Arabia's Jubail petrochemical complex, IRGC says",
+          "url": "https://www.al-monitor.com/originals/2026/04/iran-has-attacked-saudi-arabias-jubail-petrochemical-complex-irgc-says",
+          "date": "2026-04-07"
+        },
+        {
+          "publisher": "NBC News",
+          "title": "Trump, Iran agree to two-week ceasefire after threat of massive attacks",
+          "url": "https://www.nbcnews.com/world/iran/live-blog/live-updates-iran-war-trump-deadline-hormuz-infrastructure-ceasefire-rcna267039",
+          "date": "2026-04-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-04-07-us-strikes-military-targets-kharg-island",
+      "date": "2026-04-07",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "Iranian military sites on Kharg Island",
+      "place": "Kharg Island",
+      "country": "Iran",
+      "lat": 29.2333,
+      "lon": 50.3167,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "US strikes military targets on Kharg Island hours before two-week ceasefire",
+      "summary": "US forces hit military bunkers, storage sites and air defences on Kharg Island overnight into 7 April, sparing oil infrastructure, a US official said. That evening Trump announced a two-week pause in attacks tied to reopening Hormuz.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (Reuters)",
+          "title": "US official says airstrikes on Kharg Island targeted military sites",
+          "url": "https://www.timesofisrael.com/liveblog_entry/us-official-says-airstrikes-on-kharg-island-targeted-military-sites/",
+          "date": "2026-04-07"
+        },
+        {
+          "publisher": "NBC News",
+          "title": "Trump, Iran agree to two-week ceasefire after threat of massive attacks",
+          "url": "https://www.nbcnews.com/world/iran/live-blog/live-updates-iran-war-trump-deadline-hormuz-infrastructure-ceasefire-rcna267039",
+          "date": "2026-04-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-04-18-irgc-gunboats-fire-on-tankers-hormuz",
+      "date": "2026-04-18",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran (IRGC)",
+      "target": "Indian-flagged tanker; container ship",
+      "place": "Strait of Hormuz, about 20 nm northeast of Oman",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "IRGC gunboats fire on tanker as Iran declares Hormuz closed again",
+      "summary": "During the ceasefire, UKMTO said two IRGC boats fired on a tanker about 20 nm northeast of Oman, and a container ship was hit nearby. Indian-flagged Sanmar Herald and Jag Arnav turned back; reports differ on which was fired on.",
+      "sources": [
+        {
+          "publisher": "The Week",
+          "title": "Indian tanker comes under fire in Strait of Hormuz Amid; crew safe",
+          "url": "https://www.theweek.in/news/middle-east/2026/04/18/indian-tanker-come-under-fire-in-strait-of-hormuz-amid-crew-safe.amp.html",
+          "date": "2026-04-18"
+        },
+        {
+          "publisher": "The Insider",
+          "title": "Indian supertanker attacked by Iran in the Strait of Hormuz changed name to \"Indian ship, Indian crew\"",
+          "url": "https://theins.press/en/news/291753",
+          "date": "2026-04-20"
+        }
+      ]
+    },
+    {
+      "id": "2026-04-19-us-seizes-iranian-cargo-ship-touska",
+      "date": "2026-04-19",
+      "time": null,
+      "layer": "shipping",
+      "type": "seizure",
+      "actor": "United States",
+      "target": "Iranian-flagged cargo ship (Touska)",
+      "place": "Northern Arabian Sea",
+      "country": "Arabian Sea",
+      "lat": 18,
+      "lon": 62,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "US Navy disables and seizes Iranian cargo ship Touska under blockade",
+      "summary": "USS Spruance fired on the Bandar Abbas-bound Touska to disable its engine room after warnings went unheeded, and Marines from the 31st MEU boarded it. CENTCOM placed it in the northern Arabian Sea; Iran called it piracy.",
+      "sources": [
+        {
+          "publisher": "The Tribune (ANI)",
+          "title": "Iran confirms US seizure of ship TOUSKA, says \"will respond and retaliate against this armed piracy\"",
+          "url": "https://www.tribuneindia.com/news/armed-forces/iran-confirms-us-seizure-of-ship-touska-says-will-respond-and-retaliate-against-this-armed-piracy",
+          "date": "2026-04-20"
+        },
+        {
+          "publisher": "The Aviationist",
+          "title": "U.S. Seizes Iranian-Flagged Cargo Ship Violating Blockade",
+          "url": "https://theaviationist.com/2026/04/20/us-seizes-iranian-mv-touska/",
+          "date": "2026-04-20"
+        }
+      ]
+    },
+    {
+      "id": "2026-04-22-iran-seizes-msc-francesca-epaminondas",
+      "date": "2026-04-22",
+      "time": null,
+      "layer": "shipping",
+      "type": "seizure",
+      "actor": "Iran (IRGC)",
+      "target": "Container ships (MSC Francesca, Epaminondas)",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "IRGC seizes container ships MSC Francesca and Epaminondas",
+      "summary": "The IRGC navy said it stopped two container ships in the strait and took them to Iranian waters. UKMTO reported a gunboat firing on a ship about 15 nm northeast of Oman, damaging its bridge; a third ship, Euphoria, was fired on.",
+      "sources": [
+        {
+          "publisher": "Al-Monitor (AFP)",
+          "title": "Three ships targeted in Hormuz, Iran seizes two: monitors, Guards",
+          "url": "https://www.al-monitor.com/originals/2026/04/three-ships-targeted-hormuz-iran-seizes-two-monitors-guards",
+          "date": "2026-04-22"
+        },
+        {
+          "publisher": "Marine Log",
+          "title": "Iran seizes containerships in Strait of Hormuz",
+          "url": "https://www.marinelog.com/news/iran-seizes-containerships-in-strait-of-hormuz/",
+          "date": "2026-04-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-05-04-iranian-drone-fire-fujairah-oil-zone",
+      "date": "2026-05-04",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran",
+      "target": "UAE (Fujairah oil industry zone)",
+      "place": "Fujairah",
+      "country": "United Arab Emirates",
+      "lat": 25.1288,
+      "lon": 56.3265,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Drone from Iran sets fire at Fujairah oil zone as UAE reports missile and drone barrage",
+      "summary": "Fujairah authorities said a drone launched from Iran started a fire at the emirate's oil industry zone. The UAE defence ministry said it engaged ballistic and cruise missiles and drones from Iran that day. Iran made no official comment.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "UAE accuses Iran of attacks as ‘large fire’ breaks out at oil refinery",
+          "url": "https://www.aljazeera.com/news/2026/5/4/uae-reports-missile-and-drone-strikes-incoming-from-iran",
+          "date": "2026-05-04"
+        },
+        {
+          "publisher": "Reuters (via Al-Monitor)",
+          "title": "UAE's Fujairah says fire breaks out at petroleum complex after Iranian drone attack",
+          "url": "https://www.al-monitor.com/originals/2026/05/uaes-fujairah-says-fire-breaks-out-petroleum-complex-after-iranian-drone-attack",
+          "date": "2026-05-04"
+        }
+      ]
+    },
+    {
+      "id": "2026-05-04-us-helicopters-sink-iranian-boats-hormuz",
+      "date": "2026-05-04",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "naval-strike",
+      "actor": "United States",
+      "target": "Iranian small boats",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "US claims helicopters sank six Iranian small boats as Project Freedom escorts begin",
+      "summary": "CENTCOM claimed Army Apache and Navy Seahawk helicopters sank six Iranian small boats in and around the Strait of Hormuz on the first day of US escorts under Project Freedom. Iranian state media denied any boats were lost.",
+      "sources": [
+        {
+          "publisher": "Reuters (via Al-Monitor)",
+          "title": "US sinks Iranian small boats, shoots down missiles, drones as it opens Strait",
+          "url": "https://www.al-monitor.com/originals/2026/05/us-sinks-iranian-small-boats-shoots-down-missiles-drones-it-opens-strait",
+          "date": "2026-05-04"
+        },
+        {
+          "publisher": "Task & Purpose",
+          "title": "US Army and Navy helicopters sink six Iranian small boats, commander says",
+          "url": "https://taskandpurpose.com/news/apaches-seahawks-sink-six-boats/",
+          "date": "2026-05-04"
+        }
+      ]
+    },
+    {
+      "id": "2026-05-05-container-ship-cma-cgm-san-antonio-hormuz",
+      "date": "2026-05-05",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran (suspected)",
+      "target": "Container ship (CMA CGM San Antonio)",
+      "place": "Strait of Hormuz, near Oman",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Projectile strikes CMA CGM San Antonio during night transit near Oman",
+      "summary": "The Maltese-flagged container ship was struck while making a night transit of the strait near Oman, injuring crew, who were evacuated. A maritime security source told Reuters an Iranian projectile hit the ship.",
+      "sources": [
+        {
+          "publisher": "Khaleej Times (Reuters)",
+          "title": "CMA CGM container ship attacked in Strait of Hormuz; 8 crew members injured",
+          "url": "https://www.khaleejtimes.com/world/cma-cgm-strait-of-hormuz-attack",
+          "date": "2026-05-07"
+        },
+        {
+          "publisher": "Container News",
+          "title": "CMA CGM container ship hit in Strait of Hormuz, crew injured",
+          "url": "https://container-news.com/cma-cgm-container-ship-hit-in-strait-of-hormuz-crew-injured/",
+          "date": "2026-05-06"
+        },
+        {
+          "publisher": "Al-Monitor (Reuters)",
+          "title": "CMA CGM container ship hit in Strait of Hormuz, injuring crew",
+          "url": "https://www.al-monitor.com/originals/2026/05/cma-cgm-container-ship-hit-strait-hormuz-injuring-crew",
+          "date": "2026-05-06"
+        }
+      ]
+    },
+    {
+      "id": "2026-05-07-iranian-attack-on-us-destroyers-hormuz",
+      "date": "2026-05-07",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "US Navy destroyers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Iranian missiles, drones and boats target three US destroyers in the Strait of Hormuz",
+      "summary": "CENTCOM said Iranian forces fired missiles and drones and sent small boats at USS Truxtun, USS Rafael Peralta and USS Mason as they transited Hormuz toward the Gulf of Oman. It said the threats were intercepted and no US ship was hit.",
+      "sources": [
+        {
+          "publisher": "CBS News",
+          "title": "U.S. strikes 2 Iranian ports as American warships come under fire",
+          "url": "https://www.cbsnews.com/news/u-s-destroyers-face-second-round-of-iranian-attacks/",
+          "date": "2026-05-07"
+        },
+        {
+          "publisher": "The Times of Israel",
+          "title": "US confirms striking Iran in ‘self defense,’ says it ‘does not seek escalation’",
+          "url": "https://www.timesofisrael.com/liveblog_entry/us-confirms-striking-iran-in-self-defense-says-it-does-not-seek-escalation/",
+          "date": "2026-05-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-05-07-us-self-defense-strikes-bandar-abbas-qeshm",
+      "date": "2026-05-07",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "Missile and drone launch sites, command and ISR nodes",
+      "place": "Bandar Abbas",
+      "country": "Iran",
+      "lat": 27.1832,
+      "lon": 56.2666,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "US strikes military sites at Bandar Abbas and Qeshm after attack on its destroyers",
+      "summary": "CENTCOM said it carried out self-defence strikes on Iranian missile and drone launch sites, command posts and surveillance nodes. US officials named the ports of Bandar Abbas and Qeshm. Trump said the ceasefire was still in effect.",
+      "sources": [
+        {
+          "publisher": "CBS News",
+          "title": "U.S. strikes 2 Iranian ports as American warships come under fire",
+          "url": "https://www.cbsnews.com/news/u-s-destroyers-face-second-round-of-iranian-attacks/",
+          "date": "2026-05-07"
+        },
+        {
+          "publisher": "The Times of Israel",
+          "title": "US confirms striking Iran in ‘self defense,’ says it ‘does not seek escalation’",
+          "url": "https://www.timesofisrael.com/liveblog_entry/us-confirms-striking-iran-in-self-defense-says-it-does-not-seek-escalation/",
+          "date": "2026-05-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-05-08-iran-seizes-tanker-ocean-koi-gulf-of-oman",
+      "date": "2026-05-08",
+      "time": null,
+      "layer": "shipping",
+      "type": "seizure",
+      "actor": "Iran (army navy)",
+      "target": "Commercial oil tanker (Ocean Koi)",
+      "place": "Gulf of Oman",
+      "country": "Gulf of Oman",
+      "lat": 24.5,
+      "lon": 58.5,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran says its navy seized tanker Ocean Koi in the Gulf of Oman",
+      "summary": "Iranian state media, citing an army statement, claimed naval forces seized the Barbados-flagged, US-sanctioned tanker Ocean Koi in the Gulf of Oman, escorted it to Iran's southern coast and handed it to judicial authorities.",
+      "sources": [
+        {
+          "publisher": "Marine Insight",
+          "title": "Watch: Iranian Navy Seizes Oil Tanker In Gulf Of Oman As US Disables 2 Ships Near Hormuz",
+          "url": "https://www.marineinsight.com/watch-iranian-navy-seizes-oil-tanker-in-gulf-of-oman-as-us-disables-2-ships-near-hormuz/",
+          "date": "2026-05-09"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-03-drone-strike-kuwait-international-airport",
+      "date": "2026-06-03",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran",
+      "target": "Kuwait International Airport",
+      "place": "Kuwait International Airport",
+      "country": "Kuwait",
+      "lat": 29.2267,
+      "lon": 47.98,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iranian drone and missile attack on Kuwait damages main airport terminal",
+      "summary": "Kuwait said Iranian drones and missiles were fired at it after a US strike on Qeshm, damaging the airport's T1 terminal. CENTCOM said Iranian drones hit the airport on purpose; the IRGC denied it and blamed a US interceptor.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iranian drone attack kills Indian citizen in Kuwait after US strikes Qeshm",
+          "url": "https://www.aljazeera.com/news/2026/6/3/iranian-drone-hits-kuwaits-main-airport-after-us-strikes-qeshm-island",
+          "date": "2026-06-03"
+        },
+        {
+          "publisher": "Reuters (via Al-Monitor)",
+          "title": "Iran drone and missile attack hits Kuwait airport, state news agency says",
+          "url": "https://www.al-monitor.com/originals/2026/06/iran-drone-and-missile-attack-hits-kuwait-airport-state-news-agency-says",
+          "date": "2026-06-03"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-07-iranian-ballistic-missiles-at-northern-israel",
+      "date": "2026-06-07",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "Israel (Ramat David Airbase)",
+      "place": "Ramat David Airbase, northern Israel",
+      "country": "Israel",
+      "lat": 32.6667,
+      "lon": 35.1833,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iran fires ballistic missiles at Israel after Israeli strike in Beirut",
+      "summary": "From Sunday evening Iran fired waves of ballistic missiles at Israel, many aimed at the north, citing an Israeli strike in Beirut. The IRGC said it targeted Ramat David airbase; the IDF reported minor damage there from interceptor debris.",
+      "sources": [
+        {
+          "publisher": "The Times of Israel",
+          "title": "Defying Trump, Israel strikes Iranian military, fuel targets; Iran, Houthis fire missiles at Israel",
+          "url": "https://www.timesofisrael.com/defying-trump-israel-strikes-iranian-military-fuel-targets-iran-houthis-fire-missiles-at-israel/",
+          "date": "2026-06-08"
+        },
+        {
+          "publisher": "The Times of Israel",
+          "title": "IDF confirms airbase was damaged during Iranian missile attack this week",
+          "url": "https://www.timesofisrael.com/idf-confirms-damage-to-airbase-during-iranian-missile-attack-this-week/",
+          "date": "2026-06-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-08-houthi-missiles-tel-aviv",
+      "date": "2026-06-08",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Israel (Tel Aviv area)",
+      "place": "Tel Aviv",
+      "country": "Israel",
+      "lat": 32.0853,
+      "lon": 34.7818,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Houthis fire two ballistic missiles toward Tel Aviv, declare Red Sea ban on Israel",
+      "summary": "Sirens sounded across central Israel early on 8 June as two ballistic missiles were fired from Yemen; the IDF said one was intercepted and one fell short. The Houthis claimed a Tel Aviv target and banned Israeli Red Sea shipping.",
+      "sources": [
+        {
+          "publisher": "The Times of Israel",
+          "title": "Defying Trump, Israel strikes Iranian military, fuel targets; Iran, Houthis fire missiles at Israel",
+          "url": "https://www.timesofisrael.com/defying-trump-israel-strikes-iranian-military-fuel-targets-iran-houthis-fire-missiles-at-israel/amp/",
+          "date": "2026-06-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-08-israeli-strikes-tehran-isfahan-tabriz",
+      "date": "2026-06-08",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Israel",
+      "target": "Iranian air defences and military sites",
+      "place": "Tehran",
+      "country": "Iran",
+      "lat": 35.6892,
+      "lon": 51.389,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Israeli jets strike air defences across western and central Iran",
+      "summary": "Overnight Israeli jets hit air defence systems and military targets in western and central Iran and petrochemical sites at Mahshahr. Iranian media reported blasts in Tehran, Isfahan and Tabriz. Israel then paused at Trump's request.",
+      "sources": [
+        {
+          "publisher": "The Times of Israel",
+          "title": "IDF says it struck military targets in western and central Iran following missile attacks",
+          "url": "https://www.timesofisrael.com/liveblog_entry/idf-says-it-struck-military-targets-in-western-and-central-iran-following-missile-attacks/",
+          "date": "2026-06-08"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran war day 101: Tensions escalate as Iran and Israel trade air attacks",
+          "url": "https://www.aljazeera.com/news/2026/6/8/iran-war-day-101-tensions-escalate-as-iran-and-israel-trade-air-attacks",
+          "date": "2026-06-08"
+        },
+        {
+          "publisher": "The Times of Israel",
+          "title": "Defying Trump, Israel strikes Iranian military, fuel targets; Iran, Houthis fire missiles at Israel",
+          "url": "https://www.timesofisrael.com/defying-trump-israel-strikes-iranian-military-fuel-targets-iran-houthis-fire-missiles-at-israel/",
+          "date": "2026-06-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-08-us-apache-downed-near-strait-of-hormuz",
+      "date": "2026-06-08",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (IRGC)",
+      "target": "US Army AH-64 Apache helicopter",
+      "place": "Strait of Hormuz, off Oman",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "US Army Apache goes down near Hormuz; US claims an Iranian drone was responsible",
+      "summary": "A US Army Apache went down near the Strait of Hormuz off Oman on the evening of 8 June. Trump and US officials claimed an Iranian Shahed drone brought it down; Iran denied targeting it and CENTCOM said the cause was under investigation.",
+      "sources": [
+        {
+          "publisher": "Stars and Stripes",
+          "title": "Iran shot down Army Apache helicopter, and US must respond, Trump says",
+          "url": "https://www.stripes.com/branches/army/2026-06-09/apache-strait-of-hormuz-downing-iran-21913325.html",
+          "date": "2026-06-09"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "US attacks Iran after Apache helicopter downed in Strait of Hormuz",
+          "url": "https://www.aljazeera.com/news/2026/6/9/trump-says-iran-shot-down-us-helicopters-over-hormuz-vows-to-respond",
+          "date": "2026-06-09"
+        },
+        {
+          "publisher": "The Aviationist",
+          "title": "U.S. and Iran Exchange Strikes Following Apache Shootdown",
+          "url": "https://theaviationist.com/2026/06/10/us-and-iran-exchange-strikes/",
+          "date": "2026-06-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-09-us-self-defense-strikes-sirik-hormuz-coast",
+      "date": "2026-06-09",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "Air defence, radar and drone ground control sites",
+      "place": "Sirik",
+      "country": "Iran",
+      "lat": 26.5164,
+      "lon": 57.1017,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "US 'self-defense' strikes hit Iranian coastal sites near Hormuz after Apache loss",
+      "summary": "CENTCOM called its strikes on Iranian air defence, radar and drone control sites near Hormuz a proportional response to the Apache loss. Iranian media reported blasts in Sirik, Jask, Qeshm and Bandar Abbas, incl. Sirik water tanks.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "US attacks Iran after Apache helicopter downed in Strait of Hormuz",
+          "url": "https://www.aljazeera.com/news/2026/6/9/trump-says-iran-shot-down-us-helicopters-over-hormuz-vows-to-respond",
+          "date": "2026-06-09"
+        },
+        {
+          "publisher": "The Aviationist",
+          "title": "U.S. and Iran Exchange Strikes Following Apache Shootdown",
+          "url": "https://theaviationist.com/2026/06/10/us-and-iran-exchange-strikes/",
+          "date": "2026-06-10"
+        },
+        {
+          "publisher": "The Times of Israel",
+          "title": "Iran's Revolutionary Guards say they targeted US Fifth Fleet in Bahrain after American strikes",
+          "url": "https://www.timesofisrael.com/liveblog_entry/irans-revolutionary-guards-say-they-targeted-us-fifth-fleet-in-bahrain-after-american-strikes/",
+          "date": "2026-06-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-09-us-strikes-tanker-settebello-off-sohar",
+      "date": "2026-06-09",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "United States",
+      "target": "Commercial products tanker (Settebello)",
+      "place": "Gulf of Oman, about 20 nm northeast of Sohar",
+      "country": "Oman (Gulf of Oman)",
+      "lat": 24.5042,
+      "lon": 56.6103,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "US aircraft disables tanker Settebello off Sohar under the blockade",
+      "summary": "CENTCOM said a US aircraft fired precision munitions into the engine room of the Palau-flagged Settebello after its crew ignored blockade orders. The fire broke out about 20 nm northeast of Sohar; India said three Indian seafarers died.",
+      "sources": [
+        {
+          "publisher": "Business Today",
+          "title": "24 Indian crew, 3 missing: India summons US diplomat after tanker struck off Oman coast",
+          "url": "https://www.businesstoday.in/amp/india/story/24-indian-crew-3-missing-india-summons-us-diplomat-after-tanker-struck-off-oman-coast-536204-2026-06-11",
+          "date": "2026-06-11"
+        },
+        {
+          "publisher": "PortNews",
+          "title": "US strike on Palau-flagged tanker Settebello leaves three Indian seafarers missing off Oman",
+          "url": "https://en.portnews.ru/news/392751/",
+          "date": "2026-06-11"
+        },
+        {
+          "publisher": "Baird Maritime",
+          "title": "India confirms three of its sailors died in US tanker strike, another incident reported",
+          "url": "https://www.bairdmaritime.com/security/incidents/india-confirms-three-of-its-sailors-died-in-us-tanker-strike-another-incident-reported",
+          "date": "2026-06-11"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-10-iranian-drones-missiles-bahrain-kuwait-jordan",
+      "date": "2026-06-10",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (IRGC)",
+      "target": "US forces in Bahrain, Kuwait and Jordan",
+      "place": "NSA Bahrain (US Fifth Fleet HQ)",
+      "country": "Bahrain",
+      "lat": 26.2097,
+      "lon": 50.6095,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iran targets US Fifth Fleet in Bahrain and bases in Kuwait and Jordan",
+      "summary": "In reply to the US strikes, the IRGC said it sent drones at the US Fifth Fleet in Bahrain and Ali Al Salem in Kuwait and fired a long-range missile at an air base at Azraq, Jordan. All three states said the projectiles were intercepted.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran attacks Bahrain, Kuwait, Jordan in retaliation for US strikes",
+          "url": "https://www.aljazeera.com/news/2026/6/10/iran-strikes-bahrain-and-jordan-in-retaliation-for-us-attacks-in-hormuz",
+          "date": "2026-06-10"
+        },
+        {
+          "publisher": "The Times of Israel",
+          "title": "Iran's Revolutionary Guards say they targeted US Fifth Fleet in Bahrain after American strikes",
+          "url": "https://www.timesofisrael.com/liveblog_entry/irans-revolutionary-guards-say-they-targeted-us-fifth-fleet-in-bahrain-after-american-strikes/",
+          "date": "2026-06-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-06-27-us-strikes-hormuz-coast-bandar-lengeh",
+      "date": "2026-06-27",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "Surveillance, air defence, drone storage and minelaying sites",
+      "place": "Bandar Lengeh",
+      "country": "Iran",
+      "lat": 26.558,
+      "lon": 54.8807,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "US strikes Iranian coastal military sites near Hormuz after drone hits tanker Kiku",
+      "summary": "After a drone hit the tanker Kiku, CENTCOM said US aircraft struck surveillance, communications, air defence, drone storage and minelaying sites near Hormuz on a second day of strikes. Hits reported at Bandar Lengeh, Sirik, Qeshm.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran and US trade attacks as Strait of Hormuz ceasefire falters",
+          "url": "https://www.aljazeera.com/news/2026/6/28/iran-attacks-kuwait-and-bahrain-in-response-to-us-strikes",
+          "date": "2026-06-28"
+        },
+        {
+          "publisher": "Associated Press (via Irish Examiner)",
+          "title": "US says it struck Iranian targets as ceasefire strained in second day of attacks",
+          "url": "https://www.irishexaminer.com/world/arid-41870319.html",
+          "date": "2026-06-27"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-07-three-tankers-attacked-hormuz-ceasefire-collapse",
+      "date": "2026-07-07",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran",
+      "target": "LNG carrier and oil tankers (Al Rekayyat, Wedyan, Cyprus Prosperity)",
+      "place": "Strait of Hormuz, off Oman",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Three tankers hit in Hormuz, breaking the ceasefire",
+      "summary": "The Qatari LNG carrier Al Rekayyat, Saudi VLCC Wedyan and tanker Cyprus Prosperity were struck within hours while transiting the strait; one caught fire off Oman. CENTCOM blamed Iran and launched strikes on Iran in response.",
+      "sources": [
+        {
+          "publisher": "WLOS / The National News Desk (with AP)",
+          "title": "3 tankers struck in Strait of Hormuz as fragile US-Iran truce faces new test",
+          "url": "https://wlos.com/news/nation-world/3-gas-tankers-struck-in-strait-of-hormuz-as-fragile-us-iran-war-truce-faces-new-test-united-kingdom-maritime-trade-operations-center-british-military-coast-of-oman-qatar-us-navy-president-trump",
+          "date": "2026-07-07"
+        },
+        {
+          "publisher": "Arab News Pakistan (Reuters)",
+          "title": "Saudi Bahri says VLCC Wedyan involved in Strait of Hormuz incident, vessel and crew safe",
+          "url": "https://www.arabnews.pk/node/2650084/saudi-arabia",
+          "date": "2026-07-08"
+        },
+        {
+          "publisher": "Kuwait Times (KUNA)",
+          "title": "US forces strike dozens of targets in Iran",
+          "url": "https://kuwaittimes.com/article/46150/world/us-forces-strike-dozens-of-targets-in-iran/amp",
+          "date": "2026-07-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-07-us-strikes-80-targets-qeshm-hormuz",
+      "date": "2026-07-07",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "Air defences, coastal radar, anti-ship missile sites, IRGC small boats",
+      "place": "Qeshm Island",
+      "country": "Iran",
+      "lat": 26.7675,
+      "lon": 55.7725,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "US hits over 80 Iranian targets after tanker attacks; Trump says MoU is over",
+      "summary": "After three tankers were hit in Hormuz, CENTCOM said it struck more than 80 targets, including air defences, coastal radar, anti-ship missile sites and over 60 IRGC small boats. Blasts were reported on Qeshm, at Sirik and near Bandar Abbas.",
+      "sources": [
+        {
+          "publisher": "CBS News",
+          "title": "U.S. hits dozens of Iranian targets in retaliatory strikes after ship attacks in Strait of Hormuz",
+          "url": "https://www.cbsnews.com/live-updates/iran-us-war-strait-of-hormuz-trump-nato/",
+          "date": "2026-07-08"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Why have US-Iran strikes resumed and what does it mean for peace?",
+          "url": "https://www.aljazeera.com/news/2026/7/8/why-have-us-iran-strikes-resumed-and-what-does-it-mean-for-peace-talks",
+          "date": "2026-07-08"
+        },
+        {
+          "publisher": "Stars and Stripes",
+          "title": "Trump says ceasefire is over after US and Iran trade strikes",
+          "url": "https://www.stripes.com/theaters/middle_east/2026-07-07/us-iran-strikes-commercial-vessels-22205062.html",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-08-iranian-missiles-drones-kuwait-bahrain",
+      "date": "2026-07-08",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "US bases in Kuwait and Bahrain",
+      "place": "Ali Al Salem Air Base",
+      "country": "Kuwait",
+      "lat": 29.3467,
+      "lon": 47.5208,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iran fires missiles and drones at US bases in Kuwait and Bahrain",
+      "summary": "Iran answered the US strikes with missiles and drones at Kuwait and Bahrain, naming Ali Al Salem and the Fifth Fleet base at Port Salman. Kuwait said its air defences engaged them; a US official said no US personnel were hurt.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Why have US-Iran strikes resumed and what does it mean for peace?",
+          "url": "https://www.aljazeera.com/news/2026/7/8/why-have-us-iran-strikes-resumed-and-what-does-it-mean-for-peace-talks",
+          "date": "2026-07-08"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "U.S. hits dozens of Iranian targets in retaliatory strikes after ship attacks in Strait of Hormuz",
+          "url": "https://www.cbsnews.com/live-updates/iran-us-war-strait-of-hormuz-trump-nato/",
+          "date": "2026-07-08"
+        },
+        {
+          "publisher": "Stars and Stripes",
+          "title": "Trump says ceasefire is over after US and Iran trade strikes",
+          "url": "https://www.stripes.com/theaters/middle_east/2026-07-07/us-iran-strikes-commercial-vessels-22205062.html",
+          "date": "2026-07-07"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-13-houthi-missiles-abha-airport",
+      "date": "2026-07-13",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Saudi Arabia (Abha International Airport)",
+      "place": "Abha International Airport",
+      "country": "Saudi Arabia",
+      "lat": 18.2404,
+      "lon": 42.6566,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Houthis fire missiles and drones at Saudi Arabia's Abha airport",
+      "summary": "The Houthis said they fired ballistic missiles and drones at Abha International Airport on 13 July after a strike on Sanaa airport. The Saudi-led coalition said it intercepted ballistic missiles aimed at the south; no casualties reported.",
+      "sources": [
+        {
+          "publisher": "The Times of Israel",
+          "title": "In major escalation, Yemen's Houthis target Saudi Arabia's Abha airport",
+          "url": "https://www.timesofisrael.com/in-major-escalation-yemens-houthis-target-saudi-arabias-abha-airport/",
+          "date": "2026-07-14"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Tension rising as Yemen gov't attacks Sanaa airport, Houthis fire missiles",
+          "url": "https://www.aljazeera.com/news/2026/7/13/yemen-govt-says-its-forces-attacked-sanaa-airport",
+          "date": "2026-07-13"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-14-vlccs-mombasa-b-al-bahyah-off-musandam",
+      "date": "2026-07-14",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran",
+      "target": "Crude tankers (Mombasa B, Al Bahyah)",
+      "place": "Strait of Hormuz off Musandam, Oman",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Two UAE-linked VLCCs hit off Musandam after blockade reinstated",
+      "summary": "Oman said Mombasa B and Al Bahyah were hit about 8.5 and 9.6 nm off Musandam; crews were evacuated and one seafarer died. Reuters said Iranian cruise missiles struck them. Stolt Magnesium was also hit about 40 nm off Qalhat.",
+      "sources": [
+        {
+          "publisher": "Times of Oman (ONA)",
+          "title": "Three oil tankers targeted in successive attacks off Omani coast",
+          "url": "https://timesofoman.com/article/174387-three-oil-tankers-targeted-in-successive-attacks-off-omani-coast",
+          "date": "2026-07-14"
+        },
+        {
+          "publisher": "Insurance Journal (Reuters)",
+          "title": "Chemical Tanker Stolt Magnesium Hit by Explosion off Omani Coast, Manager Says",
+          "url": "https://www.insurancejournal.com/news/international/2026/07/14/877479.htm",
+          "date": "2026-07-14"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-17-iranian-attack-muwaffaq-salti-us-troops-killed",
+      "date": "2026-07-17",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "US forces at Muwaffaq Salti Air Base",
+      "place": "Muwaffaq Salti Air Base",
+      "country": "Jordan",
+      "lat": 31.8272,
+      "lon": 36.7822,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iranian missile and drone attack on Jordan air base kills three US soldiers",
+      "summary": "An Iranian ballistic missile and drone attack on Muwaffaq Salti Air Base in Jordan killed US soldiers defending it; the Pentagon later confirmed three dead, one first listed missing. The US followed with more strikes on Iran.",
+      "sources": [
+        {
+          "publisher": "Stars and Stripes",
+          "title": "Iranian attack in Jordan kills 2 US service members, another dies in Iraq",
+          "url": "https://www.stripes.com/theaters/middle_east/2026-07-18/iran-attack-2-americans-kia-22299945.html",
+          "date": "2026-07-18"
+        },
+        {
+          "publisher": "Task & Purpose",
+          "title": "These are the 3 soldiers killed by Iran's attack on a base in Jordan",
+          "url": "https://taskandpurpose.com/news/jordan-iran-feehan-gonzales-rampersad/",
+          "date": "2026-07-22"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "US launches new Iran strikes after two soldiers killed: What’s the latest?",
+          "url": "https://www.aljazeera.com/news/2026/07/19/us-launches-new-iran-strikes-after-two-soldiers-killed-whats-the-latest",
+          "date": "2026-07-19"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-19-claimed-us-strike-darkhovin-nuclear-site",
+      "date": "2026-07-19",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "Darkhovin nuclear power plant site (under construction)",
+      "place": "Darkhovin nuclear power plant site",
+      "country": "Iran",
+      "lat": 30.7078,
+      "lon": 48.38,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Iran claims US projectiles hit unfinished Darkhovin nuclear plant site",
+      "summary": "Iran's Atomic Energy Organization claimed US projectiles hit the unfinished Darkhovin nuclear plant site in Khuzestan before dawn, amid US strikes after the Jordan deaths. The IAEA said it held no nuclear material. No US comment.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "US launches new Iran strikes after two soldiers killed: What’s the latest?",
+          "url": "https://www.aljazeera.com/news/2026/07/19/us-launches-new-iran-strikes-after-two-soldiers-killed-whats-the-latest",
+          "date": "2026-07-19"
+        },
+        {
+          "publisher": "The Defense Post (AFP)",
+          "title": "UN Watchdog Calls for Restraint as Iran Says US Attacked Unfinished",
+          "url": "https://thedefensepost.com/2026/07/20/un-us-iran-attack/",
+          "date": "2026-07-20"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-20-tanker-kavomaleas-off-kumzar",
+      "date": "2026-07-20",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran (suspected)",
+      "target": "Product tanker (Kavomaleas)",
+      "place": "Strait of Hormuz, about 8 nm northwest of Kumzar, Oman",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.3367,
+      "lon": 56.4097,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Tanker Kavomaleas set ablaze off Kumzar, later seen in Iranian waters",
+      "summary": "The Malta-flagged Dynacom tanker was hit twice about 8 nm northwest of Kumzar and abandoned while burning. Satellite images later showed it near Iran's Larak island, likely in Iranian custody. Dynacom's VLCC Acheloos was also hit.",
+      "sources": [
+        {
+          "publisher": "Container News",
+          "title": "Dynacom tankers targeted as security risks escalate in Strait of Hormuz",
+          "url": "https://container-news.com/dynacom-tankers-targeted-as-security-risks-escalate-in-strait-of-hormuz/",
+          "date": "2026-07-21"
+        },
+        {
+          "publisher": "The Maritime Executive",
+          "title": "Stricken Greek Product Tanker Appears to Be in Iranian Custody",
+          "url": "https://maritime-executive.com/article/stricken-greek-product-tanker-appears-to-be-in-iranian-custody",
+          "date": "2026-07-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-22-tanker-encelia-red-sea-off-jizan",
+      "date": "2026-07-22",
+      "time": "20:00Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Houthis",
+      "target": "Saudi-flagged tanker Encelia",
+      "place": "Red Sea off Jizan",
+      "country": "Red Sea",
+      "lat": 16.9,
+      "lon": 42.3,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Saudi tanker Encelia set on fire in Red Sea in Houthi-claimed strike",
+      "summary": "The Houthis said they fired missiles and drones at Saudi tankers Encelia and Layla for breaching their blockade. Saudi state media confirmed a fire on the Encelia off Jizan with all crew safe; the Layla strike was not confirmed.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Yemen's Houthis claim attack on two Saudi oil tankers",
+          "url": "https://www.aljazeera.com/news/2026/7/22/yemens-houthis-claim-attack-on-two-saudi-oil-tankers",
+          "date": "2026-07-22"
+        },
+        {
+          "publisher": "Al-Monitor (Reuters)",
+          "title": "Houthis say they attacked two Saudi tankers; Saudi Arabia says one ablaze in Red Sea",
+          "url": "https://www.al-monitor.com/originals/2026/07/houthis-say-they-attacked-two-saudi-tankers-saudi-arabia-says-one-ablaze-red-sea",
+          "date": "2026-07-23"
+        },
+        {
+          "publisher": "Khaleej Times",
+          "title": "Saudi says tanker bow catches fire in Red Sea after Houthis claim attack on vessels",
+          "url": "https://www.khaleejtimes.com/world/gulf/saudi-arabia-tanker-bow-fire-red-sea-houthis-claim-attack-vessels",
+          "date": "2026-07-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-25-houthi-strikes-aramco-jizan-yanbu",
+      "date": "2026-07-25",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Saudi Aramco sites (Jizan refinery, Yanbu)",
+      "place": "Jizan",
+      "country": "Saudi Arabia",
+      "lat": 16.8892,
+      "lon": 42.5511,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Houthis fire on Aramco sites in Jizan and Yanbu",
+      "summary": "The Houthis said they struck Aramco sites in Jizan and Yanbu on 25 July. Reuters verified video of smoke rising toward the Jizan refinery; Greek security sources said a Greek-run Patriot battery intercepted two missiles aimed at Yanbu.",
+      "sources": [
+        {
+          "publisher": "gCaptain (Reuters)",
+          "title": "Houthis Fire On Saudi Red Sea Oil Sites",
+          "url": "https://gcaptain.com/houthis-fire-on-saudi-red-sea-oil-sites/",
+          "date": "2026-07-25"
+        }
+      ]
+    },
+    {
+      "id": "2026-07-26-iran-media-claims-tanker-hit-mine-hormuz",
+      "date": "2026-07-26",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran",
+      "target": "Unnamed oil tanker",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iranian outlets say an unnamed tanker blew up on a mine in Hormuz",
+      "summary": "Tasnim and Defapress claimed an unnamed oil tanker struck a sea mine and exploded after leaving the route Iran designated. Neither CENTCOM nor UKMTO confirmed it, and the vessel was not identified.",
+      "sources": [
+        {
+          "publisher": "Times of Oman (ANI)",
+          "title": "Oil tanker explodes after hitting naval mine in Strait of Hormuz : Iranian Media",
+          "url": "https://timesofoman.com/article/174875-oil-tanker-explodes-after-hitting-naval-mine-in-strait-of-hormuz-iranian-media",
+          "date": "2026-07-26"
+        },
+        {
+          "publisher": "Ghana News Agency (dpa)",
+          "title": "Oil tanker explodes in Strait of Hormuz, Iranian media report",
+          "url": "https://gna.org.gh/2026/07/oil-tanker-explodes-in-strait-of-hormuz-iranian-media-report/",
+          "date": "2026-07-27"
+        }
+      ]
+    },
+    {
+      "id": "2026-08-03-bulk-carrier-minoan-pioneer-off-khasab",
+      "date": "2026-08-03",
+      "time": "22:00Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Bulk carrier (Minoan Pioneer)",
+      "place": "Strait of Hormuz, about 20 nm northeast of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.1797,
+      "lon": 56.2475,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Bulk carrier Minoan Pioneer hit and abandoned northeast of Khasab",
+      "summary": "An unknown projectile, possibly a drone, hit the Liberian-flagged bulker's engine room about 20 nm northeast of Khasab, causing a blackout and fire. The crew abandoned ship and the third engineer was reported missing.",
+      "sources": [
+        {
+          "publisher": "Marine Insight",
+          "title": "Third Engineer Goes Missing After Strike On Bulker In Strait Of Hormuz Leads To Blackout & Fire",
+          "url": "https://www.marineinsight.com/1-seafarer-goes-missing-after-strike-on-bulker-in-strait-of-hormuz-leads-to-blackout-fire/",
+          "date": "2026-08-04"
+        },
+        {
+          "publisher": "Baird Maritime (Reuters)",
+          "title": "Crew abandons bulker hit by projectile off Oman coast, one missing",
+          "url": "https://www.bairdmaritime.com/security/incidents/crew-abandons-bulker-hit-by-projectile-off-oman-coast-one-missing",
+          "date": "2026-08-04"
+        }
+      ]
+    },
+    {
+      "id": "2026-08-04-msv-faize-noore-oliya-sunk-off-hodeidah",
+      "date": "2026-08-04",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Houthis (suspected)",
+      "target": "Indian-flagged cargo vessel MSV Faize Noore Oliya",
+      "place": "Red Sea off Hodeidah",
+      "country": "Red Sea",
+      "lat": 14.8,
+      "lon": 42.5,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Faize Noore Oliya sinks south of Hodeidah after being struck",
+      "summary": "The Indian-flagged MSV Faize Noore Oliya sank in the Red Sea after being struck about 13 nm south of Hodeidah on 4 August; all crew were rescued. Yemen's government blamed the Houthis and an explosive boat; the Houthis did not comment.",
+      "sources": [
+        {
+          "publisher": "Internazionale (Reuters)",
+          "title": "Projectile sinks Indian ship near Yemeni waters but all seafarers safe, Indian minister says",
+          "url": "https://www.internazionale.it/ultime-notizie-reuters/2026/08/04/projectile-sinks-indian-ship-near-yemeni-waters-but-all-seafarers-safe-indian-minister-says",
+          "date": "2026-08-04"
+        },
+        {
+          "publisher": "Report.az (citing Anadolu)",
+          "title": "Indian vessel sinks in Red Sea after attack off Yemen",
+          "url": "https://report.az/en/other-countries/indian-vessel-sinks-in-red-sea-after-attack-off-yemen",
+          "date": "2026-08-04"
+        },
+        {
+          "publisher": "Outlook India",
+          "title": "Indian Ship MSV Faize Noore Oliya Sinks Off Yemen; 14 Crew Rescued",
+          "url": "https://www.outlookindia.com/national/indian-ship-msv-faize-noore-oliya-sinks-off-yemen-14-crew-rescued",
+          "date": "2026-08-05"
+        }
+      ]
+    },
+    {
+      "id": "2026-08-11-cargo-ship-tihamah-bab-el-mandeb",
+      "date": "2026-08-11",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Houthis (suspected)",
+      "target": "Cargo vessel Tihamah",
+      "place": "Bab el-Mandeb, near Perim Island",
+      "country": "Bab el-Mandeb",
+      "lat": 12.5833,
+      "lon": 43.3333,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Cargo ship Tihamah hit by projectile near Perim Island in Bab el-Mandeb",
+      "summary": "UKMTO said a cargo vessel off al-Mokha was hit by an unknown projectile on 11 August, with casualties; Ambrey placed the Tihamah at anchor northeast of Perim Island. Yemen's government blamed the Houthis, who had not claimed the attack.",
+      "sources": [
+        {
+          "publisher": "The Times of Israel",
+          "title": "Six killed in Houthi attack on cargo ship in Bab el-Mandeb Strait",
+          "url": "https://www.timesofisrael.com/three-killed-in-houthi-attack-on-cargo-ship-in-bab-el-mandeb-strait/",
+          "date": "2026-08-11"
+        },
+        {
+          "publisher": "France 24",
+          "title": "At least six killed in suspected Houthi attack on Egyptian ship in the Red Sea",
+          "url": "https://www.france24.com/en/middle-east/20260811-three-killed-in-suspected-houthi-attack-on-egyptian-ship-in-the-red-sea",
+          "date": "2026-08-11"
+        }
+      ]
+    },
+    {
+      "id": "2026-08-24-tanker-amzan-west-of-yanbu",
+      "date": "2026-08-24",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Houthis",
+      "target": "Saudi tanker Amzan (Bahri)",
+      "place": "Red Sea west of Yanbu",
+      "country": "Red Sea",
+      "lat": 24.09,
+      "lon": 36.91,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Bahri tanker Amzan hit by projectile west of Yanbu in Houthi-claimed attack",
+      "summary": "UKMTO said a tanker was struck by an unknown projectile about 63 nm west of Yanbu on 24 August. Bahri said its vessel Amzan was involved in an incident and the crew were safe; the Houthis said they hit it with a ballistic missile.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Yemen's Houthis report attack on Saudi oil tanker in Red Sea",
+          "url": "https://www.aljazeera.com/news/2026/8/24/yemens-houthis-report-attack-on-saudi-ship",
+          "date": "2026-08-24"
+        },
+        {
+          "publisher": "Baird Maritime (Reuters)",
+          "title": "Houthis claim attack on Saudi vessel near Yanbu, crew safe",
+          "url": "https://www.bairdmaritime.com/security/incidents/houthis-claim-attack-on-saudi-vessel-near-yanbu-crew-safe",
+          "date": "2026-08-24"
+        }
+      ]
+    },
+    {
+      "id": "2026-08-30-us-strike-larak-island-mine-rocket-launchers",
+      "date": "2026-08-30",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "IRGC rocket launchers preparing to fire sea mines",
+      "place": "Larak Island",
+      "country": "Iran",
+      "lat": 26.8533,
+      "lon": 56.3556,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "US strikes IRGC mine-rocket launchers on Larak Island, first strike since late July",
+      "summary": "CENTCOM called it a limited strike on two IRGC launchers on Larak Island that it said were readying rockets carrying sea mines for the Strait of Hormuz. Iran condemned it. It was the first known US strike on Iran since late July.",
+      "sources": [
+        {
+          "publisher": "The National",
+          "title": "What we know: US targets Iranian island in Strait of Hormuz",
+          "url": "https://www.thenationalnews.com/news/gulf/2026/08/31/what-we-know-us-and-iran-exchange-fire-for-the-first-time-in-a-month/",
+          "date": "2026-08-31"
+        },
+        {
+          "publisher": "CNN (via KEYT)",
+          "title": "US and Iran trade attacks, marking first major military escalation in a month",
+          "url": "https://keyt.com/politics/cnn-us-politics/2026/08/30/us-strikes-iranian-island-where-forces-were-preparing-to-launch-mines-official-says/",
+          "date": "2026-08-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-08-31-supertanker-sidr-off-khasab",
+      "date": "2026-08-31",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran",
+      "target": "Saudi crude tanker (Sidr)",
+      "place": "Strait of Hormuz off Khasab, Musandam",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.1797,
+      "lon": 56.2475,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Saudi supertanker Sidr hit leaving Hormuz; two crew killed",
+      "summary": "Bahri's VLCC Sidr was hit by projectiles as it left the strait, about 16.6 nm northeast of Khasab per shipping intelligence firms; two Filipino crew died and Oman's navy evacuated others. Saudi Arabia said Iran carried out the attack.",
+      "sources": [
+        {
+          "publisher": "ThePrint (Reuters)",
+          "title": "Saudi Arabia says Iran attacked vessel in Hormuz, killing two sailors",
+          "url": "https://theprint.in/world/saudi-arabia-says-iran-attacked-vessel-in-hormuz-killing-two-sailors/3032023/",
+          "date": "2026-09-02"
+        },
+        {
+          "publisher": "Gulf News",
+          "title": "Two Filipino sailors killed after Saudi tanker incident in Strait of Hormuz",
+          "url": "https://gulfnews.com/world/gulf/saudi/two-filipino-sailors-killed-after-saudi-tanker-incident-in-strait-of-hormuz-1.500660494",
+          "date": "2026-09-02"
+        },
+        {
+          "publisher": "Marine Insight",
+          "title": "Oman Evacuates 16 Crew From Saudi Oil Tanker Attacked By Iran In Strait Of Hormuz",
+          "url": "https://www.marineinsight.com/oman-evacuates-16-crew-from-saudi-oil-tanker-attacked-by-iran-in-strait-of-hormuz/",
+          "date": "2026-09-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-01-iran-ballistic-missiles-jordan-prince-hassan-ab",
+      "date": "2026-09-01",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "US forces in Jordan (Prince Hassan Air Base, Camp Titin)",
+      "place": "Prince Hassan Air Base",
+      "country": "Jordan",
+      "lat": 32.1608,
+      "lon": 37.1497,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iran fires ballistic missiles at Jordan after US strikes; most intercepted",
+      "summary": "Jordan's army said it engaged 13 ballistic missiles from Iran and destroyed 10, with the rest falling in open areas. The IRGC said it aimed at Camp Titin near Aqaba and Prince Hassan Air Base; a US official said there were no injuries.",
+      "sources": [
+        {
+          "publisher": "CBS News",
+          "title": "Jordan and Bahrain face Iranian missiles and drones as hostilities flare",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-strikes-strait-of-hormuz-larak-island/",
+          "date": "2026-09-02"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran claims attacks on Bahrain, Jordan, Iraq after US strikes kill 11",
+          "url": "https://www.aljazeera.com/news/2026/9/1/us-military-says-launching-new-attacks-on-iran",
+          "date": "2026-09-01"
+        },
+        {
+          "publisher": "Al-Monitor",
+          "title": "US airstrikes target Iran's Bandar Abbas, Qeshm Island",
+          "url": "https://www.al-monitor.com/originals/2026/09/us-airstrikes-target-irans-bandar-abbas-qeshm-island",
+          "date": "2026-09-01"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-01-iran-drones-bahrain-isa-air-base",
+      "date": "2026-09-01",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (Army)",
+      "target": "Bahrain (Isa Air Base radar sites, claimed)",
+      "place": "Isa Air Base",
+      "country": "Bahrain",
+      "lat": 25.9183,
+      "lon": 50.5906,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iranian drones launched at Bahrain; air defences report interceptions",
+      "summary": "Bahrain said its air defences intercepted and destroyed Iranian drones and it issued shelter alerts. Iran's army said it aimed at radar sites and parts of Isa (Sheikh Isa) Air Base used by US forces; damage claims were not verified.",
+      "sources": [
+        {
+          "publisher": "Sharjah24 (WAM)",
+          "title": "Bahrain air defence systems intercept, destroy Iranian drones",
+          "url": "https://sharjah24.ae/en/Articles/2026/09/02/Ma3",
+          "date": "2026-09-02"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran claims attacks on Bahrain, Jordan, Iraq after US strikes kill 11",
+          "url": "https://www.aljazeera.com/news/2026/9/1/us-military-says-launching-new-attacks-on-iran",
+          "date": "2026-09-01"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Jordan and Bahrain face Iranian missiles and drones as hostilities flare",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-strikes-strait-of-hormuz-larak-island/",
+          "date": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-01-us-strikes-irgc-sites-southern-iran-bandar-abbas",
+      "date": "2026-09-01",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "IRGC air defence, radar, maritime and mine-laying sites",
+      "place": "Bandar Abbas",
+      "country": "Iran",
+      "lat": 27.1832,
+      "lon": 56.2666,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "US strikes IRGC sites across southern Iran, including Bandar Abbas and Qeshm",
+      "summary": "CENTCOM hit IRGC air defence, radar, maritime, mine-laying and communications sites. Iranian media reported blasts in Bandar Abbas, Qeshm, Sirik, Konarak, Jask, Asaluyeh and Ahvaz; Iran said one strike hit a wedding in Kuhestak.",
+      "sources": [
+        {
+          "publisher": "Al-Monitor",
+          "title": "US airstrikes target Iran's Bandar Abbas, Qeshm Island",
+          "url": "https://www.al-monitor.com/originals/2026/09/us-airstrikes-target-irans-bandar-abbas-qeshm-island",
+          "date": "2026-09-01"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran claims attacks on Bahrain, Jordan, Iraq after US strikes kill 11",
+          "url": "https://www.aljazeera.com/news/2026/9/1/us-military-says-launching-new-attacks-on-iran",
+          "date": "2026-09-01"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Jordan and Bahrain face Iranian missiles and drones as hostilities flare",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-strikes-strait-of-hormuz-larak-island/",
+          "date": "2026-09-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-03-iran-missiles-drones-kuwait-ahmad-al-jaber-ab",
+      "date": "2026-09-03",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (Army)",
+      "target": "Kuwait (Ahmad al-Jaber Air Base, claimed)",
+      "place": "Ahmad al-Jaber Air Base",
+      "country": "Kuwait",
+      "lat": 28.9349,
+      "lon": 47.792,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iran fires missiles and drones at Kuwait; Iranian army names Ahmad al-Jaber base",
+      "summary": "Kuwait's armed forces said air defences engaged incoming Iranian missiles and drones early on 3 September. Iran's army claimed hits at Ahmad al-Jaber Air Base and at Al Minhad Air Base in the UAE; neither claim was confirmed.",
+      "sources": [
+        {
+          "publisher": "Kuwait Times (KUNA)",
+          "title": "Kuwait air defenses intercept Iranian missiles, drones",
+          "url": "https://kuwaittimes.com/article/49124/kuwait/kuwait-air-defenses-intercept-iranian-missiles-drones/",
+          "date": "2026-09-03"
+        },
+        {
+          "publisher": "Arab News (AFP, AP)",
+          "title": "Kuwait says Iran's continued aggression a 'direct threat' to its security and stability",
+          "url": "https://www.arabnews.com/middle-east/kuwait-says-intercepting-iranian-missile-and-drone-attack-3000289",
+          "date": "2026-09-03"
+        },
+        {
+          "publisher": "ISW / Critical Threats Project",
+          "title": "Iran Update, September 3, 2026",
+          "url": "https://www.criticalthreats.org/analysis/iran-update-september-3-2026",
+          "date": "2026-09-03"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-05-us-strikes-three-irgc-linked-tankers-gulf-of-oman",
+      "date": "2026-09-05",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "United States",
+      "target": "IRGC-linked Iranian crude tankers",
+      "place": "Gulf of Oman",
+      "country": "Gulf of Oman",
+      "lat": 24.5,
+      "lon": 58.5,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "US hits three IRGC-linked tankers after missiles fired at a US carrier and destroyer",
+      "summary": "CENTCOM said IRGC ballistic missiles fired at a US carrier and destroyer missed. US forces then destroyed the empty tanker Kylo in the Gulf of Oman and disabled Downy off Kharg Island and Stark 1 near Jask.",
+      "sources": [
+        {
+          "publisher": "Gulf Daily News",
+          "title": "US strikes three Iran oil tankers",
+          "url": "https://www.gdnonline.com/Details/1405489/US-strikes-three-Iran-oil-tankers",
+          "date": "2026-09-06"
+        },
+        {
+          "publisher": "KTVU (Associated Press)",
+          "title": "US strikes 3 Iranian oil tankers after missiles fired at Navy ships",
+          "url": "https://www.ktvu.com/news/us-strikes-3-iranian-oil-tankers-after-missiles-fired-navy-ships",
+          "date": "2026-09-05"
+        },
+        {
+          "publisher": "Janes",
+          "title": "IRGC identifies ballistic missiles used against US warships",
+          "url": "https://www.janes.com/defence-intelligence-insights/defence-news/weapons/irgc-identifies-ballistic-missiles-used-against-us-warships",
+          "date": "2026-09-09"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-08-houthi-strikes-southern-saudi-cities",
+      "date": "2026-09-08",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Saudi Arabia (Abha, Khamis Mushait, Jizan, Najran; energy sites)",
+      "place": "Abha and southern Saudi Arabia",
+      "country": "Saudi Arabia",
+      "lat": 18.2164,
+      "lon": 42.5053,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Houthi missiles and drones hit four southern Saudi cities and energy sites",
+      "summary": "The Saudi-led coalition said Houthi attacks on 8 September hit Abha, Khamis Mushait, Jizan and Najran; the Energy Ministry reported fires at several oil and utility sites. The Houthis said they fired dozens of ballistic missiles and drones.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Saudi-Houthi fighting in Yemen escalates: What happened, and what's next?",
+          "url": "https://www.aljazeera.com/news/2026/9/8/saudi-houthi-fighting-in-yemen-escalates-what-happened-and-whats-next",
+          "date": "2026-09-08"
+        },
+        {
+          "publisher": "OPB (NPR / Associated Press)",
+          "title": "Houthi attacks on Saudi Arabia ignite fires at oil facilities and wound 73 people",
+          "url": "https://www.opb.org/article/2026/09/08/houthi-attacks-on-saudi-arabia-target-oil-facilities-and-wound-73-people/",
+          "date": "2026-09-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-08-us-destroys-iranian-tankers-gulf-of-oman",
+      "date": "2026-09-08",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "United States",
+      "target": "Iranian crude oil tankers (Kaviz, Charminar, Horizon 1, Riesco, Derya)",
+      "place": "Gulf of Oman (one tanker near Kharg Island)",
+      "country": "Gulf of Oman",
+      "lat": 24.5,
+      "lon": 58.5,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "US forces destroy four Iranian tankers in Gulf of Oman, one near Kharg",
+      "summary": "CENTCOM said it destroyed the IRGC-linked tankers Kaviz, Charminar, Horizon 1 and Riesco in the Gulf of Oman and Derya near Kharg Island after ordering crews off, in response to IRGC missile fire at a US warship.",
+      "sources": [
+        {
+          "publisher": "JNS",
+          "title": "US forces destroy five Iranian oil tankers after warship targeted",
+          "url": "https://www.jns.org/news/u-s-news/us-forces-destroy-five-iranian-oil-tankers-after-warship-targeted",
+          "date": "2026-09-09"
+        },
+        {
+          "publisher": "Container News",
+          "title": "Hormuz shipping disruption deepens amid new attacks on vessels",
+          "url": "https://container-news.com/hormuz-shipping-disruption-deepens-amid-new-attacks-on-vessels/",
+          "date": "2026-09-09"
+        },
+        {
+          "publisher": "Janes",
+          "title": "IRGC identifies ballistic missiles used against US warships",
+          "url": "https://www.janes.com/defence-intelligence-insights/defence-news/weapons/irgc-identifies-ballistic-missiles-used-against-us-warships",
+          "date": "2026-09-09"
+        },
+        {
+          "publisher": "MyNorthwest (Associated Press)",
+          "title": "US strikes Iranian tankers after more attempted missile attacks on Navy warship",
+          "url": "https://mynorthwest.com/national/us-strikes-iranian-tankers-after-more-attempted-missile-attacks-on-navy-warship/4273748",
+          "date": "2026-09-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-09-iran-ballistic-missiles-muwaffaq-salti-ab",
+      "date": "2026-09-09",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC)",
+      "target": "US forces at Muwaffaq Salti Air Base",
+      "place": "Muwaffaq Salti Air Base",
+      "country": "Jordan",
+      "lat": 31.8272,
+      "lon": 36.7822,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iranian ballistic missile barrage targets Muwaffaq Salti Air Base in Jordan",
+      "summary": "Jordan said it engaged 20 ballistic missiles from Iran overnight and destroyed 18. The IRGC said it hit the base near Azraq. CBS, citing sources, said one A-10 lost a wing and about eight F-15s were lightly damaged.",
+      "sources": [
+        {
+          "publisher": "Jordan News",
+          "title": "Jordan intercepts 18 of 20 Iranian ballistic missiles, army says",
+          "url": "https://jordannews.jo/Section-109/News/Jordan-intercepts-18-of-20-Iranian-ballistic-missiles-army-says-55555",
+          "date": "2026-09-09"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Multiple U.S. military aircraft damaged in Iranian strikes on military base in Jordan, sources say",
+          "url": "https://www.cbsnews.com/news/multiple-us-military-aircraft-damaged-iran-strikes-military-base-jordan/",
+          "date": "2026-09-10"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "'Blew the hell out of it': How Iran damaged US bases in Bahrain, Jordan",
+          "url": "https://www.aljazeera.com/news/2026/9/11/blew-the-hell-out-of-it-how-iran-damaged-us-bases-in-bahrain-jordan",
+          "date": "2026-09-11"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-09-tanker-hercules-star-off-dubai",
+      "date": "2026-09-09",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran (suspected)",
+      "target": "Oil products tanker (Hercules Star)",
+      "place": "Off Dubai, about 24 nm from Port Rashid",
+      "country": "United Arab Emirates (Persian Gulf)",
+      "lat": 25.2048,
+      "lon": 55.2708,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Tanker Hercules Star hit at anchor off Dubai, possibly by a drone",
+      "summary": "The Gibraltar-flagged tanker was hit at anchor off Dubai, possibly by a drone, and listed; one seafarer was killed and one went missing. Iran said it attacked ships that day after US strikes; a tanker in Iraqi waters was also hit.",
+      "sources": [
+        {
+          "publisher": "Baird Maritime (Reuters)",
+          "title": "Suspected drone strike on oil tanker leaves one dead off Dubai",
+          "url": "https://www.bairdmaritime.com/security/incidents/suspected-drone-strike-on-oil-tanker-leaves-one-dead-off-dubai",
+          "date": "2026-09-09"
+        },
+        {
+          "publisher": "The Korea Times (Reuters)",
+          "title": "Oil tanker hit in Iraqi waters, as vessels get caught in US-Iran attacks",
+          "url": "https://www.koreatimes.co.kr/world/20260909/oil-tanker-hit-in-iraqi-waters-as-vessels-get-caught-in-us-iran-attacks",
+          "date": "2026-09-09"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-10-drones-from-iraq-hit-saudi-east-west-pipeline",
+      "date": "2026-09-10",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Unidentified (drones launched from Iraq)",
+      "target": "Saudi East-West oil pipeline",
+      "place": "East-West pipeline, Medina region",
+      "country": "Saudi Arabia",
+      "lat": 24.4672,
+      "lon": 39.6111,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Saudi East-West pipeline shut after drone strikes traced to Iraq",
+      "summary": "Saudi Arabia said drones from Iraq hit the East-West pipeline in the Riyadh and Medina regions, causing injuries and damage, and shut the line as a precaution. Iraq traced the launches to Maysan province. No group was named.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera (AFP)",
+          "title": "Saudi Arabia says East-West pipeline hit by drones launched from Iraq",
+          "url": "https://aljazeera.com/news/2026/9/11/saudi-arabia-says-east-west-pipeline-hit-by-drones-launched-from-iraq",
+          "date": "2026-09-11"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi Arabia shuts East-West Pipeline after drone attacks from Iraq, injuries reported",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-arabia-shuts-east-west-pipeline-after-drone-attacks-from-iraq-injuries-reported/4054761",
+          "date": "2026-09-11"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-14-houthi-strikes-khamis-mushait-abha-taif",
+      "date": "2026-09-14",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Saudi Arabia (Khamis Mushait, Abha, Taif)",
+      "place": "Khamis Mushait",
+      "country": "Saudi Arabia",
+      "lat": 18.3,
+      "lon": 42.7333,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Houthi missiles and drones strike Khamis Mushait, Abha and Taif",
+      "summary": "The Saudi-led coalition said Houthi ballistic missiles and drones struck Khamis Mushait, Abha and Taif on 14 September, injuring civilians and damaging homes and vehicles.",
+      "sources": [
+        {
+          "publisher": "Khaleej Times (AFP)",
+          "title": "13 injured in Houthi attack in southern Saudi Arabia, 7 homes, 2 vehicles damaged",
+          "url": "https://www.khaleejtimes.com/world/mena/13-injured-houthi-southern-saudi-arabia-homes-damaged",
+          "date": "2026-09-15"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-14-us-destroys-iranian-small-boats-near-kargan",
+      "date": "2026-09-14",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "naval-strike",
+      "actor": "United States",
+      "target": "IRGC small boats",
+      "place": "Strait of Hormuz, off Kargan (Hormozgan)",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "US fires on Iranian boats trying to take a US sea drone near Kargan",
+      "summary": "CENTCOM said Iranian small boats tried to take a US Saildrone and failed after US forces responded; a US official said a US drone fired missiles at them near Kargan. Iranian media said two fishing boats were hit in Hormozgan.",
+      "sources": [
+        {
+          "publisher": "KTAR (Associated Press)",
+          "title": "US military says it destroyed 2 small Iranian boats trying to steal a drone",
+          "url": "https://ktar.com/national-news/us-military-says-it-destroyed-2-small-iranian-boats-trying-to-steal-a-drone",
+          "date": "2026-09-15"
+        },
+        {
+          "publisher": "Marine Insight",
+          "title": "U.S Destroys Two Iranian Boats After Attempt To Seize Sea Drone Near Strait Of Hormuz",
+          "url": "https://www.marineinsight.com/u-s-destroys-two-iranian-boats-after-attempt-to-seize-sea-drone-near-strait-of-hormuz/",
+          "date": "2026-09-16"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-23-bulk-carrier-cape-dao-off-khasab",
+      "date": "2026-09-23",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Bulk carrier (Cape Dao)",
+      "place": "Strait of Hormuz, about 15 nm northeast of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.1797,
+      "lon": 56.2475,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Bulk carrier Cape Dao hit twice off Oman, left burning and adrift",
+      "summary": "An unknown projectile hit the Antigua and Barbuda-flagged Cape Dao twice, in the engine room and accommodation, about 15 nm northeast of Khasab. One Indian crew member died and Oman's navy evacuated the rest. It was later reported sinking.",
+      "sources": [
+        {
+          "publisher": "The Week",
+          "title": "Indian among 2 seafarers killed in Hormuz ship attack amid US-Iran spat at UNGA 2026",
+          "url": "https://www.theweek.in/news/middle-east/2026/09/23/indian-among-2-seafarers-killed-in-hormuz-ship-attack-amid-us-iran-spat-at-unga-2026.html",
+          "date": "2026-09-23"
+        },
+        {
+          "publisher": "The Maritime Executive",
+          "title": "Iran Claims Containership Hit Mine and Sank in Strait of Hormuz",
+          "url": "https://maritime-executive.com/article/iran-claims-containership-hit-mine-and-sank-in-strait-of-hormuz",
+          "date": "2026-10-14"
+        },
+        {
+          "publisher": "News On AIR",
+          "title": "India condemns attack on commercial vessel MV Cape Dao off Oman coast",
+          "url": "https://newsonair.gov.in/india-condemns-attack-on-commercial-vessel-mv-cape-dao-off-oman-coast/",
+          "date": "2026-09-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-09-29-three-tankers-hit-hormuz",
+      "date": "2026-09-29",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Oil tankers (Al Ruwais, Mersin Prosperity, Sinbad)",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Three tankers sailing dark struck by projectiles in Hormuz",
+      "summary": "Marisks said three Liberian-flagged tankers transiting with AIS switched off were hit by unknown projectiles. It came a day after the Kuwaiti VLCC Al Funtas caught fire after being struck in the strait on 28 Sep.",
+      "sources": [
+        {
+          "publisher": "Oman Observer (Reuters)",
+          "title": "Three oil tankers hit by projectiles in Hormuz strait on Tuesday",
+          "url": "https://www.omanobserver.om/article/1197077/world/region/three-oil-tankers-hit-by-projectiles-in-hormuz-strait-on-tuesday",
+          "date": "2026-10-01"
+        },
+        {
+          "publisher": "Baird Maritime (Reuters)",
+          "title": "Three tankers transiting Strait of Hormuz hit by projectiles",
+          "url": "https://www.bairdmaritime.com/security/incidents/three-tankers-transiting-strait-of-hormuz-hit-by-projectiles",
+          "date": "2026-10-01"
+        },
+        {
+          "publisher": "The Maritime Executive",
+          "title": "Kuwaiti Tanker Struck in the Strait of Hormuz",
+          "url": "https://maritime-executive.com/article/kuwaiti-tanker-struck-in-the-strait-of-hormuz",
+          "date": "2026-09-29"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-03-houthi-claimed-strike-aramco-riyadh",
+      "date": "2026-10-03",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Saudi Aramco facility south of Riyadh",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis claim missile and drone strike on Aramco site near Riyadh",
+      "summary": "The Houthis claimed they hit an oil facility in Riyadh with ballistic missiles and drones on 3 October. An AFP journalist saw flames and smoke at an Aramco site south of the capital; the Saudi-led coalition called the claims misleading.",
+      "sources": [
+        {
+          "publisher": "Al-Monitor (AFP)",
+          "title": "Yemen government forces say struck Houthi targets",
+          "url": "https://al-monitor.com/originals/2026/10/houthis-say-struck-oil-facility-near-riyadh-saudis-hit-sanaa",
+          "date": "2026-10-03"
+        },
+        {
+          "publisher": "Daily Tribune (AFP)",
+          "title": "Houthi claims of attack on Saudi capital 'misleading,' coalition says",
+          "url": "https://tribune.net.ph/2026/10/04/houthi-claims-of-attack-on-saudi-capital-misleading-coalition-says",
+          "date": "2026-10-04"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-04-lng-carrier-maran-gas-mystras-hormuz",
+      "date": "2026-10-04",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "LNG carrier (Maran Gas Mystras); tanker (Lipsi)",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "LNG carrier Maran Gas Mystras hit leaving Hormuz; tanker Lipsi disabled",
+      "summary": "An unidentified projectile struck the Greek-flagged LNG carrier near the waterline as it left the strait; it continued to Fujairah with all 30 crew safe. The Dynacom tanker Lipsi was left disabled and adrift in the strait the same day.",
+      "sources": [
+        {
+          "publisher": "Cyprus Mail",
+          "title": "Second Greek-linked ship hit in Hormuz within days",
+          "url": "https://cyprus-mail.com/2026/10/06/second-greek-linked-ship-hit-in-hormuz-within-days",
+          "date": "2026-10-06"
+        },
+        {
+          "publisher": "The National Herald",
+          "title": "Greek-Owned Tanker Struck by Unidentified Projectile Near the Strait of Hormuz",
+          "url": "https://www.thenationalherald.com/greek-owned-tanker-struck-by-unidentified-projectile-near-the-strait-of-hormuz/",
+          "date": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-06-houthi-attack-abha-airport",
+      "date": "2026-10-06",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Saudi Arabia (Abha International Airport; King Khalid International Airport on 7 Oct)",
+      "place": "Abha International Airport",
+      "country": "Saudi Arabia",
+      "lat": 18.2404,
+      "lon": 42.6566,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Houthi-claimed attacks on Abha and Riyadh airports open airport campaign",
+      "summary": "Saudi civil aviation authorities said Abha International Airport and Riyadh's King Khalid airport were attacked on 6 and 7 October, with deaths and injuries at both, in Houthi-claimed strikes that began a week of attacks on Saudi airports.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Three killed, 36 injured in Houthi attacks on Saudi airports, Riyadh says",
+          "url": "https://www.aljazeera.com/amp/news/2026/10/7/saudi-arabia-says-three-foreign-nationals-killed-in-attacks-on-airports",
+          "date": "2026-10-07"
+        },
+        {
+          "publisher": "Aviation Week",
+          "title": "Saudi Airports Hit Again By Houthi Missiles",
+          "url": "https://aviationweek.com/air-transport/airports-networks/saudi-airports-hit-again-houthi-missiles",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-06-us-destroys-iranian-surveillance-dhow-gulf-of-oman",
+      "date": "2026-10-06",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "naval-strike",
+      "actor": "United States",
+      "target": "Iranian-linked surveillance dhow",
+      "place": "Gulf of Oman",
+      "country": "Gulf of Oman",
+      "lat": 24.5,
+      "lon": 58.5,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "US Marine helicopters destroy Iranian-linked surveillance dhow in Gulf of Oman",
+      "summary": "CENTCOM said the dhow was watching US Navy ships and helping to target them. Two Marine Corps Apaches fired missiles at it after US forces removed the crew. CENTCOM disclosed the strike on 14 October.",
+      "sources": [
+        {
+          "publisher": "The Maritime Executive",
+          "title": "U.S. Forces Destroy a Dhow Suspected of Conducting Surveillance for Iran",
+          "url": "https://maritime-executive.com/article/u-s-forces-destroy-a-dhow-suspected-of-conducting-surveillance-for-iran",
+          "date": "2026-10-14"
+        },
+        {
+          "publisher": "The Times of Israel (Reuters)",
+          "title": "US says it destroyed Iranian-affiliated vessel conducting surveillance last week",
+          "url": "https://www.timesofisrael.com/liveblog_entry/us-says-it-destroyed-iranian-affiliated-vessel-conducting-surveillance-last-week/",
+          "date": "2026-10-14"
+        },
+        {
+          "publisher": "Kuwait Times (KUNA)",
+          "title": "US says it destroyed Iranian vessel spying on Navy ships in Gulf of Oman",
+          "url": "https://kuwaittimes.com/article/51655/world/us-says-it-destroyed-iranian-vessel-spying-on-navy-ships-in-gulf-of-oman/",
+          "date": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-08-houthi-missile-king-khalid-airport-riyadh",
+      "date": "2026-10-08",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Saudi Arabia (King Khalid International Airport)",
+      "place": "King Khalid International Airport, Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.9576,
+      "lon": 46.6988,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Houthi ballistic missile attack on Riyadh airport kills Saudia pilot",
+      "summary": "The Houthis said they fired a ballistic missile at Riyadh's King Khalid International Airport on 8 October. Saudi aviation authorities said the attacks killed a Saudia pilot and two other citizens and damaged a Saudia aircraft.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Houthi attack on Riyadh airport killed three Saudi nationals",
+          "url": "https://www.aljazeera.com/amp/news/2026/10/9/saudi-arabia-reopens-riyadh-airport-after-houthi-attack-kills-three",
+          "date": "2026-10-09"
+        },
+        {
+          "publisher": "Aviation Week",
+          "title": "Saudi Airports Hit Again By Houthi Missiles",
+          "url": "https://aviationweek.com/air-transport/airports-networks/saudi-airports-hit-again-houthi-missiles",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-10-houthi-strike-king-khalid-airport-riyadh",
+      "date": "2026-10-10",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Saudi Arabia (King Khalid International Airport)",
+      "place": "King Khalid International Airport, Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.9576,
+      "lon": 46.6988,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Strike on Riyadh's King Khalid airport kills at least 12",
+      "summary": "Saudi aviation authorities said an attack on King Khalid International Airport on 10 October killed at least 12 people and wounded more than 300; flights were suspended. A Houthi official claimed the group had shut the airport.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Saudi Arabia says 12 killed, 300 wounded in Houthi attack on Riyadh airport",
+          "url": "https://www.aljazeera.com/news/2026/10/10/attack-on-airport-in-saudi-capital-riyadh-leaves-several-injured",
+          "date": "2026-10-10"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "'Except Mecca and Medina': Chaos across Saudi airports as Houthis claim Riyadh strikes",
+          "url": "https://www.middleeasteye.net/news/except-mecca-and-medina-chaos-across-saudi-airports-houthis-claim-riyadh-strike-threaten-more",
+          "date": "2026-10-12"
+        },
+        {
+          "publisher": "Aviation Week",
+          "title": "Saudi Airports Hit Again By Houthi Missiles",
+          "url": "https://aviationweek.com/air-transport/airports-networks/saudi-airports-hit-again-houthi-missiles",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-11-houthi-attack-dammam-airport",
+      "date": "2026-10-11",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Saudi Arabia (King Fahd International Airport; King Khalid International Airport)",
+      "place": "King Fahd International Airport, Dammam",
+      "country": "Saudi Arabia",
+      "lat": 26.4712,
+      "lon": 49.7979,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Dammam's King Fahd airport attacked as Riyadh airport is hit again",
+      "summary": "Saudi aviation authorities said Dammam's King Fahd International Airport and Riyadh's King Khalid airport came under new attacks on 11 October; a projectile hit Riyadh's Terminal 4. The coalition said it downed a drone in the east.",
+      "sources": [
+        {
+          "publisher": "Asharq Al-Awsat",
+          "title": "GACA: Resident Killed, 11 Others Wounded in Two New Attacks on Riyadh, Dammam Airports",
+          "url": "https://english.aawsat.com/gulf/5328465-gaca-resident-killed-11-others-wounded-two-new-attacks-riyadh-dammam-airports",
+          "date": "2026-10-11"
+        },
+        {
+          "publisher": "Aviation Week",
+          "title": "Saudi Airports Hit Again By Houthi Missiles",
+          "url": "https://aviationweek.com/air-transport/airports-networks/saudi-airports-hit-again-houthi-missiles",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-11-tanker-petro-dolphin-sohar-anchorage",
+      "date": "2026-10-11",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran (suspected)",
+      "target": "Coastal product tanker (Petro Dolphin)",
+      "place": "Sohar anchorage, Oman",
+      "country": "Oman (Gulf of Oman)",
+      "lat": 24.5042,
+      "lon": 56.6103,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Drone hits tanker Petro Dolphin at Sohar anchorage; two crew missing",
+      "summary": "A drone struck the small product tanker while it waited to berth at Sohar anchorage; nine Indian crew were rescued and two were missing. On the same day the tanker Valthera was hit by a projectile in the Strait of Hormuz.",
+      "sources": [
+        {
+          "publisher": "The Maritime Executive",
+          "title": "Two Seafarers Missing in Drone Attack on Product Tanker off Oman",
+          "url": "https://maritime-executive.com/article/two-seafarers-missing-in-drone-attack-on-product-tanker-off-oman",
+          "date": "2026-10-11"
+        },
+        {
+          "publisher": "News On AIR",
+          "title": "Two tankers attacked near Strait of Hormuz and Oman; two Indian seafarers missing",
+          "url": "https://newsonair.gov.in/two-tankers-attacked-near-strait-of-hormuz-and-oman-two-indian-seafarers-missing/",
+          "date": "2026-10-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-13-container-ship-gfs-pride-sinks-hormuz",
+      "date": "2026-10-13",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Container ships (GFS Pride, GFS Giselle)",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Singapore-flagged GFS Pride burns and sinks after projectile hit in Hormuz",
+      "summary": "Singapore's port authority said GFS Pride was hit by a projectile of unknown origin on 13 Oct, caught fire and sank; all 21 crew were evacuated. Sister ship GFS Giselle was damaged on 14 Oct. The IRGC said a container ship hit a mine.",
+      "sources": [
+        {
+          "publisher": "Internazionale (Reuters)",
+          "title": "Two Singapore-registered vessels struck in Strait of Hormuz; one sinks",
+          "url": "https://www.internazionale.it/ultime-notizie-reuters/2026/10/14/two-singapore-registered-vessels-struck-in-strait-of-hormuz-one-sinks",
+          "date": "2026-10-14"
+        },
+        {
+          "publisher": "The Maritime Executive",
+          "title": "Iran Claims Containership Hit Mine and Sank in Strait of Hormuz",
+          "url": "https://maritime-executive.com/article/iran-claims-containership-hit-mine-and-sank-in-strait-of-hormuz",
+          "date": "2026-10-14"
+        },
+        {
+          "publisher": "gCaptain (Reuters)",
+          "title": "Container Ship Sinks Near Hormuz After Being Hit by Projectile, Sources Say",
+          "url": "https://gcaptain.com/container-ship-sinks-near-hormuz-after-being-hit-by-projectile-sources-say/",
+          "date": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-13-houthi-strike-aramco-hq-dhahran",
+      "date": "2026-10-13",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Saudi Aramco headquarters",
+      "place": "Dhahran (Saudi Aramco headquarters)",
+      "country": "Saudi Arabia",
+      "lat": 26.2361,
+      "lon": 50.0393,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Missile strike causes fire at Saudi Aramco headquarters in Dhahran",
+      "summary": "Saudi Arabia's Energy Ministry said an Aramco administrative building in Dhahran was hit on the night of 13 October, causing a limited fire and no casualties. A company source said a ballistic missile struck; the Houthis claimed it.",
+      "sources": [
+        {
+          "publisher": "Al-Monitor (Reuters)",
+          "title": "Saudi Aramco headquarters attacked, limited fire reported",
+          "url": "https://www.al-monitor.com/originals/2026/10/saudi-aramco-headquarters-attacked-limited-fire-reported",
+          "date": "2026-10-14"
+        },
+        {
+          "publisher": "Hurriyet Daily News",
+          "title": "Houthis targets Saudi oil giant Aramco, vow more attacks",
+          "url": "https://www.hurriyetdailynews.com/houthis-targets-saudi-oil-giant-aramco-vow-more-attacks-228122",
+          "date": "2026-10-14"
+        }
+      ]
+    }
+  ],
+  "missions": [
+    {
+      "id": "eunavfor-aspides",
+      "name": "EUNAVFOR Operation Aspides",
+      "operator": "European Union",
+      "start": "2024-02-19",
+      "end": null,
+      "area": "Bab al-Mandab, Strait of Hormuz and international waters of the Red Sea, Gulf of Aden, Arabian Sea, Gulf of Oman and Persian Gulf (Decision 2024/583 Art. 1(3)).",
+      "polygon": [
+        [
+          33.6,
+          27.9
+        ],
+        [
+          35.6,
+          27.9
+        ],
+        [
+          43.5,
+          12.7
+        ],
+        [
+          52.3,
+          15.6
+        ],
+        [
+          59.9,
+          22.5
+        ],
+        [
+          51.3,
+          26.3
+        ],
+        [
+          48.6,
+          29.7
+        ],
+        [
+          56.6,
+          27
+        ],
+        [
+          67.5,
+          24.3
+        ],
+        [
+          67.5,
+          2.2
+        ],
+        [
+          51.3,
+          11.9
+        ],
+        [
+          43.2,
+          11.8
+        ],
+        [
+          33.6,
+          27.9
+        ]
+      ],
+      "precision": "approximate",
+      "sources": [
+        {
+          "publisher": "EUR-Lex (Official Journal of the EU)",
+          "title": "Council Decision (CFSP) 2024/583 of 8 February 2024 on a European Union maritime security operation to safeguard freedom of navigation in relation to the Red Sea crisis (EUNAVFOR ASPIDES)",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024D0583",
+          "date": "2024-02-12"
+        },
+        {
+          "publisher": "Council of the European Union",
+          "title": "Council Decision amending Decision (CFSP) 2024/583 on a European Union maritime security operation to safeguard freedom of navigation in relation to the Red Sea crisis (EUNAVFOR ASPIDES) (ST 5246/26)",
+          "url": "https://data.consilium.europa.eu/doc/document/ST-5246-2026-INIT/en/pdf",
+          "date": "2026-02-09"
+        },
+        {
+          "publisher": "The Maritime Executive",
+          "title": "EU Extends Red Sea Protection Effort Until 2027",
+          "url": "https://maritime-executive.com/article/eu-extends-red-sea-protection-effort-until-2027",
+          "date": "2026-02-23"
+        }
+      ]
+    },
+    {
+      "id": "us-naval-blockade-of-iran-2026-04",
+      "name": "US naval blockade of Iran (first phase)",
+      "operator": "United States (CENTCOM)",
+      "start": "2026-04-13",
+      "end": "2026-06-18",
+      "area": "Approaches to Iranian ports and coastal areas in the Persian Gulf, Gulf of Oman and Arabian Sea east of Hormuz; transits to non-Iranian ports exempt.",
+      "polygon": [
+        [
+          48.9,
+          29.9
+        ],
+        [
+          50.2,
+          29.7
+        ],
+        [
+          51,
+          28.3
+        ],
+        [
+          53.5,
+          26.6
+        ],
+        [
+          56.3,
+          26.85
+        ],
+        [
+          57.8,
+          25.4
+        ],
+        [
+          61.6,
+          25
+        ],
+        [
+          61.6,
+          22.5
+        ],
+        [
+          57,
+          24.6
+        ],
+        [
+          56.4,
+          26.45
+        ],
+        [
+          53,
+          26
+        ],
+        [
+          49.5,
+          29.2
+        ],
+        [
+          48.9,
+          29.9
+        ]
+      ],
+      "precision": "approximate",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "US naval blockade of Iran takes effect as Trump's deadline passes",
+          "url": "https://www.timesofisrael.com/liveblog_entry/us-naval-blockade-of-iran-appears-to-take-effect-as-trumps-deadline-passes/",
+          "date": "2026-04-13"
+        },
+        {
+          "publisher": "Al Jazeera (AP)",
+          "title": "US military says it has lifted naval blockade of Iranian ports",
+          "url": "https://www.aljazeera.com/news/2026/6/18/us-military-says-it-has-lifted-naval-blockade-of-iranian-ports",
+          "date": "2026-06-18"
+        }
+      ]
+    },
+    {
+      "id": "us-naval-blockade-of-iran-2026-07",
+      "name": "US naval blockade of Iran (reinstated)",
+      "operator": "United States (CENTCOM)",
+      "start": "2026-07-14",
+      "end": null,
+      "area": "Approaches to Iranian ports and coastal areas in the Persian Gulf, Gulf of Oman and Arabian Sea east of Hormuz; transits to non-Iranian ports exempt.",
+      "polygon": [
+        [
+          48.9,
+          29.9
+        ],
+        [
+          50.2,
+          29.7
+        ],
+        [
+          51,
+          28.3
+        ],
+        [
+          53.5,
+          26.6
+        ],
+        [
+          56.3,
+          26.85
+        ],
+        [
+          57.8,
+          25.4
+        ],
+        [
+          61.6,
+          25
+        ],
+        [
+          61.6,
+          22.5
+        ],
+        [
+          57,
+          24.6
+        ],
+        [
+          56.4,
+          26.45
+        ],
+        [
+          53,
+          26
+        ],
+        [
+          49.5,
+          29.2
+        ],
+        [
+          48.9,
+          29.9
+        ]
+      ],
+      "precision": "approximate",
+      "sources": [
+        {
+          "publisher": "Times of Israel",
+          "title": "CENTCOM confirms fresh strikes on Iran as US prepares to resume naval blockade",
+          "url": "https://www.timesofisrael.com/liveblog_entry/centcom-confirms-fresh-strikes-on-iran-as-us-prepares-to-resume-naval-blockade/",
+          "date": "2026-07-14"
+        },
+        {
+          "publisher": "Times of Israel (AP)",
+          "title": "CENTCOM chief: US has blocked Iran from exporting $25b worth of oil",
+          "url": "https://www.timesofisrael.com/liveblog_entry/centcom-chief-us-has-blocked-iran-from-exporting-25b-worth-of-oil/",
+          "date": "2026-10-16"
+        },
+        {
+          "publisher": "Times of Israel",
+          "title": "US naval blockade of Iran takes effect as Trump's deadline passes",
+          "url": "https://www.timesofisrael.com/liveblog_entry/us-naval-blockade-of-iran-appears-to-take-effect-as-trumps-deadline-passes/",
+          "date": "2026-04-13"
+        }
+      ]
+    },
+    {
+      "id": "operation-project-freedom",
+      "name": "Operation Project Freedom",
+      "operator": "United States",
+      "start": "2026-05-04",
+      "end": "2026-05-05",
+      "area": "US escort of merchant ships through the Strait of Hormuz and its Persian Gulf and Gulf of Oman approaches; paused 5 May.",
+      "polygon": [
+        [
+          54.8,
+          25.6
+        ],
+        [
+          55.4,
+          26.5
+        ],
+        [
+          56.3,
+          26.95
+        ],
+        [
+          57.1,
+          26.2
+        ],
+        [
+          58.6,
+          25.1
+        ],
+        [
+          58.6,
+          23.9
+        ],
+        [
+          56.9,
+          24.5
+        ],
+        [
+          56.5,
+          25.6
+        ],
+        [
+          56.55,
+          26.45
+        ],
+        [
+          55.9,
+          26.1
+        ],
+        [
+          55.2,
+          25.5
+        ],
+        [
+          54.8,
+          25.6
+        ]
+      ],
+      "precision": "approximate",
+      "sources": [
+        {
+          "publisher": "Al-Monitor (Reuters)",
+          "title": "US sinks Iranian small boats, shoots down missiles, drones as it opens Strait",
+          "url": "https://www.al-monitor.com/originals/2026/05/us-sinks-iranian-small-boats-shoots-down-missiles-drones-it-opens-strait",
+          "date": "2026-05-04"
+        },
+        {
+          "publisher": "Times of Israel",
+          "title": "Claiming 'great progress' in Iran talks, Trump pauses US naval escorts in Hormuz",
+          "url": "https://www.timesofisrael.com/claiming-great-progress-in-iran-talks-trump-pauses-us-naval-escorts-in-hormuz/",
+          "date": "2026-05-06"
+        },
+        {
+          "publisher": "Wikipedia",
+          "title": "Operation Project Freedom",
+          "url": "https://en.wikipedia.org/wiki/Operation_Project_Freedom",
+          "date": "2026-10-21"
+        }
+      ]
+    }
+  ]
+}
