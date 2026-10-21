@@ -44,36 +44,48 @@ export function curatedMissions(json) {
 /** Missions under way on a given day: a mission that ended earlier is not drawn as current. */
 export const activeMissions = (missions, date) => (Array.isArray(missions) ? missions : []).filter(m => isDay(date) && m.start <= date && (!m.end || m.end >= date));
 
+function registerEvent(e, date, loc) {
+  const url = /^https:\/\//.test(e.url || '') ? e.url : null, ship = text(e.shipName, 80);
+  return {
+    id: 'imo:' + text(e.id || `${date}-${e.title}`, 160), origin: 'imo', date, time: null, layer: 'shipping', type: 'shipping-attack',
+    actor: '', target: ship || 'Merchant vessel', shipName: ship, place: text(e.locationText || loc?.reference || '', 120), country: '',
+    lat: loc ? loc.lat : null, lon: loc ? loc.lon : null, precision: loc ? 'area' : 'unplaced', radiusNm: Number.isFinite(loc?.radiusNm) ? loc.radiusNm : null, confidence: 'confirmed',
+    title: ship ? `Incident involving ${ship}` : 'Incident in the IMO register', summary: text(e.summary || e.description, 280),
+    sources: url ? [{ publisher: 'IMO', title: 'Middle East highlighted incidents', url, date }] : [],
+  };
+}
+const registerRows = (maritime, from) => (Array.isArray(maritime?.events) ? maritime.events : [])
+  .map(e => ({ e, date: e?.eventDate || e?.publishedDate })).filter(({ e, date }) => e && isDay(date) && date >= from);
+
 /** IMO register incidents that the collector could place, flagged approximate. */
 export function registerEvents(maritime, { from = WAR_START } = {}) {
-  return (Array.isArray(maritime?.events) ? maritime.events : []).flatMap(e => {
-    const loc = e?.location, date = e?.eventDate || e?.publishedDate;
-    if (!loc || !inRange(loc.lat, loc.lon) || !isDay(date) || date < from) return [];
-    const url = /^https:\/\//.test(e.url || '') ? e.url : null;
-    return [{
-      id: 'imo:' + text(e.id || `${date}-${e.title}`, 160), origin: 'imo', date, time: null, layer: 'shipping', type: 'shipping-attack',
-      actor: '', target: text(e.shipName, 80) || 'Merchant vessel', place: text(e.locationText || loc.reference || '', 120), country: '',
-      lat: loc.lat, lon: loc.lon, precision: 'area', radiusNm: Number.isFinite(loc.radiusNm) ? loc.radiusNm : null, confidence: 'confirmed',
-      title: text(e.shipName, 80) ? `Incident involving ${text(e.shipName, 80)}` : 'Incident in the IMO register', summary: text(e.summary || e.description, 280),
-      sources: url ? [{ publisher: 'IMO', title: 'Middle East highlighted incidents', url, date }] : [],
-    }];
-  });
+  return registerRows(maritime, from).flatMap(({ e, date }) => e.location && inRange(e.location.lat, e.location.lon) ? [registerEvent(e, date, e.location)] : []);
 }
+/** Register incidents whose text gives no usable position: listed, never pinned. */
+export function unplacedRegisterEvents(maritime, { from = WAR_START } = {}) {
+  return registerRows(maritime, from).flatMap(({ e, date }) => e.location ? [] : [registerEvent(e, date, null)]);
+}
+/** Events that can be drawn on the map; unplaced ones are only listed. */
+export const located = events => events.filter(e => inRange(e.lat, e.lon));
 
 const nm = ([lon1, lat1], [lon2, lat2]) => {
   const r = Math.PI / 180, a = Math.sin((lat2 - lat1) * r / 2) ** 2 + Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin((lon2 - lon1) * r / 2) ** 2;
   return 3440.065 * 2 * Math.asin(Math.min(1, Math.sqrt(a)));
 };
+const mentions = (e, name) => name.length >= 3 && `${e.target} ${e.title} ${e.summary}`.toLowerCase().includes(name.toLowerCase());
 /**
- * One list, newest first. A register incident within a day and 80 NM of a
- * curated shipping event is treated as the same event: the curated record
- * keeps its detail and gains the register as a source.
+ * One list, newest first. A register incident within a day of a curated
+ * shipping event is treated as the same event when it lies within 80 NM, or,
+ * when it could not be placed, when the curated record names its ship. The
+ * curated record keeps its detail and gains the register as a source. Two
+ * register incidents never merge with each other: each is its own entry.
  */
 export function mergeEvents(curated = [], register = []) {
   const out = curated.map(e => ({ ...e, sources: [...e.sources] }));
   for (const r of register) {
-    const twin = out.find(e => e.layer === 'shipping' && Math.abs(Date.parse(e.date) - Date.parse(r.date)) <= DAY && nm([e.lon, e.lat], [r.lon, r.lat]) <= 80);
-    if (twin) { if (!twin.sources.some(s => s.publisher === 'IMO')) twin.sources.push(...r.sources); }
+    const same = e => inRange(r.lat, r.lon) ? nm([e.lon, e.lat], [r.lon, r.lat]) <= 80 : mentions(e, r.shipName || '');
+    const twin = out.find(e => e.origin === 'curated' && e.layer === 'shipping' && Math.abs(Date.parse(e.date) - Date.parse(r.date)) <= DAY && same(e));
+    if (twin) { if (!twin.sources.some(s => s.url === r.sources[0]?.url)) twin.sources.push(...r.sources); }
     else out.push(r);
   }
   return out.sort((a, b) => b.date.localeCompare(a.date) || (b.time || '').localeCompare(a.time || '') || a.id.localeCompare(b.id));

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { curatedEvents, curatedMissions, activeMissions, registerEvents, mergeEvents, visibleEvents, countsByLayer, priceMove, oddsMove, relatedMarkets, WAR_START } from '../dist/ops/events.mjs';
+import { curatedEvents, curatedMissions, activeMissions, registerEvents, unplacedRegisterEvents, located, mergeEvents, visibleEvents, countsByLayer, priceMove, oddsMove, relatedMarkets, WAR_START } from '../dist/ops/events.mjs';
 
 const source = { publisher: 'Reuters', title: 'Report', url: 'https://www.reuters.com/x', date: '2026-03-02' };
 const event = (fields = {}) => ({ id: '2026-03-02-test', date: '2026-03-02', layer: 'strikes-on-iran-yemen', type: 'air-strike', actor: 'United States', target: 'Air base', place: 'Bandar Abbas', country: 'Iran', lat: 27.18, lon: 56.28, precision: 'city', confidence: 'confirmed', title: 'Strike near Bandar Abbas', summary: 'A strike was reported.', sources: [source], ...fields });
@@ -109,4 +109,29 @@ test('related markets follow the event layer and require history', () => {
   assert.deepEqual(relatedMarkets(markets, { layer: 'shipping' }).map(m => m.topic), ['Shipping attacks']);
   assert.deepEqual(relatedMarkets(markets, { layer: 'strikes-on-iran-yemen' }).map(m => m.topic), ['Diplomacy']);
   assert.deepEqual(relatedMarkets(null, { layer: 'shipping' }), []);
+});
+
+test('two register incidents never merge with each other, even on the same day and close together', () => {
+  const register = registerEvents({ events: [
+    { id: 'one', title: 'A', shipName: 'ALPHA', eventDate: '2026-09-29', url: 'https://www.imo.org/x', location: { lat: 26.5, lon: 56.4 } },
+    { id: 'two', title: 'B', shipName: 'BRAVO', eventDate: '2026-09-29', url: 'https://www.imo.org/x', location: { lat: 26.6, lon: 56.5 } },
+  ] });
+  assert.deepEqual(mergeEvents([], register).map(e => e.id).sort(), ['imo:one', 'imo:two']);
+});
+
+test('an unplaced register incident is listed without a position, or joins the curated event that names its ship', () => {
+  const maritime = { events: [
+    { id: 'giselle', title: 'GFS GISELLE', shipName: 'GFS GISELLE', eventDate: '2026-10-13', url: 'https://www.imo.org/x', locationText: '6NM from the coast of Oman', location: null },
+    { id: 'saadiyat', title: 'AL SAADIYAT', shipName: 'AL SAADIYAT', eventDate: '2026-10-13', url: 'https://www.imo.org/x', locationText: '1 NM from the coast of Oman', location: null },
+    { id: 'placed', title: 'P', eventDate: '2026-10-13', location: { lat: 25, lon: 56 } },
+    { id: 'old', title: 'O', eventDate: '2026-01-01', location: null },
+  ] };
+  const unplaced = unplacedRegisterEvents(maritime);
+  assert.deepEqual(unplaced.map(e => e.id), ['imo:giselle', 'imo:saadiyat']);
+  assert.equal(unplaced[0].lat, null); assert.equal(unplaced[0].precision, 'unplaced'); assert.equal(unplaced[0].place, '6NM from the coast of Oman');
+  const curated = curatedEvents({ events: [event({ id: 'pride', layer: 'shipping', type: 'shipping-attack', date: '2026-10-13', lat: 26.3, lon: 56.6, title: 'GFS Pride sinks', summary: 'Sister ship GFS Giselle was damaged.' })] }, { today: '2026-10-21' });
+  const merged = mergeEvents(curated, [...registerEvents(maritime), ...unplaced]);
+  assert.deepEqual(merged.map(e => e.id).sort(), ['imo:placed', 'imo:saadiyat', 'war:pride']);
+  assert.ok(merged.find(e => e.id === 'war:pride').sources.some(s => s.publisher === 'IMO'));
+  assert.deepEqual(located(merged).map(e => e.id).sort(), ['imo:placed', 'war:pride'], 'only events with a position are drawn');
 });
