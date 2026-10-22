@@ -2,6 +2,7 @@
 // sway. Layers draw through onPlace each frame; nothing here knows about vessels
 // or events.
 import { geographicPoint, cameraMatrix, clamp } from '../terrain/geometry.mjs';
+import { nearestSea } from '../terrain/sea.mjs';
 import { createWebGLRenderer, createPlanRenderer, loadSceneAssets } from '../terrain/renderer.mjs';
 
 // A slow look around the scene: pausable, off under reduced motion, and paused
@@ -34,7 +35,11 @@ export async function createTerrainView(root, { scene, labels = [], pose: initia
   let paused = false, inView = true, lastInteraction = -Infinity, drag = null, swayClock = 0, swayRamp = 0, last = 0, flight = null;
   try { renderer = createWebGLRenderer(canvas); }
   catch { canvas.replaceWith(canvas = Object.assign(document.createElement('canvas'), { className: canvas.className })); renderer = createPlanRenderer(canvas); }
-  renderer.setScene(scene, await loadSceneAssets(scene, { planOnly: renderer.mode === 'plan' }));
+  const assets = await loadSceneAssets(scene, { planOnly: renderer.mode === 'plan' });
+  renderer.setScene(scene, assets);
+  // How far a ship marker may move to reach water: at least three grid samples, so the coarse regional grid can reach its coast.
+  const sampleNm = 40075.016686 * Math.cos(scene.center[1] * Math.PI / 180) * scene.tileSpan / 2 ** scene.zoom / 255 / 1.852;
+  const seaReachNm = Math.max(15, sampleNm * 3);
 
   function resize() {
     const box = root.getBoundingClientRect();
@@ -120,6 +125,8 @@ export async function createTerrainView(root, { scene, labels = [], pose: initia
     mode: renderer.mode,
     get pose() { return pose; },
     project, invalidate, schedule,
+    /** The nearest water on this map's terrain, or the point itself when no elevation grid is loaded. */
+    seaPoint(point) { return assets?.heights?.length ? nearestSea(point, scene, assets.heights, { maxNm: seaReachNm, clearanceKm: 4 })?.point || point : point; },
     zoom(factor) { interact(); pose.zoom = clamp(pose.zoom * factor, minZoom, 8); invalidate(); },
     reset() { interact(); lastInteraction = -Infinity; pose = { ...initialPose }; invalidate(); },
     /** True once the reader has moved the camera since the last reset. */

@@ -192,3 +192,10 @@ test('the left-hand prices follow an inspected date and never carry a price over
   assert.equal(shownPrices(oil, { date: '2026-10-20', values: [] }).inspecting, false, 'the newest date is the latest view');
   assert.deepEqual(shownPrices(null).brent, { value: '—', date: '' }, 'still loading says nothing yet');
 });
+
+test('the Hormuz counts add recent war events, even when no vessel positions arrive', async () => {
+  const { heroCountsMarkup } = await import('../dist/ops/panels.mjs');
+  assert.match(heroCountsMarkup({ total: 0, tankers: 0 }, { events: 2, days: 7 }), /No current positions received.*<strong>2<\/strong> events in the last 7 days/);
+  assert.match(heroCountsMarkup({ total: 12, tankers: 3 }, { events: 1 }), /3<\/strong> tankers.*1<\/strong> event in the last 7 days/);
+  assert.doesNotMatch(heroCountsMarkup({ total: 12, tankers: 3 }), /events in the last/);
+});
