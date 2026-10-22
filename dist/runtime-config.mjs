@@ -1,6 +1,7 @@
 // Public deployment settings contain an API address only. Credentials stay on the server.
 export const LIVE_REFRESH_MS = 60000;
-const PUBLIC_ENDPOINTS = new Set(['/api/news', '/api/maritime', '/api/oil', '/api/expectations', '/api/transits', '/api/vessels', '/api/config', '/api/diagnostics']);
+// Must match the collector's public routes (lib/data-service.mjs PUBLIC_API_PATHS); a test checks it.
+export const PUBLIC_ENDPOINTS = new Set(['/api/news', '/api/maritime', '/api/oil', '/api/expectations', '/api/transits', '/api/events', '/api/vessels', '/api/config', '/api/diagnostics']);
 const localHost = hostname => hostname === 'localhost' || hostname === '[::1]' || /^127(?:\.\d{1,3}){3}$/.test(hostname);
 const publicHostname = hostname => {
   const host = hostname.toLowerCase().replace(/\.$/, '');
