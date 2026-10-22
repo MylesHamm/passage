@@ -83,9 +83,9 @@ export function projectedVesselAngle(vessel, degrees, project) {
   return Math.atan2(end.y - start.y, end.x - start.x) * 180 / Math.PI + 90;
 }
 
-export async function createHeroMap(root, { onSelect, onEventSelect, onEventGroup } = {}) {
-  let vessels = [], showAll = true, selected = null, replay = null, view = null;
-  const nodes = new Map();
+export async function createHeroMap(root, { onSelect, onEventSelect, onEventGroup, onGapSelect } = {}) {
+  let vessels = [], showAll = true, selected = null, replay = null, view = null, gaps = null, selectedGap = null;
+  const nodes = new Map(), gapNodes = new Map();
   const markers = createEventMarkers({ view: () => view, onSelect: onEventSelect, onGroup: onEventGroup });
   const sizeFor = pose => clamp(40 * Math.sqrt(pose.zoom), 34, 92);
 
@@ -129,6 +129,41 @@ export async function createHeroMap(root, { onSelect, onEventSelect, onEventGrou
     if (node.getAttribute('aria-label') !== label) node.setAttribute('aria-label', label);
   }
 
+  // AIS gaps: a dashed ring where a ship went silent; for a closed gap, a
+  // dashed line to the dot where it reappeared.
+  const gapItems = () => [
+    ...(gaps?.darkNow || []).map(d => ({ key: `d:${d.mmsi}`, kind: 'dark', item: d, at: [d.lon, d.lat] })),
+    ...(gaps?.completed || []).map(g => ({ key: `c:${g.mmsi}:${g.to.t}`, kind: 'completed', item: g, at: [g.from.lon, g.from.lat], end: [g.to.lon, g.to.lat] })),
+  ].filter(g => inHormuzScene(g.at));
+  function gapNode(entry, overlay) {
+    let el = gapNodes.get(entry.key);
+    if (!el) {
+      el = Object.assign(document.createElement('button'), { type: 'button', className: 'gap-point' });
+      el.addEventListener('click', () => { const current = gapItems().find(g => g.key === entry.key); selectedGap = selectedGap === entry.key ? null : entry.key; view.invalidate(); onGapSelect?.(selectedGap && current ? current.item : null, current?.kind); });
+      overlay.append(el); gapNodes.set(entry.key, el);
+    }
+    return el;
+  }
+  function placeGaps({ project, overlay, shapes }) {
+    const shown = new Set();
+    if (!replay) for (const entry of gapItems()) {
+      const p = project(entry.at, .2);
+      if (!p.visible) continue;
+      if (entry.end) {
+        const q = project(entry.end, .2);
+        if (q.visible) shapes.push(`<line class="gap-line" x1="${p.x.toFixed(1)}" y1="${p.y.toFixed(1)}" x2="${q.x.toFixed(1)}" y2="${q.y.toFixed(1)}"/><circle class="gap-end" cx="${q.x.toFixed(1)}" cy="${q.y.toFixed(1)}" r="3"/>`);
+      }
+      const el = gapNode(entry, overlay);
+      shown.add(entry.key); el.hidden = false; el.dataset.kind = entry.kind;
+      el.style.transform = `translate3d(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px, 0)`;
+      el.setAttribute('aria-pressed', String(selectedGap === entry.key));
+      const who = entry.item.name || `MMSI ${entry.item.mmsi}`;
+      const label = entry.kind === 'dark' ? `AIS gap: ${who}, silent for ${Math.round(entry.item.hours)} hours so far` : `AIS gap: ${who}, silent for ${Math.round(entry.item.hours)} hours, then reappeared`;
+      if (el.getAttribute('aria-label') !== label) el.setAttribute('aria-label', label);
+    }
+    for (const [key, el] of gapNodes) if (!shown.has(key)) el.hidden = true;
+  }
+
   function place(ctx) {
     const { project, overlay, svg } = ctx, now = Date.now();
     const t = replay ? replay.from + replay.elapsed / REPLAY_DURATION_MS * (replay.to - replay.from) : now;
@@ -162,6 +197,7 @@ export async function createHeroMap(root, { onSelect, onEventSelect, onEventGrou
       }
     }
     for (const [mmsi, node] of nodes) if (!seen.has(mmsi)) node.hidden = true;
+    placeGaps({ project, overlay, shapes: lines });
     markers.place({ project, overlay, shapes: lines });
     svg.innerHTML = lines.join('');
     if (replay) replay.onClock?.(t);
@@ -194,6 +230,10 @@ export async function createHeroMap(root, { onSelect, onEventSelect, onEventGrou
     setEvents: list => markers.setEvents(recentHormuzEvents(list)),
     get eventCount() { return markers.events.length; },
     selectEvent: id => markers.select(id),
+    /** AIS gaps from the collector: ships dark now and gaps closed this week. */
+    setGaps(value) { gaps = value && typeof value === 'object' ? value : null; if (selectedGap && !gapItems().some(g => g.key === selectedGap)) selectedGap = null; view.invalidate(); },
+    selectGap(mmsi) { selectedGap = mmsi ? `d:${mmsi}` : null; view.invalidate(); const entry = gapItems().find(g => g.key === selectedGap); if (entry) view.flyTo(entry.at, { zoom: Math.max(view.pose.zoom, 1.6) }); },
+    clearGap() { selectedGap = null; view.invalidate(); },
     setPaused: value => view.setPaused(value),
     zoom: factor => view.zoom(factor),
     reset: () => view.reset(),

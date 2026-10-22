@@ -199,3 +199,20 @@ test('the Hormuz counts add recent war events, even when no vessel positions arr
   assert.match(heroCountsMarkup({ total: 12, tankers: 3 }, { events: 1 }), /3<\/strong> tankers.*1<\/strong> event in the last 7 days/);
   assert.doesNotMatch(heroCountsMarkup({ total: 12, tankers: 3 }), /events in the last/);
 });
+
+test('the AIS gaps card says when it is learning or paused, and never shows silence as proof', async () => {
+  const { gapsCardMarkup, gapCardMarkup, durationLabel } = await import('../dist/ops/panels.mjs');
+  assert.equal(durationLabel(5.17), '5 h 10 min'); assert.equal(durationLabel(3), '3 h'); assert.equal(durationLabel(51), '2 d 3 h');
+  assert.match(gapsCardMarkup(null), /not reported/);
+  assert.match(gapsCardMarkup({ ready: false, learnedHours: 7, summary: {} }), /7 of 24 hours/);
+  const base = { ready: true, feedHealthy: true, darkNow: [{ mmsi: '311000001', name: 'TEST <b>', tanker: true, lastSeen: '2026-10-22T10:00:00Z', lon: 55.2, lat: 25.3, hours: 4.5 }], completed: [],
+    summary: { darkNow: 1, darkNowTankers: 1, completed7d: 6, completed7dTankers: 4, medianHours: 7.5, longestHours: 30 } };
+  const html = gapsCardMarkup(base);
+  assert.match(html, /<strong>1<\/strong><span>dark now · 1 tankers/); assert.match(html, /6<\/strong><span>gaps in 7 days · 4 tankers/);
+  assert.match(html, /7 h 30 min<\/strong><span>median time dark · longest 1 d 6 h/);
+  assert.match(html, /data-gap-mmsi="311000001"/); assert.doesNotMatch(html, /<b>/); assert.match(html, /not proof/);
+  assert.match(gapsCardMarkup({ ...base, feedHealthy: false }), /Paused/);
+  const done = { mmsi: '311000002', name: '', tanker: false, from: { t: '2026-10-21T08:00:00Z' }, to: { t: '2026-10-21T13:00:00Z' }, hours: 5, distanceNm: 42.5 };
+  assert.match(gapCardMarkup(done, 'completed'), /reappeared 5 h later, 42.5 nm away/);
+  assert.match(gapCardMarkup(base.darkNow[0], 'dark'), /Silent for 4 h 30 min so far/);
+});

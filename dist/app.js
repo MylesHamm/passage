@@ -5,7 +5,7 @@ import { createOilChart } from './oil-chart-view.mjs';
 import { createHeroMap, recentHormuzEvents, RECENT_EVENT_DAYS } from './ops/hero-map.mjs';
 import {
   vesselCounts, heroCountsMarkup, vesselCardMarkup, oddsMarkup, headlinesMarkup, shownPrices, dayLabel,
-  clockLabel, ageLabel, transitRowMarkup, statusSummary, aboutMarkup, chartSeries, eventCardMarkup, eventListMarkup, eventTimelineMarkup, eventGroupMarkup, esc,
+  clockLabel, ageLabel, transitRowMarkup, statusSummary, aboutMarkup, chartSeries, eventCardMarkup, eventListMarkup, eventTimelineMarkup, eventGroupMarkup, gapsCardMarkup, gapCardMarkup, esc,
 } from './ops/panels.mjs';
 import { WAR_START, LAYERS, curatedEvents, curatedMissions, activeMissions, registerEvents, unplacedRegisterEvents, located, mergeEvents, visibleEvents, countsByLayer, priceMove, oddsMove, relatedMarkets } from './ops/events.mjs';
 
@@ -38,6 +38,21 @@ function renderVessels() {
   const newest = counts.newestAgeMs;
   stamp($('#ais-stamp'), state.vesselError && !state.vessels ? 'AIS unavailable' : newest === null ? 'AIS · no current positions' : `AIS · latest ${ageLabel(newest)}`, state.vesselError ? 'down' : newest !== null && newest > 600000 ? 'stale' : 'live');
   hero?.setVessels(state.vessels?.vessels || []);
+  renderGaps();
+}
+/** The AIS gap record travels with the vessel feed; the card and map points follow it. */
+function renderGaps() {
+  const gaps = state.vessels?.gaps || null;
+  $('#ais-gaps-body').innerHTML = gapsCardMarkup(gaps);
+  stamp($('#ais-gaps-stamp'), !gaps ? '' : !gaps.ready ? 'Learning coverage' : !gaps.feedHealthy ? 'Paused · feed low' : `Updated ${clockLabel(state.vessels.generatedAt)}`, !gaps || gaps.ready && gaps.feedHealthy ? 'live' : 'stale');
+  hero?.setGaps(gaps);
+}
+function showGap(item, kind) {
+  if (state.eventHere) { hero?.selectEvent(null); state.selectedEvent = null; state.eventHere = false; oilChart?.focus(null); }
+  hero?.select(null);
+  const card = $('#vessel-card');
+  card.classList.add('event-card');
+  card.innerHTML = item ? gapCardMarkup(item, kind) : ''; card.hidden = !item;
 }
 async function loadVessels() {
   try { state.vessels = await load('/api/vessels'); state.vesselError = false; }
@@ -249,7 +264,13 @@ function bindControls() {
   $('#vessel-card').addEventListener('click', event => {
     if (event.target.closest('[data-close-vessel]')) { hero?.select(null); showVessel(null); return; }
     if (event.target.closest('[data-close-event]')) { closeEvent(); return; }
+    if (event.target.closest('[data-close-gap]')) { hero?.clearGap(); showGap(null); return; }
     const item = event.target.closest('[data-event-id]'); if (item) showMe(item.dataset.eventId, { here: true });
+  });
+  $('#ais-gaps-body').addEventListener('click', async event => {
+    const button = event.target.closest('[data-gap-mmsi]'); if (!button) return;
+    const item = (state.vessels?.gaps?.darkNow || []).find(d => d.mmsi === button.dataset.gapMmsi); if (!item) return;
+    await setView('hormuz'); hero?.selectGap(item.mmsi); showGap(item, 'dark');
   });
   // Views: WAI-ARIA tabs with arrow-key movement.
   const tabs = [...document.querySelectorAll('.view-switch [data-view]')];
@@ -297,9 +318,10 @@ async function start() {
   oilChart = createOilChart($('#oil-chart'), { height: 170, onMarker: id => showMe(id), onReadout: detail => renderPrices(detail) });
   if (runtime.configurationError) { $('#status-text').textContent = 'Live data not configured'; $('#status-open').dataset.state = 'down'; }
   createHeroMap($('#hero-map'), {
-    onSelect: vessel => { if (state.eventHere) { hero?.selectEvent(null); state.selectedEvent = null; state.eventHere = false; oilChart?.focus(null); } showVessel(vessel); },
+    onSelect: vessel => { if (state.eventHere) { hero?.selectEvent(null); state.selectedEvent = null; state.eventHere = false; oilChart?.focus(null); } hero?.clearGap(); showVessel(vessel); },
     onEventSelect: event => event ? showMe(event.id, { here: true }) : closeEvent(),
     onEventGroup: events => showGroup(events, { here: true }),
+    onGapSelect: (item, kind) => showGap(item, kind),
   }).then(map => { hero = map; hero.setEvents(located(state.events)); renderVessels(); })
     .catch(() => { $('#hero-map').insertAdjacentHTML('beforeend', '<p class="map-fallback">The 3D map could not load on this device. Vessel counts and other panels still update.</p>'); });
   every(10_000, loadVessels);

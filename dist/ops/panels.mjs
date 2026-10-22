@@ -168,6 +168,7 @@ export function statusSummary(sources = []) {
 export const ABOUT_NOTES = [
   ['Vessels', 'Positions come from AISStream, a free feed relayed by coastal receivers. It covers part of Hormuz and none of Bab el-Mandeb. Tankers often switch AIS off near attacks, so an empty map does not mean an empty strait. Positions older than 10 minutes fade, and are dropped after 30.'],
   ['Ship models', 'Tankers are drawn as detailed models enlarged far beyond true scale so they can be seen, turned to their reported heading. A vessel without a reported heading is shown as a ring, never with a guessed direction.'],
+  ['AIS gaps', 'A gap is a ship that stops reporting for three hours or more while moving deep inside reliable reception, learned from where at least two different ships are heard nearly every hour. A ship leaving range fades out at the edge of coverage and is not counted; counting pauses whenever the feed itself delivers much less than usual. The record starts when the collector does, so the first day is spent learning coverage. A gap is evidence that AIS was switched off, not proof.'],
   ['Tracks and replay', 'Trails and the replay show positions actually received over the last hour, joined in the order received. Nothing is extrapolated between reports.'],
   ['Transits', 'IMF PortWatch daily counts are derived from satellite AIS. They are released weekly, so the latest day is often several days old.'],
   ['Oil prices', 'Daily Brent and WTI spot prices from the U.S. Energy Information Administration. EIA publishes history weekly and next-day closes on Today in Energy. These are not live trading quotes.'],
@@ -240,4 +241,42 @@ export function eventGroupMarkup(events) {
   return `<button type="button" class="vc-close" data-close-event aria-label="Close the list">×</button>
     <p class="ec-meta">${list.length} events${places.length === 1 ? ' · ' + esc(places[0]) : ' close together'}</p>
     <ul class="event-list">${eventListMarkup(list, { limit: Infinity })}</ul>`;
+}
+
+/** "5 h 10 min", or "2 d 3 h" for a day or more. */
+export const durationLabel = hours => {
+  if (!Number.isFinite(hours) || hours < 0) return '';
+  const minutes = Math.round(hours * 60);
+  if (minutes < 24 * 60) return `${Math.floor(minutes / 60)} h${minutes % 60 ? ` ${minutes % 60} min` : ''}`;
+  const days = Math.floor(minutes / 1440), rest = Math.round((minutes - days * 1440) / 60);
+  return `${days} d${rest ? ` ${rest} h` : ''}`;
+};
+const GAP_RULE = 'Silent for 3 hours or more while moving inside reliable reception. Evidence that AIS was switched off, not proof.';
+
+/** The AIS gaps card: ships dark now and gaps closed in the last week. */
+export function gapsCardMarkup(gaps) {
+  if (!gaps) return '<p class="empty-note">The collector has not reported AIS gaps yet.</p>';
+  const s = gaps.summary || {};
+  if (!gaps.ready) return `<p class="empty-note">Learning where reception is reliable: ${esc(String(Math.min(24, gaps.learnedHours || 0)))} of 24 hours on record. Gaps are counted once a full day of steady reception is in.</p><p class="gap-rule">${esc(GAP_RULE)}</p>`;
+  const paused = gaps.feedHealthy ? '' : '<p class="gap-paused">Paused: the AIS feed is receiving much less than usual, so a silent ship proves nothing. Counts resume when it recovers.</p>';
+  const dark = (gaps.darkNow || []).slice(0, 3).map(d => `<li><button type="button" data-gap-mmsi="${esc(d.mmsi)}" data-gap-kind="dark"><span class="gap-name">${esc(d.name || `MMSI ${d.mmsi}`)}${d.tanker ? ' · tanker' : ''}</span><span class="gap-meta">silent ${esc(durationLabel(d.hours))} · last seen ${esc(dayLabel(d.lastSeen))} ${esc(clockLabel(d.lastSeen))}</span></button></li>`).join('');
+  return `${paused}<div class="gap-figures">
+      <div><strong>${s.darkNow ?? 0}</strong><span>dark now${s.darkNowTankers ? ` · ${s.darkNowTankers} tankers` : ''}</span></div>
+      <div><strong>${s.completed7d ?? 0}</strong><span>gaps in 7 days${s.completed7dTankers ? ` · ${s.completed7dTankers} tankers` : ''}</span></div>
+      <div><strong>${s.medianHours === null || s.medianHours === undefined ? '—' : esc(durationLabel(s.medianHours))}</strong><span>median time dark${s.longestHours ? ` · longest ${esc(durationLabel(s.longestHours))}` : ''}</span></div>
+    </div>${dark ? `<ul class="gap-list">${dark}</ul>` : ''}<p class="gap-rule">${esc(GAP_RULE)}</p>`;
+}
+
+/** Card for one gap point on the Hormuz map. */
+export function gapCardMarkup(gap, kind) {
+  if (!gap) return '';
+  const name = esc(gap.name || `MMSI ${gap.mmsi}`);
+  const body = kind === 'dark'
+    ? `<p class="ec-summary">Stopped reporting while moving, inside reliable reception, at ${esc(dayLabel(gap.lastSeen))} ${esc(clockLabel(gap.lastSeen))}. Silent for ${esc(durationLabel(gap.hours))} so far.</p>`
+    : `<p class="ec-summary">Went silent at ${esc(dayLabel(gap.from.t))} ${esc(clockLabel(gap.from.t))} and reappeared ${esc(durationLabel(gap.hours))} later, ${esc(String(gap.distanceNm))} nm away, at ${esc(dayLabel(gap.to.t))} ${esc(clockLabel(gap.to.t))}.</p>`;
+  return `<button type="button" class="vc-close" data-close-gap aria-label="Close">×</button>
+    <p class="ec-meta"><b>AIS gap</b> · ${kind === 'dark' ? 'dark now' : 'reappeared'}${gap.tanker ? ' · tanker' : ''}</p>
+    <h3>${name}</h3>
+    <dl><dt>MMSI</dt><dd>${esc(gap.mmsi)}</dd></dl>${body}
+    <p class="ec-note">${esc(GAP_RULE)}</p>`;
 }
