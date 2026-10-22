@@ -28,6 +28,7 @@ IMO register incidents appear on the map automatically. Add a shipping event fro
 3. **Claimed or confirmed:** an event reported by only one side is `"claimed"`, and its summary must contain the word "claim" or "claimed". Use `"confirmed"` when the striking party confirms it or two independent outlets report it.
 4. **Location:**
    - Coordinates are those of the named place (city, port, airport or facility), not a guessed impact point. Give four decimals.
+   - Ship attacks belong at sea. When the report gives a bearing and distance from a place, for example "about 11 nm west of Bukha", write it into `place` in that form; `node scripts/events/apply-offsets.mjs` then moves the event to that position. When it gives only "off" a place, keep the place's coordinates: the maps draw ship attacks at the nearest water.
    - `precision` is `facility`, `city`, `area` or `sea-area`. Use `sea-area` only when the coordinates are at sea.
 5. **Text:**
    - `title`: 90 characters or fewer, plain and factual.
@@ -52,7 +53,7 @@ IMO register incidents appear on the map automatically. Add a shipping event fro
    - Houthi missile and drone attacks, Saudi-led coalition strikes, US and Israeli strikes
 4. Add the events that meet the rules, keeping `events` sorted by date and then by id. Apply any corrections.
 5. Set `reviewedAt` to the current UTC time as `YYYY-MM-DDTHH:MM:SSZ`.
-6. Run `npm ci` once, then `npm run check:events`. If anything fails, fix the file and run it again. Never commit a failing list.
+6. Run `npm ci` once, then `node scripts/events/apply-offsets.mjs`, then `npm run check:events`. If anything fails, fix the file and run it again. Never commit a failing list.
 7. Decide whether to commit:
    - **Commit** when you added or corrected events, or when `reviewedAt` was more than six hours old (a heartbeat, so the page shows the list is still being checked).
    - **Otherwise** change nothing and stop.
