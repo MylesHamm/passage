@@ -6,7 +6,11 @@ const data = JSON.parse(readFileSync(new URL('../dist/data/war-events.json', imp
 
 const BOUNDS = {minLon: 22.5, maxLon: 67.5, minLat: 0, maxLat: 41};
 const FIRST_DAY = '2026-02-28';
-const LAST_DAY = '2026-10-21';
+// The list is updated automatically, so its limits follow its own review time:
+// a date, or a UTC date-time, never in the future.
+const REVIEWED = data.reviewedAt;
+const isReviewTime = value => typeof value === 'string' && (isDateString(value) || /^\d{4}-\d\d-\d\dT\d\d:\d\d(?::\d\d(?:\.\d+)?)?Z$/.test(value) && isDateString(value.slice(0, 10)) && Number.isFinite(Date.parse(value)));
+const LAST_DAY = typeof REVIEWED === 'string' ? REVIEWED.slice(0, 10) : '';
 const LAYERS = ['shipping', 'missile-drone', 'strikes-on-iran-yemen'];
 const TYPES = ['shipping-attack', 'seizure', 'mine', 'missile', 'drone', 'air-strike', 'naval-strike'];
 const PRECISIONS = ['facility', 'city', 'area', 'sea-area'];
@@ -15,6 +19,7 @@ const EVENT_KEYS = ['id', 'date', 'time', 'layer', 'type', 'actor', 'target', 'p
 const MISSION_KEYS = ['id', 'name', 'operator', 'start', 'end', 'area', 'polygon', 'labelAt', 'precision', 'sources'];
 const SOURCE_KEYS = ['publisher', 'title', 'url', 'date'];
 
+const isDateString = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && new Date(value + 'T00:00:00Z').toISOString().slice(0, 10) === value;
 const isDate = value => {
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const parsed = new Date(value + 'T00:00:00Z');
@@ -44,10 +49,10 @@ function checkSources(sources, label) {
 test('top-level schema', () => {
   assert.deepEqual(Object.keys(data).sort(), ['basis', 'events', 'missions', 'reviewedAt', 'schema']);
   assert.equal(data.schema, 'passage-war-events/v1');
-  assert.ok(isDate(data.reviewedAt));
-  assert.equal(data.reviewedAt, LAST_DAY);
+  assert.ok(isReviewTime(data.reviewedAt), `review time ${data.reviewedAt}`);
+  assert.ok(Date.parse(data.reviewedAt.length === 10 ? data.reviewedAt + 'T00:00:00Z' : data.reviewedAt) <= Date.now() + 300000, 'the review time is not in the future');
   assert.ok(nonEmpty(data.basis));
-  assert.ok(Array.isArray(data.events) && data.events.length >= 70 && data.events.length <= 200, `event count ${data.events.length}`);
+  assert.ok(Array.isArray(data.events) && data.events.length >= 70 && data.events.length <= 5000, `event count ${data.events.length}`);
   assert.ok(Array.isArray(data.missions) && data.missions.length > 0);
 });
 

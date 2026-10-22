@@ -1,6 +1,6 @@
 {
   "name": "passage-maritime-watch",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "private": true,
   "type": "module",
   "description": "Regional war monitor: Hormuz tanker traffic, transits, oil prices and market odds from the Gulf to the Red Sea.",
@@ -15,7 +15,8 @@
     "build:pages": "node scripts/build-pages.mjs",
     "cloud:check": "wrangler deploy --dry-run --config cloud/wrangler.jsonc --outdir build/worker",
     "cloud:dev": "wrangler dev --config cloud/wrangler.jsonc",
-    "cloud:deploy": "wrangler deploy --config cloud/wrangler.jsonc"
+    "cloud:deploy": "wrangler deploy --config cloud/wrangler.jsonc",
+    "check:events": "node scripts/check-events.mjs && node --test test/war-events.test.mjs test/curated-events.test.mjs test/ops-events.test.mjs"
   },
   "dependencies": {
     "ws": "8.21.3"

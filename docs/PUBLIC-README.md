@@ -18,7 +18,7 @@ An operations-center view of the regional war from the Gulf to the Red Sea, cent
 ## What updates
 
 - Vessel positions refresh every ten seconds while the page is open. The collector receives them continuously. Positions older than ten minutes fade, and are dropped after thirty.
-- Odds and headlines refresh every minute, oil every ten minutes, and transits and war events every thirty. The curated event list is reviewed by hand and shows its review date. PortWatch publishes weekly, so the latest transit day is often several days old.
+- Odds and headlines refresh every minute, war events every five minutes, oil every ten and transits every thirty. An automated review checks for new events every hour and commits only source-linked ones to the list in this repository. The collector picks the list up within about fifteen minutes, with no site publish. The page shows when the list was last reviewed. See `docs/EVENTS-UPDATE.md`. PortWatch publishes weekly, so the latest transit day is often several days old.
 - Nothing is extrapolated. A trail joins positions actually received, and a missing price or count stays missing.
 
 The free AIS feed covers part of Hormuz and none of Bab el-Mandeb. An empty stretch of water on the map does not mean no ships are there.

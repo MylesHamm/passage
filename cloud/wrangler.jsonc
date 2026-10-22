@@ -7,7 +7,7 @@
   "workers_dev": true,
   "vars": {
     "ALLOWED_ORIGIN": "https://myleshamm.github.io",
-    "APP_VERSION": "0.9.0",
+    "APP_VERSION": "0.9.1",
     "COLLECTOR_PAUSED": "false"
   },
   "durable_objects": {
