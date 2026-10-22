@@ -117,3 +117,8 @@ test('curated events come from the repository file, and a broken publish keeps t
   body='{not json';f.advance(3_600_000);
   assert.equal((await f.service.get('/api/events')).events.length,first.events.length);
 });
+
+test('the page may call exactly the routes the collector serves',async()=>{
+  const {PUBLIC_ENDPOINTS}=await import('../dist/runtime-config.mjs');
+  assert.deepEqual([...PUBLIC_ENDPOINTS].sort(),[...PUBLIC_API_PATHS].sort());
+});
