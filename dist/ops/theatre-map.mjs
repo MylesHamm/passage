@@ -91,7 +91,7 @@ export async function createTheatreMap(root, { onSelect, onGroup } = {}) {
     select(id, { fly = true } = {}) {
       markers.select(id);
       const event = markers.events.find(e => e.id === id);
-      if (event && fly) view.flyTo([event.lon, event.lat], { zoom: focusZoom(event) });
+      if (event && fly) view.flyTo(event.layer === 'shipping' ? view.seaPoint([event.lon, event.lat]) : [event.lon, event.lat], { zoom: focusZoom(event) });
     },
     /** Jumps to one of the two fronts: Hormuz, or the Red Sea and Yemen. */
     front(name) { const front = FRONTS[name]; if (front) view.flyTo(front.center, { zoom: front.zoom }); },

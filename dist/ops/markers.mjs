@@ -44,12 +44,20 @@ const layerOf = members => {
 };
 
 /**
- * One map's event markers. `view` returns the terrain view (for its zoom and
- * fly-to); `onSelect` gets the tapped event or null, `onGroup` a group's events.
+ * One map's event markers. `view` returns the terrain view (for its zoom,
+ * fly-to and water); `onSelect` gets the tapped event or null, `onGroup` a group's events.
  */
 export function createEventMarkers({ view, onSelect, onGroup } = {}) {
   let events = [], selected = null;
-  const nodes = new Map(), groupNodes = new Map(), groupMembers = new Map();
+  const nodes = new Map(), groupNodes = new Map(), groupMembers = new Map(), drawnAt = new Map();
+  // Ship attacks are drawn in the water: a position on land moves to the nearest
+  // sea on this map's terrain. Other events stay at their named place.
+  const position = event => {
+    if (event.layer !== 'shipping') return [event.lon, event.lat];
+    const key = `${event.id}|${event.lon}|${event.lat}`;
+    if (!drawnAt.has(key)) drawnAt.set(key, view()?.seaPoint?.([event.lon, event.lat]) || [event.lon, event.lat]);
+    return drawnAt.get(key);
+  };
 
   function node(event, overlay) {
     let el = nodes.get(event.id);
@@ -69,7 +77,7 @@ export function createEventMarkers({ view, onSelect, onGroup } = {}) {
         const group = groupMembers.get(id);
         if (!group) return;
         const action = groupAction(group, view().pose.zoom), n = group.members.length;
-        const centre = [group.members.reduce((s, m) => s + m.event.lon, 0) / n, group.members.reduce((s, m) => s + m.event.lat, 0) / n];
+        const centre = [group.members.reduce((s, m) => s + m.at[0], 0) / n, group.members.reduce((s, m) => s + m.at[1], 0) / n];
         if (action.kind === 'zoom') view().flyTo(centre, { zoom: action.zoom });
         onGroup?.(group.members.map(m => m.event));
       });
@@ -82,8 +90,8 @@ export function createEventMarkers({ view, onSelect, onGroup } = {}) {
   function place({ project, overlay, shapes }) {
     const now = Date.now(), points = [];
     for (const event of events) {
-      const p = project([event.lon, event.lat], .3);
-      if (p.visible) points.push({ event, x: p.x, y: p.y });
+      const at = position(event), p = project(at, .3);
+      if (p.visible) points.push({ event, at, x: p.x, y: p.y });
     }
     const shown = new Set(), shownGroups = new Set();
     groupMembers.clear();
@@ -107,7 +115,7 @@ export function createEventMarkers({ view, onSelect, onGroup } = {}) {
       const label = `${lead.title}. ${lead.date}. ${lead.place}${lead.confidence === 'claimed' ? '. Claimed' : ''}`;
       if (el.getAttribute('aria-label') !== label) el.setAttribute('aria-label', label);
       if (selected === lead.id && Number.isFinite(lead.radiusNm) && lead.radiusNm > 0) {
-        const edge = project(destination([lead.lon, lead.lat], 90, lead.radiusNm), .3);
+        const edge = project(destination(group.members[0].at, 90, lead.radiusNm), .3);
         if (edge.visible) shapes.push(`<circle class="event-radius" cx="${group.x.toFixed(1)}" cy="${group.y.toFixed(1)}" r="${Math.hypot(edge.x - group.x, edge.y - group.y).toFixed(1)}"/>`);
       }
     }
