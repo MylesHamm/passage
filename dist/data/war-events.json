@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-21",
+  "reviewedAt": "2026-10-22T13:57:47Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -3853,6 +3853,37 @@
       ]
     },
     {
+      "id": "2026-10-16-aden-airport-missiles-near-yemenia-plane",
+      "date": "2026-10-16",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Aden International Airport complex; the Houthis named a Saudi command HQ at Badr camp and a weapons depot",
+      "place": "Aden International Airport",
+      "country": "Yemen",
+      "lat": 12.8294,
+      "lon": 45.0289,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Two Houthi missiles land inside Aden airport near a Cairo-bound Yemenia plane",
+      "summary": "Information Minister Moammar al-Eryani said two Houthi missiles landed near the runway late on 16 Oct, about 500 m from a Yemenia plane bound for Cairo; no casualties were reported. A Houthi source said they targeted Badr camp.",
+      "sources": [
+        {
+          "publisher": "The National",
+          "title": "Yemen's Houthis launch missile attacks on Aden airport",
+          "url": "https://www.thenationalnews.com/news/mena/2026/10/17/yemens-houthis-launch-missile-attacks-on-aden-airport/",
+          "date": "2026-10-17"
+        },
+        {
+          "publisher": "Macau Business (AFP)",
+          "title": "Strikes hit airport complex in Yemen's govt-held Aden, Houthis claim attack",
+          "url": "https://macaubusiness.com/strikes-hit-airport-complex-in-yemens-govt-held-aden-houthis-claim-attack/",
+          "date": "2026-10-17"
+        }
+      ]
+    },
+    {
       "id": "2026-10-16-dhamar-al-ar-village-strike",
       "date": "2026-10-16",
       "time": null,
@@ -3915,6 +3946,74 @@
       ]
     },
     {
+      "id": "2026-10-16-two-tankers-attacked-off-jubail",
+      "date": "2026-10-16",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Two tankers (one hit by an unknown projectile, one by a rocket-propelled grenade from a small boat)",
+      "place": "Persian Gulf, 68 and 78 nm north-east of Jubail",
+      "country": "Saudi Arabia (Persian Gulf)",
+      "lat": 27.0,
+      "lon": 49.6544,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "UKMTO reports tankers attacked north-east of Jubail, one by RPG from a small boat",
+      "summary": "UKMTO said a tanker 68 nm north-east of Jubail was hit by an unknown projectile on 16 Oct and its crew evacuated; one 78 nm north-east was hit by an RPG from a small boat at 19:22 GMT. Reuters could not say if they were one incident.",
+      "sources": [
+        {
+          "publisher": "Arab News (Reuters)",
+          "title": "Tanker struck by unknown projectile off Saudi Arabia on Friday, UKMTO says",
+          "url": "https://www.arabnews.com/saudi-arabia/tanker-struck-by-unknown-projectile-off-saudi-arabia-on-friday-ukmto-says-3006831",
+          "date": "2026-10-17"
+        },
+        {
+          "publisher": "Arab Times",
+          "title": "Second Tanker Attacked Off Saudi Arabia’s Jubail in Same Area",
+          "url": "https://www.arabtimesonline.com/news/second-tanker-attacked-off-saudi-arabias-jubail-in-same-area/",
+          "date": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-18-najran-projectile-injures-six",
+      "date": "2026-10-18",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (per Saudi Civil Defence)",
+      "target": "Residential area of Najran",
+      "place": "Najran",
+      "country": "Saudi Arabia",
+      "lat": 17.4917,
+      "lon": 44.1322,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Houthi projectile hits a residential area of Najran, injuring six",
+      "summary": "Saudi Civil Defence said a Houthi projectile fell on a residential area of Najran on 18 October, injuring six citizens and damaging three homes and three vehicles. No Houthi comment was reported.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthi strike injures six in southern Saudi Arabia",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthi-strike-injures-six-southern-saudi-arabia",
+          "date": "2026-10-18"
+        },
+        {
+          "publisher": "Arab News Pakistan",
+          "title": "Saudi civil defense says 6 citizens injured after projectile falls in Najran",
+          "url": "https://www.arabnews.pk/saudi-arabia/saudi-civil-defense-says-6-citizens-injured-after-projectile-falls-in-najran-3004548",
+          "date": "2026-10-18"
+        },
+        {
+          "publisher": "The Express Tribune (Anadolu, Reuters)",
+          "title": "Six injured as Houthi projectile hits Najran, says Saudi Civil Defence",
+          "url": "https://tribune.com.pk/story/2635502/saudi-led-coalition-says-two-officers-killed-in-helicopter-crash-in-najran",
+          "date": "2026-10-18"
+        }
+      ]
+    },
+    {
       "id": "2026-10-18-saada-house-strike",
       "date": "2026-10-18",
       "time": null,
@@ -3935,6 +4034,43 @@
           "publisher": "The Times of Israel (AFP)",
           "title": "Houthi media says Saudi strike killed 9 in northern Yemen",
           "url": "https://www.timesofisrael.com/liveblog_entry/houthi-media-says-saudi-strike-killed-9-in-northern-yemen/",
+          "date": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-18-tug-hit-off-khor-fakkan",
+      "date": "2026-10-18",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Southbound tug",
+      "place": "Gulf of Oman north-east of Khor Fakkan",
+      "country": "United Arab Emirates (Gulf of Oman)",
+      "lat": 25.3333,
+      "lon": 56.35,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Tug hit by two projectiles off Khor Fakkan; one crew member lightly hurt",
+      "summary": "UKMTO said two projectiles of unknown origin hit a southbound tug north-east of Khor Fakkan on 18 Oct, damaging it and causing one minor injury; the tug continued its voyage. No party was named.",
+      "sources": [
+        {
+          "publisher": "Arab News (Reuters)",
+          "title": "Authority: Marine tug targeted by two projectiles off Khor Fakkan in UAE",
+          "url": "https://www.arabnews.com/middle-east/authority-marine-tug-targeted-by-two-projectiles-off-khor-fakkan-in-uae-3006965",
+          "date": "2026-10-18"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "One injured as projectiles hit tugboat off UAE coast, UKMTO says",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/one-injured-projectiles-hit-tugboat-uae-coast-ukmto-says",
+          "date": "2026-10-18"
+        },
+        {
+          "publisher": "Arab Times",
+          "title": "Tug Struck by Two Unknown Projectiles Northeast of UAE’s Khor Fakkan",
+          "url": "https://www.arabtimesonline.com/news/tug-struck-by-two-unknown-projectiles-northeast-of-uaes-khor-fakkan/",
           "date": "2026-10-18"
         }
       ]
@@ -4004,6 +4140,234 @@
           "title": "Houthis say 8 fishermen killed as 93 Saudi air, missile strikes hit Yemen",
           "url": "https://english.news.cn/20261021/ec15e8acfa314bd786e60d8420e101bf/c.html",
           "date": "2026-10-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-20-tanker-hit-off-al-faw",
+      "date": "2026-10-20",
+      "time": "18:30Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Tanker (named in industry reporting as the Liberia-flagged Soyia)",
+      "place": "About 30 nm south-east of Al Faw, Iraq",
+      "country": "Iraq (northern Persian Gulf)",
+      "lat": 29.9758,
+      "lon": 48.4722,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Tanker hit by unknown projectile 30 nm south-east of Iraq's Al Faw; no damage",
+      "summary": "UKMTO said a tanker about 30 nm south-east of Al Faw was struck by an unknown projectile at about 18:30 GMT on 20 Oct, with no damage and the crew safe. Industry reporting named it as the Liberia-flagged tanker Soyia.",
+      "sources": [
+        {
+          "publisher": "Devdiscourse (Reuters)",
+          "title": "Tanker struck by projectile southeast of Iraq's Al-Faw on Tuesday, UKMTO says",
+          "url": "https://www.devdiscourse.com/article/international/3995693-tanker-struck-by-projectile-southeast-of-iraqs-alfaw-on-tuesday-ukmto-says",
+          "date": "2026-10-21"
+        },
+        {
+          "publisher": "Arab Times",
+          "title": "Tanker Struck by Unknown Projectile Southeast of Iraq’s Al Faw: UKMTO",
+          "url": "https://www.arabtimesonline.com/news/tanker-struck-by-unknown-projectile-southeast-of-iraqs-al-faw-ukmto/",
+          "date": "2026-10-21"
+        },
+        {
+          "publisher": "SAFETY4SEA",
+          "title": "Tanker catches fire off Oman as Iran claims fresh attacks on Gulf shipping",
+          "url": "https://safety4sea.com/tanker-catches-fire-off-oman-as-iran-claims-fresh-attacks-on-gulf-shipping/",
+          "date": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-21-aden-airport-runway-missile",
+      "date": "2026-10-21",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Aden International Airport; the Houthis named a coalition operations room at Badr camp",
+      "place": "Aden International Airport",
+      "country": "Yemen",
+      "lat": 12.8294,
+      "lon": 45.0289,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Houthi ballistic missile hits Aden airport runway as flights depart",
+      "summary": "Yemen's army spokesman said a ballistic missile targeted Aden airport on 21 Oct; Arab News, citing Al Arabiya, said it hit the runway just after two flights left, hurting no one. The Houthis said they hit Badr camp.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Houthis attack airports in Aden and Al-Mukalla with missiles and drones",
+          "url": "https://www.arabnews.com/middle-east/houthis-attack-airports-in-aden-and-al-mukalla-with-missiles-and-drones-3007486",
+          "date": "2026-10-21"
+        },
+        {
+          "publisher": "Al Jazeera (AFP)",
+          "title": "Yemen’s government accuses Houthis of airport attacks in Aden, Mukalla",
+          "url": "https://www.aljazeera.com/news/2026/10/21/blast-heard-in-yemens-aden-as-houthis-claim-attack-on-military-camp",
+          "date": "2026-10-21"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "Missile targets Aden airport as Houthis claim strike on coalition site",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/missile-targets-aden-airport-houthis-claim-strike-coalition-site",
+          "date": "2026-10-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-21-dammam-airport-attack-kills-two",
+      "date": "2026-10-21",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "King Fahd International Airport",
+      "place": "King Fahd International Airport, Dammam",
+      "country": "Saudi Arabia",
+      "lat": 26.4712,
+      "lon": 49.7979,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Attack on Dammam's King Fahd airport kills two and injures eight",
+      "summary": "Saudi Arabia's civil aviation authority said an attack on King Fahd International Airport on the evening of 21 Oct killed a Saudi and an Indian resident and injured eight. It did not name the weapon; the Houthis claimed it on 22 Oct.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Attack on Saudi Arabia’s King Fahd airport kills two people",
+          "url": "https://www.aljazeera.com/news/2026/10/22/one-killed-eight-injured-in-attack-on-saudi-arabias-king-fahd-airport-2",
+          "date": "2026-10-22"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Dammam’s King Fahd airport resumes operations after attack kills 2",
+          "url": "https://www.arabnews.com/saudi-arabia/dammams-king-fahd-airport-resumes-normal-operations-3007672",
+          "date": "2026-10-22"
+        },
+        {
+          "publisher": "Durango Herald (AP)",
+          "title": "Iran says 7 tankers were damaged in the Strait of Hormuz, and other Mideast news",
+          "url": "https://www.durangoherald.com/articles/associated-press/iran-says-7-tankers-on-fire-or-damaged-in-the-strait-of-hormuz-and-other-mideast-news/",
+          "date": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-21-mukalla-riyan-airport-attack",
+      "date": "2026-10-21",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Coalition base at Riyan airport",
+      "place": "Riyan airport, Mukalla",
+      "country": "Yemen",
+      "lat": 14.6625,
+      "lon": 49.375,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Houthi missiles and drones target coalition base at Mukalla's Riyan airport",
+      "summary": "Yemen's army spokesman said three ballistic missiles hit al-Rayyan airport on 21 Oct; an official told AFP missiles and drones targeted a coalition base there. No injuries were reported. The Houthis said they hit Saudi military equipment.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Yemeni government says Houthis attacked Al Mukalla airport",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/yemeni-government-says-houthis-attacked-al-mukalla-airport",
+          "date": "2026-10-21"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Houthis attack airports in Aden and Al-Mukalla with missiles and drones",
+          "url": "https://www.arabnews.com/middle-east/houthis-attack-airports-in-aden-and-al-mukalla-with-missiles-and-drones-3007486",
+          "date": "2026-10-21"
+        },
+        {
+          "publisher": "Dawn (Reuters, AFP)",
+          "title": "Saudis intercept more drones as conflict with Houthis spirals",
+          "url": "https://www.dawn.com/news/2038928/saudis-intercept-more-drones-as-conflict-with-houthis-spirals",
+          "date": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-21-shaybah-drone-debris-kills-two",
+      "date": "2026-10-21",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Unattributed",
+      "target": "Saudi Aramco processing facility at the Shaybah oil field",
+      "place": "Shaybah oil field, Eastern Province",
+      "country": "Saudi Arabia",
+      "lat": 22.6058,
+      "lon": 54.0691,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Debris from drone downed over Aramco's Shaybah field kills two workers",
+      "summary": "Saudi Arabia's energy ministry said air defences intercepted a drone aimed at an Aramco processing facility at Shaybah on 21 Oct; falling debris killed a Filipino and a Nepali and injured two. It did not say who launched it.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Attack on Saudi Arabia’s King Fahd airport kills two people",
+          "url": "https://www.aljazeera.com/news/2026/10/22/one-killed-eight-injured-in-attack-on-saudi-arabias-king-fahd-airport-2",
+          "date": "2026-10-22"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Dammam’s King Fahd airport resumes operations after attack kills 2",
+          "url": "https://www.arabnews.com/saudi-arabia/dammams-king-fahd-airport-resumes-normal-operations-3007672",
+          "date": "2026-10-22"
+        },
+        {
+          "publisher": "Dawn (Reuters, AFP)",
+          "title": "Saudis intercept more drones as conflict with Houthis spirals",
+          "url": "https://www.dawn.com/news/2038928/saudis-intercept-more-drones-as-conflict-with-houthis-spirals",
+          "date": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-21-tanker-al-dasma-off-bukha",
+      "date": "2026-10-21",
+      "time": "01:45Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Kuwait-flagged oil product tanker (Al Dasma)",
+      "place": "About 11 nm west of Bukha, Musandam",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.1431,
+      "lon": 56.1531,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Kuwait-flagged tanker Al Dasma set on fire by projectile off Bukha near Hormuz",
+      "summary": "UKMTO said an unknown projectile struck a tanker 11 nm west of Bukha at 01:45 GMT on 21 Oct, starting a fire later put out; it anchored and all crew were safe. India's shipping minister said its 21 Indian crew were safe.",
+      "sources": [
+        {
+          "publisher": "Asharq Al-Awsat",
+          "title": "UKMTO: Ship Attacked Near Strait of Hormuz",
+          "url": "https://english.aawsat.com/world/5331918-ukmto-ship-attacked-near-strait-hormuz",
+          "date": "2026-10-21"
+        },
+        {
+          "publisher": "Aaj English TV",
+          "title": "Tanker hit by unidentified projectile off Oman, says UKMTO",
+          "url": "https://english.aaj.tv/news/330477393/tanker-hit-by-unidentified-projectile-off-oman-says-ukmto",
+          "date": "2026-10-21"
+        },
+        {
+          "publisher": "Marine Insight",
+          "title": "Oil Tanker With 21 Indian Seafarers Struck By Unknown Projectile In Strait Of Hormuz",
+          "url": "https://www.marineinsight.com/oil-tanker-with-21-indian-seafarers-struck-by-unknown-projectile-in-strait-of-hormuz/",
+          "date": "2026-10-22"
+        },
+        {
+          "publisher": "SAFETY4SEA",
+          "title": "Tanker catches fire off Oman as Iran claims fresh attacks on Gulf shipping",
+          "url": "https://safety4sea.com/tanker-catches-fire-off-oman-as-iran-claims-fresh-attacks-on-gulf-shipping/",
+          "date": "2026-10-22"
         }
       ]
     }
