@@ -1,6 +1,6 @@
 # Updating the curated war events
 
-This is the procedure for keeping `dist/data/war-events.json` current. An automated routine follows it every hour. A person can follow it too.
+This is the procedure for keeping `dist/data/war-events.json` current. An automated routine follows it every six hours. A person can follow it too.
 
 The live collector reads the file from `main` every ten minutes, so a commit to `main` reaches the public page within about fifteen minutes. No site publish is needed. If a commit breaks the rules, the collector keeps serving the last good list. Never rely on that: check before every commit.
 
