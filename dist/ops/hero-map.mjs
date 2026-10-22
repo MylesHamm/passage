@@ -1,10 +1,11 @@
 // Hormuz hero map: WebGL terrain with received vessels, last-hour tracks and a
 // replay of received positions. Nothing is extrapolated between reports.
-import { SCENES, geographicPoint, clamp } from '../terrain/geometry.mjs';
+import { SCENES, geographicPoint, longitudeLatitudeToUV, clamp } from '../terrain/geometry.mjs';
 import { shipSprite, localView } from '../terrain/ship-sprites.mjs';
 import { createTerrainView } from './terrain-view.mjs';
 import { isCurrentVesselPosition, POSITION_STALE_MS } from '../vessel-data.mjs';
 import { isTanker, esc } from './panels.mjs';
+import { createEventMarkers } from './markers.mjs';
 
 const SCENE = SCENES.hormuz;
 // The free feed's receivers sit along the Dubai and Sharjah coast, so the
@@ -20,6 +21,13 @@ const HERO_LABELS = [
   { name: 'STRAIT OF HORMUZ', point: [56.55, 26.45], kind: 'water' },
 ];
 export const REPLAY_WINDOW_MS = 60 * 60_000;
+/** War events drawn on the Hormuz map: the last week, inside its own terrain. */
+export const RECENT_EVENT_DAYS = 7;
+export const inHormuzScene = ([lon, lat]) => { const [u, v] = longitudeLatitudeToUV([lon, lat], SCENE); return u >= 0 && u <= 1 && v >= 0 && v <= 1; };
+export function recentHormuzEvents(events, { now = Date.now(), days = RECENT_EVENT_DAYS } = {}) {
+  const from = new Date(now - days * 86_400_000).toISOString().slice(0, 10);
+  return (Array.isArray(events) ? events : []).filter(e => Number.isFinite(e?.lat) && Number.isFinite(e?.lon) && e.date >= from && inHormuzScene([e.lon, e.lat]));
+}
 export const REPLAY_DURATION_MS = 12_000;
 
 const ms = value => typeof value === 'string' && Number.isFinite(Date.parse(value)) ? Date.parse(value) : null;
@@ -75,9 +83,10 @@ export function projectedVesselAngle(vessel, degrees, project) {
   return Math.atan2(end.y - start.y, end.x - start.x) * 180 / Math.PI + 90;
 }
 
-export async function createHeroMap(root, { onSelect } = {}) {
+export async function createHeroMap(root, { onSelect, onEventSelect, onEventGroup } = {}) {
   let vessels = [], showAll = true, selected = null, replay = null, view = null;
   const nodes = new Map();
+  const markers = createEventMarkers({ view: () => view, onSelect: onEventSelect, onGroup: onEventGroup });
   const sizeFor = pose => clamp(40 * Math.sqrt(pose.zoom), 34, 92);
 
   function vesselNode(vessel, overlay) {
@@ -153,6 +162,7 @@ export async function createHeroMap(root, { onSelect } = {}) {
       }
     }
     for (const [mmsi, node] of nodes) if (!seen.has(mmsi)) node.hidden = true;
+    markers.place({ project, overlay, shapes: lines });
     svg.innerHTML = lines.join('');
     if (replay) replay.onClock?.(t);
   }
@@ -180,6 +190,10 @@ export async function createHeroMap(root, { onSelect } = {}) {
     vessel(mmsi) { return vessels.find(v => v.mmsi === mmsi) || null; },
     select(mmsi) { selected = mmsi; view.invalidate(); },
     setShowAll(value) { showAll = Boolean(value); view.invalidate(); },
+    /** Recent war events in view: see recentHormuzEvents. */
+    setEvents: list => markers.setEvents(recentHormuzEvents(list)),
+    get eventCount() { return markers.events.length; },
+    selectEvent: id => markers.select(id),
     setPaused: value => view.setPaused(value),
     zoom: factor => view.zoom(factor),
     reset: () => view.reset(),

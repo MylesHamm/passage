@@ -44,3 +44,13 @@ test('the opening view frames every event clear of the overlays, on a desktop an
   }
   assert.equal(fitPose([], 999, 552).zoom, .92, 'no events keeps the default view');
 });
+
+test('the Hormuz map shows only the last week of events inside its own terrain', async () => {
+  const { recentHormuzEvents, inHormuzScene } = await import('../dist/ops/hero-map.mjs');
+  assert.equal(inHormuzScene([56.3, 26.5]), true, 'the strait');
+  assert.equal(inHormuzScene([49.66, 27.0]), false, 'Jubail is on the regional map only');
+  const now = Date.parse('2026-10-22T18:00:00Z');
+  const event = (id, date, lon, lat) => ({ id, date, lon, lat });
+  const shown = recentHormuzEvents([event('new', '2026-10-21', 56.15, 26.14), event('week', '2026-10-15', 56.35, 25.33), event('old', '2026-10-11', 56.3, 26.5), event('far', '2026-10-21', 49.8, 26.47), event('unplaced', '2026-10-21', null, null)], { now });
+  assert.deepEqual(shown.map(e => e.id), ['new', 'week']);
+});

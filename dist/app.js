@@ -2,7 +2,7 @@
 // data-age stamp; a failed source leaves its last good data with a clear stamp.
 import { apiFetch, siteUrl, runtime } from './runtime-config.mjs';
 import { createOilChart } from './oil-chart-view.mjs';
-import { createHeroMap } from './ops/hero-map.mjs';
+import { createHeroMap, recentHormuzEvents, RECENT_EVENT_DAYS } from './ops/hero-map.mjs';
 import {
   vesselCounts, heroCountsMarkup, vesselCardMarkup, oddsMarkup, headlinesMarkup, shownPrices, dayLabel,
   clockLabel, ageLabel, transitRowMarkup, statusSummary, aboutMarkup, chartSeries, eventCardMarkup, eventListMarkup, eventTimelineMarkup, eventGroupMarkup, esc,
@@ -12,7 +12,7 @@ import { WAR_START, LAYERS, curatedEvents, curatedMissions, activeMissions, regi
 const $ = selector => document.querySelector(selector);
 const state = {
   vessels: null, vesselsAt: 0, vesselError: false, news: null, expectations: null, oil: null, transits: null, diagnostics: null, period: 90, region: 'all',
-  view: 'hormuz', curated: null, maritime: null, events: [], missions: [], layers: new Set([...Object.keys(LAYERS), 'missions']), selectedEvent: null, timelineLayer: 'all', inspected: null,
+  view: 'hormuz', curated: null, maritime: null, events: [], missions: [], layers: new Set([...Object.keys(LAYERS), 'missions']), selectedEvent: null, eventHere: false, timelineLayer: 'all', inspected: null,
 };
 let hero = null, theatre = null, theatreLoading = null, oilChart = null;
 const DAY = 86_400_000;
@@ -34,7 +34,7 @@ function stamp(node, text, status = 'live') { if (!node) return; node.textConten
 /* Vessels */
 function renderVessels() {
   const now = Date.now(), counts = vesselCounts(state.vessels?.vessels, now);
-  $('#hero-counts').innerHTML = heroCountsMarkup(counts, { connected: !state.vesselError || Boolean(state.vessels) });
+  $('#hero-counts').innerHTML = heroCountsMarkup(counts, { connected: !state.vesselError || Boolean(state.vessels), events: recentHormuzEvents(located(state.events)).length, days: RECENT_EVENT_DAYS });
   const newest = counts.newestAgeMs;
   stamp($('#ais-stamp'), state.vesselError && !state.vessels ? 'AIS unavailable' : newest === null ? 'AIS · no current positions' : `AIS · latest ${ageLabel(newest)}`, state.vesselError ? 'down' : newest !== null && newest > 600000 ? 'stale' : 'live');
   hero?.setVessels(state.vessels?.vessels || []);
@@ -114,6 +114,7 @@ function renderEvents() {
   const newest = state.events[0]?.date;
   stamp($('#latest-events-stamp'), newest ? `Latest ${dayLabel(newest)}` : '');
   theatre?.setEvents(shown);
+  hero?.setEvents(located(state.events)); renderVessels();
   if ($('#events-dialog').open) renderTimeline();
   renderMissions();
   renderChartMarkers();
@@ -131,8 +132,10 @@ function renderTimeline() {
   $('#timeline-body').innerHTML = eventTimelineMarkup(all);
 }
 /** Several events at one spot: the card lists them, and each opens as usual. */
-function showGroup(events) {
-  const card = $('#event-card');
+// An event opened from the Hormuz map uses that map's card; from anywhere else, the regional map's.
+const eventCard = here => { const card = $(here ? '#vessel-card' : '#event-card'); card.classList.add('event-card'); return card; };
+function showGroup(events, { here = false } = {}) {
+  const card = eventCard(here);
   card.innerHTML = eventGroupMarkup(events); card.hidden = false;
 }
 function renderChartMarkers() {
@@ -147,24 +150,25 @@ function widenChartFor(date) {
   if (Date.parse(date) < Date.parse(last) - (state.period - 1) * DAY) $('[data-period="war"]').click();
 }
 /** "Show me": the theatre flies to the event, the chart marks the window, the card shows what happened next. */
-async function showMe(id) {
+async function showMe(id, { here = false } = {}) {
   const event = state.events.find(e => e.id === id);
   if (!event) return;
-  state.selectedEvent = event.id;
+  state.selectedEvent = event.id; state.eventHere = here;
   // On a phone the list and chart sit below the map: bring the map back into view first.
   const top = $('#hero').getBoundingClientRect().top;
   if (top < 0 || top > innerHeight / 2) $('#hero').scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-  await setView('theatre');
-  theatre?.select(event.id); renderMissions();
+  if (here) { hero?.select(null); hero?.selectEvent(event.id); }
+  else { await setView('theatre'); theatre?.select(event.id); renderMissions(); }
   const brent = priceMove(brentObservations(), event.date);
   const odds = relatedMarkets(state.expectations?.markets, event).map(m => ({ question: m.question, move: oddsMove(m.history, event.date) }));
   widenChartFor(event.date);
   oilChart?.focus({ id: event.id, date: event.date, endDate: brent?.after?.date || null });
-  const card = $('#event-card');
+  const card = eventCard(here);
   card.innerHTML = eventCardMarkup(event, { brent, odds }); card.hidden = false;
 }
 function closeEvent() {
-  state.selectedEvent = null; theatre?.select(null, { fly: false }); renderMissions(); oilChart?.focus(null);
+  if (state.eventHere) { hero?.selectEvent(null); showVessel(null); }
+  state.selectedEvent = null; state.eventHere = false; theatre?.select(null, { fly: false }); renderMissions(); oilChart?.focus(null);
   $('#event-card').hidden = true; $('#event-card').innerHTML = '';
 }
 
@@ -242,7 +246,11 @@ function bindControls() {
   document.querySelectorAll('dialog').forEach(dialog => {
     dialog.addEventListener('click', event => { if (event.target === dialog || event.target.closest('[data-close]')) dialog.close(); });
   });
-  $('#vessel-card').addEventListener('click', event => { if (event.target.closest('[data-close-vessel]')) { hero?.select(null); showVessel(null); } });
+  $('#vessel-card').addEventListener('click', event => {
+    if (event.target.closest('[data-close-vessel]')) { hero?.select(null); showVessel(null); return; }
+    if (event.target.closest('[data-close-event]')) { closeEvent(); return; }
+    const item = event.target.closest('[data-event-id]'); if (item) showMe(item.dataset.eventId, { here: true });
+  });
   // Views: WAI-ARIA tabs with arrow-key movement.
   const tabs = [...document.querySelectorAll('.view-switch [data-view]')];
   for (const tab of tabs) {
@@ -277,6 +285,7 @@ function bindControls() {
 }
 function showVessel(vessel) {
   const card = $('#vessel-card');
+  card.classList.remove('event-card');
   card.hidden = !vessel;
   card.innerHTML = vessel ? vesselCardMarkup(vessel) : '';
 }
@@ -287,7 +296,11 @@ async function start() {
   bindControls();
   oilChart = createOilChart($('#oil-chart'), { height: 170, onMarker: id => showMe(id), onReadout: detail => renderPrices(detail) });
   if (runtime.configurationError) { $('#status-text').textContent = 'Live data not configured'; $('#status-open').dataset.state = 'down'; }
-  createHeroMap($('#hero-map'), { onSelect: showVessel }).then(map => { hero = map; renderVessels(); })
+  createHeroMap($('#hero-map'), {
+    onSelect: vessel => { if (state.eventHere) { hero?.selectEvent(null); state.selectedEvent = null; state.eventHere = false; oilChart?.focus(null); } showVessel(vessel); },
+    onEventSelect: event => event ? showMe(event.id, { here: true }) : closeEvent(),
+    onEventGroup: events => showGroup(events, { here: true }),
+  }).then(map => { hero = map; hero.setEvents(located(state.events)); renderVessels(); })
     .catch(() => { $('#hero-map').insertAdjacentHTML('beforeend', '<p class="map-fallback">The 3D map could not load on this device. Vessel counts and other panels still update.</p>'); });
   every(10_000, loadVessels);
   every(60_000, loadOdds);
