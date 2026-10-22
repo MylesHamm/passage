@@ -19,10 +19,10 @@ export async function checkHostedApi({base=process.env.PASSAGE_API_BASE,fetchImp
   }
   const health=await read('health');
   if(health?.application!=='passage-maritime-watch'||health?.status!=='ready')throw Error('The configured service is not a ready Passage collector.');
-  const config=await read('config'),news=await read('news'),maritime=await read('maritime'),transits=await read('transits'),oil=await read('oil');
+  const config=await read('config'),news=await read('news'),maritime=await read('maritime'),transits=await read('transits'),oil=await read('oil'),events=await read('events');
   const diagnostics=await read('diagnostics'),checkedAt=now();
   const core=assessPassageReadiness({health,diagnostics,now:checkedAt});
-  const backend=assessBackendReadiness({config,diagnostics,news,maritime,transits,oil});
+  const backend=assessBackendReadiness({config,diagnostics,news,maritime,transits,oil,events});
   const failures=[...core.failures.map(failure=>({...failure,category:'core-source-health'})),...backend.failures];
   const result={...core,ready:core.ready&&backend.ready,failures,backend,warnings:[...core.warnings,...backend.warnings]};
   if(!result.ready){

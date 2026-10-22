@@ -82,17 +82,26 @@ function renderOil() {
 }
 
 /* War events */
+// The collector serves the live curated list. The copy bundled with the site is
+// used only until a live copy arrives, never in place of a newer one.
+const bundledEvents = () => fetch(siteUrl('data/war-events.json'), { headers: { accept: 'application/json' } }).then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); });
+async function liveEvents() {
+  const data = await load('/api/events');
+  if (!Array.isArray(data?.events) || !data.events.length) throw new Error('No curated events');
+  return { ...data, live: true };
+}
+const reviewedLabel = value => /T/.test(value || '') ? ageLabel(Date.now() - Date.parse(value)) : dayLabel(value);
 async function loadEvents() {
   const [curated, maritime] = await Promise.allSettled([
-    fetch(siteUrl('data/war-events.json'), { headers: { accept: 'application/json' } }).then(r => { if (!r.ok) throw new Error(String(r.status)); return r.json(); }),
+    liveEvents().catch(error => state.curated?.live ? Promise.reject(error) : bundledEvents().then(data => ({ ...data, live: false }))),
     load('/api/maritime'),
   ]);
   if (curated.status === 'fulfilled') state.curated = curated.value;
   if (maritime.status === 'fulfilled') state.maritime = maritime.value;
   state.events = mergeEvents(curatedEvents(state.curated), [...registerEvents(state.maritime), ...unplacedRegisterEvents(state.maritime)]);
   state.missions = curatedMissions(state.curated);
-  const reviewed = state.curated?.reviewedAt;
-  stamp($('#events-stamp'), reviewed ? `Curated · reviewed ${dayLabel(reviewed)}` : curated.status === 'rejected' ? 'Curated events unavailable' : '', curated.status === 'rejected' ? 'down' : 'live');
+  const reviewed = state.curated?.reviewedAt, live = state.curated?.live && curated.status === 'fulfilled';
+  stamp($('#events-stamp'), reviewed ? `Curated · reviewed ${reviewedLabel(reviewed)}${live ? '' : ' · saved copy'}` : 'Curated events unavailable', live ? 'live' : reviewed ? 'stale' : 'down');
   renderEvents();
 }
 const shownEvents = () => visibleEvents(state.events, { layers: [...state.layers].filter(id => LAYERS[id]) });
@@ -286,7 +295,7 @@ async function start() {
   every(600_000, loadOil);
   every(1_800_000, loadTransits);
   every(60_000, loadDiagnostics);
-  every(1_800_000, loadEvents);
+  every(300_000, loadEvents);
   setInterval(() => { if (!document.hidden) renderVessels(); }, 5000);
 }
 start();

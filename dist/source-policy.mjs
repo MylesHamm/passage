@@ -8,6 +8,7 @@ export const SOURCE_CAPABILITIES=Object.freeze({
   maritime:Object.freeze({core:true,sourceIds:Object.freeze(['imo-hormuz','imo-redsea']),basis:'IMO incident register and dated statements; advisory and incident coverage is incomplete'}),
   oil:Object.freeze({core:true,sourceIds:Object.freeze(['brent','wti']),basis:'Dated EIA daily spot observations and next-day closes'}),
   transits:Object.freeze({core:false,sourceIds:Object.freeze(['portwatch']),basis:'IMF PortWatch daily chokepoint transits; weekly release'}),
+  events:Object.freeze({core:false,sourceIds:Object.freeze(['curated-events']),basis:'Curated, source-linked war events read from the repository every ten minutes'}),
 });
 export function sourceConfigured(definition,config={}){
   if(definition.defaultEnabled===false||RETIRED_SOURCE_IDS.includes(definition.id))return false;
