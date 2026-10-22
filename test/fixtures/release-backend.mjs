@@ -12,6 +12,7 @@ export function backendFixture(now=Date.parse('2026-09-28T19:00:00Z')){
     maritime:{events:[],sources:[],coverage:{complete:false}},
     transits:{daily:[{chokepoint:'hormuz',date:'2026-09-27',tankers:2,total:4}],baselines:{hormuz:{label:'2025 daily average',total:85.5,tankers:48.2}}},
     oil:{series:[],latestCloses:[]},
+    events:{schema:'passage-war-events/v1',reviewedAt:'2026-09-28T18:00:00Z',events:[],missions:[]},
   });
 }
 /** Diagnostics with each id once: explicit test entries win over the fixture's. */

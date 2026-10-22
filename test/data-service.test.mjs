@@ -44,7 +44,7 @@ async function service(t,fetchImpl,settings={}){
 }
 
 test('the public API is exactly the dashboard endpoints and removed routes return nothing',async t=>{
-  assert.deepEqual([...PUBLIC_API_PATHS].sort(),['/api/config','/api/diagnostics','/api/expectations','/api/maritime','/api/news','/api/oil','/api/transits','/api/vessels']);
+  assert.deepEqual([...PUBLIC_API_PATHS].sort(),['/api/config','/api/diagnostics','/api/events','/api/expectations','/api/maritime','/api/news','/api/oil','/api/transits','/api/vessels']);
   const {service:s}=await service(t,provider());
   for(const removed of ['/api/weather','/api/intelligence','/api/market-context','/api/acled','/api/acled/events','/api/acled/connect'])assert.equal(await s.get(removed),null,removed);
 });
@@ -98,4 +98,22 @@ test('register incidents carry an approximate position only when their location 
   assert.ok(placed.length>0&&unplaced.length>0,'some register text is deliberately left unplaced');
   assert.ok(placed.every(e=>e.location.precision==='approximate'&&Number.isFinite(e.location.radiusNm)));
   assert.ok(placed.every(e=>e.location.lon>22.5&&e.location.lon<67.5&&e.location.lat>0&&e.location.lat<41),'positions stay in the theatre');
+});
+
+test('curated events come from the repository file, and a broken publish keeps the last good list',async t=>{
+  const good=await readFile(new URL('../dist/data/war-events.json',import.meta.url),'utf8');
+  let body=good;
+  const f=await service(t,async input=>{const url=new URL(input);if(url.hostname==='raw.githubusercontent.com')return new Response(body);return provider()(input);});
+  f.advance(2*86_400_000); // the file's review time must not be in the future
+  const first=await f.service.get('/api/events');
+  assert.ok(first.events.length>=100&&first.missions.length>=1);
+  assert.equal(first.reviewedAt,JSON.parse(good).reviewedAt);
+  assert.equal(first.source.id,'curated-events');assert.equal(first.source.connection,'connected');
+  body=JSON.stringify({...JSON.parse(good),events:JSON.parse(good).events.map(e=>({...e,sources:[]}))});
+  f.advance(601_000);
+  const kept=await f.service.get('/api/events');
+  assert.equal(kept.events.length,first.events.length,'a list that fails its rules never replaces the good one');
+  assert.equal(kept.source.connection,'cached');
+  body='{not json';f.advance(3_600_000);
+  assert.equal((await f.service.get('/api/events')).events.length,first.events.length);
 });

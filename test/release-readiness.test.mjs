@@ -103,7 +103,7 @@ test('hosted check reads existing public source contracts with the Pages origin 
     return Response.json(payloads[new URL(url).pathname.split('/').at(-1)],{headers:{'Access-Control-Allow-Origin':'https://myleshamm.github.io'}});
   }});
   assert.equal(result.ready,true);
-  assert.deepEqual(requests.map(request=>request.url),['health','config','news','maritime','transits','oil','diagnostics'].map(endpoint=>'https://live.example.com/api/'+endpoint));
+  assert.deepEqual(requests.map(request=>request.url),['health','config','news','maritime','transits','oil','events','diagnostics'].map(endpoint=>'https://live.example.com/api/'+endpoint));
   assert.ok(requests.every(({options})=>options.headers.Origin==='https://myleshamm.github.io'&&options.redirect==='error'));
 });
 
@@ -147,7 +147,7 @@ test('hosted gate rejects a previous collector rollout even when all nine core c
 test('every additional public contract endpoint retains HTTP and CORS enforcement',async()=>{
   const input=coreFixture(),backend=backendFixture(NOW);input.diagnostics.sources=mergeSources(input.diagnostics.sources,backend.diagnostics.sources);
   const payloads={...backend,...input};
-  for(const endpoint of ['config','news','maritime','transits','oil','diagnostics'])for(const mode of ['http','cors']){
+  for(const endpoint of ['config','news','maritime','transits','oil','events','diagnostics'])for(const mode of ['http','cors']){
     await assert.rejects(checkHostedApi({base:'https://live.example.com/',now:()=>NOW,fetchImpl:async url=>{
       const route=new URL(url).pathname.split('/').at(-1),failed=route===endpoint;
       if(failed&&mode==='http')return new Response('Unavailable',{status:503});

@@ -32,7 +32,8 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=u
 let port=Number(process.env.PORT)||4173;
 const ais = new AisFeed({ apiKey: process.env.AISSTREAM_API_KEY, onEvent:(event,context)=>runtime.event('ais_state','aisstream',context,event) });
 const service=createDataService({runtime,reportArchive,ais,version,
-  settings:{eiaApiKey:process.env.EIA_API_KEY,aisstream:!!process.env.AISSTREAM_API_KEY},
+  // Locally the curated list comes from the working copy, so unmerged edits show here first.
+  settings:{eiaApiKey:process.env.EIA_API_KEY,aisstream:!!process.env.AISSTREAM_API_KEY,get curatedEventsUrl(){return process.env.PASSAGE_EVENTS_URL||`http://127.0.0.1:${port}/data/war-events.json`;}},
   collection:()=>({active:reportingCollectorActive,intervalSeconds:300,basis:'Reporting, oil, transits and market odds collect at startup and every five minutes while this local process is running; no collection while it is stopped.'}),
 });
 const server=http.createServer(async(req,res)=>{
