@@ -24,7 +24,7 @@ const restored=(saved,now=started+5*60000)=>{
 
 test('schema 2 restores provider report time separately from original receipt and restart time',()=>{
   const current=checkpoint();
-  assert.equal(current.schema,3,'new checkpoints carry received tracks');
+  assert.equal(current.schema,4,'new checkpoints carry received tracks and the AIS-gap record');
   const {tracks,...withoutTracks}=current,saved={...withoutTracks,schema:2},original=saved.vessels[0],feed=restored(saved);
   const [vessel]=feed.snapshot({touch:false}).vessels;
   assert.equal(vessel.positionEvidence,'position-report');

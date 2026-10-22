@@ -310,3 +310,22 @@ dialog.sheet { margin: 0 0 0 auto; height: 100vh; max-height: 100vh; border-radi
 #timeline-body .event-list { padding-left: 0; }
 @media (max-width: 900px) { .view-switch { margin-left: auto; } .view-switch button { padding: 6px 10px; font-size: 12px; } }
 @media (max-width: 640px) { .ops-brand strong { font-size: 14px; letter-spacing: .18em; } #headlines-open { display: none; } .view-switch { margin-left: auto; } .event-card { left: 10px; right: 10px; width: auto; top: auto; bottom: 10px; max-height: 44%; } }
+
+/* AIS gaps: where a ship went silent inside reliable reception. */
+.gap-point { position: absolute; left: 0; top: 0; width: 16px; height: 16px; margin: -8px 0 0 -8px; padding: 0; border: 2px dashed #e8eef4cc; border-radius: 50%; background: #03080e66; pointer-events: auto; cursor: pointer; }
+.gap-point[data-kind=completed] { width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-width: 1.5px; border-color: #e8eef488; }
+.gap-point[hidden] { display: none; }
+.gap-point[aria-pressed=true] { box-shadow: 0 0 0 3px var(--live), 0 0 16px #3ee6a866; }
+.gap-line { stroke: #e8eef466; stroke-width: 1.2; stroke-dasharray: 3 4; }
+.gap-end { fill: #e8eef4aa; }
+.k-gap { border: 2px dashed #e8eef4cc; border-radius: 50%; background: none; }
+.gap-figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.gap-figures div { display: grid; gap: 2px; }
+.gap-figures strong { font-size: 22px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.gap-figures span { font-size: 11px; color: var(--dim); }
+.gap-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 4px; }
+.gap-list button { display: grid; width: 100%; padding: 5px 4px; border: 0; text-align: left; border-radius: 6px; }
+.gap-name { font-size: 13px; color: #d6e1ea; }
+.gap-meta { font-size: 11px; color: var(--faint); }
+.gap-rule { margin: 10px 0 0; font-size: 11px; color: var(--faint); }
+.gap-paused { margin: 0 0 10px; font-size: 12px; color: var(--tanker); }
