@@ -1,4 +1,5 @@
 import {VesselStore, AIS_AREAS, STALE_MS, EXPIRE_MS, STATIC_EXPIRE_MS, TRACK_WINDOW_MS} from '../lib/vessel-store.mjs';
+import {GapTracker} from '../lib/ais-gaps.mjs';
 
 const POSITION_TYPES = ['PositionReport','StandardClassBPositionReport','ExtendedClassBPositionReport'];
 const MESSAGE_TYPES = [...POSITION_TYPES,'ShipStaticData','StaticDataReport'];
@@ -79,7 +80,7 @@ export class WorkerAisFeed {
   snapshot({touch=true,context}={}) {
     if(touch){this.lastClientAt=this.now();if(context)this.context=context;this.connect();this.requestTick();}
     this.tick();const now=this.now(),vessels=this.store.snapshot(now),newest=vessels[0];
-    return {configured:!!this.apiKey,generatedAt:stamp(now),vessels,areas:AIS_AREAS,staleAfterSeconds:STALE_MS/1000,expiresAfterSeconds:EXPIRE_MS/1000,
+    return {configured:!!this.apiKey,generatedAt:stamp(now),vessels,areas:AIS_AREAS,staleAfterSeconds:STALE_MS/1000,expiresAfterSeconds:EXPIRE_MS/1000,gaps:this.store.gaps.status(now),
       source:{id:'aisstream',name:'AISStream',home:'https://aisstream.io/',configured:!!this.apiKey,connection:this.connection,recordCount:vessels.length,
         frames:this.counts.frames,positionFrames:this.counts.positionFrames,positionsAccepted:this.counts.positionsAccepted,
         retrievedAt:stamp(this.lastPositionAt),latest:newest?.positionTime||null,latestProviderPositionAt:vessels.map(v=>v.sourceAt).filter(Boolean).sort().at(-1)||null,
@@ -89,10 +90,12 @@ export class WorkerAisFeed {
   }
   checkpoint() {
     this.store.snapshot(this.now());
-    return {schema:3,vessels:[...this.store.vessels.values()],static:[...this.store.static],tracks:[...this.store.tracks],lastPositionAt:stamp(this.lastPositionAt)};
+    return {schema:4,vessels:[...this.store.vessels.values()],static:[...this.store.static],tracks:[...this.store.tracks],gaps:this.store.gaps.toJSON(),lastPositionAt:stamp(this.lastPositionAt)};
   }
   restore(value) {
-    if(![1,2,3].includes(value?.schema) || !Array.isArray(value.vessels) || !Array.isArray(value.static))return;
+    if(![1,2,3,4].includes(value?.schema) || !Array.isArray(value.vessels) || !Array.isArray(value.static))return;
+    // The gap record (schema 4) restores on its own terms: a ship's last sighting outlives the position window.
+    if(value.schema===4)this.store.gaps=GapTracker.from(value.gaps);
     const now=this.now(),validTime=(time,maxAge)=>typeof time==='string'&&Number.isFinite(Date.parse(time))&&Date.parse(time)<=now+60_000&&now-Date.parse(time)<maxAge;
     // Schema 1 predates payload-only coordinate validation. Its positions cannot
     // be promoted to proven reports; independently dated static metadata below
@@ -122,7 +125,7 @@ export class WorkerAisFeed {
     // Retained tracks are revalidated point by point and only kept for vessels
     // whose current position survived restore; replaying them re-applies the
     // one-minute step and the 60-knot glitch rule.
-    for(const pair of (value.schema===3&&Array.isArray(value.tracks)?value.tracks:[]).slice(-this.store.limit)) {
+    for(const pair of (value.schema>=3&&Array.isArray(value.tracks)?value.tracks:[]).slice(-this.store.limit)) {
       if(!Array.isArray(pair)||pair.length!==2||!this.store.vessels.has(pair[0])||!Array.isArray(pair[1]))continue;
       const current=this.store.vessels.get(pair[0]),area=AIS_AREAS.find(a=>a.id===current.theater);
       const points=pair[1].filter(p=>Array.isArray(p)&&p.length===3&&Number.isFinite(p[0])&&Number.isFinite(p[1])&&validTime(p[2],TRACK_WINDOW_MS)

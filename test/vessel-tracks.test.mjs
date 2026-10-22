@@ -72,7 +72,7 @@ test('Worker checkpoints restore valid track points and drop tampered ones', () 
   sail(feed.store, 10);
   feed.lastPositionAt = start + 10 * 60000;
   const saved = feed.checkpoint();
-  assert.equal(saved.schema, 3);
+  assert.equal(saved.schema, 4);
   const [, points] = saved.tracks[0];
   saved.tracks[0][1] = [...points, [NaN, 26.5, points.at(-1)[2]], [10, 10, points.at(-1)[2]], [56.3, 26.5, new Date(start + 99 * 60000).toISOString()]];
   const restored = new WorkerAisFeed({now: () => start + 11 * 60000});
