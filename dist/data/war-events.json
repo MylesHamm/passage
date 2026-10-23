@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-23T12:19:13Z",
+  "reviewedAt": "2026-10-23T18:12:39Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4368,6 +4368,37 @@
           "title": "Tanker catches fire off Oman as Iran claims fresh attacks on Gulf shipping",
           "url": "https://safety4sea.com/tanker-catches-fire-off-oman-as-iran-claims-fresh-attacks-on-gulf-shipping/",
           "date": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-22-tanker-hit-off-limah",
+      "date": "2026-10-22",
+      "time": "17:15Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Tanker (unnamed), transiting outbound",
+      "place": "About 7 nm north-east of Limah, Musandam",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.0245,
+      "lon": 56.5159,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Outbound tanker hit by unknown projectile 7 nm north-east of Limah in Hormuz",
+      "summary": "UKMTO said a tanker transiting outbound through the Strait of Hormuz was hit by an unknown projectile about 7 nm north-east of Limah at 17:15 GMT on 22 Oct and continued to its next port. No casualties or damage were reported.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Tanker hit by unknown projectile in Strait of Hormuz: UK maritime agency",
+          "url": "https://aa.com.tr/en/middle-east/tanker-hit-by-unknown-projectile-in-strait-of-hormuz-uk-maritime-agency/4098861",
+          "date": "2026-10-23"
+        },
+        {
+          "publisher": "Arab Times",
+          "title": "Tanker Hit by Unknown Projectile in Strait of Hormuz Near Oman",
+          "url": "https://www.arabtimesonline.com/news/tanker-hit-by-unknown-projectile-in-strait-of-hormuz-near-oman/",
+          "date": "2026-10-23"
         }
       ]
     }
