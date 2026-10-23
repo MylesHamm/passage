@@ -104,7 +104,8 @@ test('curated events come from the repository file, and a broken publish keeps t
   const good=await readFile(new URL('../dist/data/war-events.json',import.meta.url),'utf8');
   let body=good;
   const f=await service(t,async input=>{const url=new URL(input);if(url.hostname==='raw.githubusercontent.com')return new Response(body);return provider()(input);});
-  f.advance(2*86_400_000); // the file's review time must not be in the future
+  // The list is updated automatically, so the test clock follows its review time (a future review time is rejected).
+  const reviewed=JSON.parse(good).reviewedAt;f.advance(Date.parse(reviewed.length===10?reviewed+'T00:00:00Z':reviewed)+3_600_000-NOW);
   const first=await f.service.get('/api/events');
   assert.ok(first.events.length>=100&&first.missions.length>=1);
   assert.equal(first.reviewedAt,JSON.parse(good).reviewedAt);
