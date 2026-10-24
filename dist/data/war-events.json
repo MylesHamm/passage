@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-24T06:10:38Z",
+  "reviewedAt": "2026-10-24T12:10:46Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4429,6 +4429,37 @@
           "publisher": "Yemen Monitor",
           "title": "Yemeni Army Spokesman: Entire Family Killed in Nihm After Houthi Missile Crashes Following Failed Launch",
           "url": "https://www.yemenmonitor.com/en/Details/ArtMID/908/ArticleID/185711",
+          "date": "2026-10-24"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-24-sanaa-asr-house-strike",
+      "date": "2026-10-24",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "A house in Asr",
+      "place": "Asr, western Sanaa",
+      "country": "Yemen",
+      "lat": 15.3405,
+      "lon": 44.1664,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi media claim Saudi air strike on a house in Sanaa's Asr killed three",
+      "summary": "Houthi-run Al-Masirah claimed a Saudi air strike on a house in Asr, in western Sanaa, on 24 Oct killed three people and wounded several others, a toll it called preliminary. There was no Saudi comment.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye (AFP)",
+          "title": "Three killed in Saudi air strike on Sanaa, says Houthi-linked media",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/three-killed-saudi-air-strike-sanaa-says-houthi-linked-media",
+          "date": "2026-10-24"
+        },
+        {
+          "publisher": "Dawn (AFP)",
+          "title": "Live Updates: War returns to Iran with Israel, US strikes",
+          "url": "https://www.dawn.com/live/iran-israel-war",
           "date": "2026-10-24"
         }
       ]
