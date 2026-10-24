@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-24T12:10:46Z",
+  "reviewedAt": "2026-10-24T18:10:07Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4399,6 +4399,37 @@
           "title": "Tanker Hit by Unknown Projectile in Strait of Hormuz Near Oman",
           "url": "https://www.arabtimesonline.com/news/tanker-hit-by-unknown-projectile-in-strait-of-hormuz-near-oman/",
           "date": "2026-10-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-23-irgc-claims-two-supertankers-hit-mines-hormuz",
+      "date": "2026-10-23",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC Navy, claimed)",
+      "target": "Two unnamed supertankers carrying crude oil",
+      "place": "Southern Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC Navy claims two supertankers on an 'unauthorised' Hormuz route hit naval mines",
+      "summary": "The IRGC Navy claimed in a statement carried by IRNA on 23 Oct that two supertankers with over 4.5 million barrels of crude hit naval mines in the southern Strait of Hormuz and were abandoned. The ships were not named or confirmed.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Iran's Revolutionary Guards say 2 supertankers hit naval mines in Strait of Hormuz",
+          "url": "https://aa.com.tr/en/middle-east/iran-s-revolutionary-guards-say-2-supertankers-hit-naval-mines-in-strait-of-hormuz/4099071",
+          "date": "2026-10-23"
+        },
+        {
+          "publisher": "Africanews (AP)",
+          "title": "Two 'unauthorised' oil tankers struck in Strait of Hormuz, Iran says",
+          "url": "https://www.africanews.com/2026/10/24/two-unauthorised-oil-tankers-struck-in-strait-of-hormuz-iran-says/",
+          "date": "2026-10-24"
         }
       ]
     },
