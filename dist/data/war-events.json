@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-23T18:12:39Z",
+  "reviewedAt": "2026-10-24T06:10:38Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4399,6 +4399,37 @@
           "title": "Tanker Hit by Unknown Projectile in Strait of Hormuz Near Oman",
           "url": "https://www.arabtimesonline.com/news/tanker-hit-by-unknown-projectile-in-strait-of-hormuz-near-oman/",
           "date": "2026-10-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-23-nihm-house-strike",
+      "date": "2026-10-23",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "A family home in Nihm district",
+      "place": "Nihm district, Sanaa governorate",
+      "country": "Yemen",
+      "lat": 15.75,
+      "lon": 44.5,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi media claim Saudi strike on Nihm home killed three; army blames failed missile",
+      "summary": "Houthi-run Al-Masirah, citing a Nihm security official, claimed a Saudi air strike on a home on 23 Oct killed three and wounded nine of one family. Yemen's army spokesman said a failed Houthi missile launch hit the house.",
+      "sources": [
+        {
+          "publisher": "Yemen Press Agency (Houthi-aligned)",
+          "title": "Sanaa: Saudi airstrikes on Nihm District kill 3, injure 9 from same family",
+          "url": "https://en.ypagency.net/409532",
+          "date": "2026-10-23"
+        },
+        {
+          "publisher": "Yemen Monitor",
+          "title": "Yemeni Army Spokesman: Entire Family Killed in Nihm After Houthi Missile Crashes Following Failed Launch",
+          "url": "https://www.yemenmonitor.com/en/Details/ArtMID/908/ArticleID/185711",
+          "date": "2026-10-24"
         }
       ]
     }
