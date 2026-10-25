@@ -4479,10 +4479,10 @@
       "precision": "area",
       "confidence": "claimed",
       "title": "Houthis claim Saudi strike on cement workers' housing in Hamdan, Sanaa, killed civilians",
-      "summary": "Houthi-run Al-Masirah claimed a Saudi strike on housing for cement factory workers in Sanaa governorate on 24 Oct killed six women and a child. The Sanaa health ministry later put it in Hamdan district, with 8 killed and 15 hurt.",
+      "summary": "Houthi-run Al-Masirah first claimed a Saudi strike on cement workers' housing killed 6 women and a child; the Houthi-run Sanaa health ministry later claimed 8 killed (3 women, 4 children) and 15 hurt in Hamdan. Unverified.",
       "sources": [
         {
-          "publisher": "Times of Israel (AFP)",
+          "publisher": "Times of Israel (agencies)",
           "title": "Yemen's Houthis say 11 killed in strikes on Sanaa; Saudis say two missiles shot down",
           "url": "https://www.timesofisrael.com/yemens-houthis-say-11-killed-in-strikes-on-sanaa-saudis-say-two-missiles-shot-down/",
           "date": "2026-10-24"
@@ -4492,6 +4492,12 @@
           "title": "Sanaa Health Ministry: 13 killed, injured in Saudi airstrike on cement factory workers' housing",
           "url": "https://en.ypagency.net/409718",
           "date": "2026-10-24"
+        },
+        {
+          "publisher": "Telangana Today (IANS)",
+          "title": "Houthis, Saudi-led coalition exchange heavy strikes, fresh casualties reported",
+          "url": "https://telanganatoday.com/houthis-saudi-led-coalition-exchange-heavy-strikes-fresh-casualties-reported",
+          "date": "2026-10-25"
         }
       ]
     },
@@ -4581,7 +4587,7 @@
           "date": "2026-10-24"
         },
         {
-          "publisher": "Times of Israel",
+          "publisher": "Times of Israel (agencies)",
           "title": "Yemen's Houthis say 11 killed in strikes on Sanaa; Saudis say two missiles shot down",
           "url": "https://www.timesofisrael.com/yemens-houthis-say-11-killed-in-strikes-on-sanaa-saudis-say-two-missiles-shot-down/",
           "date": "2026-10-24"
@@ -4624,7 +4630,7 @@
           "date": "2026-10-24"
         },
         {
-          "publisher": "Times of Israel (AFP)",
+          "publisher": "Times of Israel (agencies)",
           "title": "Yemen's Houthis say 11 killed in strikes on Sanaa; Saudis say two missiles shot down",
           "url": "https://www.timesofisrael.com/yemens-houthis-say-11-killed-in-strikes-on-sanaa-saudis-say-two-missiles-shot-down/",
           "date": "2026-10-24"
