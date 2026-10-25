@@ -24,6 +24,8 @@ IMO register incidents appear on the map automatically. Add a shipping event fro
    - Prefer Reuters, AP or AFP through republishers, labelled like `Al-Monitor (Reuters)`.
    - Al Jazeera, Middle East Eye, BBC, France 24, The National, Times of Israel, Arab News and UN News are also good sources.
    - Label state or party media as such, for example `Saba (Houthi-run)`.
+   - Name a wire agency only when the article credits it. A page bylined "By Agencies", or crediting the agency only for a photo, is `Times of Israel (agencies)`, not `(AFP)`.
+   - `title` is the article's headline exactly as published. Never rewrite it to fix a figure.
 2. **Never** use ACLED data. Never bypass paywalls, logins, CAPTCHAs or bot protection; if a site blocks you, use another source.
 3. **Claimed or confirmed:** an event reported by only one side is `"claimed"`, and its summary must contain the word "claim" or "claimed". Use `"confirmed"` when the striking party confirms it or two independent outlets report it.
 4. **Location:**
@@ -33,6 +35,7 @@ IMO register incidents appear on the map automatically. Add a shipping event fro
 5. **Text:**
    - `title`: 90 characters or fewer, plain and factual.
    - `summary`: 240 characters or fewer, plain and attributed. Give figures exactly as the source does, and when sources differ, say who said what.
+   - When a headline and its article disagree (for example a headline keeping an earlier toll while the body reports a revised one), report the body's figure and who gave it, and add a source whose reporting states that figure plainly when one exists.
    - Never mention prices, markets or effects.
 6. **Dates:** `date` is the day of the strike. `time` is `null` unless a source gives a UTC time as `HH:MMZ`.
 7. **Ids:**
@@ -41,7 +44,7 @@ IMO register incidents appear on the map automatically. Add a shipping event fro
    - Each source has exactly `publisher, title, url, date`.
    - `type` is one of `shipping-attack`, `seizure`, `mine`, `missile`, `drone`, `air-strike` or `naval-strike`.
 8. **Duplicates:** before adding an event, search the file for the same date, place and target. If an event already exists, improve it instead of adding another.
-9. **Corrections:** when later reporting changes a figure (for example a death toll), update the summary with attribution and add the new source. Remove an event only when reliable reporting shows it did not happen, and say so in the commit message.
+9. **Corrections:** when later reporting changes a figure (for example a death toll), update the summary with attribution and add the new source. Give the figures in order, the first claim and who made it, then the later figure and who gave it, and keep claims from one side marked as claims. Order `sources` from earliest to latest reporting. Remove an event only when reliable reporting shows it did not happen, and say so in the commit message.
 
 ## Each run
 
@@ -53,7 +56,7 @@ IMO register incidents appear on the map automatically. Add a shipping event fro
    - Houthi missile and drone attacks, Saudi-led coalition strikes, US and Israeli strikes
 4. Add the events that meet the rules, keeping `events` sorted by date and then by id. Apply any corrections.
 5. Set `reviewedAt` to the current UTC time as `YYYY-MM-DDTHH:MM:SSZ`.
-6. Run `npm ci` once, then `node scripts/events/apply-offsets.mjs`, then `npm run check:events`. If anything fails, fix the file and run it again. Never commit a failing list.
+6. Run `npm ci` once, then `node scripts/events/apply-offsets.mjs`, then `npm run check:events`. If anything fails, fix the file and run it again. Never commit a failing list. The check also prints "Check …" warnings for recent events whose cited headline gives a casualty figure the title and summary never mention. Open that source and read its body. If the summary already accounts for the figure (a headline covering several incidents, or a body that revises the toll), leave it; otherwise correct the summary.
 7. Decide whether to commit:
    - **Commit** when you added or corrected events, or when `reviewedAt` was more than six hours old (a heartbeat, so the page shows the list is still being checked).
    - **Otherwise** change nothing and stop.
