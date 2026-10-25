@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-25T00:10:54Z",
+  "reviewedAt": "2026-10-25T06:11:04Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4465,6 +4465,37 @@
       ]
     },
     {
+      "id": "2026-10-24-hamdan-cement-workers-housing-strike",
+      "date": "2026-10-24",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "A residential building for cement factory workers",
+      "place": "Hamdan district, Sanaa governorate",
+      "country": "Yemen",
+      "lat": 15.47,
+      "lon": 44.06,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis claim Saudi strike on cement workers' housing in Hamdan, Sanaa, killed civilians",
+      "summary": "Houthi-run Al-Masirah claimed a Saudi strike on housing for cement factory workers in Sanaa governorate on 24 Oct killed six women and a child. The Sanaa health ministry later put it in Hamdan district, with 8 killed and 15 hurt.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (AFP)",
+          "title": "Yemen's Houthis say 11 killed in strikes on Sanaa; Saudis say two missiles shot down",
+          "url": "https://www.timesofisrael.com/yemens-houthis-say-11-killed-in-strikes-on-sanaa-saudis-say-two-missiles-shot-down/",
+          "date": "2026-10-24"
+        },
+        {
+          "publisher": "Yemen Press Agency (Houthi-aligned)",
+          "title": "Sanaa Health Ministry: 13 killed, injured in Saudi airstrike on cement factory workers' housing",
+          "url": "https://en.ypagency.net/409718",
+          "date": "2026-10-24"
+        }
+      ]
+    },
+    {
       "id": "2026-10-24-houthi-missile-riyadh-intercepted",
       "date": "2026-10-24",
       "time": null,
@@ -4577,8 +4608,8 @@
       "lon": 44.1664,
       "precision": "area",
       "confidence": "claimed",
-      "title": "Houthi media claim Saudi air strike on a house in Sanaa's Asr killed three",
-      "summary": "Houthi-run Al-Masirah claimed a Saudi air strike on a house in Asr, in western Sanaa, on 24 Oct killed three people and wounded several others, a toll it called preliminary. There was no Saudi comment.",
+      "title": "Houthi media claim Saudi air strike on a house in Sanaa's Asr killed at least four",
+      "summary": "Houthi-run Al-Masirah claimed a Saudi air strike on a house in Asr, western Sanaa, on 24 Oct killed three, a preliminary toll it later raised to at least four, and wounded several others. There was no Saudi comment.",
       "sources": [
         {
           "publisher": "Middle East Eye (AFP)",
@@ -4590,6 +4621,12 @@
           "publisher": "Dawn (AFP)",
           "title": "Live Updates: War returns to Iran with Israel, US strikes",
           "url": "https://www.dawn.com/live/iran-israel-war",
+          "date": "2026-10-24"
+        },
+        {
+          "publisher": "Times of Israel (AFP)",
+          "title": "Yemen's Houthis say 11 killed in strikes on Sanaa; Saudis say two missiles shot down",
+          "url": "https://www.timesofisrael.com/yemens-houthis-say-11-killed-in-strikes-on-sanaa-saudis-say-two-missiles-shot-down/",
           "date": "2026-10-24"
         }
       ]
