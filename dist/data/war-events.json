@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-25T12:10:19Z",
+  "reviewedAt": "2026-10-25T18:10:29Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4533,6 +4533,37 @@
       ]
     },
     {
+      "id": "2026-10-24-houthi-missiles-aden-airport",
+      "date": "2026-10-24",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Aden International Airport",
+      "place": "Aden International Airport",
+      "country": "Yemen",
+      "lat": 12.8294,
+      "lon": 45.0289,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Houthis fire two ballistic missiles at Aden airport, Yemen's transport ministry says",
+      "summary": "Yemen's transport ministry said on 24 Oct that the Houthis fired two ballistic missiles at Aden International Airport, the fourth such attack in October; it gave no damage or casualties. The Houthis named Al-Nasr camp and a naval base.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Houthis launch attacks on Saudi Arabia and Yemen’s Aden",
+          "url": "https://www.aljazeera.com/news/2026/10/24/houthis-launch-attacks-on-saudi-arabia-and-yemens-aden",
+          "date": "2026-10-24"
+        },
+        {
+          "publisher": "Kuwait Times (KUNA)",
+          "title": "Yemen condemns Houthi missile attack on Aden airport",
+          "url": "https://kuwaittimes.com/article/52302/world/yemen-condemns-houthi-missile-attack-on-aden-airport/",
+          "date": "2026-10-25"
+        }
+      ]
+    },
+    {
       "id": "2026-10-24-houthi-missiles-aden-coast-guard",
       "date": "2026-10-24",
       "time": null,
@@ -4714,7 +4745,7 @@
       "precision": "city",
       "confidence": "confirmed",
       "title": "Coalition downs Houthi cruise missile at Khamis Mushait, then 10 missiles fired south",
-      "summary": "Coalition spokesman Turki al-Maliki said a Houthi cruise missile fired at Khamis Mushait was destroyed on 25 Oct, and later that 10 ballistic missiles fired towards southern Saudi Arabia were intercepted. No casualties were reported.",
+      "summary": "Coalition spokesman Turki al-Maliki said a Houthi cruise missile at Khamis Mushait was destroyed on 25 Oct, then 10 ballistic missiles fired south. Civil Defense said debris hurt two in Khamis Mushait and Ahad Rafidah.",
       "sources": [
         {
           "publisher": "ARY News (Reuters)",
@@ -4732,6 +4763,12 @@
           "publisher": "Ajel",
           "title": "Coalition intercepts and destroys 10 Houthi ballistic missiles targeting southern Saudi Arabia",
           "url": "https://english.ajel.sa/saudi-arabia/u3k44s9kb",
+          "date": "2026-10-25"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Debris from intercepted Houthi missiles injures 2 in Saudi Arabia's Khamis Mushayt, Ahad Rafidah",
+          "url": "https://www.arabnews.com/saudi-arabia/debris-from-intercepted-houthi-missiles-injures-2-in-saudi-arabias-khamis-mushayt-ahad-rafidah-3008206",
           "date": "2026-10-25"
         }
       ]
