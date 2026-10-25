@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-24T18:10:07Z",
+  "reviewedAt": "2026-10-25T00:10:54Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4465,6 +4465,105 @@
       ]
     },
     {
+      "id": "2026-10-24-houthi-missile-riyadh-intercepted",
+      "date": "2026-10-24",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Riyadh; the Houthis named King Khalid International Airport",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition says it intercepted a Houthi ballistic missile fired at Riyadh",
+      "summary": "Coalition spokesman Turki al-Maliki said air defences destroyed a Houthi ballistic missile fired at Riyadh early on 24 Oct; an AFP journalist heard two blasts. The Houthis said they targeted King Khalid International Airport.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Coalition forces down missiles and drone as Houthis keep up strikes on Saudi Arabia",
+          "url": "https://www.arabnews.com/saudi-arabia/coalition-forces-down-missiles-and-drone-as-houthis-keep-up-strikes-on-saudi-arabia-3007971",
+          "date": "2026-10-24"
+        },
+        {
+          "publisher": "Gulf News (AFP)",
+          "title": "Middle East Tensions Escalate: US Prepares Strikes on Iran Amid Houthi Missile Threats and Tanker Attacks",
+          "url": "https://gulfnews.com/world/mena/middle-east-war-houthi-missile-targets-riyadh-tankers-hit-mines-near-hormuz-1.500721804",
+          "date": "2026-10-24"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-24-houthi-missiles-aden-coast-guard",
+      "date": "2026-10-24",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Coast guard headquarters and a coast guard building; the Houthis named Al-Nasr camp and a naval base",
+      "place": "Tawahi district, Aden",
+      "country": "Yemen",
+      "lat": 12.786,
+      "lon": 44.973,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Houthi missiles hit coast guard buildings in Aden, Yemen's government says",
+      "summary": "Yemen's interior ministry said two missiles hit a coast guard headquarters and a third a coast guard building in Tawahi, Aden, on 24 Oct. The Houthis said they targeted Al-Nasr camp and a naval base. No casualty figures were given.",
+      "sources": [
+        {
+          "publisher": "France 24 (Reuters)",
+          "title": "Yemen's Houthi rebels claim new attacks on oil facilities and airports across Saudi Arabia",
+          "url": "https://www.france24.com/en/middle-east/20261024-yemen-s-houthi-rebels-claim-new-attacks-on-oil-facilities-and-airports-across-saudi-arabia",
+          "date": "2026-10-24"
+        },
+        {
+          "publisher": "Korea Times (AFP)",
+          "title": "Houthis attack Yemen's Aden, say Saudi strikes kill 16",
+          "url": "https://www.koreatimes.co.kr/world/20261025/houthis-attack-yemens-aden-say-saudi-strikes-kill-16",
+          "date": "2026-10-25"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-24-houthi-missiles-yanbu-taif-intercepted",
+      "date": "2026-10-24",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Yanbu and Taif; the Houthis named an Aramco facility in Yanbu",
+      "place": "Yanbu",
+      "country": "Saudi Arabia",
+      "lat": 24.0891,
+      "lon": 38.0637,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Coalition says it destroyed two Houthi ballistic missiles fired at Yanbu and Taif",
+      "summary": "The coalition said it destroyed two Houthi ballistic missiles fired at Yanbu and Taif on 24 Oct; Saudi Civil Defense said debris fell in the Mecca and Medina regions. The Houthis said they targeted Aramco in Yanbu, not the holy cities.",
+      "sources": [
+        {
+          "publisher": "France 24 (Reuters)",
+          "title": "Yemen's Houthi rebels claim new attacks on oil facilities and airports across Saudi Arabia",
+          "url": "https://www.france24.com/en/middle-east/20261024-yemen-s-houthi-rebels-claim-new-attacks-on-oil-facilities-and-airports-across-saudi-arabia",
+          "date": "2026-10-24"
+        },
+        {
+          "publisher": "Times of Israel",
+          "title": "Yemen's Houthis say 11 killed in strikes on Sanaa; Saudis say two missiles shot down",
+          "url": "https://www.timesofisrael.com/yemens-houthis-say-11-killed-in-strikes-on-sanaa-saudis-say-two-missiles-shot-down/",
+          "date": "2026-10-24"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Coalition forces down missiles and drone as Houthis keep up strikes on Saudi Arabia",
+          "url": "https://www.arabnews.com/saudi-arabia/coalition-forces-down-missiles-and-drone-as-houthis-keep-up-strikes-on-saudi-arabia-3007971",
+          "date": "2026-10-24"
+        }
+      ]
+    },
+    {
       "id": "2026-10-24-sanaa-asr-house-strike",
       "date": "2026-10-24",
       "time": null,
@@ -4492,6 +4591,37 @@
           "title": "Live Updates: War returns to Iran with Israel, US strikes",
           "url": "https://www.dawn.com/live/iran-israel-war",
           "date": "2026-10-24"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-24-tuhayta-family-home-strike",
+      "date": "2026-10-24",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "A family home in Al-Tuhayta district",
+      "place": "Al-Tuhayta district, Hodeidah governorate",
+      "country": "Yemen",
+      "lat": 14.1667,
+      "lon": 43.1667,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi media claim Saudi strike on a home in Al-Tuhayta, Hodeidah, killed five of a family",
+      "summary": "Houthi-run Al-Masirah claimed a Saudi strike on a home in Al-Tuhayta district, Hodeidah, on 24 Oct killed five of one family, including the father, two of his children and his two wives. The toll was not independently confirmed.",
+      "sources": [
+        {
+          "publisher": "Hathalyoum (Middle East Eye, AFP)",
+          "title": "Houthis say Saudi strike kills five members of same family in Hodeida",
+          "url": "https://en.hathalyoum.net/articles/303113",
+          "date": "2026-10-24"
+        },
+        {
+          "publisher": "Korea Times (AFP)",
+          "title": "Houthis attack Yemen's Aden, say Saudi strikes kill 16",
+          "url": "https://www.koreatimes.co.kr/world/20261025/houthis-attack-yemens-aden-say-saudi-strikes-kill-16",
+          "date": "2026-10-25"
         }
       ]
     }
