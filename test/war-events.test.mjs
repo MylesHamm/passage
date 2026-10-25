@@ -145,3 +145,12 @@ test('missions have valid dates, sources and closed or 3+ point polygons inside 
     checkSources(mission.sources, mission.id);
   }
 });
+
+test('one article carries one publisher label wherever it is cited', () => {
+  const labels = new Map();
+  for (const event of data.events) for (const source of event.sources) {
+    if (!labels.has(source.url)) labels.set(source.url, new Set());
+    labels.get(source.url).add(source.publisher);
+  }
+  for (const [url, publishers] of labels) assert.equal(publishers.size, 1, `${url} is labelled ${[...publishers].join(' / ')}`);
+});
