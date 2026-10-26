@@ -5,6 +5,7 @@ import { randomUUID, createHash } from 'node:crypto';
 import {ReportArchive} from './lib/report-archive.mjs';
 import {renderShell} from './lib/site-pages.mjs';
 import { AisFeed } from './lib/ais.mjs';
+import { OpenWatersFeed } from './lib/openwaters.mjs';
 import { SourceRuntime } from './lib/source-runtime.mjs';
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -32,9 +33,12 @@ async function collectReporting() {
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.ttf':'font/ttf','.woff2':'font/woff2','.png':'image/png','.md':'text/plain; charset=utf-8'};
 let port=Number(process.env.PORT)||4173;
 const ais = new AisFeed({ apiKey: process.env.AISSTREAM_API_KEY, onEvent:(event,context)=>runtime.event('ais_state','aisstream',context,event) });
+// Open Waters needs no key; locally it streams only while the page has been open in the last 90 seconds, like AISStream.
+const openwaters=process.env.OPENWATERS_DISABLED!=='true';
+ais.relays.push(new OpenWatersFeed({ store: ais.store, idleMs: 90000, enabled: openwaters, token: process.env.OPENWATERS_TOKEN }));
 const service=createDataService({runtime,reportArchive,ais,version,
   // Locally the curated list comes from the working copy, so unmerged edits show here first.
-  settings:{eiaApiKey:process.env.EIA_API_KEY,aisstream:!!process.env.AISSTREAM_API_KEY,get curatedEventsUrl(){return process.env.PASSAGE_EVENTS_URL||`http://127.0.0.1:${port}/data/war-events.json`;}},
+  settings:{eiaApiKey:process.env.EIA_API_KEY,aisstream:!!process.env.AISSTREAM_API_KEY,openwaters,get curatedEventsUrl(){return process.env.PASSAGE_EVENTS_URL||`http://127.0.0.1:${port}/data/war-events.json`;}},
   collection:()=>({active:reportingCollectorActive,intervalSeconds:300,basis:'Reporting, oil, transits and market odds collect at startup and every five minutes while this local process is running; no collection while it is stopped.'}),
 });
 const server=http.createServer(async(req,res)=>{

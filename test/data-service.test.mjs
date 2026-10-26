@@ -53,7 +53,7 @@ test('hosted responses never expose configured secrets and keep the frontend con
   const requests=[],f=await service(t,provider(requests),{eiaApiKey:secret,aisstream:secret,unexpectedSecret:secret});
   const outputs={};
   for(const endpoint of PUBLIC_API_PATHS)outputs[endpoint]=await f.service.get(endpoint);
-  assert.deepEqual({...outputs['/api/config']},{aisstream:true,eia:true,version:'service-test',hosted:true,capabilities:SOURCE_CAPABILITIES});
+  assert.deepEqual({...outputs['/api/config']},{aisstream:true,openwaters:false,eia:true,version:'service-test',hosted:true,capabilities:SOURCE_CAPABILITIES});
   assert.ok(requests.some(url=>url.hostname==='api.eia.gov'&&url.searchParams.get('api_key')===secret),'the key is used server-side');
   assert.equal(JSON.stringify({outputs,logs:f.logs}).includes(secret),false);
   const backend=assessBackendReadiness({config:outputs['/api/config'],diagnostics:outputs['/api/diagnostics'],news:outputs['/api/news'],maritime:outputs['/api/maritime'],transits:outputs['/api/transits'],oil:outputs['/api/oil']});

@@ -255,3 +255,7 @@
 .chip-count { color: var(--faint); font-family: var(--mono); font-weight: 500; font-variant-numeric: tabular-nums; }
 .chip[aria-pressed=true] .chip-count { color: var(--dim); }
 .card-text { margin: 0 0 12px; color: var(--dim); font-size: 14px; line-height: 20px; }
+.map-credit { color: var(--faint); }
+.map-credit[hidden] { display: none; }
+.map-credit a { color: var(--dim); text-decoration: underline; text-decoration-color: var(--line-strong); }
+.map-credit a:hover { color: var(--strong); }

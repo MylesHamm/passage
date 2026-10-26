@@ -33,9 +33,11 @@ export const POSITION_EXPIRE_MS = 30 * 60_000;
 export const TYPE_EXPIRE_MS = 24 * 60 * 60_000;
 const timestamp = value => typeof value === 'string' && Number.isFinite(Date.parse(value)) ? Date.parse(value) : null;
 
-// Open Waters' current GeoJSON endpoint reports the latest message clock/source,
-// which can belong to a static message while its coordinates remain older.
-// Legacy rows must also be rejected until the backend provenance fix is deployed.
+// Open Waters' GeoJSON snapshot endpoint reports the latest message clock/source,
+// which can belong to a static message while its coordinates remain older, so
+// snapshot rows are never current positions. Positions relayed from its event
+// stream are decoded position reports (provider 'Open Waters AIS',
+// positionEvidence 'position-report') and are treated like AISStream's.
 export function isSnapshotVessel(vessel){
   return vessel?.provider === 'Open Waters' || vessel?.positionEvidence === 'snapshot';
 }

@@ -7,8 +7,9 @@
   "workers_dev": true,
   "vars": {
     "ALLOWED_ORIGIN": "https://myleshamm.github.io",
-    "APP_VERSION": "0.10.0",
-    "COLLECTOR_PAUSED": "false"
+    "APP_VERSION": "0.10.1",
+    "COLLECTOR_PAUSED": "false",
+    "OPENWATERS": "true"
   },
   "durable_objects": {
     "bindings": [{"name": "PASSAGE_DATA", "class_name": "PassageCollector"}]

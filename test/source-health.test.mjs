@@ -25,7 +25,7 @@ const iso = ms => new Date(ms).toISOString();
 const health = (id, fields) => sourceHealth({ ...def(id), configured: true, connection: 'connected', retrievedAt: iso(at - 60000), recordCount: 5, ...fields }, at);
 
 test('the source list holds exactly the dashboard sources', () => {
-  assert.deepEqual(SOURCE_DEFINITIONS.map(s => s.id).sort(), ['aisstream', 'aj', 'bbc', 'brent', 'curated-events', 'eia-today', 'france24', 'imo-hormuz', 'imo-redsea', 'mee', 'memo', 'polymarket', 'portwatch', 'un', 'wti']);
+  assert.deepEqual(SOURCE_DEFINITIONS.map(s => s.id).sort(), ['aisstream', 'aj', 'bbc', 'brent', 'curated-events', 'eia-today', 'france24', 'imo-hormuz', 'imo-redsea', 'mee', 'memo', 'openwaters', 'polymarket', 'portwatch', 'un', 'wti']);
 });
 test('AIS positions go stale after ten minutes and a missing provider clock is unknown, not current', () => {
   assert.equal(health('aisstream', { latest: iso(at - 5 * 60000), timestampBasis: 'provider' }).status, 'current');

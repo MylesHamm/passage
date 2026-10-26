@@ -4,7 +4,7 @@ import '../site/shell.mjs';
 import { $, load, every, stamp, fetchEvents, eventsStamp, eventHref, pageUrl } from '../site/data.mjs';
 import { mountHormuzMap } from '../site/hormuz-live.mjs';
 import { recentHormuzEvents } from '../ops/hero-map.mjs';
-import { vesselCounts, vesselFeedNote, gapState, ageLabel, clockLabel, dayLabel, transitRowMarkup, gapsCardMarkup, eventListMarkup, esc } from '../ops/panels.mjs';
+import { vesselCounts, vesselFeedNote, gapState, ageLabel, clockLabel, dayLabel, transitRowMarkup, gapsCardMarkup, eventListMarkup, aisCreditMarkup, esc } from '../ops/panels.mjs';
 import { createReadAlong, stepRows } from '../site/stories.mjs';
 import { located } from '../ops/events.mjs';
 
@@ -25,6 +25,9 @@ function renderVessels() {
   if (state.vessels) $('#hero-counts').innerHTML = proofMarkup(counts, gaps);
   else if (state.vesselError) $('#hero-counts').innerHTML = '<li><span class="error-note">The vessel feed is unavailable. Retrying every 10 seconds.</span></li>';
   stamp($('#ais-stamp'), state.vesselError && !state.vessels ? 'AIS unavailable' : newest === null ? 'AIS · no positions arriving' : `AIS · latest ${ageLabel(newest)}`, state.vesselError ? 'down' : newest !== null && newest > 600000 ? 'stale' : 'live');
+  // Relayed positions carry their credit on the map.
+  const credit = aisCreditMarkup(counts.current);
+  $('#ais-credit').hidden = !credit; $('#ais-credit').innerHTML = credit;
   // An empty map says why on the map itself.
   const note = vesselFeedNote(state.vesselError && !state.vessels ? null : state.vessels, counts);
   $('#feed-note').hidden = !note; $('#feed-note').textContent = note || '';

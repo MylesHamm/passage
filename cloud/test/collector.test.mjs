@@ -34,7 +34,7 @@ test('continuous AIS survives a checkpoint and collector restart with its origin
 test('actual hosted service exposes only sanitized configuration and no removed endpoints',async()=>{
   const state=sqliteState(),collector=new Collector(state,{EIA_API_KEY:'eia-secret',AISSTREAM_API_KEY:'ais-secret'},{Socket:FakeSocket});await collector.initialize();
   const config=await (await collector.fetch(new Request('https://collector.internal/api/config'))).json();assert.equal(config.hosted,true);assert.equal(config.eia,true);assert.equal(config.aisstream,true);assert.ok(!JSON.stringify(config).includes('secret'));
-  assert.deepEqual(Object.keys(config).sort(),['aisstream','capabilities','eia','hosted','version']);
+  assert.deepEqual(Object.keys(config).sort(),['aisstream','capabilities','eia','hosted','openwaters','version']);assert.equal(config.openwaters,false,'Open Waters stays off unless the deploy opts in');
   for(const removed of ['/api/acled/events','/api/weather','/api/intelligence','/api/market-context'])assert.equal((await collector.fetch(new Request('https://collector.internal'+removed))).status,404,removed);
   assert.equal((await collector.fetch(new Request('https://collector.internal/api/acled/connect',{method:'POST'}))).status,404);
   collector.ais.close();await Promise.all(state.waits);state.db.close();

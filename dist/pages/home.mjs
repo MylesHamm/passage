@@ -5,7 +5,7 @@ import { $, load, every, stamp, fetchEvents, brentObservations } from '../site/d
 import { mountHormuzMap } from '../site/hormuz-live.mjs';
 import { createReadAlong } from '../site/stories.mjs';
 import { recentHormuzEvents, RECENT_EVENT_DAYS } from '../ops/hero-map.mjs';
-import { vesselCounts, vesselFeedNote, heroCountsMarkup, latestPrices, money, dayLabel, ageLabel, durationLabel, gapState, isTanker, esc } from '../ops/panels.mjs';
+import { vesselCounts, vesselFeedNote, heroCountsMarkup, latestPrices, money, dayLabel, ageLabel, durationLabel, gapState, isTanker, aisCreditMarkup, esc } from '../ops/panels.mjs';
 import { WAR_START, located } from '../ops/events.mjs';
 
 const state = { vessels: null, vesselError: false, transits: null, oil: null, events: null };
@@ -36,6 +36,9 @@ function renderVessels() {
   $('#hero-counts').innerHTML = heroCountsMarkup(counts, { connected: !state.vesselError || Boolean(state.vessels), events, days: RECENT_EVENT_DAYS, note });
   const newest = counts.newestAgeMs;
   stamp($('#ais-stamp'), state.vesselError && !state.vessels ? 'AIS unavailable' : newest === null ? 'AIS · no positions arriving' : `AIS · latest ${ageLabel(newest)}`, state.vesselError ? 'down' : newest !== null && newest > 600000 ? 'stale' : 'live');
+  // Relayed positions carry their credit on the map.
+  const credit = aisCreditMarkup(counts.current);
+  $('#ais-credit').hidden = !credit; $('#ais-credit').innerHTML = credit;
   $('#hero-eyebrow').dataset.state = state.vesselError ? 'down' : newest === null || newest > 600000 ? 'stale' : 'live';
   if (!state.vessels) { if (state.vesselError) { set('bento-vessels', unavailable); set('proof-dark', unavailable); } return; }
   set('bento-vessels', String(counts.total), newest === null ? note : `vessels received · latest ${ageLabel(newest)}`);
