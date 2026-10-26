@@ -5,7 +5,7 @@ import { $, load, every, stamp, fetchEvents, brentObservations } from '../site/d
 import { mountHormuzMap } from '../site/hormuz-live.mjs';
 import { createReadAlong } from '../site/stories.mjs';
 import { recentHormuzEvents, RECENT_EVENT_DAYS } from '../ops/hero-map.mjs';
-import { vesselCounts, vesselFeedNote, heroCountsMarkup, latestPrices, money, dayLabel, ageLabel, durationLabel, gapState, isTanker, aisCreditMarkup, esc } from '../ops/panels.mjs';
+import { vesselCounts, vesselFeedNote, heroCountsMarkup, latestPrices, money, dayLabel, ageLabel, durationLabel, gapState, isTanker, aisCreditMarkup, trafficCounts, esc } from '../ops/panels.mjs';
 import { WAR_START, located } from '../ops/events.mjs';
 
 const state = { vessels: null, vesselError: false, transits: null, oil: null, events: null };
@@ -40,18 +40,18 @@ function renderVessels() {
   const credit = aisCreditMarkup(counts.current);
   $('#ais-credit').hidden = !credit; $('#ais-credit').innerHTML = credit;
   $('#hero-eyebrow').dataset.state = state.vesselError ? 'down' : newest === null || newest > 600000 ? 'stale' : 'live';
-  if (!state.vessels) { if (state.vesselError) { set('bento-vessels', unavailable); set('proof-dark', unavailable); } return; }
-  set('bento-vessels', String(counts.total), newest === null ? note : `vessels received · latest ${ageLabel(newest)}`);
+  if (!state.vessels) { if (state.vesselError) { set('bento-vessels', unavailable); set('proof-ships', unavailable); } return; }
+  // The area can be crowded while the strait is nearly still: stopped ships, and ships moving through the lanes.
+  const t = trafficCounts(counts.current), moving = `${t.straitMoving} moving in the strait${t.straitMoving && !t.straitTankers ? ', no tankers' : ''}`;
+  set('proof-ships', String(counts.total), counts.total ? `${t.stopped} stopped · ${moving}` : note);
+  set('bento-vessels', String(counts.total), newest === null ? note : `vessels received · ${t.stopped} stopped · ${moving} · latest ${ageLabel(newest)}`);
   charts.vessels.set(counts.total ? freshness(counts.current) : []);
   // Ships dark now: counted only once coverage is learned and while reception is steady.
   const gaps = state.vessels.gaps, s = gaps?.summary || {}, gapMode = gapState(gaps);
-  if (gapMode === 'none') { set('proof-dark', '—', 'No gap record yet'); set('bento-gaps', '—', 'no gap record yet'); }
-  else if (gapMode === 'learning') { set('proof-dark', '—', 'Learning coverage'); set('bento-gaps', '—', 'learning where reception is reliable'); }
-  else if (gapMode === 'paused') { set('proof-dark', '—', 'Paused, reception thin'); set('bento-gaps', '—', 'paused while too few ships are heard'); }
-  else {
-    set('proof-dark', String(s.darkNow ?? 0), 'Silent 3 h or more');
-    set('bento-gaps', String(s.darkNow ?? 0), `dark now · ${s.completed7d ?? 0} gaps closed in 7 days`);
-  }
+  if (gapMode === 'none') set('bento-gaps', '—', 'no gap record yet');
+  else if (gapMode === 'learning') set('bento-gaps', '—', 'learning where reception is reliable');
+  else if (gapMode === 'paused') set('bento-gaps', '—', 'paused until reception has been steady for a day');
+  else set('bento-gaps', String(s.darkNow ?? 0), `dark now · ${s.completed7d ?? 0} gaps closed in 7 days`);
   const closed = gapMode === 'counting' ? [...(gaps.completed || [])].reverse() : [];
   charts.gaps.set(closed.map(g => ({ value: g.hours, tip: `<b>${esc(durationLabel(g.hours))}</b> ${esc(g.name || `MMSI ${g.mmsi}`)} · ${esc(dayLabel(g.to.t))}` })));
   live?.setVessels(state.vessels);

@@ -33,11 +33,35 @@ export function vesselCounts(vessels, now = Date.now(), theater = 'hormuz') {
   return { total: current.length, tankers: current.filter(isTanker).length, newestAgeMs: newest === null ? null : Math.max(0, now - newest), current };
 }
 
+/**
+ * An approximate box over the Strait of Hormuz shipping lanes, between the
+ * Musandam peninsula and the Iranian islands: [west, south, east, north].
+ * It is a reading aid for "in the strait now", not a legal boundary.
+ */
+export const STRAIT_BOX = Object.freeze([56.0, 25.9, 57.0, 26.9]);
+const STOPPED_KNOTS = 1, MOVING_KNOTS = 2;
+const inStrait = v => v.longitude >= STRAIT_BOX[0] && v.longitude <= STRAIT_BOX[2] && v.latitude >= STRAIT_BOX[1] && v.latitude <= STRAIT_BOX[3];
+/**
+ * What the received ships are doing: stopped (under 1 knot) or moving (2 knots
+ * or more), and how many are moving in the strait itself. Ships between 1 and
+ * 2 knots, or with no reported speed, are in neither group.
+ */
+export function trafficCounts(current = []) {
+  const list = Array.isArray(current) ? current : [], speed = v => Number.isFinite(v?.speedKnots) ? v.speedKnots : null;
+  const moving = list.filter(v => speed(v) !== null && speed(v) >= MOVING_KNOTS), strait = moving.filter(inStrait);
+  return {
+    total: list.length, stopped: list.filter(v => speed(v) !== null && speed(v) < STOPPED_KNOTS).length, moving: moving.length,
+    movingTankers: moving.filter(isTanker).length, straitMoving: strait.length, straitTankers: strait.filter(isTanker).length,
+  };
+}
+
 export function heroCountsMarkup(counts, { connected = true, events = 0, days = 7, note = '' } = {}) {
   const recent = events ? `<span class="events"><strong>${events}</strong> ${events === 1 ? 'event' : 'events'} in the last ${days} days</span>` : '';
   if (!connected) return '<span>Vessel feed unavailable · retrying</span>' + recent;
   if (!counts.total) return `<span>${esc(note || 'No current positions received')}</span>` + recent;
-  return `<span class="tankers"><strong>${counts.tankers}</strong> ${counts.tankers === 1 ? 'tanker' : 'tankers'}</span><span><strong>${counts.total}</strong> vessels received</span>` + recent;
+  const t = trafficCounts(counts.current);
+  return `<span class="tankers"><strong>${counts.tankers}</strong> ${counts.tankers === 1 ? 'tanker' : 'tankers'}</span><span><strong>${counts.total}</strong> vessels received</span>`
+    + (counts.current ? `<span><strong>${t.straitMoving}</strong> moving in the strait</span>` : '') + recent;
 }
 
 /**
@@ -203,7 +227,7 @@ export function statusSummary(sources = []) {
 }
 
 export const ABOUT_NOTES = [
-  ['Vessels', 'Positions come from two free feeds of coastal receivers: AISStream, and AISHub contributors relayed by Open Waters AIS about a minute behind. Each ship\'s card names the feed its position came from, and the newest report of a ship wins. Together they cover part of Hormuz and almost none of Bab el-Mandeb. Tankers often switch AIS off near attacks, so an empty map does not mean an empty strait. Positions older than 10 minutes fade, and are dropped after 30.'],
+  ['Vessels', 'Positions come from two free feeds of coastal receivers: AISStream, and AISHub contributors relayed by Open Waters AIS about a minute behind. Each ship\'s card names the feed its position came from, and the newest report of a ship wins. Together they cover most of the Hormuz area and almost none of Bab el-Mandeb. A ship counts as stopped under 1 knot and as moving from 2 knots; "in the strait" means an approximate box over the shipping lanes between Musandam and the Iranian islands. Tankers often switch AIS off near attacks, so a ship with AIS off is not on the map. Positions older than 10 minutes fade, and are dropped after 30.'],
   ['Ship models', 'Tankers are drawn as detailed models enlarged far beyond true scale so they can be seen, turned to their reported heading. A vessel without a reported heading is shown as a ring, never with a guessed direction.'],
   ['AIS gaps', 'A gap is a ship that stops reporting for three hours or more while moving deep inside reliable reception, learned from where at least two different ships are heard nearly every hour. A ship leaving range fades out at the edge of coverage and is not counted; counting pauses whenever the feed itself delivers much less than usual. The record starts when the collector does, so the first day is spent learning coverage. A gap is evidence that AIS was switched off, not proof.'],
   ['Tracks and replay', 'Trails and the replay show positions actually received over the last hour, joined in the order received. Nothing is extrapolated between reports.'],

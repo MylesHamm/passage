@@ -30,7 +30,7 @@ Open Waters is read from its event stream, never its vessel snapshot, so every p
 - Odds and headlines refresh every minute, war events every five minutes, oil every ten and transits every thirty. An automated review checks for new events every six hours and commits only source-linked ones to the list in this repository. The collector picks the list up within about fifteen minutes, with no site publish. The page shows when the list was last reviewed. See `docs/EVENTS-UPDATE.md`. PortWatch publishes weekly, so the latest transit day is often several days old.
 - Nothing is extrapolated. A trail joins positions actually received, and a missing price or count stays missing.
 
-The free AIS feed covers part of Hormuz and none of Bab el-Mandeb. An empty stretch of water on the map does not mean no ships are there.
+The two free AIS feeds cover most of the Hormuz area and almost none of Bab el-Mandeb. The Hormuz figures count ships received, ships stopped (under 1 knot) and ships moving in the strait (2 knots or more, inside an approximate box over the shipping lanes), so a crowded anchorage is not mistaken for traffic. Ships with AIS switched off are not on the map.
 
 ## Run locally
 
