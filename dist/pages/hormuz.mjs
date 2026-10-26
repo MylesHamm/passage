@@ -4,7 +4,8 @@ import '../site/shell.mjs';
 import { $, load, every, stamp, fetchEvents, eventsStamp, eventHref, pageUrl } from '../site/data.mjs';
 import { mountHormuzMap } from '../site/hormuz-live.mjs';
 import { recentHormuzEvents } from '../ops/hero-map.mjs';
-import { vesselCounts, ageLabel, clockLabel, dayLabel, transitRowMarkup, gapsCardMarkup, eventListMarkup } from '../ops/panels.mjs';
+import { vesselCounts, vesselFeedNote, gapState, ageLabel, clockLabel, dayLabel, transitRowMarkup, gapsCardMarkup, eventListMarkup, esc } from '../ops/panels.mjs';
+import { createReadAlong, stepRows } from '../site/stories.mjs';
 import { located } from '../ops/events.mjs';
 
 const state = { vessels: null, vesselError: false, transits: null, events: null };
@@ -12,21 +13,25 @@ let live = null;
 const KICKER = 'Strait of Hormuz · received AIS';
 
 function proofMarkup(counts, gaps) {
-  const s = gaps?.summary || {}, darkReady = gaps?.ready && gaps.feedHealthy;
+  const s = gaps?.summary || {}, mode = gapState(gaps), darkReady = mode === 'counting';
   const item = (label, value, note, tone = '') => `<li><span class="label">${label}</span><span class="value"${tone ? ` data-tone="${tone}"` : ''}>${value}</span><span class="note">${note}</span></li>`;
   return item('Tankers', String(counts.tankers), 'received now', 'tanker')
     + item('Vessels', String(counts.total), counts.newestAgeMs === null ? 'none current' : `latest ${ageLabel(counts.newestAgeMs)}`)
-    + item('Dark now', darkReady ? String(s.darkNow ?? 0) : '—', !gaps ? 'no gap record yet' : !gaps.ready ? 'learning coverage' : !gaps.feedHealthy ? 'paused, feed low' : 'silent 3 h or more');
+    + item('Dark now', darkReady ? String(s.darkNow ?? 0) : '—', { none: 'no gap record yet', learning: 'learning coverage', paused: 'paused, reception thin', counting: 'silent 3 h or more' }[mode]);
 }
 
 function renderVessels() {
   const counts = vesselCounts(state.vessels?.vessels), newest = counts.newestAgeMs, gaps = state.vessels?.gaps || null;
   if (state.vessels) $('#hero-counts').innerHTML = proofMarkup(counts, gaps);
   else if (state.vesselError) $('#hero-counts').innerHTML = '<li><span class="error-note">The vessel feed is unavailable. Retrying every 10 seconds.</span></li>';
-  stamp($('#ais-stamp'), state.vesselError && !state.vessels ? 'AIS unavailable' : newest === null ? 'AIS · no current positions' : `AIS · latest ${ageLabel(newest)}`, state.vesselError ? 'down' : newest !== null && newest > 600000 ? 'stale' : 'live');
+  stamp($('#ais-stamp'), state.vesselError && !state.vessels ? 'AIS unavailable' : newest === null ? 'AIS · no positions arriving' : `AIS · latest ${ageLabel(newest)}`, state.vesselError ? 'down' : newest !== null && newest > 600000 ? 'stale' : 'live');
+  // An empty map says why on the map itself.
+  const note = vesselFeedNote(state.vesselError && !state.vessels ? null : state.vessels, counts);
+  $('#feed-note').hidden = !note; $('#feed-note').textContent = note || '';
   $('#hero-eyebrow').dataset.state = state.vesselError ? 'down' : newest === null || newest > 600000 ? 'stale' : 'live';
   $('#ais-gaps-body').innerHTML = gapsCardMarkup(gaps);
-  stamp($('#ais-gaps-stamp'), !gaps ? '' : !gaps.ready ? 'Learning coverage' : !gaps.feedHealthy ? 'Paused · feed low' : `Updated ${clockLabel(state.vessels.generatedAt)}`, !gaps || gaps.ready && gaps.feedHealthy ? 'live' : 'stale');
+  const mode = gapState(gaps);
+  stamp($('#ais-gaps-stamp'), { none: '', learning: 'Learning coverage', paused: 'Paused · reception thin', counting: `Updated ${clockLabel(state.vessels?.generatedAt)}` }[mode], mode === 'counting' || mode === 'none' ? 'live' : 'stale');
   if (state.vessels) live?.setVessels(state.vessels);
 }
 async function loadVessels() {
@@ -34,6 +39,17 @@ async function loadVessels() {
   renderVessels();
 }
 
+// Each chokepoint keeps one chart, so its story carries on across refreshes.
+const transitCells = {};
+function transitCell(id) {
+  if (transitCells[id]) return transitCells[id];
+  if (!Object.keys(transitCells).length) $('#transits-body').innerHTML = '';
+  const box = Object.assign(document.createElement('div'), { className: 'transit-cell' });
+  box.innerHTML = '<div></div><div class="transit-chart"></div>';
+  $('#transits-body').append(box);
+  const chart = createReadAlong(box.querySelector('.transit-chart'), { label: `${id === 'hormuz' ? 'Strait of Hormuz' : 'Bab el-Mandeb'} daily transits, last 6 weeks, against the average before the war`, offset: id === 'hormuz' ? 0 : .9, empty: 'No daily counts yet.' });
+  return (transitCells[id] = { text: box.firstElementChild, chart });
+}
 async function loadTransits() {
   try { state.transits = await load('/api/transits'); }
   catch { stamp($('#transits-stamp'), 'Unavailable', 'down'); if (!state.transits) $('#transits-body').innerHTML = '<p class="error-note">Transit counts are unavailable right now. The page retries every 30 minutes.</p>'; return; }
@@ -41,7 +57,11 @@ async function loadTransits() {
     const rows = (t.daily || []).filter(r => r.chokepoint === id);
     return { rows, latest: rows.at(-1) || null, baseline: t.baselines?.[id] || null };
   };
-  $('#transits-body').innerHTML = `<div>${transitRowMarkup({ name: 'Strait of Hormuz', ...row('hormuz') })}</div><div>${transitRowMarkup({ name: 'Bab el-Mandeb', ...row('bab') })}</div>`;
+  for (const [id, name] of [['hormuz', 'Strait of Hormuz'], ['bab', 'Bab el-Mandeb']]) {
+    const data = row(id), cell = transitCell(id);
+    cell.text.innerHTML = transitRowMarkup({ name, ...data, bars: false });
+    cell.chart.set(data.rows.slice(-42).map(r => ({ value: r.total, part: r.tankers, tip: `<b>${r.total} ${r.total === 1 ? 'ship' : 'ships'}</b> ${r.tankers} ${r.tankers === 1 ? 'tanker' : 'tankers'} · ${esc(dayLabel(r.date))}` })), { baseline: data.baseline?.total ?? null });
+  }
   const latest = [row('hormuz').latest?.date, row('bab').latest?.date].filter(Boolean).sort().at(-1);
   stamp($('#transits-stamp'), latest ? `PortWatch · to ${dayLabel(latest)}` : 'PortWatch');
 }
@@ -97,6 +117,7 @@ function bindControls() {
 
 async function start() {
   bindControls();
+  stepRows($('#recent-list'), { offset: .4 });
   mountHormuzMap($('#hero-map'), $('#vessel-card')).then(controller => {
     live = controller;
     if (!live) return;

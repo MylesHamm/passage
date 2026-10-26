@@ -7,22 +7,23 @@
 <meta property="og:type" content="website"><meta property="og:site_name" content="Passage"><meta property="og:title" content="Events | Passage"><meta property="og:description" content="The regional war in order, every entry linked to its report."><meta name="twitter:card" content="summary">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<script src="/site/motion-early.js"></script>
 <link rel="preload" href="/assets/geist.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/motion.css"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/ops.css">
 </head>
 <body>
 <!-- passage:nav -->
 <main id="main">
-  <section class="page-hero" data-layout="split" aria-labelledby="hero-title">
+  <section data-intro="load" class="page-hero" data-layout="split" aria-labelledby="hero-title">
     <div class="container">
       <div class="hero-copy">
-        <p class="eyebrow" id="hero-eyebrow"><i aria-hidden="true"></i><span id="events-stamp">Curated events</span></p>
-        <h1 class="hero-title" data-size="page" id="hero-title">Every event, in order</h1>
-        <p class="hero-sub">Each strike and attack since 28 February, newest first and linked to the reporting behind it.</p>
+        <p class="eyebrow" id="hero-eyebrow" data-motion="up" style="--i:0"><i aria-hidden="true"></i><span id="events-stamp">Curated events</span></p>
+        <h1 class="hero-title" data-size="page" id="hero-title" data-motion="up" style="--i:1">Every event, in order</h1>
+        <p class="hero-sub" data-motion="up" style="--i:2">Each strike and attack since 28 February, newest first and linked to the reporting behind it.</p>
       </div>
       <div class="hero-aside">
-        <div class="hero-actions"><a class="button button-primary" id="latest-event" href="#timeline">Open the latest event <!-- icon:arrow-right --></a></div>
-        <ul class="proof" aria-label="Event counts" id="event-counts" role="status">
+        <div class="hero-actions" data-motion="up" style="--i:3"><a class="button button-primary" id="latest-event" href="#timeline">Open the latest event <!-- icon:arrow-right --></a></div>
+        <ul class="proof" aria-label="Event counts" id="event-counts" role="status" data-motion="up" style="--i:4">
           <li><span class="label">Events</span><span class="value"><span class="skeleton">000</span></span><span class="note">since 28 Feb</span></li>
           <li><span class="label">Last 7 days</span><span class="value"><span class="skeleton">00</span></span><span class="note">events</span></li>
         </ul>

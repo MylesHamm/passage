@@ -18,6 +18,10 @@ Passage is a small site of landing pages. Each page has its own address, one mai
 
 The design follows the landing page rules recorded in `test/design-system.test.mjs` and `test/site-pages.test.mjs`: Geist type on Tailwind's type scale, fixed spacing steps, flat dark surfaces, one easing curve, and copy without hyphenated words or dashes.
 
+Sections load in once as they scroll into view: cards rise from below and resolve from blur, bars fill and lines draw, in reading order. Each card's chart then acts out a reading of its real data, a highlight stepping along the observed points with each one's own figure and date, and lists highlight one row at a time. The stories run on one clock that stops when they leave the screen. Nothing counts up or shows a value between observations, and with reduced motion every section shows its final state (`dist/site/stories.mjs`, `test/stories.test.mjs`).
+
+When the vessel feed is connected but nothing arrives from the region, the map says so: "Feed connected · AISStream is sending no positions for this region". The AIS gap count pauses rather than counting silent ships as dark.
+
 ## What updates
 
 - Vessel positions refresh every ten seconds while the page is open. The collector receives them continuously. Positions older than ten minutes fade, and are dropped after thirty.

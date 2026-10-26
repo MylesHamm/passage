@@ -7,36 +7,37 @@
 <meta property="og:type" content="website"><meta property="og:site_name" content="Passage"><meta property="og:title" content="Passage | Regional war monitor"><meta property="og:description" content="Received ship positions in Hormuz, sourced war events from the Gulf to the Red Sea, and the oil prices and odds that followed."><meta name="twitter:card" content="summary">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<script src="/site/motion-early.js"></script>
 <link rel="preload" href="/assets/geist.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/motion.css"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/ops.css">
 </head>
 <body>
 <!-- passage:nav -->
 <main id="main">
-  <section class="page-hero" data-align="center" aria-labelledby="hero-title">
+  <section class="page-hero" data-align="center" data-intro="load" aria-labelledby="hero-title">
     <div class="container">
-      <p class="eyebrow" id="hero-eyebrow"><i aria-hidden="true"></i><span>Live from the Strait of Hormuz</span></p>
-      <h1 class="hero-title" id="hero-title">Track the war's effect<br>on tankers and oil</h1>
-      <p class="hero-sub">Received ship positions in the Strait of Hormuz, sourced war events from the Gulf to the Red Sea, and the oil prices and market odds that followed. Every figure shows its source and date.</p>
-      <div class="hero-actions"><a class="button button-primary" href="/hormuz/">Open the live map <!-- icon:arrow-right --></a></div>
+      <p class="eyebrow" id="hero-eyebrow" data-motion="up" style="--i:0"><i aria-hidden="true"></i><span>Live from the Strait of Hormuz</span></p>
+      <h1 class="hero-title" id="hero-title" data-motion="up" style="--i:1">Track the war's effect<br>on tankers and oil</h1>
+      <p class="hero-sub" data-motion="up" style="--i:2">Received ship positions in the Strait of Hormuz, sourced war events from the Gulf to the Red Sea, and the oil prices and market odds that followed. Every figure shows its source and date.</p>
+      <div class="hero-actions" data-motion="up" style="--i:3"><a class="button button-primary" href="/hormuz/">Open the live map <!-- icon:arrow-right --></a></div>
       <ul class="proof" aria-label="Latest figures">
-        <li><span class="label">Hormuz transits</span><span class="value" id="proof-transits"><span class="skeleton">00%</span></span><span class="note" id="proof-transits-note">IMF PortWatch</span></li>
-        <li><span class="label">Brent close</span><span class="value" id="proof-brent"><span class="skeleton">$000.00</span></span><span class="note" id="proof-brent-note">EIA daily spot</span></li>
-        <li><span class="label">Ships dark now</span><span class="value" id="proof-dark"><span class="skeleton">00</span></span><span class="note" id="proof-dark-note">AIS gaps over 3 h</span></li>
+        <li data-motion="up" style="--i:4"><span class="label">Hormuz transits</span><span class="value" id="proof-transits"><span class="skeleton">00%</span></span><span class="note" id="proof-transits-note">IMF PortWatch</span></li>
+        <li data-motion="up" style="--i:5"><span class="label">Brent close</span><span class="value" id="proof-brent"><span class="skeleton">$000.00</span></span><span class="note" id="proof-brent-note">EIA daily spot</span></li>
+        <li data-motion="up" style="--i:6"><span class="label">Ships dark now</span><span class="value" id="proof-dark"><span class="skeleton">00</span></span><span class="note" id="proof-dark-note">AIS gaps over 3 h</span></li>
       </ul>
     </div>
   </section>
 
-  <section class="map-section" aria-label="Live Hormuz map">
+  <section class="map-section" data-intro="load" aria-label="Live Hormuz map">
     <div class="container">
       <div class="map-frame" data-size="hero" data-scroll="page">
         <div id="hero-map" class="hero-map"><canvas aria-label="3D terrain map of the Strait of Hormuz with received vessel positions. Drag to turn, hold Shift and drag to pan, plus and minus to zoom." tabindex="0"></canvas></div>
-        <div class="hud hud-tl"><p class="hud-panel" id="hero-counts" role="status"><span>Connecting to the vessel feed…</span></p></div>
+        <div class="hud hud-tl"><p class="hud-panel" id="hero-counts" role="status" data-motion="down" style="--i:7"><span>Connecting to the vessel feed…</span></p></div>
         <div class="hud hud-br" role="group" aria-label="Zoom">
-          <button type="button" class="chip chip-icon" id="zoom-out" aria-label="Zoom out"><!-- icon:minus --></button>
-          <button type="button" class="chip chip-icon" id="zoom-in" aria-label="Zoom in"><!-- icon:plus --></button>
+          <button type="button" class="chip chip-icon" data-motion="pop" style="--i:8" id="zoom-out" aria-label="Zoom out"><!-- icon:minus --></button>
+          <button type="button" class="chip chip-icon" data-motion="pop" style="--i:9" id="zoom-in" aria-label="Zoom in"><!-- icon:plus --></button>
         </div>
-        <div class="hud hud-bl"><p class="hud-panel" aria-label="Legend">
+        <div class="hud hud-bl"><p class="hud-panel" aria-label="Legend" data-motion="up" style="--i:10">
           <span class="legend-key"><i class="k-tanker"></i>Tanker</span>
           <span class="legend-key"><i class="k-other"></i>Other vessel</span>
           <span class="legend-key"><i class="k k-shipping" aria-hidden="true"></i>War event, last 7 days</span>
@@ -48,47 +49,47 @@
     </div>
   </section>
 
-  <section class="section" data-reveal aria-labelledby="why-title">
+  <section class="section" data-intro="wait" aria-labelledby="why-title">
     <div class="container">
       <div class="section-head">
-        <h2 id="why-title">The war is reported in pieces</h2>
-        <p>Ship positions sit in one feed, strike reports in another and oil prices in a third, each on its own clock. Passage lines them up on one map and one timeline, so you can see what happened at sea and what the market did next.</p>
+        <h2 id="why-title" data-motion="up">The war is reported in pieces</h2>
+        <p data-motion="up">Ship positions sit in one feed, strike reports in another and oil prices in a third, each on its own clock. Passage lines them up on one map and one timeline, so you can see what happened at sea and what the market did next.</p>
       </div>
       <div class="bento">
-        <a class="bento-card" data-span="2" href="/hormuz/">
-          <span class="card-icon"><!-- icon:boat -->Hormuz live</span>
-          <h3>See which ships are moving</h3>
-          <p>Received AIS positions in the Strait of Hormuz, with tankers drawn to their reported heading and the last hour of tracks.</p>
-          <div class="bento-figure"><strong id="bento-vessels"><span class="skeleton">00</span></strong><small id="bento-vessels-note">vessels received</small></div>
-          <span class="bento-more">Open Hormuz live <!-- icon:arrow-right --></span>
+        <a class="bento-card" data-motion="card" data-span="2" href="/hormuz/">
+          <span class="card-icon" data-motion="up"><!-- icon:boat -->Hormuz live</span>
+          <h3 data-motion="up">See which ships are moving</h3>
+          <p data-motion="up">Received AIS positions in the Strait of Hormuz, with tankers drawn to their reported heading and the last hour of tracks.</p>
+          <div class="bento-figure" data-motion="up"><div id="bento-vessels-chart"></div><strong id="bento-vessels"><span class="skeleton">00</span></strong><small id="bento-vessels-note">vessels received</small></div>
+          <span class="bento-more" data-motion="up">Open Hormuz live <!-- icon:arrow-right --></span>
         </a>
-        <a class="bento-card" href="/hormuz/#transits">
-          <span class="card-icon"><!-- icon:waves -->Transits</span>
-          <h3>Traffic against normal</h3>
-          <p>Daily ship counts through Hormuz from IMF PortWatch, beside the 2025 daily average.</p>
-          <div class="bento-figure"><div id="bento-transits-bars"></div><strong id="bento-transits"><span class="skeleton">00%</span></strong><small id="bento-transits-note">of the daily average</small></div>
-          <span class="bento-more">See the counts <!-- icon:arrow-right --></span>
+        <a class="bento-card" data-motion="card" href="/hormuz/#transits">
+          <span class="card-icon" data-motion="up"><!-- icon:waves -->Transits</span>
+          <h3 data-motion="up">Traffic against normal</h3>
+          <p data-motion="up">Daily ship counts through Hormuz from IMF PortWatch, beside the 2025 daily average.</p>
+          <div class="bento-figure" data-motion="up"><div id="bento-transits-bars"></div><strong id="bento-transits"><span class="skeleton">00%</span></strong><small id="bento-transits-note">of the daily average</small></div>
+          <span class="bento-more" data-motion="up">See the counts <!-- icon:arrow-right --></span>
         </a>
-        <a class="bento-card" href="/war/">
-          <span class="card-icon"><!-- icon:crosshair -->Regional war</span>
-          <h3>Every strike, placed and sourced</h3>
-          <p>Attacks on shipping, missile and drone strikes, and strikes on Iran and Yemen, each linked to its report.</p>
-          <div class="bento-figure"><div id="bento-events-bars"></div><strong id="bento-events"><span class="skeleton">000</span></strong><small id="bento-events-note">events since 28 Feb</small></div>
-          <span class="bento-more">See the regional war <!-- icon:arrow-right --></span>
+        <a class="bento-card" data-motion="card" href="/war/">
+          <span class="card-icon" data-motion="up"><!-- icon:crosshair -->Regional war</span>
+          <h3 data-motion="up">Every strike, placed and sourced</h3>
+          <p data-motion="up">Attacks on shipping, missile and drone strikes, and strikes on Iran and Yemen, each linked to its report.</p>
+          <div class="bento-figure" data-motion="up"><div id="bento-events-bars"></div><strong id="bento-events"><span class="skeleton">000</span></strong><small id="bento-events-note">events since 28 Feb</small></div>
+          <span class="bento-more" data-motion="up">See the regional war <!-- icon:arrow-right --></span>
         </a>
-        <a class="bento-card" href="/oil/">
-          <span class="card-icon"><!-- icon:chart-line -->Oil and odds</span>
-          <h3>What the market did next</h3>
-          <p>Daily Brent and WTI closes from the EIA with every war event marked, beside Polymarket odds on the war.</p>
-          <div class="bento-figure"><div id="bento-oil-line"></div><strong id="bento-oil"><span class="skeleton">$000.00</span></strong><small id="bento-oil-note">Brent close</small></div>
-          <span class="bento-more">See oil and odds <!-- icon:arrow-right --></span>
+        <a class="bento-card" data-motion="card" href="/oil/">
+          <span class="card-icon" data-motion="up"><!-- icon:chart-line -->Oil and odds</span>
+          <h3 data-motion="up">What the market did next</h3>
+          <p data-motion="up">Daily Brent and WTI closes from the EIA with every war event marked, beside Polymarket odds on the war.</p>
+          <div class="bento-figure" data-motion="up"><div id="bento-oil-line"></div><strong id="bento-oil"><span class="skeleton">$000.00</span></strong><small id="bento-oil-note">Brent close</small></div>
+          <span class="bento-more" data-motion="up">See oil and odds <!-- icon:arrow-right --></span>
         </a>
-        <a class="bento-card" href="/hormuz/#ais-gaps">
-          <span class="card-icon"><!-- icon:eye-slash -->Dark ships</span>
-          <h3>Ships that went quiet</h3>
-          <p>Ships that stopped reporting for three hours or more while moving inside reliable reception.</p>
-          <div class="bento-figure"><strong id="bento-gaps"><span class="skeleton">00</span></strong><small id="bento-gaps-note">dark now</small></div>
-          <span class="bento-more">See the AIS gaps <!-- icon:arrow-right --></span>
+        <a class="bento-card" data-motion="card" href="/hormuz/#ais-gaps">
+          <span class="card-icon" data-motion="up"><!-- icon:eye-slash -->Dark ships</span>
+          <h3 data-motion="up">Ships that went quiet</h3>
+          <p data-motion="up">Ships that stopped reporting for three hours or more while moving inside reliable reception.</p>
+          <div class="bento-figure" data-motion="up"><div id="bento-gaps-chart"></div><strong id="bento-gaps"><span class="skeleton">00</span></strong><small id="bento-gaps-note">dark now</small></div>
+          <span class="bento-more" data-motion="up">See the AIS gaps <!-- icon:arrow-right --></span>
         </a>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { $, load, every, stamp, fetchEvents, eventsStamp, eventHref } from '../s
 import { createTheatreMap } from '../ops/theatre-map.mjs';
 import { eventCardMarkup, eventGroupMarkup, headlinesMarkup, sourceItemsMarkup, clockLabel, dayLabel, esc } from '../ops/panels.mjs';
 import { LAYERS, WAR_START, activeMissions, located, visibleEvents, countsByLayer } from '../ops/events.mjs';
+import { stepRows } from '../site/stories.mjs';
 
 const state = { events: null, news: null, region: 'all', layers: new Set([...Object.keys(LAYERS), 'missions']), selected: null };
 // A link from an event page opens that event once the map and the list are both ready.
@@ -26,9 +27,9 @@ function renderMissions() {
   const day = state.events?.events.find(e => e.id === state.selected)?.date || today();
   theatre?.setMissions(activeMissions(state.events?.missions || [], day), state.layers.has('missions'));
   const active = activeMissions(state.events?.missions || [], today());
-  $('#missions-body').innerHTML = active.length ? active.map(m => `<article class="card">
+  $('#missions-body').innerHTML = active.length ? active.map(m => `<article class="card" data-motion="card">
       <div class="card-head"><h3>${esc(m.name)}</h3><span class="stamp">since ${esc(dayLabel(m.start))} ${esc(m.start.slice(0, 4))}</span></div>
-      <p class="empty-note">${esc(m.operator)}${m.area ? ` · ${esc(m.area)}` : ''}</p>
+      <p class="card-text">${esc(m.operator)}${m.area ? ` · ${esc(m.area)}` : ''}</p>
       <ul class="ec-sources">${sourceItemsMarkup(m.sources)}</ul></article>`).join('')
     : '<p class="empty-note">No naval mission in the list is under way today.</p>';
 }
@@ -90,6 +91,7 @@ function bindControls() {
 
 async function start() {
   bindControls();
+  stepRows($('#headline-list'), { offset: .4 });
   createTheatreMap($('#theatre-map'), {
     onSelect: event => event ? openEvent(event.id) : closeEvent(),
     onGroup: list => { card().innerHTML = eventGroupMarkup(list, { href: eventHref }); card().hidden = false; },

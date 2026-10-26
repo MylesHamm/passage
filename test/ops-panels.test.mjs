@@ -216,3 +216,27 @@ test('the AIS gaps card says when it is learning or paused, and never shows sile
   assert.match(gapCardMarkup(done, 'completed'), /reappeared 5 h later, 42.5 nm away/);
   assert.match(gapCardMarkup(base.darkNow[0], 'dark'), /Silent for 4 h 30 min so far/);
 });
+
+test('an empty map says why: feed down, reconnecting, just connected, or connected with nothing arriving', async () => {
+  const { vesselFeedNote } = await import('../dist/ops/panels.mjs');
+  const now = Date.parse('2026-10-26T13:00:00Z'), ago = minutes => new Date(now - minutes * 60_000).toISOString();
+  const source = over => ({ source: { configured: true, connection: 'connected', connectedAt: ago(60), lastPositionReceivedAt: null, ...over } });
+  assert.equal(vesselFeedNote(source(), { total: 3 }, now), null, 'ships on the map need no note');
+  assert.match(vesselFeedNote(null, { total: 0 }, now), /unavailable/);
+  assert.match(vesselFeedNote({ source: { configured: false } }, { total: 0 }, now), /not configured/);
+  assert.match(vesselFeedNote(source({ connection: 'connecting' }), { total: 0 }, now), /Reconnecting/);
+  assert.match(vesselFeedNote(source({ connectedAt: ago(2) }), { total: 0 }, now), /waiting for the first positions/, 'a fresh connection is not yet called silent');
+  assert.match(vesselFeedNote(source(), { total: 0 }, now), /AISStream is sending no positions for this region/);
+  assert.match(vesselFeedNote(source({ lastPositionReceivedAt: ago(4) }), { total: 0 }, now), /No current positions/, 'positions arriving elsewhere in the feed are not a silent region');
+});
+
+test('gap counting is learning, paused or counting, and a quiet day pauses it', async () => {
+  const { gapState, gapsCardMarkup } = await import('../dist/ops/panels.mjs');
+  assert.equal(gapState(null), 'none');
+  assert.equal(gapState({ ready: false, learnedHours: 6 }), 'learning');
+  assert.equal(gapState({ ready: false, learnedHours: 87, feedHealthy: false }), 'paused', 'a day of thin reception is a pause, not more learning');
+  assert.equal(gapState({ ready: true, learnedHours: 87, feedHealthy: false }), 'paused');
+  assert.equal(gapState({ ready: true, learnedHours: 87, feedHealthy: true }), 'counting');
+  assert.match(gapsCardMarkup({ ready: false, learnedHours: 87, feedHealthy: false, summary: {} }), /Paused: too few ships have been heard/);
+  assert.doesNotMatch(gapsCardMarkup({ ready: false, learnedHours: 87, feedHealthy: false, summary: {} }), /of 24 hours/);
+});

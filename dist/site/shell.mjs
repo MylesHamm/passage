@@ -4,6 +4,7 @@
 import { runtime } from '../runtime-config.mjs';
 import { statusSummary, esc } from '../ops/panels.mjs';
 import { load, every } from './data.mjs';
+import { bindIntros, pulse } from './stories.mjs';
 
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -43,11 +44,10 @@ async function loadStatus() {
   pill.setAttribute('aria-label', `${summary.text}. See every source and its status.`);
 }
 
-/** Sections marked data-reveal rise 32px and fade in once, as they enter the viewport. */
+/** Text sections marked data-reveal rise 32px and fade in once, as they enter the viewport. */
 export function bindReveals(root = document) {
   const nodes = [...root.querySelectorAll('[data-reveal]:not([data-revealed])')];
-  if (!nodes.length || typeof IntersectionObserver !== 'function') return;
-  document.documentElement.classList.add('reveal-ready');
+  if (!nodes.length || typeof IntersectionObserver !== 'function') { for (const node of nodes) node.dataset.revealed = 'true'; return; }
   const observer = new IntersectionObserver(entries => {
     for (const entry of entries) if (entry.isIntersecting) { entry.target.dataset.revealed = 'true'; observer.unobserve(entry.target); }
   }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
@@ -92,8 +92,11 @@ export function bindTaglines(root = document) {
 /** Starts the shared behavior; importing this module calls it once. */
 export function startShell() {
   bindMenu();
+  bindIntros();
   bindReveals();
   bindTaglines();
+  // A live feed's dot sends out a ring; it stays still while the feed is stale or down.
+  document.querySelectorAll('.eyebrow i').forEach((dot, index) => pulse(dot, { offset: index * .4 }));
   every(60_000, loadStatus);
 }
 startShell();

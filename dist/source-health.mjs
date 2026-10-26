@@ -10,7 +10,7 @@ export const SOURCE_DEFINITIONS = [
   {id:'un',name:'UN News',group:'news',interval:600,home:'https://news.un.org/en/news/region/middle-east'},
   {id:'brent',name:'EIA Brent',group:'oil',interval:3600,home:'https://www.eia.gov/dnav/pet/hist/RBRTEd.htm'},
   {id:'wti',name:'EIA WTI',group:'oil',interval:3600,home:'https://www.eia.gov/dnav/pet/hist/RWTCd.htm'},
-  {id:'eia-today',name:'EIA · next-day spot close',group:'oil',interval:3600,freshnessAfterSeconds:345600,home:'https://www.eia.gov/todayinenergy/prices.php',limitations:'Previous trading day close as republished on EIA Today in Energy.'},
+  {id:'eia-today',name:'EIA · latest spot close',group:'oil',interval:3600,freshnessAfterSeconds:345600,home:'https://www.eia.gov/todayinenergy/prices.php',limitations:'Previous trading day close as republished on EIA Today in Energy.'},
   {id:'portwatch',name:'IMF PortWatch · transits',group:'transits',interval:3600,freshnessAfterSeconds:864000,home:'https://portwatch.imf.org/',limitations:'Daily chokepoint transits derived from satellite AIS; released weekly.'},
   {id:'aisstream',name:'AISStream',group:'vessels',interval:10,optional:'aisstream',home:'https://aisstream.io/'},
   {id:'imo-hormuz',name:'IMO · Hormuz & Middle East',group:'maritime',interval:1800,freshnessAfterSeconds:86400,freshnessBasis:'retrieval',home:'https://www.imo.org/en/mediacentre/hottopics/pages/middle-east-highlighted-incidents.aspx'},

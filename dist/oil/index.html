@@ -7,30 +7,31 @@
 <meta property="og:type" content="website"><meta property="og:site_name" content="Passage"><meta property="og:title" content="Oil and odds | Passage"><meta property="og:description" content="Brent and WTI with every war event marked, beside the market odds on the war."><meta name="twitter:card" content="summary">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<script src="/site/motion-early.js"></script>
 <link rel="preload" href="/assets/geist.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/motion.css"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/ops.css"><link rel="stylesheet" href="/oil-chart.css">
 </head>
 <body>
 <!-- passage:nav -->
 <main id="main">
-  <section class="page-hero" data-layout="split" aria-labelledby="hero-title">
+  <section data-intro="load" class="page-hero" data-layout="split" aria-labelledby="hero-title">
     <div class="container">
       <div class="hero-copy">
-        <p class="eyebrow" id="hero-eyebrow"><i aria-hidden="true"></i><span>Daily spot · U.S. dollars per barrel</span></p>
-        <h1 class="hero-title" data-size="page" id="hero-title">Oil and market odds</h1>
-        <p class="hero-sub">Daily Brent and WTI spot prices from the EIA, with every war event marked on the time axis, beside Polymarket odds on the war.</p>
+        <p class="eyebrow" id="hero-eyebrow" data-motion="up" style="--i:0"><i aria-hidden="true"></i><span>Daily spot · U.S. dollars per barrel</span></p>
+        <h1 class="hero-title" data-size="page" id="hero-title" data-motion="up" style="--i:1">Oil and market odds</h1>
+        <p class="hero-sub" data-motion="up" style="--i:2">Daily Brent and WTI spot prices from the EIA, with every war event marked on the time axis, beside Polymarket odds on the war.</p>
       </div>
       <div class="hero-aside">
-        <div class="hero-actions"><button type="button" class="button button-primary" id="inspect">Inspect a date <!-- icon:arrow-right --></button></div>
-        <ul class="proof" aria-label="Latest closes" id="oil-proof" role="status">
-          <li><span class="label">Brent</span><span class="value"><span class="skeleton">$000.00</span></span><span class="note">latest close</span></li>
-          <li><span class="label">WTI</span><span class="value"><span class="skeleton">$000.00</span></span><span class="note">latest close</span></li>
+        <div class="hero-actions" data-motion="up" style="--i:3"><button type="button" class="button button-primary" id="inspect">Inspect a date <!-- icon:arrow-right --></button></div>
+        <ul class="proof" aria-label="Moves since the war" id="oil-proof" role="status" data-motion="up" style="--i:4">
+          <li><span class="label">Brent since the war</span><span class="value"><span class="skeleton">+$00.00</span></span><span class="note">loading closes</span></li>
+          <li><span class="label">WTI since the war</span><span class="value"><span class="skeleton">+$00.00</span></span><span class="note">loading closes</span></li>
         </ul>
       </div>
     </div>
   </section>
 
-  <section class="map-section" id="prices" aria-labelledby="prices-title">
+  <section class="map-section" data-intro="load" id="prices" aria-labelledby="prices-title">
     <div class="container">
       <div class="card price-panel" data-readout="off">
         <div class="price-latest">
@@ -44,13 +45,13 @@
     </div>
   </section>
 
-  <section class="section" id="odds" data-reveal aria-labelledby="odds-title">
+  <section class="section" data-intro="wait" id="odds" aria-labelledby="odds-title">
     <div class="container">
       <div class="section-head">
-        <h2 id="odds-title">Market odds</h2>
-        <p>What Polymarket traders expect on questions about the war. Each one resolves on its own published rules.</p>
+        <h2 data-motion="up" id="odds-title">Market odds</h2>
+        <p data-motion="up">What Polymarket traders expect on questions about the war. Each one resolves on its own published rules.</p>
       </div>
-      <div class="card">
+      <div class="card" data-motion="card">
         <div class="card-head"><h3>Related markets</h3><span class="stamp" id="odds-stamp"></span></div>
         <ul class="odds-list" id="odds-list"><li><span class="skeleton-line"></span></li></ul>
       </div>

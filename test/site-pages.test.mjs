@@ -41,7 +41,7 @@ test('the navigation marks the current page, and an event belongs to Events', ()
 
 test('each landing page wins one action: one primary button in its hero, the same idea at its close', () => {
   for (const page of landing) {
-    const hero = /<section class="page-hero[\s\S]*?<\/section>/.exec(page.html)?.[0] || '';
+    const hero = /<section [^>]*class="page-hero[\s\S]*?<\/section>/.exec(page.html)?.[0] || '';
     assert.equal(count(hero, /button-primary/g), 1, `${page.file}: one primary action above the fold`);
     assert.match(page.html, /<div class="container cta-band">[\s\S]*?button-primary/, `${page.file}: closing call to action`);
   }

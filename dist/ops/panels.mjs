@@ -33,11 +33,29 @@ export function vesselCounts(vessels, now = Date.now(), theater = 'hormuz') {
   return { total: current.length, tankers: current.filter(isTanker).length, newestAgeMs: newest === null ? null : Math.max(0, now - newest), current };
 }
 
-export function heroCountsMarkup(counts, { connected = true, events = 0, days = 7 } = {}) {
+export function heroCountsMarkup(counts, { connected = true, events = 0, days = 7, note = '' } = {}) {
   const recent = events ? `<span class="events"><strong>${events}</strong> ${events === 1 ? 'event' : 'events'} in the last ${days} days</span>` : '';
   if (!connected) return '<span>Vessel feed unavailable · retrying</span>' + recent;
-  if (!counts.total) return '<span>No current positions received</span>' + recent;
+  if (!counts.total) return `<span>${esc(note || 'No current positions received')}</span>` + recent;
   return `<span class="tankers"><strong>${counts.tankers}</strong> ${counts.tankers === 1 ? 'tanker' : 'tankers'}</span><span><strong>${counts.total}</strong> vessels received</span>` + recent;
+}
+
+/**
+ * Why there are no current positions, when there are none: the feed is down,
+ * reconnecting, just connected, or connected for a while with nothing arriving
+ * from the region (the provider's receivers there are silent). Null when ships
+ * are on the map.
+ */
+export function vesselFeedNote(payload, counts, now = Date.now()) {
+  if (counts?.total) return null;
+  const source = payload?.source;
+  if (!payload) return 'Vessel feed unavailable · retrying';
+  if (!source?.configured) return 'The vessel feed is not configured';
+  if (source.connection !== 'connected') return 'Reconnecting to the vessel feed';
+  const connected = time(source.connectedAt), last = time(source.lastPositionReceivedAt);
+  if (last !== null && now - last < 30 * 60_000) return 'No current positions received';
+  if (connected !== null && now - connected < 5 * 60_000) return 'Connected · waiting for the first positions';
+  return 'Feed connected · AISStream is sending no positions for this region';
 }
 
 export function vesselCardMarkup(vessel, now = Date.now()) {
@@ -131,7 +149,8 @@ export function chartSeries(oil) {
   });
 }
 
-export function transitRowMarkup({ name, rows = [], baseline = null, latest = null }) {
+/** One chokepoint's transits. With `bars: false` the chart is left to the caller, which draws it as a read along story. */
+export function transitRowMarkup({ name, rows = [], baseline = null, latest = null, bars: withBars = true }) {
   if (!latest) return `<div class="transit-row"><div class="transit-name"><span>${esc(name)}</span></div><p class="empty-note">No transit counts available.</p></div>`;
   const share = baseline && Number.isFinite(baseline.total) && baseline.total > 0 ? Math.round(latest.total / baseline.total * 100) : null;
   const recent = rows.slice(-42), max = Math.max(1, baseline?.total || 0, ...recent.map(r => r.total || 0));
@@ -145,7 +164,7 @@ export function transitRowMarkup({ name, rows = [], baseline = null, latest = nu
     <div class="transit-name"><span>${esc(name)}</span><span class="stamp">${esc(dayLabel(latest.date))}</span></div>
     <div class="transit-figures"><strong>${latest.total}</strong><span>ships</span><span class="tankers"><b>${latest.tankers}</b> tankers</span>${share === null ? '' : `<span class="transit-share" data-low="${share < 50}">${share}% of average</span>`}</div>
     ${baseline && Number.isFinite(baseline.total) ? `<p class="transit-baseline">${esc(String(baseline.label || '').replace(/\s*[–—]\s*/g, ' to '))}: <b>${Math.round(baseline.total)}</b> ships · <b>${Math.round(baseline.tankers)}</b> tankers</p>` : ''}
-    <svg class="transit-bars" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="${esc(name)} daily transits over the last ${recent.length} days, tankers highlighted">${bars}${base}</svg>
+    ${withBars ? `<svg class="transit-bars" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="${esc(name)} daily transits over the last ${recent.length} days, tankers highlighted">${bars}${base}</svg>` : ''}
   </div>`;
 }
 
@@ -266,11 +285,24 @@ export const durationLabel = hours => {
 };
 const GAP_RULE = 'Silent for 3 hours or more while moving inside reliable reception. Evidence that AIS was switched off, not proof.';
 
+/**
+ * Whether gaps are being counted. Reception is learned from where ships are
+ * heard steadily over the last day, so a feed that goes quiet for a day pauses
+ * counting rather than reading every silent ship as dark.
+ */
+export function gapState(gaps) {
+  if (!gaps) return 'none';
+  if (!gaps.ready) return (gaps.learnedHours || 0) < 24 ? 'learning' : 'paused';
+  return gaps.feedHealthy ? 'counting' : 'paused';
+}
+
 /** The AIS gaps card: ships dark now and gaps closed in the last week. */
 export function gapsCardMarkup(gaps) {
   if (!gaps) return '<p class="empty-note">The collector has not reported AIS gaps yet.</p>';
   const s = gaps.summary || {};
-  if (!gaps.ready) return `<p class="empty-note">Learning where reception is reliable: ${esc(String(Math.min(24, gaps.learnedHours || 0)))} of 24 hours on record. Gaps are counted once a full day of steady reception is in.</p><p class="gap-rule">${esc(GAP_RULE)}</p>`;
+  const state = gapState(gaps);
+  if (state === 'learning') return `<p class="empty-note">Learning where reception is reliable: ${esc(String(gaps.learnedHours || 0))} of 24 hours on record. Gaps are counted once a full day of steady reception is in.</p><p class="gap-rule">${esc(GAP_RULE)}</p>`;
+  if (!gaps.ready) return `<p class="gap-paused">Paused: too few ships have been heard over the last day to tell a ship that went dark from a feed that went quiet. Counting resumes once reception is steady again.</p><p class="gap-rule">${esc(GAP_RULE)}</p>`;
   const paused = gaps.feedHealthy ? '' : '<p class="gap-paused">Paused: the AIS feed is receiving much less than usual, so a silent ship proves nothing. Counts resume when it recovers.</p>';
   const dark = (gaps.darkNow || []).slice(0, 3).map(d => `<li><button type="button" data-gap-mmsi="${esc(d.mmsi)}" data-gap-kind="dark"><span class="gap-name">${esc(d.name || `MMSI ${d.mmsi}`)}${d.tanker ? ' · tanker' : ''}</span><span class="gap-meta">silent ${esc(durationLabel(d.hours))} · last seen ${esc(dayLabel(d.lastSeen))} ${esc(clockLabel(d.lastSeen))}</span></button></li>`).join('');
   return `${paused}<div class="gap-figures">

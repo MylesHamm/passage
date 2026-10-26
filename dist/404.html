@@ -7,18 +7,19 @@
 <meta name="robots" content="noindex">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<script src="/site/motion-early.js"></script>
 <link rel="preload" href="/assets/geist.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/motion.css"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/ops.css">
 </head>
 <body>
 <!-- passage:nav -->
 <main id="main">
-  <section class="page-hero not-found" data-align="center" aria-labelledby="hero-title">
+  <section data-intro="load" class="page-hero not-found" data-align="center" aria-labelledby="hero-title">
     <div class="container">
-      <p class="eyebrow"><span>Error 404</span></p>
-      <h1 class="hero-title" id="hero-title">This page is not<br>on the map</h1>
-      <p class="hero-sub">The link may be old or mistyped. Every page of Passage is listed below.</p>
-      <div class="hero-actions"><a class="button button-primary" href="/hormuz/">Open the live map <!-- icon:arrow-right --></a></div>
+      <p class="eyebrow" data-motion="up" style="--i:0"><span>Error 404</span></p>
+      <h1 class="hero-title" id="hero-title" data-motion="up" style="--i:1">This page is not<br>on the map</h1>
+      <p class="hero-sub" data-motion="up" style="--i:2">The link may be old or mistyped. Every page of Passage is listed below.</p>
+      <div class="hero-actions" data-motion="up" style="--i:3"><a class="button button-primary" href="/hormuz/">Open the live map <!-- icon:arrow-right --></a></div>
     </div>
   </section>
   <section class="section-tight" aria-label="Every page">

@@ -42,7 +42,7 @@ test('reduced motion zeroes every duration token and removes press scaling', () 
   assert.match(reduced, /:active \{ scale: none; \}/);
 });
 
-test('nothing in the dashboard ends moving: no CSS or script animation repeats', async () => {
+test('no CSS or Web Animations entrance repeats; only the story clock loops, and only while a story is on screen', async () => {
   const dist = new URL('../dist/', import.meta.url);
   const files = (await readdir(dist, { recursive: true })).filter(name => /\.(css|mjs|js)$/.test(name) && !name.startsWith('vendor'));
   for (const name of files) {

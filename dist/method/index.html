@@ -7,31 +7,32 @@
 <meta property="og:type" content="website"><meta property="og:site_name" content="Passage"><meta property="og:title" content="Method | Passage"><meta property="og:description" content="Every source, its status, and how to read each panel."><meta name="twitter:card" content="summary">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<script src="/site/motion-early.js"></script>
 <link rel="preload" href="/assets/geist.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/motion.css"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/ops.css">
 </head>
 <body>
 <!-- passage:nav -->
 <main id="main">
-  <section class="page-hero" data-layout="split" aria-labelledby="hero-title">
+  <section data-intro="load" class="page-hero" data-layout="split" aria-labelledby="hero-title">
     <div class="container">
       <div class="hero-copy">
-        <p class="eyebrow" id="hero-eyebrow"><i aria-hidden="true"></i><span>Method and sources</span></p>
-        <h1 class="hero-title" data-size="page" id="hero-title">How Passage knows<br>what it shows</h1>
-        <p class="hero-sub">Every source is free and public. Each figure shows its own date, and missing data stays missing.</p>
+        <p class="eyebrow" id="hero-eyebrow" data-motion="up" style="--i:0"><i aria-hidden="true"></i><span>Method and sources</span></p>
+        <h1 class="hero-title" data-size="page" id="hero-title" data-motion="up" style="--i:1">How Passage knows<br>what it shows</h1>
+        <p class="hero-sub" data-motion="up" style="--i:2">Every source is free and public. Each figure shows its own date, and missing data stays missing.</p>
       </div>
       <div class="hero-aside">
-        <div class="hero-actions"><a class="button button-primary" href="/hormuz/">Open the live map <!-- icon:arrow-right --></a></div>
-        <ul class="proof" aria-label="Source status" id="method-proof" role="status">
+        <div class="hero-actions" data-motion="up" style="--i:3"><a class="button button-primary" href="/hormuz/">Open the live map <!-- icon:arrow-right --></a></div>
+        <ul class="proof" aria-label="Source status" id="method-proof" role="status" data-motion="up" style="--i:4">
           <li><span class="label">Sources current</span><span class="value"><span class="skeleton">00 of 00</span></span><span class="note">checked every minute</span></li>
         </ul>
       </div>
     </div>
   </section>
 
-  <section class="section-tight" id="sources" aria-labelledby="sources-title">
+  <section class="section-tight" id="sources" data-intro="load" aria-labelledby="sources-title">
     <div class="container">
-      <div class="card">
+      <div class="card" data-motion="up" style="--i:5">
         <div class="card-head"><h2 id="sources-title">Sources and status</h2><span class="stamp" id="sources-stamp"></span></div>
         <table class="source-table"><thead><tr><th>Source</th><th>Status</th><th>Latest</th></tr></thead><tbody id="sources-body"><tr><td colspan="3"><span class="skeleton-line"></span></td></tr></tbody></table>
       </div>
