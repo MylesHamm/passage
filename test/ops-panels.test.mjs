@@ -43,7 +43,7 @@ test('a vessel without a reported heading or speed says so instead of guessing',
   const card = vesselCardMarkup(vessel({ headingDegrees: null, courseDegrees: null, speedKnots: null }), now);
   assert.match(card, /<dt>Heading<\/dt><dd>Not reported<\/dd>/);
   assert.match(card, /<dt>Speed<\/dt><dd>Not reported<\/dd>/);
-  assert.match(vesselCardMarkup(vessel({ positionTime: iso(now - 15 * 60000) }), now), /OLDER POSITION/);
+  assert.match(vesselCardMarkup(vessel({ positionTime: iso(now - 15 * 60000) }), now), /older position/);
 });
 
 test('odds show valid probabilities only, with bounded labels', () => {

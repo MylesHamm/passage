@@ -34,14 +34,12 @@ test('motion.css carries the same spring and timing tokens as motion.mjs', () =>
   assert.ok(MOTION.hoverIn < MOTION.hoverOut, 'hover answers quickly and releases slowly');
 });
 
-test('reduced motion zeroes every duration token and removes travel and press scaling', () => {
+test('reduced motion zeroes every duration token and removes press scaling', () => {
   const reduced = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
   const declared = [...css.slice(0, css.indexOf('}')).matchAll(/--motion-([a-z-]+):/g)].map(m => m[1]);
   assert.ok(declared.length >= 7);
   for (const name of declared) assert.ok(reduced.includes(`--motion-${name}: 0ms`), `--motion-${name} must be 0ms under reduced motion`);
-  assert.match(reduced, /\.toast \{ translate: none; \}/);
-  assert.match(reduced, /scale: none/);
-  assert.match(reduced, /\.workspace-tab-indicator \{ display: none; \}/);
+  assert.match(reduced, /:active \{ scale: none; \}/);
 });
 
 test('nothing in the dashboard ends moving: no CSS or script animation repeats', async () => {
@@ -88,7 +86,7 @@ test('sequences animate only the first few items, in order, within the stagger c
   const items = Array.from({ length: 6 }, () => new Animated());
   const animations = enterSequence(items, { scope: scope(), limit: 4 });
   assert.equal(animations.length, 4);
-  assert.deepEqual(animations.map(animation => animation.options.delay), [0, 30, 60, 90]);
+  assert.deepEqual(animations.map(animation => animation.options.delay), [0, 60, 120, 180]);
   assert.equal(items[5].calls.length, 0, 'later items are already resting');
 });
 

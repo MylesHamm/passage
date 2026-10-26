@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { resolve, dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { buildPages, normalizeBasePath } from '../scripts/build-pages.mjs';
+import { PAGES } from '../lib/site-pages.mjs';
 import { createRuntime } from '../dist/runtime-config.mjs';
 
 async function withDirectory(run) {
@@ -25,7 +26,8 @@ test('Pages artifact resolves its real assets, imports and navigation under /pas
     const url = new URL(reference, origin + base + from);
     if (url.origin !== origin) return;
     assert.ok(url.pathname.startsWith(base), `${from} escapes project path: ${reference}`);
-    const name = decodeURIComponent(url.pathname.slice(base.length)) || 'index.html';
+    // Pages live at directory paths, served from their index.html as GitHub Pages does.
+    const path = decodeURIComponent(url.pathname.slice(base.length)), name = !path || path.endsWith('/') ? path + 'index.html' : path;
     assert.ok((await stat(resolve(output, name))).isFile(), `${from} missing local target: ${reference}`);
     if (url.hash && name.endsWith('.html')) {
       const target = await readFile(resolve(output, name), 'utf8');
@@ -40,6 +42,8 @@ test('Pages artifact resolves its real assets, imports and navigation under /pas
       assert.match(source, /name="passage-hosted" content="true"/);
       for (const match of source.matchAll(/(?:href|src)="([^"]+)"/g)) await checkReference(match[1].replaceAll('&amp;', '&'), name);
       assert.doesNotMatch(source, /connections\/acled|type=["']password/);
+      assert.doesNotMatch(source, /<!-- (?:passage|icon):/, `${name} keeps an unexpanded include`);
+      assert.match(source, /<nav class="nav-bar"/, `${name} has the shared navigation`);
     } else if (name.endsWith('.css')) {
       for (const match of source.matchAll(/url\(['"]?([^'"()]+)['"]?\)/g)) await checkReference(match[1], name);
     } else {
@@ -52,7 +56,8 @@ test('Pages artifact resolves its real assets, imports and navigation under /pas
   for(const name of ['terrain/assets/hormuz-dem.bin','terrain/assets/theatre-dem.bin'])assert.equal((await stat(resolve(output,name))).size,256*256*2);
   assert.ok(!files.some(name => name.startsWith('connections/') || /(?:\.env|server\.mjs|cache|node_modules)/.test(name)));
   assert.deepEqual(files.filter(name => name.endsWith('.json')).sort(), ['data/war-events.json', 'terrain/assets/provenance.json']);
-  for (const name of ['index.html', 'app.js', 'ops.css', 'ops/hero-map.mjs', 'ops/panels.mjs', 'vendor/anatomy/iso-kit.mjs', 'vendor/anatomy/LICENSE.txt']) assert.ok(files.includes(name), name);
+  for (const name of [...PAGES.map(page => page.file), 'site.css', 'ops.css', 'site/shell.mjs', 'pages/home.mjs', 'ops/hero-map.mjs', 'ops/panels.mjs', 'assets/geist.woff2', 'assets/Geist-OFL.txt', 'vendor/anatomy/iso-kit.mjs', 'vendor/anatomy/LICENSE.txt']) assert.ok(files.includes(name), name);
+  assert.ok(!files.includes('app.js'), 'the single-page script is gone');
   assert.ok(!files.some(name => /^(?:investigate|research|data-upgrades)\.html$|^globe\/|oil-system|monitoring|priority-/.test(name)), 'removed pages and modules stay out of the public artifact');
 }));
 test('unconfigured Pages preview remains public on localhost and cannot quietly call local /api', async () => withDirectory(async directory => {
@@ -72,8 +77,10 @@ test('Pages root and nested project paths are supported; malformed bases are rej
   for (const [index, basePath] of ['/', '/group/passage/'].entries()) {
     const outputDir = resolve(directory, String(index));
     await buildPages({ outputDir, basePath });
-    const css = await readFile(resolve(outputDir, 'ops.css'), 'utf8');
-    assert.ok(css.includes(`url('${basePath}assets/plex-400.ttf')`));
+    const css = await readFile(resolve(outputDir, 'site.css'), 'utf8');
+    assert.ok(css.includes(`url('${basePath}assets/geist.woff2')`));
+    const html = await readFile(resolve(outputDir, 'war/index.html'), 'utf8');
+    assert.ok(html.includes(`<a href="${basePath}war/" aria-current="page">Regional war</a>`), 'the current page is marked in the navigation');
   }
   for (const path of ['passage/', '/passage', '/../', '//', '/p?x/', '/p%20x/']) assert.throws(() => normalizeBasePath(path));
 }));

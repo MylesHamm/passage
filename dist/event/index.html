@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#000000">
+<title>Event | Passage</title>
+<meta name="description" content="One event of the regional war: where it happened, the reports behind it, and what Brent and the related market odds did over the next few days.">
+<meta property="og:type" content="article"><meta property="og:site_name" content="Passage"><meta property="og:title" content="Event | Passage"><meta property="og:description" content="One sourced event of the regional war and what happened next."><meta name="twitter:card" content="summary">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<link rel="preload" href="/assets/geist.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/motion.css"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/ops.css"><link rel="stylesheet" href="/oil-chart.css">
+</head>
+<body>
+<!-- passage:nav -->
+<main id="main">
+  <section class="page-hero" data-layout="split" aria-labelledby="event-title">
+    <div class="container">
+      <div class="hero-copy">
+        <p class="eyebrow ec-meta" id="event-meta"><span class="skeleton">Attack on shipping · 00 Mar</span></p>
+        <h1 class="hero-title" data-size="page" id="event-title"><span class="skeleton">Loading the event</span></h1>
+        <p class="hero-sub" id="event-summary"><span class="skeleton-line"></span><span class="skeleton-line"></span></p>
+      </div>
+      <div class="hero-aside">
+        <div class="hero-actions"><a class="button button-primary" id="event-map" href="/war/">See it on the regional map <!-- icon:arrow-right --></a></div>
+        <ul class="proof" aria-label="Event facts" id="event-proof"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-section" data-needs-event aria-label="Where it happened">
+    <div class="container">
+      <div class="map-frame" data-size="event" data-scroll="page">
+        <div id="theatre-map" class="hero-map"><canvas aria-label="3D terrain map from the Gulf to the Red Sea, centered on this event. Drag to turn, hold Shift and drag to pan, plus and minus to zoom." tabindex="0"></canvas></div>
+        <div class="hud hud-br" role="group" aria-label="Zoom">
+          <button type="button" class="chip chip-icon" id="theatre-zoom-out" aria-label="Zoom out"><!-- icon:minus --></button>
+          <button type="button" class="chip chip-icon" id="theatre-zoom-in" aria-label="Zoom in"><!-- icon:plus --></button>
+          <button type="button" class="chip chip-icon" id="theatre-reset" aria-label="Back to this event"><!-- icon:arrow-counter-clockwise --></button>
+        </div>
+        <div class="hud hud-bl"><p class="hud-panel" id="map-note">This event, with the others nearby</p></div>
+        <aside id="event-card" class="vessel-card event-card" hidden aria-live="polite"></aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-needs-event data-reveal aria-labelledby="details-title">
+    <div class="container">
+      <div class="section-head"><h2 id="details-title">The reports</h2></div>
+      <div class="card-grid">
+        <div class="card"><div class="card-head"><h3>Details</h3></div><dl class="detail-list" id="event-details"></dl></div>
+        <div class="card"><div class="card-head"><h3>Sources</h3><span class="stamp" id="sources-count"></span></div><ul class="source-list" id="event-sources"></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-needs-event data-reveal aria-labelledby="next-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="next-title">What happened next</h2>
+        <p>Brent on the event day and three trading days later, with the related market odds. Dated observations only.</p>
+      </div>
+      <div class="card price-panel">
+        <div class="price-latest" id="event-moves"><span class="skeleton-line"></span><span class="skeleton-line"></span></div>
+        <div id="oil-chart"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-needs-event data-reveal aria-labelledby="around-title">
+    <div class="container">
+      <div class="section-head"><h2 id="around-title">Around the same time</h2></div>
+      <nav class="pager" id="event-pager" aria-label="Neighboring events"></nav>
+      <div class="card" id="same-place-card" hidden><div class="card-head"><h3 id="same-place-title">At the same place</h3></div><ul class="event-list" id="same-place"></ul></div>
+    </div>
+  </section>
+
+  <section class="section" data-needs-event aria-label="How to read this page">
+    <p class="tagline" data-tagline>Prices and odds move for many reasons. This page shows what happened next, not what caused it.</p>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section-head"><h2 id="faq-title">Reading this page</h2></div>
+      <div class="faq" data-faq>
+        <details><summary><span>How exact is the location?</span><!-- icon:caret-down --></summary><div class="answer"><p>The point marks the place named in the report, not an exact impact point. The details say whether that is a facility, a city, an area or a sea area.</p></div></details>
+        <details><summary><span>What does claimed mean?</span><!-- icon:caret-down --></summary><div class="answer"><p>The event was reported by only one side and not confirmed by anyone else. Claimed events say so at the top of their page.</p></div></details>
+        <details><summary><span>Where do the prices and odds come from?</span><!-- icon:caret-down --></summary><div class="answer"><p>Brent and WTI are daily spot prices from the U.S. Energy Information Administration. The odds are Polymarket prices on questions related to the event, each with its own date.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="cta-title">
+    <div class="container cta-band">
+      <h2 id="cta-title">Read the war in order</h2>
+      <p>The timeline lists every event by month, each with a page like this one.</p>
+      <a class="button button-primary" href="/events/">Open the timeline <!-- icon:arrow-right --></a>
+    </div>
+  </section>
+</main>
+<!-- passage:footer -->
+<noscript><p class="empty-note">Passage needs JavaScript to show live data.</p></noscript>
+<script type="module" src="/pages/event.mjs"></script>
+</body>
+</html>

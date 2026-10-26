@@ -1,23 +1,24 @@
 // Shared motion rules. Animation explains a change, then settles: every sequence is
 // finite, CSS holds the resting state (WAAPI fills never persist) and reduced motion,
 // a hidden page or a missing animation API lands on that state at once.
-// Timing follows the reviewed motion references recorded in the local motion notes.
+// Timing follows the site's design system: nothing under 200 ms, layout moves over 500 ms.
 export const MOTION = Object.freeze({
-  press: 90,
-  hoverIn: 80,
-  hoverOut: 160,
-  short: 200,
-  exit: 140,
-  medium: 280,
-  long: 450,
-  stagger: 30,
-  maxStagger: 120,
+  press: 200,
+  hoverIn: 200,
+  hoverOut: 300,
+  short: 300,
+  exit: 200,
+  medium: 500,
+  long: 700,
+  stagger: 60,
+  maxStagger: 400,
   distance: 8,
+  // One weighted curve that decelerates into place (landing-page design skill, B7); exits accelerate away.
   ease: Object.freeze({
-    standard: 'cubic-bezier(.2, 0, 0, 1)',
-    enter: 'cubic-bezier(.16, 1, .3, 1)',
-    exit: 'cubic-bezier(.3, 0, 1, 1)',
-    move: 'cubic-bezier(.65, 0, .35, 1)',
+    standard: 'cubic-bezier(0.22, 1, 0.36, 1)',
+    enter: 'cubic-bezier(0.22, 1, 0.36, 1)',
+    exit: 'cubic-bezier(0.64, 0, 0.78, 0)',
+    move: 'cubic-bezier(0.22, 1, 0.36, 1)',
   }),
   settle: Object.freeze({ visualDuration: .3, duration: 400, samples: 16 }),
 });

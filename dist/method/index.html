@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#000000">
+<title>Method | Passage</title>
+<meta name="description" content="How Passage knows what it shows: every source and its status, how each panel should be read, and the rules it keeps. Free and public sources only, each figure dated, and nothing filled in.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Passage"><meta property="og:title" content="Method | Passage"><meta property="og:description" content="Every source, its status, and how to read each panel."><meta name="twitter:card" content="summary">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<link rel="preload" href="/assets/geist.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/motion.css"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/ops.css">
+</head>
+<body>
+<!-- passage:nav -->
+<main id="main">
+  <section class="page-hero" data-layout="split" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="hero-copy">
+        <p class="eyebrow" id="hero-eyebrow"><i aria-hidden="true"></i><span>Method and sources</span></p>
+        <h1 class="hero-title" data-size="page" id="hero-title">How Passage knows<br>what it shows</h1>
+        <p class="hero-sub">Every source is free and public. Each figure shows its own date, and missing data stays missing.</p>
+      </div>
+      <div class="hero-aside">
+        <div class="hero-actions"><a class="button button-primary" href="/hormuz/">Open the live map <!-- icon:arrow-right --></a></div>
+        <ul class="proof" aria-label="Source status" id="method-proof" role="status">
+          <li><span class="label">Sources current</span><span class="value"><span class="skeleton">00 of 00</span></span><span class="note">checked every minute</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" id="sources" aria-labelledby="sources-title">
+    <div class="container">
+      <div class="card">
+        <div class="card-head"><h2 id="sources-title">Sources and status</h2><span class="stamp" id="sources-stamp"></span></div>
+        <table class="source-table"><thead><tr><th>Source</th><th>Status</th><th>Latest</th></tr></thead><tbody id="sources-body"><tr><td colspan="3"><span class="skeleton-line"></span></td></tr></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="rules-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="rules-title">The rules Passage keeps</h2>
+        <p>They hold on every page, and the tests in the source code check them.</p>
+      </div>
+      <ul class="rules">
+        <li><!-- icon:clock --><h3>Every figure is dated</h3><p>Each panel carries its own date stamp, so a late source reads as late instead of current.</p></li>
+        <li><!-- icon:database --><h3>Every event is sourced</h3><p>Each event links to the reporting behind it. Events reported by only one side are marked as claimed.</p></li>
+        <li><!-- icon:path --><h3>Nothing is filled in</h3><p>No position, price or count is estimated between reports. A gap in the data stays a gap on the page.</p></li>
+        <li><!-- icon:chart-line --><h3>What happened next, not why</h3><p>Prices and odds beside an event are dated observations, never a measured effect of that event.</p></li>
+        <li><!-- icon:globe-hemisphere-east --><h3>Free and public</h3><p>Passage uses only free public sources and asks nothing of you: no account, no cookie and no analytics.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-label="The principle behind Passage">
+    <p class="tagline" data-tagline>Missing stays missing. Nothing is estimated, extrapolated or filled in.</p>
+  </section>
+
+  <section class="section" id="reading" data-reveal aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section-head"><h2 id="faq-title">How to read each panel</h2></div>
+      <div class="faq" data-faq>
+<!-- passage:method-faq -->
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="privacy" data-reveal aria-labelledby="privacy-title">
+    <div class="container prose">
+      <h2 class="section-title" id="privacy-title">Privacy</h2>
+      <p>Passage sets no cookie, keeps no account and runs no analytics. The site is hosted on GitHub Pages, and its data comes from the Passage collector on Cloudflare Workers. Both receive the usual details of each request, such as your IP address, under their own privacy policies.</p>
+      <p>Links to publishers and to Polymarket open their own sites, which have their own policies.</p>
+    </div>
+  </section>
+
+  <section class="section" id="terms" data-reveal aria-labelledby="terms-title">
+    <div class="container prose">
+      <h2 class="section-title" id="terms-title">Terms of use</h2>
+      <p>Passage is provided as is, for information. It is not a nautical chart, not navigation advice and not financial advice. A figure can be late, partial or wrong when its source is, which is why each one names its source and date.</p>
+      <p>Each source keeps its own terms. IMF PortWatch data are used under the IMF terms with attribution, EIA data are in the public domain, and headlines stay with their publishers, who are linked from every one.</p>
+    </div>
+  </section>
+
+  <section class="section" id="credits" data-reveal aria-labelledby="credits-title">
+    <div class="container prose">
+      <h2 class="section-title" id="credits-title">Credits</h2>
+      <p>Transits: UN Global Platform and IMF PortWatch. Oil prices: U.S. Energy Information Administration. Vessel positions: AISStream. Market odds: Polymarket. War events: curated from linked reporting and the IMO Middle East highlighted incidents register.</p>
+      <p>Terrain: Mapzen Terrain Tiles (USGS SRTM and GMTED2010, NOAA ETOPO1). Ship models drawn with the Anatomy kit (MIT). Type set in Geist and Geist Mono (SIL Open Font License). Icons from Phosphor (MIT).</p>
+    </div>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="cta-title">
+    <div class="container cta-band">
+      <h2 id="cta-title">See it for yourself</h2>
+      <p>The live map shows every received position with its time, and every event with its report.</p>
+      <a class="button button-primary" href="/hormuz/">Open the live map <!-- icon:arrow-right --></a>
+    </div>
+  </section>
+</main>
+<!-- passage:footer -->
+<noscript><p class="empty-note">Passage needs JavaScript to show the live status of each source.</p></noscript>
+<script type="module" src="/pages/method.mjs"></script>
+</body>
+</html>

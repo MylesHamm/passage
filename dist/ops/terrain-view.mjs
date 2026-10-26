@@ -18,7 +18,16 @@ export function poseBetween(from, to, t) {
   return { ...to, zoom, panX: from.panX + (to.panX - from.panX) * e, panZ: from.panZ + (to.panZ - from.panZ) * e, yaw: from.yaw + (to.yaw - from.yaw) * e, tilt: from.tilt + (to.tilt - from.tilt) * e };
 }
 
-export async function createTerrainView(root, { scene, labels = [], pose: initialPose, minZoom = .8, swayAmplitude = SWAY_AMPLITUDE, onPlace, onTick, isAnimating = () => false } = {}) {
+const APPLE = /Mac|iPhone|iPad/.test(globalThis.navigator?.platform || globalThis.navigator?.userAgent || '');
+/** What to hold while scrolling to zoom a map that sits in a scrolling page. */
+export const ZOOM_HINT = `Hold ${APPLE ? '⌘' : 'Ctrl'} and scroll to zoom the map`;
+
+/**
+ * `scrollZoom: false` (the default) leaves the wheel to the page so a map never
+ * traps scrolling: zooming takes Ctrl or ⌘ with the wheel, a trackpad pinch, or
+ * the zoom buttons, and a plain scroll over the map shows a short hint.
+ */
+export async function createTerrainView(root, { scene, labels = [], pose: initialPose, minZoom = .8, swayAmplitude = SWAY_AMPLITUDE, scrollZoom = false, onPlace, onTick, isAnimating = () => false } = {}) {
   let canvas = root.querySelector('canvas');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const overlay = Object.assign(document.createElement('div'), { className: 'map-overlay' });
@@ -103,7 +112,20 @@ export async function createTerrainView(root, { scene, labels = [], pose: initia
   const endDrag = event => { if (!drag) return; drag = null; interact(); if (canvas.hasPointerCapture?.(event.pointerId)) canvas.releasePointerCapture(event.pointerId); invalidate(); };
   canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
   canvas.addEventListener('contextmenu', event => event.preventDefault());
-  canvas.addEventListener('wheel', event => { event.preventDefault(); interact(); pose.zoom = clamp(pose.zoom * Math.exp(-event.deltaY * .0015), minZoom, 8); invalidate(); }, { passive: false });
+  const hint = Object.assign(document.createElement('p'), { className: 'map-hint', textContent: ZOOM_HINT });
+  hint.setAttribute('aria-hidden', 'true'); root.append(hint);
+  let hintTimer = 0;
+  canvas.addEventListener('wheel', event => {
+    if (!scrollZoom && !event.ctrlKey && !event.metaKey) {
+      hint.dataset.shown = 'true'; clearTimeout(hintTimer);
+      hintTimer = setTimeout(() => { hint.dataset.shown = 'false'; }, 1400);
+      return;
+    }
+    event.preventDefault(); interact(); hint.dataset.shown = 'false';
+    // A trackpad pinch arrives as small Ctrl-wheel steps, so it needs a larger gain than a mouse wheel.
+    const gain = event.ctrlKey && Math.abs(event.deltaY) < 40 ? .01 : .0015;
+    pose.zoom = clamp(pose.zoom * Math.exp(-event.deltaY * gain), minZoom, 8); invalidate();
+  }, { passive: false });
   canvas.addEventListener('keydown', event => {
     const key = event.key.toLowerCase();
     if (['arrowleft', 'arrowright', 'arrowup', 'arrowdown'].includes(key)) {
@@ -142,7 +164,7 @@ export async function createTerrainView(root, { scene, labels = [], pose: initia
       flight = { from: { ...pose }, to: { ...pose, panX: clamp(x, -scene.extent / 2, scene.extent / 2), panZ: clamp(z, -scene.extent / 2, scene.extent / 2), zoom: clamp(zoom, minZoom, 8), topDown: false }, elapsed: 0 };
       invalidate();
     },
-    destroy() { destroyed = true; cancelAnimationFrame(frame); renderer.destroy?.(); overlay.remove(); },
+    destroy() { destroyed = true; cancelAnimationFrame(frame); clearTimeout(hintTimer); renderer.destroy?.(); overlay.remove(); hint.remove(); },
   };
   return api;
 }

@@ -1,6 +1,7 @@
 // Pure markup for the operations-center panels. Every string is escaped here,
 // every number carries its own date, and missing data stays visibly missing.
 import { isCurrentVesselPosition, normalizeVesselTypeCode, vesselTypeLabel, POSITION_STALE_MS } from '../vessel-data.mjs';
+import { icon } from '../site/icons.mjs';
 
 export const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const time = value => typeof value === 'string' && Number.isFinite(Date.parse(value)) ? Date.parse(value) : null;
@@ -50,9 +51,9 @@ export function vesselCardMarkup(vessel, now = Date.now()) {
     ['Received', `${clockLabel(vessel.positionTime)} · ${ageLabel(age)}`],
     ['MMSI', vessel.mmsi],
   ];
-  return `<button type="button" class="vc-close" data-close-vessel aria-label="Close vessel details">×</button>
+  return `<button type="button" class="vc-close" data-close-vessel aria-label="Close vessel details">${icon('x')}</button>
     <h3>${esc(vessel.name || 'Name not reported')}</h3>
-    <p class="vc-type">${esc(isTanker(vessel) ? 'TANKER' : (vesselTypeLabel(vessel.shipType) || 'Type not reported').toUpperCase())}${age >= POSITION_STALE_MS ? ' · OLDER POSITION' : ''}</p>
+    <p class="vc-type">${esc(isTanker(vessel) ? 'Tanker' : (vesselTypeLabel(vessel.shipType) || 'Type not reported'))}${age >= POSITION_STALE_MS ? ' · older position' : ''}</p>
     <dl>${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`;
 }
 
@@ -143,7 +144,7 @@ export function transitRowMarkup({ name, rows = [], baseline = null, latest = nu
   return `<div class="transit-row">
     <div class="transit-name"><span>${esc(name)}</span><span class="stamp">${esc(dayLabel(latest.date))}</span></div>
     <div class="transit-figures"><strong>${latest.total}</strong><span>ships</span><span class="tankers"><b>${latest.tankers}</b> tankers</span>${share === null ? '' : `<span class="transit-share" data-low="${share < 50}">${share}% of average</span>`}</div>
-    ${baseline && Number.isFinite(baseline.total) ? `<p class="transit-baseline">${esc(baseline.label)}: <b>${Math.round(baseline.total)}</b> ships · <b>${Math.round(baseline.tankers)}</b> tankers</p>` : ''}
+    ${baseline && Number.isFinite(baseline.total) ? `<p class="transit-baseline">${esc(String(baseline.label || '').replace(/\s*[–—]\s*/g, ' to '))}: <b>${Math.round(baseline.total)}</b> ships · <b>${Math.round(baseline.tankers)}</b> tankers</p>` : ''}
     <svg class="transit-bars" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="${esc(name)} daily transits over the last ${recent.length} days, tankers highlighted">${bars}${base}</svg>
   </div>`;
 }
@@ -171,18 +172,22 @@ export const ABOUT_NOTES = [
   ['AIS gaps', 'A gap is a ship that stops reporting for three hours or more while moving deep inside reliable reception, learned from where at least two different ships are heard nearly every hour. A ship leaving range fades out at the edge of coverage and is not counted; counting pauses whenever the feed itself delivers much less than usual. The record starts when the collector does, so the first day is spent learning coverage. A gap is evidence that AIS was switched off, not proof.'],
   ['Tracks and replay', 'Trails and the replay show positions actually received over the last hour, joined in the order received. Nothing is extrapolated between reports.'],
   ['Transits', 'IMF PortWatch daily counts are derived from satellite AIS. They are released weekly, so the latest day is often several days old.'],
-  ['Oil prices', 'Daily Brent and WTI spot prices from the U.S. Energy Information Administration. EIA publishes history weekly and next-day closes on Today in Energy. These are not live trading quotes.'],
+  ['Oil prices', 'Daily Brent and WTI spot prices from the U.S. Energy Information Administration. EIA publishes history weekly, and each close a day later on Today in Energy. These are not live trading quotes.'],
   ['Market odds', 'Polymarket prices show what traders expect, not what has happened. Each question resolves on its own published rules.'],
-  ['War events', 'The regional map shows a curated list of dated events, each linked to the reporting it comes from, plus incidents from the IMO register placed from their text. A point marks the named place, not an exact impact point; register incidents show their likely radius. Ship attacks are drawn at the position the report gives, and at the nearest water when that place is on land. Events reported by only one side are marked as claimed. Incidents whose report gives no usable position are listed under All events but not pinned. Events close together on screen are drawn as a numbered group. The Hormuz map also marks the last seven days of events inside its view. An automated review checks for new events every six hours and adds only source-linked ones; the stamp shows when the list was last reviewed.'],
+  ['War events', 'The regional map shows a curated list of dated events, each linked to the reporting it comes from, plus incidents from the IMO register placed from their text. A point marks the named place, not an exact impact point; register incidents show their likely radius. Ship attacks are drawn at the position the report gives, and at the nearest water when that place is on land. Events reported by only one side are marked as claimed. Incidents whose report gives no usable position are listed under All events but not pinned. Events close together on screen are drawn as a numbered group. The Hormuz map also marks the last seven days of events inside its view. An automated review checks for new events every six hours and adds only those linked to a source; the stamp shows when the list was last reviewed.'],
   ['Naval missions', 'Mission areas are approximate outlines of published operating areas. Only missions under way on the day are drawn: today, or the day of the event you select.'],
   ['Show me', 'Selecting an event shows Brent and the related odds on the event day and a few days later. Prices and odds move for many reasons; this is what happened next, not what caused it.'],
   ['Headlines', 'Original reporting from BBC, Al Jazeera, Middle East Eye, Middle East Monitor, France 24 and UN News, linked to the publisher.'],
 ];
-export function aboutMarkup(sources = []) {
-  const rows = sources.filter(s => s && sourceState(s) !== 'idle').map(s => {
+/** One row per source in use, with its state and latest date. */
+export function sourceRowsMarkup(sources = []) {
+  return (Array.isArray(sources) ? sources : []).filter(s => s && sourceState(s) !== 'idle').map(s => {
     const state = sourceState(s);
     return `<tr><td><span class="dot" data-state="${state}"></span>${esc(s.name)}</td><td>${esc(STATE_LABEL[state])}</td><td class="num">${esc(s.latest ? dayLabel(s.latest) : s.retrievedAt ? 'Checked ' + clockLabel(s.retrievedAt) : '—')}</td></tr>`;
   }).join('');
+}
+export function aboutMarkup(sources = []) {
+  const rows = sourceRowsMarkup(sources);
   return `<h3>Sources</h3><table class="source-table"><thead><tr><th>Source</th><th>Status</th><th>Latest</th></tr></thead><tbody>${rows || '<tr><td colspan="3">Checking…</td></tr>'}</tbody></table>
     <h3>How to read this</h3><ul>${ABOUT_NOTES.map(([k, v]) => `<li><strong>${esc(k)}.</strong> ${esc(v)}</li>`).join('')}</ul>
     <h3>Credits</h3><p>Sources: UN Global Platform; IMF PortWatch (portwatch.imf.org). Oil prices: U.S. Energy Information Administration. Vessel positions: AISStream. Market odds: Polymarket. War events: curated from linked reporting and the IMO Middle East highlighted incidents register. Terrain: Mapzen Terrain Tiles (USGS SRTM, GMTED2010; NOAA ETOPO1). Ship model drawn with the Anatomy kit (MIT).</p>`;
@@ -193,7 +198,7 @@ const PRECISION_NAMES = { facility: 'facility location', city: 'city location', 
 const signed = (value, digits = 2) => `${value >= 0 ? '+' : '−'}${Math.abs(value).toFixed(digits)}`;
 
 /** "Show me" card. Figures are dated observations around the event, never a measured effect. */
-export function eventCardMarkup(event, { brent = null, odds = [] } = {}) {
+export function eventCardMarkup(event, { brent = null, odds = [], href = '', moves = true } = {}) {
   if (!event) return '';
   const who = [event.actor, event.target].filter(Boolean).join(' → ');
   let price = '<p>No Brent observation on or before this date.</p>';
@@ -205,42 +210,50 @@ export function eventCardMarkup(event, { brent = null, odds = [] } = {}) {
   // Each value carries its own date, so a window that has not finished yet reads as such.
   const on = t => esc(dayLabel(new Date(t * 1000).toISOString()));
   const oddsMarkup = odds.filter(o => o.move?.before).map(o => `<p>${esc(o.question)}: ${pct(o.move.before.p)} (${on(o.move.before.t)})${o.move.after ? ` → ${pct(o.move.after.p)} (${on(o.move.after.t)})` : ''}</p>`).join('');
-  return `<button type="button" class="vc-close" data-close-event aria-label="Close event details">×</button>
+  return `<button type="button" class="vc-close" data-close-event aria-label="Close event details">${icon('x')}</button>
     <p class="ec-meta"><b data-layer="${esc(event.layer)}">${esc(LAYER_NAMES[event.layer] || 'Event')}</b> · ${esc(dayLabel(event.date))}${event.time ? ' ' + esc(event.time.replace('Z', ' UTC')) : ''}${event.confidence === 'claimed' ? '<span class="ec-claimed">Claimed</span>' : ''}</p>
     <h3>${esc(event.title)}</h3>
-    ${who ? `<p class="vc-type">${esc(who.toUpperCase())}</p>` : ''}
+    ${who ? `<p class="vc-type">${esc(who)}</p>` : ''}
     <dl><dt>Place</dt><dd>${esc(event.place || '—')}</dd><dt>Location</dt><dd>${esc(PRECISION_NAMES[event.precision] || 'approximate area')}${Number.isFinite(event.radiusNm) ? ` · within ${Math.round(event.radiusNm)} NM` : ''}</dd></dl>
     ${event.summary ? `<p class="ec-summary">${esc(event.summary)}</p>` : ''}
-    <div class="ec-move"><h4>Brent over the next ${brent?.days || 3} trading days</h4>${price}</div>
-    ${oddsMarkup ? `<div class="ec-move"><h4>Market odds over the next 3 days</h4>${oddsMarkup}</div>` : ''}
-    <ul class="ec-sources">${event.sources.map(src => `<li><a href="${esc(src.url)}" target="_blank" rel="noopener noreferrer">${esc(src.publisher)}${src.title ? ' · ' + esc(src.title) : ''} ↗</a></li>`).join('')}</ul>
-    <p class="ec-note">Prices and odds move for many reasons; these figures show what happened next, not what caused it.</p>`;
+    ${moves ? `<div class="ec-move"><h4>Brent over the next ${brent?.days || 3} trading days</h4>${price}</div>
+    ${oddsMarkup ? `<div class="ec-move"><h4>Market odds over the next 3 days</h4>${oddsMarkup}</div>` : ''}` : ''}
+    <ul class="ec-sources">${sourceItemsMarkup(event.sources)}</ul>
+    ${href ? `<a class="ec-open" href="${esc(href)}">Open the event page ${icon('arrow-right')}</a>` : ''}
+    ${moves ? '<p class="ec-note">Prices and odds move for many reasons; these figures show what happened next, not what caused it.</p>' : ''}`;
 }
 
-export function eventListMarkup(events, { limit = 6 } = {}) {
+/** Source links for one event, each opening the publisher's report. */
+export const sourceItemsMarkup = sources => (Array.isArray(sources) ? sources : []).map(src => `<li><a href="${esc(src.url)}" target="_blank" rel="noopener noreferrer">${esc(src.publisher)}${src.title ? ' · ' + esc(src.title) : ''} ${icon('arrow-up-right')}</a></li>`).join('');
+export const LAYER_KEYS = Object.freeze({ shipping: 'k-shipping', 'missile-drone': 'k-missile', 'strikes-on-iran-yemen': 'k-strike' });
+
+/** A list of events. With `href`, each opens its own page; without, each is a button carrying its id. */
+export function eventListMarkup(events, { limit = 6, href = null } = {}) {
   const list = (Array.isArray(events) ? events : []).slice(0, limit);
   if (!list.length) return '<li class="empty-note">No events to show.</li>';
-  const keys = { shipping: 'k-shipping', 'missile-drone': 'k-missile', 'strikes-on-iran-yemen': 'k-strike' };
-  return list.map(e => `<li><button type="button" data-event-id="${esc(e.id)}"><i class="k ${keys[e.layer] || 'k-strike'}" aria-hidden="true"></i><span class="el-title">${esc(e.title)}</span><span class="el-meta">${esc(dayLabel(e.date))} · ${esc(e.place)}${e.confidence === 'claimed' ? ' · claimed' : ''}${e.precision === 'unplaced' ? ' · not on the map' : ''}</span></button></li>`).join('');
+  return list.map(e => {
+    const body = `<i class="k ${LAYER_KEYS[e.layer] || 'k-strike'}" aria-hidden="true"></i><span class="el-title">${esc(e.title)}</span><span class="el-meta">${esc(dayLabel(e.date))} · ${esc(e.place)}${e.confidence === 'claimed' ? ' · claimed' : ''}${e.precision === 'unplaced' ? ' · not on the map' : ''}</span>`;
+    return href ? `<li><a href="${esc(href(e))}" data-event-id="${esc(e.id)}">${body}</a></li>` : `<li><button type="button" data-event-id="${esc(e.id)}">${body}</button></li>`;
+  }).join('');
 }
 
 const monthFormat = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
 /** The full timeline, newest first, under a heading per month. */
-export function eventTimelineMarkup(events) {
+export function eventTimelineMarkup(events, { href = null } = {}) {
   const list = Array.isArray(events) ? events : [];
   if (!list.length) return '<p class="empty-note">No events to show.</p>';
   const months = new Map();
   for (const e of list) { const key = e.date.slice(0, 7); if (!months.has(key)) months.set(key, []); months.get(key).push(e); }
-  return [...months].map(([key, rows]) => `<h3>${esc(monthFormat.format(Date.parse(key + '-01T00:00:00Z')))} <span>${rows.length}</span></h3><ul class="event-list">${eventListMarkup(rows, { limit: Infinity })}</ul>`).join('');
+  return [...months].map(([key, rows]) => `<section class="timeline-month"><h3>${esc(monthFormat.format(Date.parse(key + '-01T00:00:00Z')))} <span>${rows.length}</span></h3><ul class="event-list">${eventListMarkup(rows, { limit: Infinity, href })}</ul></section>`).join('');
 }
 /** Several events drawn at one spot on the map: list them so each can be opened. */
-export function eventGroupMarkup(events) {
+export function eventGroupMarkup(events, { href = null } = {}) {
   const list = Array.isArray(events) ? events : [];
   if (!list.length) return '';
   const places = [...new Set(list.map(e => e.place).filter(Boolean))];
-  return `<button type="button" class="vc-close" data-close-event aria-label="Close the list">×</button>
+  return `<button type="button" class="vc-close" data-close-event aria-label="Close the list">${icon('x')}</button>
     <p class="ec-meta">${list.length} events${places.length === 1 ? ' · ' + esc(places[0]) : ' close together'}</p>
-    <ul class="event-list">${eventListMarkup(list, { limit: Infinity })}</ul>`;
+    <ul class="event-list">${eventListMarkup(list, { limit: Infinity, href })}</ul>`;
 }
 
 /** "5 h 10 min", or "2 d 3 h" for a day or more. */
@@ -274,7 +287,7 @@ export function gapCardMarkup(gap, kind) {
   const body = kind === 'dark'
     ? `<p class="ec-summary">Stopped reporting while moving, inside reliable reception, at ${esc(dayLabel(gap.lastSeen))} ${esc(clockLabel(gap.lastSeen))}. Silent for ${esc(durationLabel(gap.hours))} so far.</p>`
     : `<p class="ec-summary">Went silent at ${esc(dayLabel(gap.from.t))} ${esc(clockLabel(gap.from.t))} and reappeared ${esc(durationLabel(gap.hours))} later, ${esc(String(gap.distanceNm))} nm away, at ${esc(dayLabel(gap.to.t))} ${esc(clockLabel(gap.to.t))}.</p>`;
-  return `<button type="button" class="vc-close" data-close-gap aria-label="Close">×</button>
+  return `<button type="button" class="vc-close" data-close-gap aria-label="Close">${icon('x')}</button>
     <p class="ec-meta"><b>AIS gap</b> · ${kind === 'dark' ? 'dark now' : 'reappeared'}${gap.tanker ? ' · tanker' : ''}</p>
     <h3>${name}</h3>
     <dl><dt>MMSI</dt><dd>${esc(gap.mmsi)}</dd></dl>${body}

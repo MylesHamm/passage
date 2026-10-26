@@ -1,8 +1,10 @@
 # Third party notices
 
-## 1 IBM Plex Sans
+## 1 Geist and Geist Mono
 
-The bundled font files are from the Google Fonts distribution of IBM Plex Sans. The license is retained in `dist/assets/IBM-Plex-OFL.txt`. Original distribution: [Google Fonts IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans).
+The bundled variable fonts `dist/assets/geist.woff2` and `dist/assets/geist-mono.woff2` are `Geist-Variable.woff2` and `GeistMono-Variable.woff2` from the [geist](https://www.npmjs.com/package/geist) package, version 1.8.2, copyright (c) 2023 Vercel, in collaboration with basement.studio. They are used under the SIL Open Font License 1.1, retained in `dist/assets/Geist-OFL.txt`.
+
+The interface icons are from [Phosphor Icons](https://phosphoricons.com/) (`@phosphor-icons/core` 2.1.1, regular weight), copyright (c) 2023 Phosphor Icons, under the MIT license. Their paths are inlined unmodified in `dist/site/icons.mjs`, and the license is reproduced in `licenses/phosphor-MIT.txt`.
 
 ## 2 WebSocket client
 
@@ -18,7 +20,7 @@ Locally bundled [Mapzen Terrain Tiles](https://registry.opendata.aws/terrain-til
 
 ## 5 Data sources
 
-Each panel names its source, and the About the data panel lists every source with its status and latest date.
+Each panel names its source, and the method page lists every source with its status and latest date.
 
 - **Vessel positions:** [AISStream](https://aisstream.io/), received through a server-side connection. Coverage depends on its receiver network.
 - **Daily chokepoint transits:** Sources: UN Global Platform; IMF PortWatch ([portwatch.imf.org](https://portwatch.imf.org)). Data are used under the [IMF terms](https://www.imf.org/en/about/copyright-and-terms) with attribution and are not modified.

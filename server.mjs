@@ -3,12 +3,13 @@ import {startLocalServer} from './lib/local-launch.mjs';
 import http from 'node:http';
 import { randomUUID, createHash } from 'node:crypto';
 import {ReportArchive} from './lib/report-archive.mjs';
+import {renderShell} from './lib/site-pages.mjs';
 import { AisFeed } from './lib/ais.mjs';
 import { SourceRuntime } from './lib/source-runtime.mjs';
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -28,7 +29,7 @@ async function collectReporting() {
   catch { console.warn('Background collection could not complete. Previously retained data remains available.'); }
   finally { if(!reportingStopped){reportingTimer=setTimeout(collectReporting,300000);reportingTimer.unref();} }
 }
-const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.ttf':'font/ttf','.png':'image/png','.md':'text/plain; charset=utf-8'};
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.ttf':'font/ttf','.woff2':'font/woff2','.png':'image/png','.md':'text/plain; charset=utf-8'};
 let port=Number(process.env.PORT)||4173;
 const ais = new AisFeed({ apiKey: process.env.AISSTREAM_API_KEY, onEvent:(event,context)=>runtime.event('ais_state','aisstream',context,event) });
 const service=createDataService({runtime,reportArchive,ais,version,
@@ -52,10 +53,21 @@ const server=http.createServer(async(req,res)=>{
       if(data===null){res.writeHead(404);return res.end('Unknown endpoint');}
       res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store'});return res.end(JSON.stringify(data));
     }
-    const requested=decodeURIComponent(url.pathname==='/'?'/index.html':url.pathname);
+    // Pages live at directory paths (/hormuz/); a path without its slash is redirected, as GitHub Pages does.
+    const requested=decodeURIComponent(url.pathname.endsWith('/')?url.pathname+'index.html':url.pathname);
     const file=path.resolve(root,'dist','.'+requested);
     if(!file.startsWith(path.join(root,'dist')+path.sep)){res.writeHead(403);return res.end('Forbidden');}
-    const body=await readFile(file);res.writeHead(200,{'Content-Type':mime[path.extname(file)]||'application/octet-stream','Cache-Control':'no-cache'});res.end(req.method==='HEAD'?undefined:body);
+    if(!path.extname(file)&&(await stat(file).catch(()=>null))?.isDirectory()){res.writeHead(301,{Location:url.pathname+'/'+url.search});return res.end();}
+    try{
+      const body=await readFile(file),type=mime[path.extname(file)]||'application/octet-stream';
+      res.writeHead(200,{'Content-Type':type,'Cache-Control':'no-cache'});
+      res.end(req.method==='HEAD'?undefined:type.startsWith('text/html')?renderShell(body.toString('utf8'),url.pathname):body);
+    }catch(error){
+      // A missing page gets the site's own 404 page; a missing asset stays a plain 404.
+      if(error.code!=='ENOENT'||(path.extname(file)&&path.extname(file)!=='.html'))throw error;
+      const body=renderShell(await readFile(path.join(root,'dist','404.html'),'utf8'),'/404');
+      res.writeHead(404,{'Content-Type':mime['.html'],'Cache-Control':'no-cache'});res.end(req.method==='HEAD'?undefined:body);
+    }
   }catch(error){res.writeHead(error.code==='ENOENT'?404:500,{'Content-Type':'text/plain'});res.end(error.code==='ENOENT'?'Not found':'Could not load this resource');}
 });
 server.requestTimeout=15000;

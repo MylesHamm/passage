@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#000000">
+<title>Regional war | Passage</title>
+<meta name="description" content="Strikes and attacks since 28 February from the Gulf to the Red Sea on a 3D map, each placed where its report says and linked to the source, with naval missions and the latest reporting.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Passage"><meta property="og:title" content="Regional war | Passage"><meta property="og:description" content="Every sourced strike and attack from the Gulf to the Red Sea, placed on one map."><meta name="twitter:card" content="summary">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<link rel="preload" href="/assets/geist.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/motion.css"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/ops.css">
+</head>
+<body>
+<!-- passage:nav -->
+<main id="main">
+  <section class="page-hero" data-layout="split" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="hero-copy">
+        <p class="eyebrow" id="hero-eyebrow"><i aria-hidden="true"></i><span>Regional war · Gulf to Red Sea</span></p>
+        <h1 class="hero-title" data-size="page" id="hero-title">Regional war</h1>
+        <p class="hero-sub">Strikes and attacks since 28 February from the Gulf to the Red Sea, each placed where its report says and linked to the source.</p>
+      </div>
+      <div class="hero-aside">
+        <div class="hero-actions"><a class="button button-primary" href="/events/">Open the timeline <!-- icon:arrow-right --></a></div>
+        <ul class="proof" aria-label="Events by layer" id="theatre-counts" role="status">
+          <li><span class="label">Events</span><span class="value"><span class="skeleton">000</span></span><span class="note">since 28 Feb</span></li>
+          <li><span class="label">On shipping</span><span class="value"><span class="skeleton">00</span></span><span class="note">attacks</span></li>
+          <li><span class="label">Missiles and drones</span><span class="value"><span class="skeleton">00</span></span><span class="note">strikes</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-section" aria-label="Regional war map">
+    <div class="container">
+      <div class="map-frame" data-scroll="page">
+        <div id="theatre-map" class="hero-map"><canvas aria-label="3D terrain map from the Gulf to the Red Sea with dated war events. Drag to turn, hold Shift and drag to pan, plus and minus to zoom." tabindex="0"></canvas></div>
+        <div class="hud hud-tl" role="group" aria-label="Jump to a front">
+          <div class="chip-row"><button type="button" class="chip" data-front="hormuz">Hormuz</button><button type="button" class="chip" data-front="red-sea">Red Sea and Yemen</button></div>
+        </div>
+        <div class="hud hud-tr" role="group" aria-label="Event layers">
+          <button type="button" class="chip" data-layer-toggle="shipping" aria-pressed="true"><i class="k k-shipping" aria-hidden="true"></i>Shipping</button>
+          <button type="button" class="chip" data-layer-toggle="missile-drone" aria-pressed="true"><i class="k k-missile" aria-hidden="true"></i>Missiles and drones</button>
+          <button type="button" class="chip" data-layer-toggle="strikes-on-iran-yemen" aria-pressed="true"><i class="k k-strike" aria-hidden="true"></i>Strikes on Iran and Yemen</button>
+          <button type="button" class="chip" data-layer-toggle="missions" aria-pressed="true"><i class="k k-mission" aria-hidden="true"></i>Naval missions</button>
+        </div>
+        <div class="hud hud-br" role="group" aria-label="Zoom">
+          <button type="button" class="chip chip-icon" id="theatre-zoom-out" aria-label="Zoom out"><!-- icon:minus --></button>
+          <button type="button" class="chip chip-icon" id="theatre-zoom-in" aria-label="Zoom in"><!-- icon:plus --></button>
+          <button type="button" class="chip chip-icon" id="theatre-reset" aria-label="Reset view"><!-- icon:arrow-counter-clockwise --></button>
+        </div>
+        <div class="hud hud-bl"><p class="hud-panel" aria-label="Legend">
+          <span class="legend-key"><i class="k k-claimed"></i>Claimed, not confirmed</span>
+          <span class="legend-key"><i class="k k-recent"></i>Last 7 days</span>
+          <span class="stamp" id="events-stamp"></span>
+        </p></div>
+        <aside id="event-card" class="vessel-card event-card" hidden aria-live="polite"></aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="missions" data-reveal aria-labelledby="missions-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="missions-title">Naval missions under way</h2>
+        <p>Published operating areas of the naval missions active today, drawn as approximate outlines on the map.</p>
+      </div>
+      <div class="card-grid" id="missions-body"><span class="skeleton-line"></span></div>
+    </div>
+  </section>
+
+  <section class="section" id="reporting" data-reveal aria-labelledby="reporting-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="reporting-title">Latest reporting</h2>
+        <p>Original reporting from BBC, Al Jazeera, Middle East Eye, Middle East Monitor, France 24 and UN News, linked to each publisher.</p>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="chip-row" role="group" aria-label="Region"><button type="button" class="chip" data-region="all" aria-pressed="true">All</button><button type="button" class="chip" data-region="hormuz" aria-pressed="false">Hormuz and the Gulf</button><button type="button" class="chip" data-region="bab" aria-pressed="false">Red Sea and Yemen</button></div>
+          <span class="stamp" id="headlines-stamp"></span>
+        </div>
+        <ul class="headline-list" id="headline-list"><li><span class="skeleton-line"></span></li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="How the map is drawn">
+    <p class="tagline" data-tagline>Each mark is a report with a date and a source. Claims stay marked as claims.</p>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section-head"><h2 id="faq-title">Reading this map</h2></div>
+      <div class="faq" data-faq>
+        <details><summary><span>What does a point on the map mark?</span><!-- icon:caret-down --></summary><div class="answer"><p>The named place in the report, not an exact impact point. Incidents from the IMO register are placed from their text and show their likely radius when selected.</p></div></details>
+        <details><summary><span>What does claimed mean?</span><!-- icon:caret-down --></summary><div class="answer"><p>The event was reported by only one side and not confirmed by anyone else. Claimed events are drawn hollow and labeled as claimed on their card.</p></div></details>
+        <details><summary><span>Why are ship attacks drawn at sea?</span><!-- icon:caret-down --></summary><div class="answer"><p>Ship attacks are drawn at the position the report gives, and at the nearest water when that place is on land, so a hit ship never sits on a coastline town.</p></div></details>
+        <details><summary><span>What are the numbered circles?</span><!-- icon:caret-down --></summary><div class="answer"><p>Events close together on screen are drawn as one numbered group. Tap a group to list its events, and to zoom in when that would separate them.</p></div></details>
+        <details><summary><span>How are naval missions drawn?</span><!-- icon:caret-down --></summary><div class="answer"><p>Mission areas are approximate outlines of published operating areas. Only missions under way on the day are drawn: today, or the day of the event you open.</p></div></details>
+        <details><summary><span>How often is the list updated?</span><!-- icon:caret-down --></summary><div class="answer"><p>An automated review checks for new events every six hours and adds only those linked to a source. The stamp on the map shows when the list was last reviewed.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="cta-title">
+    <div class="container cta-band">
+      <h2 id="cta-title">Read the war in order</h2>
+      <p>The timeline lists every event by month, including incidents whose reports give no position.</p>
+      <a class="button button-primary" href="/events/">Open the timeline <!-- icon:arrow-right --></a>
+    </div>
+  </section>
+</main>
+<!-- passage:footer -->
+<noscript><p class="empty-note">Passage needs JavaScript to show live data.</p></noscript>
+<script type="module" src="/pages/war.mjs"></script>
+</body>
+</html>

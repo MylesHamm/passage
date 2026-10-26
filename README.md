@@ -2,19 +2,21 @@
 
 [Open Passage](https://myleshamm.github.io/passage/)
 
-An operations-center view of the regional war from the Gulf to the Red Sea, centred on the Strait of Hormuz. It shows received tanker positions, dated war events across the region, daily transits through the straits, oil prices and market odds. Each figure carries its own date and source.
+An operations-center view of the regional war from the Gulf to the Red Sea, centered on the Strait of Hormuz. It shows received tanker positions, dated war events across the region, daily transits through the straits, oil prices and market odds. Each figure carries its own date and source.
 
 ## What you see
 
-- **Hormuz map.** 3D terrain with every vessel position received from the free AIS feed. Tankers are drawn as detailed models turned to their reported heading, with a trail of their last hour of received positions. **Replay last hour** plays those received positions back in twelve seconds. The default view runs from the Dubai and Sharjah anchorages, where the feed's receivers are, to the strait itself. War events from the last seven days inside this view are marked on the same map; select one for its card.
-- **Regional war map.** 3D terrain from the Gulf to the Red Sea with dated, source-linked events in three layers: attacks on shipping, missile and drone strikes, and strikes on Iran and Yemen. Naval missions are drawn as approximate areas, only for the days they were under way. Select an event, in the map, the event list or the chart, and **show me** flies the map to it, marks its date on the price chart, and shows Brent and the related odds on the day and a few days later. Nearby events are drawn as numbered groups, and **Hormuz** and **Red Sea & Yemen** jump to each front.
-- **All events.** The full timeline by month, filterable by layer. It includes register incidents whose report gives no usable position: they are listed, never pinned.
-- **AIS gaps.** Ships that stop reporting for three hours or more while moving deep inside the feed's reliable reception: how many are dark now, how many gaps closed in the last week, and how long ships stayed dark. Where they went silent, and where they reappeared, are marked on the Hormuz map. A ship leaving coverage is not counted, and counting pauses whenever the feed itself goes quiet. This is evidence that AIS was switched off, not proof.
-- **Daily transits.** IMF PortWatch counts for Hormuz and Bab el-Mandeb, split into tankers and all ships, against a labelled pre-disruption average.
-- **Oil prices.** Daily Brent and WTI spot prices from the U.S. Energy Information Administration, including the latest next-day close.
-- **Market odds.** Polymarket probabilities for questions about Hormuz, shipping attacks and the conflict, each linked to its market.
-- **Headlines.** The latest reporting from BBC, Al Jazeera, Middle East Eye, Middle East Monitor, France 24 and UN News, one click away.
-- **About the data.** Every source with its status and latest date, plus how to read each panel. Select the status indicator in the top bar to open it.
+Passage is a small site of landing pages. Each page has its own address, one main action and a short set of questions that hold its caveats, so the views themselves stay uncluttered.
+
+- **Overview** (`/`). The live Hormuz map as the hero, with the latest Hormuz transits, Brent close and number of ships dark now beside **Open the live map**, then one card per view with its own real, dated figure.
+- **Hormuz live** (`/hormuz/`). 3D terrain with every vessel position received from the free AIS feed. Tankers are drawn as detailed models turned to their reported heading, with a trail of their last hour of received positions. **Replay the last hour** plays those positions back in twelve seconds. War events from the last seven days inside the view are marked on the map. Below the map: daily PortWatch transits for Hormuz and Bab el-Mandeb against their averages before the war, and the AIS gap record. A gap is a ship that stops reporting for three hours or more while moving deep inside reliable reception; it is evidence that AIS was switched off, not proof.
+- **Regional war** (`/war/`). 3D terrain from the Gulf to the Red Sea with dated, source-linked events in three layers: attacks on shipping, missile and drone strikes, and strikes on Iran and Yemen. Naval missions are drawn as approximate areas, only for the days they were under way. Nearby events are drawn as numbered groups, and **Hormuz** and **Red Sea and Yemen** jump to each front. Below the map: the missions under way today and the latest reporting from BBC, Al Jazeera, Middle East Eye, Middle East Monitor, France 24 and UN News.
+- **Events** (`/events/`). The full timeline by month, filterable by layer. It includes register incidents whose report gives no usable position: they are listed, never pinned.
+- **One event** (`/event/?id=…`). Where it happened, the reports behind it, and Brent and the related Polymarket odds on the day and a few days later, with the window marked on the price chart. This is what happened next, not what caused it. The page is filled from the live list, so a new event has a page as soon as it is reviewed.
+- **Oil and odds** (`/oil/`). Daily Brent and WTI spot prices from the U.S. Energy Information Administration with every war event marked on the time axis, and Polymarket probabilities on the war, each linked to its market.
+- **Method** (`/method/`). Every source with its status and latest date, how to read each panel, the rules Passage keeps, and its privacy note, terms and credits. The status in the navigation links here.
+
+The design follows the landing page rules recorded in `test/design-system.test.mjs` and `test/site-pages.test.mjs`: Geist type on Tailwind's type scale, fixed spacing steps, flat dark surfaces, one easing curve, and copy without hyphenated words or dashes.
 
 ## What updates
 

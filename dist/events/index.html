@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#000000">
+<title>Events | Passage</title>
+<meta name="description" content="Every strike and attack of the regional war since 28 February, newest first, each linked to the reporting behind it and reviewed every six hours.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Passage"><meta property="og:title" content="Events | Passage"><meta property="og:description" content="The regional war in order, every entry linked to its report."><meta name="twitter:card" content="summary">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<link rel="preload" href="/assets/geist.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/motion.css"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/ops.css">
+</head>
+<body>
+<!-- passage:nav -->
+<main id="main">
+  <section class="page-hero" data-layout="split" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="hero-copy">
+        <p class="eyebrow" id="hero-eyebrow"><i aria-hidden="true"></i><span id="events-stamp">Curated events</span></p>
+        <h1 class="hero-title" data-size="page" id="hero-title">Every event, in order</h1>
+        <p class="hero-sub">Each strike and attack since 28 February, newest first and linked to the reporting behind it.</p>
+      </div>
+      <div class="hero-aside">
+        <div class="hero-actions"><a class="button button-primary" id="latest-event" href="#timeline">Open the latest event <!-- icon:arrow-right --></a></div>
+        <ul class="proof" aria-label="Event counts" id="event-counts" role="status">
+          <li><span class="label">Events</span><span class="value"><span class="skeleton">000</span></span><span class="note">since 28 Feb</span></li>
+          <li><span class="label">Last 7 days</span><span class="value"><span class="skeleton">00</span></span><span class="note">events</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" id="timeline" aria-labelledby="timeline-title">
+    <div class="container">
+      <h2 class="sr-only" id="timeline-title">Timeline</h2>
+      <div class="chip-row" role="group" aria-label="Layer">
+        <button type="button" class="chip" data-timeline-layer="all" aria-pressed="true">All</button>
+        <button type="button" class="chip" data-timeline-layer="shipping" aria-pressed="false"><i class="k k-shipping" aria-hidden="true"></i>Shipping</button>
+        <button type="button" class="chip" data-timeline-layer="missile-drone" aria-pressed="false"><i class="k k-missile" aria-hidden="true"></i>Missiles and drones</button>
+        <button type="button" class="chip" data-timeline-layer="strikes-on-iran-yemen" aria-pressed="false"><i class="k k-strike" aria-hidden="true"></i>Strikes on Iran and Yemen</button>
+      </div>
+      <p class="timeline-note" id="timeline-note" aria-live="polite"></p>
+      <div id="timeline-body"><span class="skeleton-line"></span><span class="skeleton-line"></span><span class="skeleton-line"></span><span class="skeleton-line"></span></div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="How to read the timeline">
+    <p class="tagline" data-tagline>Read the war in order. Every entry links to the reporting behind it.</p>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section-head"><h2 id="faq-title">About this list</h2></div>
+      <div class="faq" data-faq>
+        <details><summary><span>How are events chosen?</span><!-- icon:caret-down --></summary><div class="answer"><p>Each one is a dated attack or strike in the region with at least one linked report from a named publisher. Events without a usable source are left out rather than guessed at.</p></div></details>
+        <details><summary><span>What is the IMO register?</span><!-- icon:caret-down --></summary><div class="answer"><p>The International Maritime Organization publishes a register of highlighted incidents in the Middle East. Passage adds its incidents to the list and places each one from its own text.</p></div></details>
+        <details><summary><span>Why are some events not on the map?</span><!-- icon:caret-down --></summary><div class="answer"><p>Some register incidents give no usable position. They are listed here and marked as not on the map, and never pinned to a guessed place.</p></div></details>
+        <details><summary><span>What does claimed mean?</span><!-- icon:caret-down --></summary><div class="answer"><p>The event was reported by only one side and not confirmed by anyone else. Claimed events say so in the list and on their own page.</p></div></details>
+        <details><summary><span>How often does the list change?</span><!-- icon:caret-down --></summary><div class="answer"><p>An automated review checks for new events every six hours, adds only those linked to a source and corrects earlier entries when the reporting changes. The stamp at the top shows when it last ran.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="cta-title">
+    <div class="container cta-band">
+      <h2 id="cta-title">See them on the map</h2>
+      <p>The regional map places every event with a position, from the Gulf to the Red Sea.</p>
+      <a class="button button-primary" href="/war/">See the regional war <!-- icon:arrow-right --></a>
+    </div>
+  </section>
+</main>
+<!-- passage:footer -->
+<noscript><p class="empty-note">Passage needs JavaScript to show live data.</p></noscript>
+<script type="module" src="/pages/events.mjs"></script>
+</body>
+</html>
