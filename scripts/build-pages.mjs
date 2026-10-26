@@ -2,6 +2,7 @@ import { mkdir, readdir, readFile, writeFile, copyFile, stat } from 'node:fs/pro
 import { dirname, extname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { normalizeApiBase } from '../dist/runtime-config.mjs';
+import { PAGES, pathForFile, renderShell } from '../lib/site-pages.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const staticExtensions = new Set(['.html', '.css', '.js', '.mjs', '.json', '.svg', '.ttf', '.woff', '.woff2', '.png', '.jpg', '.webp', '.ico', '.txt']);
@@ -34,12 +35,14 @@ export async function buildPages({ sourceDir = resolve(root, 'dist'), outputDir 
     }
   }
   await inventory(source);
+  // The pages the navigation links to must all be in the artifact.
+  for (const page of PAGES) if (!files.includes(page.file)) throw new Error(`Missing site page: ${page.file}`);
   await mkdir(output, { recursive: true });
   for (const name of files) {
     const from = resolve(source, name), to = resolve(output, name);
     await mkdir(dirname(to), { recursive: true });
     if (name.endsWith('.html')) {
-      let html = await readFile(from, 'utf8');
+      let html = renderShell(await readFile(from, 'utf8'), pathForFile(name) ?? '');
       if (!html.includes('name="passage-api-base"') || !html.includes('name="passage-hosted"')) throw new Error(`Missing public runtime configuration: ${name}`);
       html = html.replace(/<!-- local-only:start -->[\s\S]*?<!-- local-only:end -->/g, '')
         .replace(/(<meta name="passage-api-base" content=")[^"]*(">)/, (_, start, end) => start + escapeAttribute(api) + end)

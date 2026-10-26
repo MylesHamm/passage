@@ -71,7 +71,7 @@ export async function createTheatreMap(root, { onSelect, onGroup } = {}) {
       shapes.push(`<path class="mission-area" d="${pts.map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('')}Z"/>`);
       const c = project(m.labelAt, .05);
       if (!c.visible) continue;
-      const x = c.x.toFixed(1), dates = m.end ? `${missionDay(m.start)} – ${missionDay(m.end)}` : `Since ${missionDay(m.start)}`;
+      const x = c.x.toFixed(1), dates = m.end ? `${missionDay(m.start)} to ${missionDay(m.end)}` : `Since ${missionDay(m.start)}`;
       shapes.push(`<text class="mission-label" x="${x}" y="${c.y.toFixed(1)}">${esc(m.name)}<tspan class="mission-dates" x="${x}" dy="12">${esc(dates)}</tspan></text>`);
     }
     markers.place({ project, overlay, shapes });
@@ -88,10 +88,11 @@ export async function createTheatreMap(root, { onSelect, onGroup } = {}) {
     },
     setMissions(list, visible = showMissions) { missions = Array.isArray(list) ? list : []; showMissions = visible; view.invalidate(); },
     setShowMissions(value) { showMissions = Boolean(value); view.invalidate(); },
-    select(id, { fly = true } = {}) {
+    /** Selects an event and flies to it; `zoom` overrides the close-up zoom for its precision. */
+    select(id, { fly = true, zoom = null } = {}) {
       markers.select(id);
       const event = markers.events.find(e => e.id === id);
-      if (event && fly) view.flyTo(event.layer === 'shipping' ? view.seaPoint([event.lon, event.lat]) : [event.lon, event.lat], { zoom: focusZoom(event) });
+      if (event && fly) view.flyTo(event.layer === 'shipping' ? view.seaPoint([event.lon, event.lat]) : [event.lon, event.lat], { zoom: zoom ?? focusZoom(event) });
     },
     /** Jumps to one of the two fronts: Hormuz, or the Red Sea and Yemen. */
     front(name) { const front = FRONTS[name]; if (front) view.flyTo(front.center, { zoom: front.zoom }); },

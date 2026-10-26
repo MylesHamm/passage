@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#000000">
+<title>Hormuz live | Passage</title>
+<meta name="description" content="Ship positions received in the Strait of Hormuz, with tankers drawn to their reported heading, the last hour of tracks, daily transits against the 2025 average and ships that went dark.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Passage"><meta property="og:title" content="Hormuz live | Passage"><meta property="og:description" content="Received ship positions, daily transits and AIS gaps in the Strait of Hormuz, each with its own date."><meta name="twitter:card" content="summary">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<script src="/site/motion-early.js"></script>
+<link rel="preload" href="/assets/geist.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/motion.css"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/ops.css">
+</head>
+<body>
+<!-- passage:nav -->
+<main id="main">
+  <section data-intro="load" class="page-hero" data-layout="split" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="hero-copy">
+        <p class="eyebrow" id="hero-eyebrow" data-motion="up" style="--i:0"><i aria-hidden="true"></i><span id="hero-kicker">Strait of Hormuz · received AIS</span></p>
+        <h1 class="hero-title" data-size="page" id="hero-title" data-motion="up" style="--i:1">Hormuz traffic</h1>
+        <p class="hero-sub" data-motion="up" style="--i:2">Ship positions received from coastal AIS receivers, with tankers drawn to their reported heading and the last hour of tracks. War events from the last seven days are marked where they happened.</p>
+      </div>
+      <div class="hero-aside">
+        <div class="hero-actions" data-motion="up" style="--i:3"><button type="button" class="button button-primary" id="replay-hero">Replay the last hour <!-- icon:arrow-counter-clockwise --></button></div>
+        <ul class="proof" aria-label="Latest figures" id="hero-counts" role="status" data-motion="up" style="--i:4">
+          <li><span class="label">Tankers</span><span class="value" data-tone="tanker"><span class="skeleton">00</span></span><span class="note">received now</span></li>
+          <li><span class="label">Vessels</span><span class="value"><span class="skeleton">00</span></span><span class="note">received now</span></li>
+          <li><span class="label">Dark now</span><span class="value"><span class="skeleton">00</span></span><span class="note">AIS gaps over 3 h</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-section" data-intro="load" aria-label="Live Hormuz map">
+    <div class="container">
+      <div class="map-frame" data-scroll="page">
+        <div class="hud hud-tl"><p class="hud-panel" id="feed-note" hidden data-motion="down" style="--i:5"></p></div>
+        <div id="hero-map" class="hero-map"><canvas aria-label="3D terrain map of the Strait of Hormuz with received vessel positions. Drag to turn, hold Shift and drag to pan, plus and minus to zoom." tabindex="0"></canvas></div>
+        <div class="hud hud-tr" role="group" aria-label="Map view">
+          <button type="button" class="chip" id="show-all" aria-pressed="true" data-motion="down" style="--i:6">All vessels</button>
+          <button type="button" class="chip" id="replay" aria-pressed="false" data-motion="down" style="--i:7">Replay last hour</button>
+          <button type="button" class="chip" id="view-mode" aria-pressed="false" data-motion="down" style="--i:8">Top down</button>
+          <button type="button" class="chip" id="camera-motion" aria-pressed="false" data-motion="down" style="--i:9">Pause camera</button>
+        </div>
+        <div class="hud hud-br" role="group" aria-label="Zoom">
+          <button type="button" class="chip chip-icon" id="zoom-out" aria-label="Zoom out" data-motion="pop" style="--i:10"><!-- icon:minus --></button>
+          <button type="button" class="chip chip-icon" id="zoom-in" aria-label="Zoom in" data-motion="pop" style="--i:11"><!-- icon:plus --></button>
+          <button type="button" class="chip chip-icon" id="reset-view" aria-label="Reset view" data-motion="pop" style="--i:12"><!-- icon:arrow-counter-clockwise --></button>
+        </div>
+        <div class="hud hud-bl"><p class="hud-panel" aria-label="Legend" data-motion="up" style="--i:13">
+          <span class="legend-key"><i class="k-tanker"></i>Tanker</span>
+          <span class="legend-key"><i class="k-track"></i>Last hour</span>
+          <span class="legend-key"><i class="k-other"></i>Other vessel</span>
+          <span class="legend-key"><i class="k k-shipping" aria-hidden="true"></i>War event, last 7 days</span>
+          <span class="legend-key"><i class="k k-gap" aria-hidden="true"></i>AIS gap</span>
+          <span class="stamp" id="ais-stamp"></span>
+        </p></div>
+        <div id="replay-clock" class="replay-clock" hidden></div>
+        <aside id="vessel-card" class="vessel-card" hidden aria-live="polite"></aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-intro="wait" id="transits" aria-labelledby="transits-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 data-motion="up" id="transits-title">Traffic against normal</h2>
+        <p data-motion="up">Daily ship counts through the two chokepoints from IMF PortWatch, beside their averages before the war. Tankers are highlighted.</p>
+      </div>
+      <div class="card" data-motion="card">
+        <div class="card-head"><h3>Daily transits</h3><span class="stamp" id="transits-stamp"></span></div>
+        <div class="card-grid" id="transits-body"><span class="skeleton-line"></span><span class="skeleton-line"></span><span class="skeleton-line"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-intro="wait" id="ais-gaps" aria-labelledby="gaps-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 data-motion="up" id="gaps-title">Ships that went quiet</h2>
+        <p data-motion="up">Ships that stopped reporting for three hours or more while moving inside reliable reception. Tap a ship to find it on the map.</p>
+      </div>
+      <div class="card" data-motion="card">
+        <div class="card-head"><h3>AIS gaps in Hormuz</h3><span class="stamp" id="ais-gaps-stamp"></span></div>
+        <div id="ais-gaps-body"><span class="skeleton-line"></span><span class="skeleton-line"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-intro="wait" id="recent" aria-labelledby="recent-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 data-motion="up" id="recent-title">War events in view</h2>
+        <p data-motion="up">Events from the last seven days inside this map, each with its own page.</p>
+      </div>
+      <div class="card" data-motion="card">
+        <div class="card-head"><h3>Last 7 days</h3><span class="stamp" id="events-stamp"></span></div>
+        <ul class="event-list" id="recent-list"><li><span class="skeleton-line"></span></li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="What the map shows">
+    <p class="tagline" data-tagline>An empty map is not an empty strait. It shows what the receivers can hear.</p>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section-head"><h2 id="faq-title">Reading this map</h2></div>
+      <div class="faq" data-faq>
+        <details><summary><span>Why is the strait nearly empty on the map?</span><!-- icon:caret-down --></summary><div class="answer"><p>The free receivers behind AISStream sit on the coast of Dubai and Sharjah, so they hear the anchorages well and the shipping lanes barely at all. Tankers also switch AIS off near attacks. An empty map does not mean an empty strait.</p></div></details>
+        <details><summary><span>What do the ship models show?</span><!-- icon:caret-down --></summary><div class="answer"><p>Tankers are drawn as detailed models, enlarged far beyond true scale so they can be seen, and turned to their reported heading. A vessel without a reported heading is shown as a ring, never with a guessed direction.</p></div></details>
+        <details><summary><span>How old can a position be?</span><!-- icon:caret-down --></summary><div class="answer"><p>The feed refreshes every 10 seconds. A position older than 10 minutes fades, and one older than 30 minutes is dropped from the map.</p></div></details>
+        <details><summary><span>What does the replay show?</span><!-- icon:caret-down --></summary><div class="answer"><p>Tracks and the replay show positions actually received over the last hour, joined in the order received. Nothing is extrapolated between reports.</p></div></details>
+        <details><summary><span>How is an AIS gap counted?</span><!-- icon:caret-down --></summary><div class="answer"><p>A gap is a ship that stops reporting for three hours or more while moving deep inside reliable reception, learned from where at least two different ships are heard nearly every hour. Counting pauses whenever the feed itself delivers much less than usual. A gap is evidence that AIS was switched off, not proof.</p></div></details>
+        <details><summary><span>Where do the transit counts come from?</span><!-- icon:caret-down --></summary><div class="answer"><p>IMF PortWatch derives daily counts from satellite AIS and releases them weekly, so the latest day is often several days old.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="cta-title">
+    <div class="container cta-band">
+      <h2 id="cta-title">See the whole war</h2>
+      <p>The regional map places every sourced strike and attack from the Gulf to the Red Sea.</p>
+      <a class="button button-primary" href="/war/">See the regional war <!-- icon:arrow-right --></a>
+    </div>
+  </section>
+</main>
+<!-- passage:footer -->
+<noscript><p class="empty-note">Passage needs JavaScript to show live data.</p></noscript>
+<script type="module" src="/pages/hormuz.mjs"></script>
+</body>
+</html>

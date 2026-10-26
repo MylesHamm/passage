@@ -63,7 +63,7 @@ export function mountRuntimeNotice(doc = globalThis.document, config = runtime) 
   if (!config.privateConnectionsAllowed) doc.querySelectorAll('[data-local-only]').forEach(element => { element.hidden = true; });
   if (!config.hosted && !config.configurationError) return;
   let notice = doc.getElementById('runtime-notice');
-  if (!notice) { notice = doc.createElement('aside'); notice.id = 'runtime-notice'; notice.className = 'runtime-notice'; notice.setAttribute('aria-label', 'Public site connection'); doc.querySelector('header')?.after(notice); }
+  if (!notice) { notice = doc.createElement('aside'); notice.id = 'runtime-notice'; notice.className = 'runtime-notice'; notice.setAttribute('aria-label', 'Public site connection'); const main = doc.querySelector('main'); if (main) main.prepend(notice); else doc.querySelector('header')?.after(notice); }
   notice.dataset.state = config.configurationError ? 'unconfigured' : 'public';
   if (!config.configurationError && doc.body?.classList.contains('passage-workspace')) doc.querySelector('.page-footer')?.after(notice);
   notice.textContent = config.configurationError

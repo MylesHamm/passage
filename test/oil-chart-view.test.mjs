@@ -144,7 +144,7 @@ test('failed or pending updates retain supplied observations, their selected dat
   const observations = [series('brent', [{ date: '2026-09-28', value: 76 }, { date: '2026-09-29', value: 77 }])];
   h.view.update(observations);
   input.value = '0'; input.dispatchEvent(new Event('input'));
-  assert.match(input.getAttribute('aria-valuetext'), /Sep 28, 2026.*76\.00/);
+  assert.match(input.getAttribute('aria-valuetext'), /28 Sept? 2026.*76\.00/);
 
   for (const state of [{ failed: true }, { loading: true }]) {
     h.view.update(observations, state);
@@ -152,7 +152,7 @@ test('failed or pending updates retain supplied observations, their selected dat
     assert.equal(h.q('[data-chart-controls]').hidden, false);
     assert.equal(h.q('input'), input, 'the same native date control must survive the update');
     assert.equal(input.value, '0');
-    assert.match(input.getAttribute('aria-valuetext'), /Sep 28, 2026.*76\.00/);
+    assert.match(input.getAttribute('aria-valuetext'), /28 Sept? 2026.*76\.00/);
     assert.match(h.q('[data-chart-note]').textContent, state.failed ? /Update failed.*retained observations/ : /Checking for updates.*retained observations/);
   }
   input.value = '1'; input.dispatchEvent(new Event('input'));
@@ -194,7 +194,7 @@ test('event ticks sit only on plotted dates and a focus window reads out its eve
   h.view.focus({ id: 'in', date: '2026-09-02', endDate: '2026-09-04' });
   assert.match(plot.innerHTML, /oil-chart-focus-band/);
   assert.match(plot.innerHTML, /data-marker-id="in" data-selected="true"/);
-  assert.equal(h.q('input').getAttribute('aria-valuetext').startsWith('Sep 2, 2026'), true);
+  assert.equal(h.q('input').getAttribute('aria-valuetext').startsWith('2 Sep'), true);
   h.view.focus(null);
   assert.doesNotMatch(plot.innerHTML, /oil-chart-focus-band/);
 });

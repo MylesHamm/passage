@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#000000">
+<title>Oil and odds | Passage</title>
+<meta name="description" content="Daily Brent and WTI spot prices from the EIA with every war event marked on the time axis, beside Polymarket odds on the regional war.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Passage"><meta property="og:title" content="Oil and odds | Passage"><meta property="og:description" content="Brent and WTI with every war event marked, beside the market odds on the war."><meta name="twitter:card" content="summary">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<meta name="passage-api-base" content=""><meta name="passage-hosted" content="false">
+<script src="/site/motion-early.js"></script>
+<link rel="preload" href="/assets/geist.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/motion.css"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/ops.css"><link rel="stylesheet" href="/oil-chart.css">
+</head>
+<body>
+<!-- passage:nav -->
+<main id="main">
+  <section data-intro="load" class="page-hero" data-layout="split" aria-labelledby="hero-title">
+    <div class="container">
+      <div class="hero-copy">
+        <p class="eyebrow" id="hero-eyebrow" data-motion="up" style="--i:0"><i aria-hidden="true"></i><span>Daily spot · U.S. dollars per barrel</span></p>
+        <h1 class="hero-title" data-size="page" id="hero-title" data-motion="up" style="--i:1">Oil and market odds</h1>
+        <p class="hero-sub" data-motion="up" style="--i:2">Daily Brent and WTI spot prices from the EIA, with every war event marked on the time axis, beside Polymarket odds on the war.</p>
+      </div>
+      <div class="hero-aside">
+        <div class="hero-actions" data-motion="up" style="--i:3"><button type="button" class="button button-primary" id="inspect">Inspect a date <!-- icon:arrow-right --></button></div>
+        <ul class="proof" aria-label="Moves since the war" id="oil-proof" role="status" data-motion="up" style="--i:4">
+          <li><span class="label">Brent since the war</span><span class="value"><span class="skeleton">+$00.00</span></span><span class="note">loading closes</span></li>
+          <li><span class="label">WTI since the war</span><span class="value"><span class="skeleton">+$00.00</span></span><span class="note">loading closes</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-section" data-intro="load" id="prices" aria-labelledby="prices-title">
+    <div class="container">
+      <div class="card price-panel" data-readout="off">
+        <div class="price-latest">
+          <div class="card-head"><h2 id="prices-title">Oil prices</h2></div>
+          <div class="px brent"><span><i aria-hidden="true"></i>Brent</span><strong id="brent-latest"><span class="skeleton">$000.00</span></strong><small id="brent-date"></small></div>
+          <div class="px wti"><span><i aria-hidden="true"></i>WTI</span><strong id="wti-latest"><span class="skeleton">$000.00</span></strong><small id="wti-date"></small></div>
+          <div class="period-switch" role="group" aria-label="Price history window"><button type="button" class="chip" data-period="30" aria-pressed="false">1M</button><button type="button" class="chip" data-period="90" aria-pressed="false">3M</button><button type="button" class="chip" data-period="180" aria-pressed="false">6M</button><button type="button" class="chip" data-period="war" aria-pressed="true">Since war</button></div>
+        </div>
+        <div id="oil-chart"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-intro="wait" id="odds" aria-labelledby="odds-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 data-motion="up" id="odds-title">Market odds</h2>
+        <p data-motion="up">What Polymarket traders expect on questions about the war. Each one resolves on its own published rules.</p>
+      </div>
+      <div class="card" data-motion="card">
+        <div class="card-head"><h3>Related markets</h3><span class="stamp" id="odds-stamp"></span></div>
+        <ul class="odds-list" id="odds-list"><li><span class="skeleton-line"></span></li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="How to read the chart">
+    <p class="tagline" data-tagline>Prices move for many reasons. Passage shows what happened next, not why.</p>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section-head"><h2 id="faq-title">Reading the chart</h2></div>
+      <div class="faq" data-faq>
+        <details><summary><span>Are these live trading prices?</span><!-- icon:caret-down --></summary><div class="answer"><p>No. These are daily spot prices from the U.S. Energy Information Administration, which republishes them from Refinitiv. They are not live trading quotes.</p></div></details>
+        <details><summary><span>Why is the latest price a day old?</span><!-- icon:caret-down --></summary><div class="answer"><p>The EIA posts each close a day later on Today in Energy and publishes its full history weekly. Passage shows each price with its own date.</p></div></details>
+        <details><summary><span>Why does the line break?</span><!-- icon:caret-down --></summary><div class="answer"><p>A missing value, or a gap longer than four calendar days, breaks the line. Short gaps such as weekends join the observed closes on either side, and no price is ever supplied in between.</p></div></details>
+        <details><summary><span>What do the ticks on the time axis mark?</span><!-- icon:caret-down --></summary><div class="answer"><p>Each tick is a war event on its date, colored by kind. Click a tick to open that event's page, with Brent and the related odds over the next few days.</p></div></details>
+        <details><summary><span>What do the odds mean?</span><!-- icon:caret-down --></summary><div class="answer"><p>Polymarket prices show what traders expect, not what has happened. Each question resolves on its own published rules, linked from the market.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-reveal aria-labelledby="cta-title">
+    <div class="container cta-band">
+      <h2 id="cta-title">See the events behind the ticks</h2>
+      <p>Every tick on the chart is an event with its own page and its own reports.</p>
+      <a class="button button-primary" href="/events/">Open the timeline <!-- icon:arrow-right --></a>
+    </div>
+  </section>
+</main>
+<!-- passage:footer -->
+<noscript><p class="empty-note">Passage needs JavaScript to show live data.</p></noscript>
+<script type="module" src="/pages/oil.mjs"></script>
+</body>
+</html>

@@ -30,7 +30,7 @@ The public API uses fixed read-only routes. CORS restricts browser access to the
 
    Failures identify **capability mismatch** or **core source health**. Coverage limits print as **coverage warnings**. Passing this gate is not proof that every source is healthy or coverage is complete. Deploy the compatible collector and verify its scheduled cycles before publishing Pages.
 
-4. Verify the actual public URL: the Hormuz map, transits, prices, odds, headlines and About the data. Confirm retrieved source times advance without redeploying Pages.
+4. Verify the actual public URL: each page in the navigation, with live figures on the overview, the Hormuz and regional maps, an event page, the oil chart and the source table on the method page. Confirm retrieved source times advance without redeploying Pages.
 
 Ordinary pushes run checks but do not deploy Pages. Worker deployment is also explicit. To roll back, deploy the last reviewed Worker version using Cloudflare's version controls and rerun the Pages workflow on the corresponding reviewed commit. Preserve the existing SQLite migration and data; a rollback is not a database deletion.
 

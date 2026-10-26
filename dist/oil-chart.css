@@ -1,47 +1,36 @@
-/* Exact daily EIA observations, with a keyboard/touch date control. */
-.oil-history-chart.chart-area,
-.command-center .oil-history-chart.chart-area,
-.view-energy .oil-panel .oil-history-chart.chart-area {
-  height: auto;
-  min-height: 280px;
-  padding: 8px 16px 16px;
-}
+/* Exact daily EIA observations, with a keyboard and touch date control. */
 .oil-history-figure { margin: 0; min-width: 0; }
-.oil-history-caption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11px; line-height: 1.5; color: var(--muted, #52616f); }
-.oil-history-caption > span:first-child { letter-spacing: .07em; }
+.oil-history-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: var(--muted, #52616f); font-size: 12px; line-height: 16px; }
+.oil-history-caption > span:first-child { letter-spacing: .04em; }
 .oil-history-plot { width: 100%; min-height: 280px; }
 .oil-history-plot svg { display: block; width: 100%; height: 280px; overflow: visible; }
-.oil-chart-axis { fill: var(--muted, #52616f); font: 11px 'IBM Plex Sans', sans-serif; }
+.oil-chart-axis { fill: var(--muted, #52616f); font-family: var(--font); font-size: 12px; font-variant-numeric: tabular-nums; }
 .oil-chart-grid { stroke: var(--border, #d6dce3); stroke-width: 1; stroke-dasharray: 2 5; }
 .oil-series-brent { --series-color: var(--accent, #1d4ed8); }
 .oil-series-wti { --series-color: #52616f; }
 .oil-chart-line { fill: none; stroke: var(--series-color); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .oil-chart-line.oil-series-wti { stroke-dasharray: 6 5; }
 .oil-chart-observation, .oil-chart-endpoint circle { fill: var(--series-color); }
-.oil-chart-endpoint text { fill: var(--series-color); font: 11px 'IBM Plex Sans', sans-serif; }
+.oil-chart-endpoint text { fill: var(--series-color); font-family: var(--font); font-size: 12px; font-variant-numeric: tabular-nums; }
 .oil-chart-endpoint text tspan:first-child { font-weight: 600; }
-.oil-chart-leader { stroke: var(--muted, #52616f); stroke-width: .75; stroke-opacity: .7; fill: none; }
+.oil-chart-leader { fill: none; stroke: var(--muted, #52616f); stroke-width: .75; stroke-opacity: .7; }
 .oil-chart-crosshair { stroke: var(--muted, #52616f); stroke-width: 1; stroke-opacity: .7; stroke-dasharray: 3 4; }
 .oil-chart-focus-dot { fill: var(--panel, #fff); stroke: var(--series-color); stroke-width: 2; }
-.oil-history-readout { border-block: 1px solid var(--border, #d6dce3); padding: 12px 0; min-height: 88px; }
-.oil-history-readout > time { display: block; font-size: 12px; line-height: 1.5; color: var(--muted, #52616f); font-variant-numeric: tabular-nums; }
-.oil-history-readout dl { display: flex; flex-wrap: wrap; gap: 12px 28px; margin: 8px 0 0; }
+.oil-history-readout { min-height: 88px; padding: 12px 0; }
+.oil-history-readout > time { display: block; color: var(--muted, #52616f); font-size: 12px; line-height: 16px; font-variant-numeric: tabular-nums; }
+.oil-history-readout dl { display: flex; flex-wrap: wrap; gap: 12px 24px; margin: 8px 0 0; }
 .oil-readout-series { min-width: 88px; }
-.oil-readout-series dt { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted, #52616f); }
+.oil-readout-series dt { display: flex; align-items: center; gap: 8px; color: var(--muted, #52616f); font-size: 12px; line-height: 16px; }
 .oil-readout-series dt i { display: inline-block; width: 16px; border-top: 2px solid var(--series-color); }
 .oil-readout-series.oil-series-wti dt i { border-top-style: dashed; }
-.oil-readout-series dd { margin: 3px 0 0; color: var(--series-color); font-size: 20px; line-height: 1.25; font-variant-numeric: tabular-nums; }
-.oil-no-value small { font-size: 11px; color: var(--muted, #52616f); }
+.oil-readout-series dd { margin: 4px 0 0; color: var(--series-color); font-size: 20px; line-height: 28px; font-variant-numeric: tabular-nums; }
+.oil-no-value small { color: var(--muted, #52616f); font-size: 12px; line-height: 16px; }
 .oil-history-scrubber { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; margin-top: 12px; }
 .oil-history-scrubber[hidden] { display: none; }
-.oil-history-scrubber label { font-size: 12px; color: var(--text, #17212b); }
-.oil-history-scrubber > span { font-size: 10px; color: var(--muted, #52616f); }
-.oil-history-scrubber input { grid-column: 1 / -1; width: 100%; height: 44px; margin: 0; accent-color: var(--accent, #1d4ed8); cursor: ew-resize; }
-.oil-history-scrubber input:focus-visible { outline: 2px solid var(--accent, #1d4ed8); outline-offset: 2px; }
-.oil-history-note { margin: 0; font-size: 11px; line-height: 1.6; color: var(--muted, #52616f); }
-.oil-history-empty { padding: 48px 0; max-width: 38ch; font-size: 13px; line-height: 1.7; color: var(--muted, #52616f); }
-@media (max-width: 420px) {
-  .oil-history-chart.chart-area, .command-center .oil-history-chart.chart-area { padding-inline: 12px; }
-  .oil-history-scrubber { grid-template-columns: 1fr; }
-  .oil-history-scrubber > span { font-size: 11px; }
-}
+.oil-history-scrubber label { color: var(--text, #17212b); font-size: 12px; line-height: 16px; }
+.oil-history-scrubber > span { color: var(--muted, #52616f); font-size: 12px; line-height: 16px; }
+.oil-history-scrubber input { grid-column: 1 / -1; width: 100%; height: 40px; margin: 0; accent-color: var(--accent, #1d4ed8); cursor: ew-resize; }
+.oil-history-scrubber input:focus-visible { outline: 2px solid var(--focus, #1d4ed8); outline-offset: 2px; }
+.oil-history-note { margin: 0; color: var(--muted, #52616f); font-size: 12px; line-height: 16px; }
+.oil-history-empty { max-width: 38ch; padding: 48px 0; color: var(--muted, #52616f); font-size: 14px; line-height: 20px; }
+@media (max-width: 420px) { .oil-history-scrubber { grid-template-columns: 1fr; } }

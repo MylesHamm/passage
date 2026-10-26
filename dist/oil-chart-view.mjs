@@ -4,8 +4,9 @@ const DAY = 86400000;
 export const OIL_GAP_DAYS = 4;
 export const OIL_GAP_POLICY = 'Explicit missing values and gaps longer than four calendar days break the line. Short omitted intervals, including ordinary weekends, may connect observed endpoints; no intermediate price is supplied.';
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const dateFormat = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-const shortDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+// Day before month, as everywhere else on the site.
+const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const shortDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 let chartSequence = 0;
 
@@ -221,7 +222,7 @@ export function createOilChart(mount, { onReadout, onMarker, height: chartHeight
       endpoints.forEach(s => { s.labelY -= overflow; });
     }
     const labels = endpoints.map(s => `<g class="oil-chart-endpoint oil-series-${s.id === 'wti' ? 'wti' : 'brent'}"><circle cx="${x(s.point.ms)}" cy="${y(s.point.value)}" r="3"/>${compact ? '' : `<path d="M${x(s.point.ms)},${y(s.point.value)} L${right + 5},${s.labelY}" class="oil-chart-leader"/><text x="${right + 10}" y="${s.labelY - 2}"><tspan>${esc(s.id === 'brent' ? 'Brent' : s.id === 'wti' ? 'WTI' : s.name)}</tspan><tspan x="${right + 10}" dy="16">${esc(dollars.format(s.point.value))}</tspan></text>`}</g>`).join('');
-    const dateRange = `${shortDate.format(model.begin)} – ${dateFormat.format(model.latest)}`;
+    const dateRange = `${shortDate.format(model.begin)} to ${dateFormat.format(model.latest)}`;
     const onAxis = date => { const ms = dateMillis(date); return ms !== null && ms >= model.begin && ms <= model.latest ? x(ms) : null; };
     const ticksMarkup = markers.length ? `<g data-chart-markers>${markers.map(m => {
       const cx = onAxis(m.date); if (cx === null) return '';
