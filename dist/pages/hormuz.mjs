@@ -4,7 +4,7 @@ import '../site/shell.mjs';
 import { $, load, every, stamp, fetchEvents, eventsStamp, eventHref, pageUrl } from '../site/data.mjs';
 import { mountHormuzMap } from '../site/hormuz-live.mjs';
 import { recentHormuzEvents } from '../ops/hero-map.mjs';
-import { vesselCounts, vesselFeedNote, gapState, ageLabel, clockLabel, dayLabel, transitRowMarkup, gapsCardMarkup, eventListMarkup, aisCreditMarkup, esc } from '../ops/panels.mjs';
+import { vesselCounts, vesselFeedNote, gapState, ageLabel, clockLabel, dayLabel, transitRowMarkup, gapsCardMarkup, eventListMarkup, aisCreditMarkup, trafficCounts, esc } from '../ops/panels.mjs';
 import { createReadAlong, stepRows } from '../site/stories.mjs';
 import { located } from '../ops/events.mjs';
 
@@ -12,17 +12,18 @@ const state = { vessels: null, vesselError: false, transits: null, events: null 
 let live = null;
 const KICKER = 'Strait of Hormuz · received AIS';
 
-function proofMarkup(counts, gaps) {
-  const s = gaps?.summary || {}, mode = gapState(gaps), darkReady = mode === 'counting';
+/** The header's figures: how many ships are heard, how many are stopped, and how many are moving through the strait. */
+function proofMarkup(counts) {
+  const t = trafficCounts(counts.current);
   const item = (label, value, note, tone = '') => `<li><span class="label">${label}</span><span class="value"${tone ? ` data-tone="${tone}"` : ''}>${value}</span><span class="note">${note}</span></li>`;
-  return item('Tankers', String(counts.tankers), 'received now', 'tanker')
-    + item('Vessels', String(counts.total), counts.newestAgeMs === null ? 'none current' : `latest ${ageLabel(counts.newestAgeMs)}`)
-    + item('Dark now', darkReady ? String(s.darkNow ?? 0) : '—', { none: 'no gap record yet', learning: 'learning coverage', paused: 'paused, reception thin', counting: 'silent 3 h or more' }[mode]);
+  return item('Vessels', String(counts.total), counts.newestAgeMs === null ? 'none current' : `${counts.tankers} tankers · latest ${ageLabel(counts.newestAgeMs)}`)
+    + item('Stopped', String(t.stopped), 'under 1 knot')
+    + item('Moving in the strait', String(t.straitMoving), t.straitMoving ? `${t.straitTankers ? `${t.straitTankers} ${t.straitTankers === 1 ? 'tanker' : 'tankers'}` : 'no tankers'} · 2 knots or more` : '2 knots or more', t.straitMoving ? '' : 'low');
 }
 
 function renderVessels() {
   const counts = vesselCounts(state.vessels?.vessels), newest = counts.newestAgeMs, gaps = state.vessels?.gaps || null;
-  if (state.vessels) $('#hero-counts').innerHTML = proofMarkup(counts, gaps);
+  if (state.vessels) $('#hero-counts').innerHTML = proofMarkup(counts);
   else if (state.vesselError) $('#hero-counts').innerHTML = '<li><span class="error-note">The vessel feed is unavailable. Retrying every 10 seconds.</span></li>';
   stamp($('#ais-stamp'), state.vesselError && !state.vessels ? 'AIS unavailable' : newest === null ? 'AIS · no positions arriving' : `AIS · latest ${ageLabel(newest)}`, state.vesselError ? 'down' : newest !== null && newest > 600000 ? 'stale' : 'live');
   // Relayed positions carry their credit on the map.

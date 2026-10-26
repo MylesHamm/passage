@@ -24,9 +24,9 @@
       <div class="hero-aside">
         <div class="hero-actions" data-motion="up" style="--i:3"><button type="button" class="button button-primary" id="replay-hero">Replay the last hour <!-- icon:arrow-counter-clockwise --></button></div>
         <ul class="proof" aria-label="Latest figures" id="hero-counts" role="status" data-motion="up" style="--i:4">
-          <li><span class="label">Tankers</span><span class="value" data-tone="tanker"><span class="skeleton">00</span></span><span class="note">received now</span></li>
-          <li><span class="label">Vessels</span><span class="value"><span class="skeleton">00</span></span><span class="note">received now</span></li>
-          <li><span class="label">Dark now</span><span class="value"><span class="skeleton">00</span></span><span class="note">AIS gaps over 3 h</span></li>
+          <li><span class="label">Vessels</span><span class="value"><span class="skeleton">000</span></span><span class="note">received now</span></li>
+          <li><span class="label">Stopped</span><span class="value"><span class="skeleton">000</span></span><span class="note">under 1 knot</span></li>
+          <li><span class="label">Moving in the strait</span><span class="value"><span class="skeleton">00</span></span><span class="note">2 knots or more</span></li>
         </ul>
       </div>
     </div>
@@ -103,14 +103,14 @@
   </section>
 
   <section class="section" aria-label="What the map shows">
-    <p class="tagline" data-tagline>An empty map is not an empty strait. It shows what the receivers can hear.</p>
+    <p class="tagline" data-tagline>A crowded anchorage is not open water. What matters is how many ships pass through.</p>
   </section>
 
   <section class="section" data-reveal aria-labelledby="faq-title">
     <div class="container">
       <div class="section-head"><h2 id="faq-title">Reading this map</h2></div>
       <div class="faq" data-faq>
-        <details><summary><span>Why is the strait nearly empty on the map?</span><!-- icon:caret-down --></summary><div class="answer"><p>The free receivers behind both feeds sit on the coast, so they hear the anchorages well and parts of the shipping lanes barely at all. A feed can also stop sending for the whole region, as AISStream did in October 2026, and tankers switch AIS off near attacks. An empty map does not mean an empty strait.</p></div></details>
+        <details><summary><span>Why are so many ships stopped, and so few in the strait?</span><!-- icon:caret-down --></summary><div class="answer"><p>Most of the ships the feeds hear are stopped at anchorages off the UAE coast, while very few move through the shipping lanes between Musandam and the Iranian islands. The figures above count both live, and the daily transits below show how many actually crossed. Ships with AIS switched off, which tankers often do near attacks, are not on the map at all.</p></div></details>
         <details><summary><span>What do the ship models show?</span><!-- icon:caret-down --></summary><div class="answer"><p>Tankers are drawn as detailed models, enlarged far beyond true scale so they can be seen, and turned to their reported heading. A vessel without a reported heading is shown as a ring, never with a guessed direction.</p></div></details>
         <details><summary><span>How old can a position be?</span><!-- icon:caret-down --></summary><div class="answer"><p>The map refreshes every 10 seconds. Positions relayed by Open Waters arrive about a minute after they were sent. A position older than 10 minutes fades, and one older than 30 minutes is dropped from the map.</p></div></details>
         <details><summary><span>Where do the positions come from?</span><!-- icon:caret-down --></summary><div class="answer"><p>From AISStream, and from AISHub contributors relayed by Open Waters AIS. Each ship's card names its feed, and the credit on the map links to both. When both feeds report a ship, the newer report wins.</p></div></details>

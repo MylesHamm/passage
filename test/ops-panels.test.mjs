@@ -260,3 +260,13 @@ test('a relayed position names who heard it, and the map credits AISHub and Open
   assert.match(vesselFeedNote({ source: feed('AISStream', { connection: 'connecting' }), relays: [feed('Open Waters AIS')] }, { total: 0 }, now), /Open Waters AIS is sending no positions/);
   assert.match(vesselFeedNote({ source: feed('AISStream'), relays: [feed('Open Waters AIS', { lastPositionReceivedAt: new Date(now - 60_000).toISOString() })] }, { total: 0 }, now), /No current positions/);
 });
+
+test('traffic counts separate a crowded anchorage from ships moving through the strait', async () => {
+  const { trafficCounts, STRAIT_BOX, heroCountsMarkup } = await import('../dist/ops/panels.mjs');
+  const ship = (lon, lat, speedKnots, shipTypeCode = 70) => ({ longitude: lon, latitude: lat, speedKnots, shipTypeCode });
+  const list = [ship(55.2, 25.3, 0.1, 80), ship(55.3, 25.4, 0), ship(56.4, 26.4, 11, 84), ship(56.5, 26.5, 6), ship(56.5, 26.5, 1.5), ship(54.0, 25.0, 12), ship(56.6, 26.3, null)];
+  assert.deepEqual(trafficCounts(list), { total: 7, stopped: 2, moving: 3, movingTankers: 1, straitMoving: 2, straitTankers: 1 });
+  assert.deepEqual(trafficCounts([]), { total: 0, stopped: 0, moving: 0, movingTankers: 0, straitMoving: 0, straitTankers: 0 });
+  assert.equal(STRAIT_BOX.length, 4);
+  assert.match(heroCountsMarkup({ total: 7, tankers: 2, current: list }), /<strong>2<\/strong> moving in the strait/);
+});
