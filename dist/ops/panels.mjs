@@ -48,14 +48,30 @@ export function heroCountsMarkup(counts, { connected = true, events = 0, days = 
  */
 export function vesselFeedNote(payload, counts, now = Date.now()) {
   if (counts?.total) return null;
-  const source = payload?.source;
   if (!payload) return 'Vessel feed unavailable · retrying';
-  if (!source?.configured) return 'The vessel feed is not configured';
-  if (source.connection !== 'connected') return 'Reconnecting to the vessel feed';
-  const connected = time(source.connectedAt), last = time(source.lastPositionReceivedAt);
-  if (last !== null && now - last < 30 * 60_000) return 'No current positions received';
-  if (connected !== null && now - connected < 5 * 60_000) return 'Connected · waiting for the first positions';
-  return 'Feed connected · AISStream is sending no positions for this region';
+  const feeds = [payload.source, ...(Array.isArray(payload.relays) ? payload.relays : [])].filter(feed => feed?.configured);
+  if (!feeds.length) return 'The vessel feed is not configured';
+  const connected = feeds.filter(feed => feed.connection === 'connected');
+  if (!connected.length) return feeds.length > 1 ? 'Reconnecting to the vessel feeds' : 'Reconnecting to the vessel feed';
+  if (feeds.some(feed => { const last = time(feed.lastPositionReceivedAt); return last !== null && now - last < 30 * 60_000; })) return 'No current positions received';
+  if (connected.every(feed => { const at = time(feed.connectedAt); return at !== null && now - at < 5 * 60_000; })) return 'Connected · waiting for the first positions';
+  return connected.length > 1 ? 'Feeds connected · neither AISStream nor Open Waters is sending positions for this region' : `Feed connected · ${connected[0].name || 'the feed'} is sending no positions for this region`;
+}
+
+// Who heard a relayed position, named the way the relay credits it.
+const RELAY_NAMES = { aishub: 'AISHub contributors', aisstream: 'AISStream' };
+const relayName = source => RELAY_NAMES[source] || (/^(udp|station):/.test(source || '') ? 'a volunteer receiver' : 'its network');
+/** The feed a position came from, as a reader would say it. */
+export const positionSource = vessel => vessel?.provider === 'Open Waters AIS' ? `${relayName(vessel.relaySource)} via Open Waters AIS` : 'AISStream';
+/**
+ * The credit line for the map, shown whenever a relayed position is on it.
+ * AISHub asks for "Data: AISHub contributors" with a link; Open Waters asks for its own name and link.
+ */
+export function aisCreditMarkup(vessels = []) {
+  const relayed = (Array.isArray(vessels) ? vessels : []).filter(v => v?.provider === 'Open Waters AIS');
+  if (!relayed.length) return '';
+  const aishub = relayed.some(v => v.relaySource === 'aishub'), own = relayed.length < vessels.length;
+  return `Positions via <a href="https://openwaters.io/ais/" target="_blank" rel="noopener noreferrer">Open Waters AIS</a>${aishub ? ' · Data: <a href="https://www.aishub.net" target="_blank" rel="noopener noreferrer">AISHub contributors</a>' : ''}${own ? ' · AISStream' : ''}`;
 }
 
 export function vesselCardMarkup(vessel, now = Date.now()) {
@@ -67,6 +83,7 @@ export function vesselCardMarkup(vessel, now = Date.now()) {
     ['Heading', heading],
     ['Position', `${Math.abs(vessel.latitude).toFixed(3)}° ${vessel.latitude >= 0 ? 'N' : 'S'}, ${Math.abs(vessel.longitude).toFixed(3)}° ${vessel.longitude >= 0 ? 'E' : 'W'}`],
     ['Received', `${clockLabel(vessel.positionTime)} · ${ageLabel(age)}`],
+    ['Source', positionSource(vessel)],
     ['MMSI', vessel.mmsi],
   ];
   return `<button type="button" class="vc-close" data-close-vessel aria-label="Close vessel details">${icon('x')}</button>
@@ -186,7 +203,7 @@ export function statusSummary(sources = []) {
 }
 
 export const ABOUT_NOTES = [
-  ['Vessels', 'Positions come from AISStream, a free feed relayed by coastal receivers. It covers part of Hormuz and none of Bab el-Mandeb. Tankers often switch AIS off near attacks, so an empty map does not mean an empty strait. Positions older than 10 minutes fade, and are dropped after 30.'],
+  ['Vessels', 'Positions come from two free feeds of coastal receivers: AISStream, and AISHub contributors relayed by Open Waters AIS about a minute behind. Each ship\'s card names the feed its position came from, and the newest report of a ship wins. Together they cover part of Hormuz and almost none of Bab el-Mandeb. Tankers often switch AIS off near attacks, so an empty map does not mean an empty strait. Positions older than 10 minutes fade, and are dropped after 30.'],
   ['Ship models', 'Tankers are drawn as detailed models enlarged far beyond true scale so they can be seen, turned to their reported heading. A vessel without a reported heading is shown as a ring, never with a guessed direction.'],
   ['AIS gaps', 'A gap is a ship that stops reporting for three hours or more while moving deep inside reliable reception, learned from where at least two different ships are heard nearly every hour. A ship leaving range fades out at the edge of coverage and is not counted; counting pauses whenever the feed itself delivers much less than usual. The record starts when the collector does, so the first day is spent learning coverage. A gap is evidence that AIS was switched off, not proof.'],
   ['Tracks and replay', 'Trails and the replay show positions actually received over the last hour, joined in the order received. Nothing is extrapolated between reports.'],
@@ -209,7 +226,7 @@ export function aboutMarkup(sources = []) {
   const rows = sourceRowsMarkup(sources);
   return `<h3>Sources</h3><table class="source-table"><thead><tr><th>Source</th><th>Status</th><th>Latest</th></tr></thead><tbody>${rows || '<tr><td colspan="3">Checking…</td></tr>'}</tbody></table>
     <h3>How to read this</h3><ul>${ABOUT_NOTES.map(([k, v]) => `<li><strong>${esc(k)}.</strong> ${esc(v)}</li>`).join('')}</ul>
-    <h3>Credits</h3><p>Sources: UN Global Platform; IMF PortWatch (portwatch.imf.org). Oil prices: U.S. Energy Information Administration. Vessel positions: AISStream. Market odds: Polymarket. War events: curated from linked reporting and the IMO Middle East highlighted incidents register. Terrain: Mapzen Terrain Tiles (USGS SRTM, GMTED2010; NOAA ETOPO1). Ship model drawn with the Anatomy kit (MIT).</p>`;
+    <h3>Credits</h3><p>Sources: UN Global Platform; IMF PortWatch (portwatch.imf.org). Oil prices: U.S. Energy Information Administration. Vessel positions: AISStream, and AISHub contributors via Open Waters AIS. Market odds: Polymarket. War events: curated from linked reporting and the IMO Middle East highlighted incidents register. Terrain: Mapzen Terrain Tiles (USGS SRTM, GMTED2010; NOAA ETOPO1). Ship model drawn with the Anatomy kit (MIT).</p>`;
 }
 
 const LAYER_NAMES = { shipping: 'Attack on shipping', 'missile-drone': 'Missile & drone strike', 'strikes-on-iran-yemen': 'Strike on Iran or Yemen' };

@@ -39,3 +39,17 @@ A last-message clock cannot replace an AISStream position or enrich its type.
 AISStream now requires coordinates in the actual position payload, preserves
 providerReportAt separately from receivedAt, and rejects metadata-only geometry.
 Provider report time is not represented as verified GNSS observation time.
+
+## Update, 26 October 2026: the event stream
+
+Passage now reads Open Waters from its native event stream
+(`wss://ais.openwaters.io/v1/stream`, `lib/openwaters.mjs`), not from
+`/v1/vessels`. Each stream event is one decoded AIS message with its own
+receive time, `source`, `license` and `attribution`. Only the decoded `message`
+reaches the shared `VesselStore`, through the same validation as AISStream:
+coordinates from the position payload only, provider time, the 30 minute
+expiry, out of order rejection and the 60 knot track rule. The event's own
+`lat`/`lon` fields are never used. The subscription asks for `snapshot: true`,
+which replays each tracked ship's last messages first; each is still a dated
+message and is checked the same way, so an old one is rejected rather than
+shown as current. The snapshot endpoint remains excluded for the reason above.

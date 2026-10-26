@@ -23,6 +23,7 @@ Locally bundled [Mapzen Terrain Tiles](https://registry.opendata.aws/terrain-til
 Each panel names its source, and the method page lists every source with its status and latest date.
 
 - **Vessel positions:** [AISStream](https://aisstream.io/), received through a server-side connection. Coverage depends on its receiver network.
+- **Relayed vessel positions:** [Open Waters AIS](https://openwaters.io/ais/) streams positions from [AISHub](https://www.aishub.net) contributors and volunteer receivers, received through a server-side connection. Each position keeps the source Open Waters names on it. Data: AISHub contributors. AISHub data is used under AISHub's terms; the Open Waters operator confirmed it holds AISHub's permission to redistribute. The map shows the credit whenever a relayed position is on it.
 - **Daily chokepoint transits:** Sources: UN Global Platform; IMF PortWatch ([portwatch.imf.org](https://portwatch.imf.org)). Data are used under the [IMF terms](https://www.imf.org/en/about/copyright-and-terms) with attribution and are not modified.
 - **Oil prices:** U.S. Energy Information Administration daily spot prices and [Today in Energy](https://www.eia.gov/todayinenergy/prices.php) closes. EIA data are public domain; EIA notes that its spot prices are republished from Refinitiv.
 - **Market odds:** public [Polymarket](https://polymarket.com/) market prices, linked to each market. They express market expectations, not confirmation of events.

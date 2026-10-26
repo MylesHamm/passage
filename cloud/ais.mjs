@@ -1,4 +1,5 @@
-import {VesselStore, AIS_AREAS, STALE_MS, EXPIRE_MS, STATIC_EXPIRE_MS, TRACK_WINDOW_MS} from '../lib/vessel-store.mjs';
+import {VesselStore, AIS_AREAS, STALE_MS, EXPIRE_MS, STATIC_EXPIRE_MS, TRACK_WINDOW_MS, AISSTREAM_ORIGIN} from '../lib/vessel-store.mjs';
+import {OPENWATERS_PROVIDER} from '../lib/openwaters.mjs';
 import {GapTracker} from '../lib/ais-gaps.mjs';
 
 const POSITION_TYPES = ['PositionReport','StandardClassBPositionReport','ExtendedClassBPositionReport'];
@@ -17,6 +18,8 @@ export class WorkerAisFeed {
     this.lastClientAt=null;this.openedAt=null;this.connectedAt=null;this.lastFrameAt=null;this.lastMessageAt=null;this.lastPositionAt=null;
     this.retryAt=null;this.attempt=0;this.error=null;this.closed=false;this.context={};this.compression=null;
     this.counts={connections:0,reconnects:0,frames:0,decoded:0,positionFrames:0,positionsAccepted:0,staticMessages:0,rejected:0};
+    // Other feeds that write into the same store (Open Waters); they are supervised on this feed's clock.
+    this.relays=[];
   }
   active() { return !!this.apiKey && !this.closed; }
   event(outcome) { try{this.onEvent({outcome,count:this.counts.connections},this.context);}catch{} }
@@ -68,6 +71,7 @@ export class WorkerAisFeed {
   }
   tick() {
     this.store.snapshot(this.now());
+    for(const relay of this.relays)relay.tick();
     if(!this.active()){this.disconnect();return;}
     if(this.socket) {
       const age=this.now()-this.openedAt;
@@ -76,11 +80,11 @@ export class WorkerAisFeed {
       else if(this.now()-(this.lastFrameAt??this.openedAt)>=SILENCE){this.error='No AIS frames received recently; transport will retry. This does not establish an empty waterway.';this.failed();}
     }else this.connect();
   }
-  nextTick() { return this.apiKey && this.active() ? this.now()+15_000 : null; }
+  nextTick() { return this.apiKey && this.active() || this.relays.some(relay=>relay.active()) ? this.now()+15_000 : null; }
   snapshot({touch=true,context}={}) {
     if(touch){this.lastClientAt=this.now();if(context)this.context=context;this.connect();this.requestTick();}
     this.tick();const now=this.now(),vessels=this.store.snapshot(now),newest=vessels[0];
-    return {configured:!!this.apiKey,generatedAt:stamp(now),vessels,areas:AIS_AREAS,staleAfterSeconds:STALE_MS/1000,expiresAfterSeconds:EXPIRE_MS/1000,gaps:this.store.gaps.status(now),
+    return {configured:!!this.apiKey,generatedAt:stamp(now),vessels,areas:AIS_AREAS,staleAfterSeconds:STALE_MS/1000,expiresAfterSeconds:EXPIRE_MS/1000,gaps:this.store.gaps.status(now),relays:this.relays.map(relay=>relay.status(vessels)),
       source:{id:'aisstream',name:'AISStream',home:'https://aisstream.io/',configured:!!this.apiKey,connection:this.connection,recordCount:vessels.length,
         frames:this.counts.frames,positionFrames:this.counts.positionFrames,positionsAccepted:this.counts.positionsAccepted,
         retrievedAt:stamp(this.lastPositionAt),latest:newest?.positionTime||null,latestProviderPositionAt:vessels.map(v=>v.sourceAt).filter(Boolean).sort().at(-1)||null,
@@ -106,9 +110,12 @@ export class WorkerAisFeed {
       if(v.timestampBasis==='provider'&&(v.sourceAt!==v.positionTime||v.providerReportAt!==v.sourceAt))continue;
       if(v.timestampBasis==='received'&&(v.sourceAt!==null||v.providerReportAt!==null||v.positionTime!==v.receivedAt))continue;
       const envelope={MessageType:'PositionReport',MetaData:{MMSI:v.mmsi,ShipName:v.name,time_utc:v.providerReportAt},Message:{PositionReport:{Latitude:v.latitude,Longitude:v.longitude,Sog:v.speedKnots,Cog:v.courseDegrees,TrueHeading:v.headingDegrees}}};
+      // A relayed position keeps its relay and credit; anything else was AISStream's own report.
+      const clean=(value,max)=>typeof value==='string'?value.replace(/[\x00-\x1f]/g,'').slice(0,max):null;
+      const origin=v.provider===OPENWATERS_PROVIDER?{provider:OPENWATERS_PROVIDER,relaySource:clean(v.relaySource,80),license:clean(v.license,80),attribution:clean(v.attribution,240)}:AISSTREAM_ORIGIN;
       // Revalidate at the original receipt clock. A restart is neither a fresh
       // receipt nor a provider report, especially for receipt-only records.
-      if(this.store.ingest(envelope,Date.parse(v.receivedAt))){
+      if(this.store.ingest(envelope,Date.parse(v.receivedAt),origin)){
         restoredPositions++;
         if(v.timestampBasis==='received')this.store.vessels.get(v.mmsi).timestampNote='Provider time unavailable in retained position; age uses original receipt time.';
       }
@@ -119,6 +126,7 @@ export class WorkerAisFeed {
       if(validTime(info.nameAt,STATIC_EXPIRE_MS)&&typeof info.name==='string'){restored.name=info.name.replace(/[@\x00-\x1f]/g,'').trim().slice(0,80);restored.nameAt=info.nameAt;}
       if(validTime(info.shipTypeObservedAt,STATIC_EXPIRE_MS)&&(info.shipTypeCode===null||Number.isInteger(info.shipTypeCode)&&info.shipTypeCode>=0&&info.shipTypeCode<=99)&&['provider','received'].includes(info.shipTypeTimestampBasis)&&MESSAGE_TYPES.includes(info.shipTypeMessage)) {
         for(const key of ['shipTypeCode','shipTypeObservedAt','shipTypeTimestampBasis','shipTypeMessage'])restored[key]=info[key];
+        if([AISSTREAM_ORIGIN.provider,OPENWATERS_PROVIDER].includes(info.shipTypeProvider))restored.shipTypeProvider=info.shipTypeProvider;
       }
       if(restored.nameAt||restored.shipTypeObservedAt)this.store.static.set(id,restored);
     }
@@ -139,5 +147,5 @@ export class WorkerAisFeed {
     this.store.snapshot(now);
   }
   diagnostics() { return {counts:structuredClone(this.counts),...this.snapshot({touch:false}).source}; }
-  close() { this.closed=true;this.disconnect('disconnected'); }
+  close() { this.closed=true;this.disconnect('disconnected');for(const relay of this.relays)relay.close(); }
 }

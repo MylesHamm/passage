@@ -4,6 +4,7 @@ import {ReportArchive} from '../lib/report-archive.mjs';
 import {createDataService} from '../lib/data-service.mjs';
 import {SqliteFiles} from './sqlite-files.mjs';
 import {WorkerAisFeed} from './ais.mjs';
+import {OpenWatersFeed} from '../lib/openwaters.mjs';
 import {pooledFetch} from './fetch-pool.mjs';
 import {allowedRoute,json} from './policy.mjs';
 
@@ -23,7 +24,11 @@ export class Collector {
     this.runtime=new SourceRuntime({cacheDir:'/cache',now,fetchImpl:pooledFetch(fetchImpl),storage:this.files});
     this.archive=new ReportArchive({file:'/cache/reporting-history.json',now,storage:this.files,maxRecords:1200,retentionDays:30});
     this.ais=new WorkerAisFeed({apiKey:this.paused?null:env.AISSTREAM_API_KEY,Socket,now,onEvent:(fields,context)=>this.runtime.event('ais_state','aisstream',context,fields),schedule:()=>{this.state.waitUntil(this.schedule().catch(()=>{this.persistenceError='Collector alarm could not be saved; cron will attempt recovery.';}));}});
-    this.service=serviceFactory({runtime:this.runtime,reportArchive:this.archive,settings:{eiaApiKey:env.EIA_API_KEY,aisstream:!!env.AISSTREAM_API_KEY,hosted:true},ais:this.ais,version:this.version,collection:()=>this.status()});
+    // Open Waters relays AISHub and volunteer receivers into the same vessel store. It is opted in by the
+    // OPENWATERS deploy variable, so a collector built elsewhere (a test) never opens it by surprise.
+    const openwaters=!this.paused&&(env.OPENWATERS===true||env.OPENWATERS==='true');
+    this.ais.relays.push(new OpenWatersFeed({store:this.ais.store,Socket,now,enabled:openwaters,token:env.OPENWATERS_TOKEN}));
+    this.service=serviceFactory({runtime:this.runtime,reportArchive:this.archive,settings:{eiaApiKey:env.EIA_API_KEY,aisstream:!!env.AISSTREAM_API_KEY,openwaters,hosted:true},ais:this.ais,version:this.version,collection:()=>this.status()});
   }
   async initialize() {
     try {

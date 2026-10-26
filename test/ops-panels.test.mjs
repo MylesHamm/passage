@@ -220,7 +220,7 @@ test('the AIS gaps card says when it is learning or paused, and never shows sile
 test('an empty map says why: feed down, reconnecting, just connected, or connected with nothing arriving', async () => {
   const { vesselFeedNote } = await import('../dist/ops/panels.mjs');
   const now = Date.parse('2026-10-26T13:00:00Z'), ago = minutes => new Date(now - minutes * 60_000).toISOString();
-  const source = over => ({ source: { configured: true, connection: 'connected', connectedAt: ago(60), lastPositionReceivedAt: null, ...over } });
+  const source = over => ({ source: { name: 'AISStream', configured: true, connection: 'connected', connectedAt: ago(60), lastPositionReceivedAt: null, ...over } });
   assert.equal(vesselFeedNote(source(), { total: 3 }, now), null, 'ships on the map need no note');
   assert.match(vesselFeedNote(null, { total: 0 }, now), /unavailable/);
   assert.match(vesselFeedNote({ source: { configured: false } }, { total: 0 }, now), /not configured/);
@@ -239,4 +239,24 @@ test('gap counting is learning, paused or counting, and a quiet day pauses it', 
   assert.equal(gapState({ ready: true, learnedHours: 87, feedHealthy: true }), 'counting');
   assert.match(gapsCardMarkup({ ready: false, learnedHours: 87, feedHealthy: false, summary: {} }), /Paused: too few ships have been heard/);
   assert.doesNotMatch(gapsCardMarkup({ ready: false, learnedHours: 87, feedHealthy: false, summary: {} }), /of 24 hours/);
+});
+
+test('a relayed position names who heard it, and the map credits AISHub and Open Waters whenever one is shown', async () => {
+  const { positionSource, aisCreditMarkup, vesselFeedNote, vesselCardMarkup } = await import('../dist/ops/panels.mjs');
+  const { isCurrentVesselPosition } = await import('../dist/vessel-data.mjs');
+  const now = Date.parse('2026-10-26T15:00:00Z'), at = new Date(now - 60_000).toISOString();
+  const relayed = { mmsi: '576215000', name: 'TEST', latitude: 25.35, longitude: 54.46, positionTime: at, provider: 'Open Waters AIS', relaySource: 'aishub', positionEvidence: 'position-report', shipTypeCode: 84 };
+  assert.equal(positionSource(relayed), 'AISHub contributors via Open Waters AIS');
+  assert.equal(positionSource({ ...relayed, relaySource: 'udp:ab12' }), 'a volunteer receiver via Open Waters AIS');
+  assert.equal(positionSource({ provider: 'AISStream' }), 'AISStream');
+  assert.match(vesselCardMarkup(relayed, now), /<dt>Source<\/dt><dd>AISHub contributors via Open Waters AIS<\/dd>/);
+  assert.equal(isCurrentVesselPosition(relayed, now), true, 'a decoded relayed report is a current position');
+  assert.equal(isCurrentVesselPosition({ ...relayed, positionEvidence: 'snapshot' }, now), false, 'snapshot rows never are');
+  const credit = aisCreditMarkup([relayed, { provider: 'AISStream' }]);
+  assert.match(credit, /href="https:\/\/openwaters\.io\/ais\/"/); assert.match(credit, /Data: <a href="https:\/\/www\.aishub\.net"[^>]*>AISHub contributors<\/a>/); assert.match(credit, /AISStream$/);
+  assert.equal(aisCreditMarkup([{ provider: 'AISStream' }]), '', 'no credit line without a relayed position');
+  const feed = (name, over = {}) => ({ name, configured: true, connection: 'connected', connectedAt: new Date(now - 3_600_000).toISOString(), lastPositionReceivedAt: null, ...over });
+  assert.match(vesselFeedNote({ source: feed('AISStream'), relays: [feed('Open Waters AIS')] }, { total: 0 }, now), /neither AISStream nor Open Waters/);
+  assert.match(vesselFeedNote({ source: feed('AISStream', { connection: 'connecting' }), relays: [feed('Open Waters AIS')] }, { total: 0 }, now), /Open Waters AIS is sending no positions/);
+  assert.match(vesselFeedNote({ source: feed('AISStream'), relays: [feed('Open Waters AIS', { lastPositionReceivedAt: new Date(now - 60_000).toISOString() })] }, { total: 0 }, now), /No current positions/);
 });
