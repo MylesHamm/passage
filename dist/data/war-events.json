@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-27T12:28:08Z",
+  "reviewedAt": "2026-10-27T18:12:46Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4985,6 +4985,74 @@
           "publisher": "Business Recorder (Reuters)",
           "title": "Yemen's Houthis say they launched an attack on Saudi Ras Tanura oil refinery",
           "url": "https://www.brecorder.com/news/40446134/yemens-houthis-say-they-launched-an-attack-on-saudi-ras-tanura-oil-refinery",
+          "date": "2026-10-27"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-27-houthi-missiles-riyadh-intercepted",
+      "date": "2026-10-27",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Riyadh; the Houthis named the Saudi defence ministry headquarters",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Coalition says it intercepted two Houthi ballistic missiles fired at Riyadh",
+      "summary": "The coalition said two Houthi ballistic missiles fired at Riyadh on 27 Oct were destroyed; Civil Defense said debris damaged a building, a construction site and a vehicle. Houthi spokesman Yahya Saree claimed a hit on the defence ministry.",
+      "sources": [
+        {
+          "publisher": "Dawn (AFP)",
+          "title": "Saudi coalition says intercepted two Houthi ballistic missiles fired at Riyadh",
+          "url": "https://www.dawn.com/news/2040220",
+          "date": "2026-10-27"
+        },
+        {
+          "publisher": "Idaho State Journal (AP)",
+          "title": "Explosions heard over Riyadh as Saudi authorities say Houthi missiles downed, and other Mideast news",
+          "url": "https://www.idahostatejournal.com/news/national/explosions-heard-over-riyadh-as-saudi-authorities-say-houthi-missiles-downed-and-other-mideast-news/article_7646b36a-f8cb-5e09-b8b0-b3a2f478ef24.html",
+          "date": "2026-10-27"
+        },
+        {
+          "publisher": "Gulf News",
+          "title": "Middle East War: Saudi Arabia intercepts Houthi missiles, drones as Iran talks continue",
+          "url": "https://gulfnews.com/world/mena/middle-east-war-saudi-arabia-intercepts-houthi-missiles-drones-as-iran-talks-continue-1.500724842",
+          "date": "2026-10-27"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-27-iran-claims-tanker-hit-mines-east-of-hormuz",
+      "date": "2026-10-27",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (Navy, claimed)",
+      "target": "An unnamed oil tanker",
+      "place": "East of the Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran's navy claims an oil tanker caught fire after hitting mines east of Hormuz",
+      "summary": "Iran's navy claimed in a statement carried by IRNA on 27 Oct that a tanker that had switched off its tracking systems hit mines east of the Strait of Hormuz and caught fire. No casualties were reported; the ship was not named.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Iran says oil tanker catches fire after hitting naval mine east of Strait of Hormuz",
+          "url": "https://www.aa.com.tr/en/middle-east/iran-says-oil-tanker-catches-fire-after-hitting-naval-mine-east-of-strait-of-hormuz/4102560",
+          "date": "2026-10-27"
+        },
+        {
+          "publisher": "Idaho State Journal (AP)",
+          "title": "Explosions heard over Riyadh as Saudi authorities say Houthi missiles downed, and other Mideast news",
+          "url": "https://www.idahostatejournal.com/news/national/explosions-heard-over-riyadh-as-saudi-authorities-say-houthi-missiles-downed-and-other-mideast-news/article_7646b36a-f8cb-5e09-b8b0-b3a2f478ef24.html",
           "date": "2026-10-27"
         }
       ]
