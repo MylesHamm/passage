@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-27T00:10:58Z",
+  "reviewedAt": "2026-10-27T06:11:49Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4943,6 +4943,43 @@
           "title": "Houthi militia targets Riyadh airport, Saudi-led coalition strikes Sanaa missile launchers",
           "url": "https://www.trtworld.com/article/db871b9fe5d0",
           "date": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-27-houthi-missiles-eastern-province-drones-south-intercepted",
+      "date": "2026-10-27",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Eastern Region; four drones also fired towards the southern region",
+      "place": "Eastern Province",
+      "country": "Saudi Arabia",
+      "lat": 26.4207,
+      "lon": 50.0888,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Coalition says it intercepted three Houthi ballistic missiles fired at Eastern Region",
+      "summary": "Coalition spokesman Turki al-Malki said three Houthi ballistic missiles fired at the Eastern Region early on 27 Oct and four drones fired south were destroyed. Civil Defense warned the Eastern Region and Kharj. No casualties reported.",
+      "sources": [
+        {
+          "publisher": "Aaj English TV (Reuters)",
+          "title": "Saudi-led coalition intercepts Houthi missiles, drones",
+          "url": "https://english.aaj.tv/news/330478118/saudi-led-coalition-intercepts-houthi-missiles-drones",
+          "date": "2026-10-27"
+        },
+        {
+          "publisher": "Asharq Al-Awsat (SPA)",
+          "title": "Coalition Intercepts Ballistic Missiles Fired Towards Saudi Arabia's Eastern Region",
+          "url": "https://english.aawsat.com/gulf/5334050-coalition-intercepts-ballistic-missiles-fired-towards-saudi-arabias-eastern-region",
+          "date": "2026-10-27"
+        },
+        {
+          "publisher": "Kuwait Times (KUNA)",
+          "title": "Coalition intercepts 3 Houthi missiles toward Eastern Province, 4 drones",
+          "url": "https://kuwaittimes.com/article/52459/world/coalition-intercepts-3-houthi-missiles-toward-eastern-province-4-drones/",
+          "date": "2026-10-27"
         }
       ]
     }
