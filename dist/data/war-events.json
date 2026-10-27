@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-27T06:11:49Z",
+  "reviewedAt": "2026-10-27T12:28:08Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4953,7 +4953,7 @@
       "layer": "missile-drone",
       "type": "missile",
       "actor": "Houthis",
-      "target": "Eastern Region; four drones also fired towards the southern region",
+      "target": "Eastern Region; the Houthis named Ras Tanura refinery; four drones also fired towards the southern region",
       "place": "Eastern Province",
       "country": "Saudi Arabia",
       "lat": 26.4207,
@@ -4961,7 +4961,7 @@
       "precision": "area",
       "confidence": "confirmed",
       "title": "Coalition says it intercepted three Houthi ballistic missiles fired at Eastern Region",
-      "summary": "Coalition spokesman Turki al-Malki said three Houthi ballistic missiles fired at the Eastern Region early on 27 Oct and four drones fired south were destroyed. Civil Defense warned the Eastern Region and Kharj. No casualties reported.",
+      "summary": "Coalition spokesman Turki al-Malki said three Houthi ballistic missiles fired at the Eastern Region early on 27 Oct and four drones fired south were destroyed. Houthi spokesman Yahya Saree claimed a hit on Ras Tanura refinery; unconfirmed.",
       "sources": [
         {
           "publisher": "Aaj English TV (Reuters)",
@@ -4979,6 +4979,12 @@
           "publisher": "Kuwait Times (KUNA)",
           "title": "Coalition intercepts 3 Houthi missiles toward Eastern Province, 4 drones",
           "url": "https://kuwaittimes.com/article/52459/world/coalition-intercepts-3-houthi-missiles-toward-eastern-province-4-drones/",
+          "date": "2026-10-27"
+        },
+        {
+          "publisher": "Business Recorder (Reuters)",
+          "title": "Yemen's Houthis say they launched an attack on Saudi Ras Tanura oil refinery",
+          "url": "https://www.brecorder.com/news/40446134/yemens-houthis-say-they-launched-an-attack-on-saudi-ras-tanura-oil-refinery",
           "date": "2026-10-27"
         }
       ]
