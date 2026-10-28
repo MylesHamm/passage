@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-27T18:12:46Z",
+  "reviewedAt": "2026-10-28T00:10:02Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4943,6 +4943,37 @@
           "title": "Houthi militia targets Riyadh airport, Saudi-led coalition strikes Sanaa missile launchers",
           "url": "https://www.trtworld.com/article/db871b9fe5d0",
           "date": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-27-houthi-missile-taif-intercepted",
+      "date": "2026-10-27",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Taif",
+      "place": "Taif",
+      "country": "Saudi Arabia",
+      "lat": 21.2703,
+      "lon": 40.4158,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Coalition says it intercepted a Houthi ballistic missile fired towards Taif",
+      "summary": "The Saudi-led coalition said late on 27 Oct that air defences intercepted and destroyed a Houthi ballistic missile fired towards Taif. Civil Defense briefly issued alerts for Jeddah and Yanbu. No casualties or damage were reported.",
+      "sources": [
+        {
+          "publisher": "Iran International",
+          "title": "Saudi-led coalition intercepts Iran-backed Houthi ballistic missile toward Taif",
+          "url": "https://www.iranintl.com/en/liveblog/202610244311",
+          "date": "2026-10-27"
+        },
+        {
+          "publisher": "Devdiscourse (Reuters)",
+          "title": "Saudi-led coalition says it intercepted Houthi missile fired towards Taif",
+          "url": "https://www.devdiscourse.com/article/international/3998361-saudi-led-coalition-says-it-intercepted-houthi-missile-fired-towards-taif",
+          "date": "2026-10-28"
         }
       ]
     },
