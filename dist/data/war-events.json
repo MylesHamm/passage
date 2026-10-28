@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-28T00:10:02Z",
+  "reviewedAt": "2026-10-28T06:12:53Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4943,6 +4943,99 @@
           "title": "Houthi militia targets Riyadh airport, Saudi-led coalition strikes Sanaa missile launchers",
           "url": "https://www.trtworld.com/article/db871b9fe5d0",
           "date": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-27-houthi-claimed-drone-abha-airport",
+      "date": "2026-10-27",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis (claimed)",
+      "target": "Abha International Airport",
+      "place": "Abha International Airport",
+      "country": "Saudi Arabia",
+      "lat": 18.2404,
+      "lon": 42.6566,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthis claim a drone attack on Abha airport",
+      "summary": "Houthi spokesman Yahya Saree claimed on 27 Oct that the group aimed a drone at Abha airport. Saudi authorities did not comment on the claim, which was not independently confirmed.",
+      "sources": [
+        {
+          "publisher": "Türkiye Today",
+          "title": "Houthis say they fired missiles at Saudi defence ministry and Ras Tanura refinery",
+          "url": "https://www.turkiyetoday.com/region/houthis-say-they-fired-missiles-at-saudi-defence-ministry-and-ras-tanura-refinery-3231145",
+          "date": "2026-10-27"
+        },
+        {
+          "publisher": "Business Recorder (AFP)",
+          "title": "Houthis claim attacks on Saudi oil refinery, defence ministry",
+          "url": "https://www.brecorder.com/news/40446237/houthis-claim-attacks-on-saudi-oil-refinery-defence-ministry",
+          "date": "2026-10-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-27-houthi-claimed-missile-king-khalid-air-base",
+      "date": "2026-10-27",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed)",
+      "target": "A military transport aircraft at King Khalid Air Base",
+      "place": "King Khalid Air Base, Khamis Mushait",
+      "country": "Saudi Arabia",
+      "lat": 18.2969,
+      "lon": 42.8036,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthis claim a ballistic missile attack on an aircraft at King Khalid Air Base",
+      "summary": "The Houthis claimed on 27 Oct that they fired a ballistic missile at a military transport aircraft at King Khalid Air Base in Khamis Mushait. There was no Saudi confirmation of the claim.",
+      "sources": [
+        {
+          "publisher": "Türkiye Today",
+          "title": "Houthis say they fired missiles at Saudi defence ministry and Ras Tanura refinery",
+          "url": "https://www.turkiyetoday.com/region/houthis-say-they-fired-missiles-at-saudi-defence-ministry-and-ras-tanura-refinery-3231145",
+          "date": "2026-10-27"
+        },
+        {
+          "publisher": "Express Tribune (agencies)",
+          "title": "Houthis claim strike on strategic Saudi targets",
+          "url": "https://tribune.com.pk/story/2637301/houthis-claim-strike-on-strategic-saudi-targets",
+          "date": "2026-10-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-27-houthi-claimed-missile-najran-airport",
+      "date": "2026-10-27",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed)",
+      "target": "A military transport aircraft at Najran airport",
+      "place": "Najran airport",
+      "country": "Saudi Arabia",
+      "lat": 17.6114,
+      "lon": 44.4192,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthis claim a ballistic missile attack on a military aircraft at Najran airport",
+      "summary": "The Houthis claimed on 27 Oct that they fired a ballistic missile at a military transport aircraft at Najran airport. There was no Saudi confirmation of the claim.",
+      "sources": [
+        {
+          "publisher": "Türkiye Today",
+          "title": "Houthis say they fired missiles at Saudi defence ministry and Ras Tanura refinery",
+          "url": "https://www.turkiyetoday.com/region/houthis-say-they-fired-missiles-at-saudi-defence-ministry-and-ras-tanura-refinery-3231145",
+          "date": "2026-10-27"
+        },
+        {
+          "publisher": "Express Tribune (agencies)",
+          "title": "Houthis claim strike on strategic Saudi targets",
+          "url": "https://tribune.com.pk/story/2637301/houthis-claim-strike-on-strategic-saudi-targets",
+          "date": "2026-10-28"
         }
       ]
     },
