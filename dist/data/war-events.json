@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-28T12:13:47Z",
+  "reviewedAt": "2026-10-28T18:11:56Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -4727,6 +4727,37 @@
           "title": "Houthis attack Yemen's Aden, say Saudi strikes kill 16",
           "url": "https://www.koreatimes.co.kr/world/20261025/houthis-attack-yemens-aden-say-saudi-strikes-kill-16",
           "date": "2026-10-25"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-25-houthi-claimed-missiles-jazan-naval-base",
+      "date": "2026-10-25",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed)",
+      "target": "A Saudi naval base in Jazan",
+      "place": "Jazan",
+      "country": "Saudi Arabia",
+      "lat": 16.8892,
+      "lon": 42.5511,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis claim ballistic missile attack on a Saudi naval base in Jazan",
+      "summary": "Houthi spokesman Yahya Saree claimed on 25 Oct that the group targeted a naval base in Jazan, one of three operations with dozens of ballistic missiles that he said also targeted Riyadh airport and King Khalid air base.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (AFP)",
+          "title": "Houthis say they targeted Riyadh airport, Saudi naval base, airbase",
+          "url": "https://www.timesofisrael.com/liveblog_entry/houthis-say-they-targeted-riyadh-airport-saudi-naval-base-airbase/",
+          "date": "2026-10-25"
+        },
+        {
+          "publisher": "News.az",
+          "title": "Houthis claim missile strike on Riyadh airport",
+          "url": "https://news.az/news/houthis-claim-missile-strike-on-riyadh-airport",
+          "date": "2026-10-26"
         }
       ]
     },
