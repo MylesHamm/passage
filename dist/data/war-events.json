@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-29T00:11:38Z",
+  "reviewedAt": "2026-10-29T06:10:08Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5271,6 +5271,43 @@
           "title": "Houthis say Saudi-led airstrikes killed 14 at a market in northern Yemen, and other Mideast news",
           "url": "https://www.dailyrecordnews.com/ap_news/us/houthis-say-saudi-led-airstrikes-killed-13-at-a-market-in-northern-yemen-and-other/article_1c1947f3-4f0a-538a-85d3-2a16ec32783b.html",
           "date": "2026-10-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-29-houthi-missile-eastern-province-intercepted",
+      "date": "2026-10-29",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Eastern Province",
+      "place": "Eastern Province",
+      "country": "Saudi Arabia",
+      "lat": 26.4207,
+      "lon": 50.0888,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Coalition says it intercepted Houthi ballistic missile fired toward Eastern Province",
+      "summary": "Coalition spokesman Turki al-Malki said early on 29 Oct that air defences intercepted and destroyed a Houthi ballistic missile launched toward the Eastern Province, AFP reported. No casualties or damage were reported.",
+      "sources": [
+        {
+          "publisher": "Kuwait Times (AFP)",
+          "title": "Coalition intercepts Houthi missile fired toward Saudi Eastern Province",
+          "url": "https://kuwaittimes.com/article/52609/world/coalition-intercepts-houthi-missile-fired-toward-saudi-eastern-province/",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "The Business Standard (AFP)",
+          "title": "Saudi coalition says intercepted Houthi missile fired toward Eastern Province",
+          "url": "https://www.tbsnews.net/world/saudi-coalition-says-intercepted-houthi-missile-fired-toward-eastern-province-1586426",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "The Chronicle (Philippines)",
+          "title": "Saudi-led coalition intercepts Houthi missile targeting eastern Saudi Arabia",
+          "url": "https://thechronicle.com.ph/saudi-led-coalition-intercepts-houthi-missile-targeting-eastern-saudi-arabia/",
+          "date": "2026-10-29"
         }
       ]
     }
