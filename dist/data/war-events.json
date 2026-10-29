@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-29T06:10:08Z",
+  "reviewedAt": "2026-10-29T12:29:00Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5071,6 +5071,37 @@
       ]
     },
     {
+      "id": "2026-10-27-houthi-claimed-missile-ras-tanura-refinery",
+      "date": "2026-10-27",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed)",
+      "target": "Ras Tanura refinery",
+      "place": "Ras Tanura",
+      "country": "Saudi Arabia",
+      "lat": 26.6333,
+      "lon": 50.1667,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis claim ballistic missile strike on Ras Tanura refinery",
+      "summary": "Houthi spokesman Yahya Saree claimed on 27 Oct that a ballistic missile hit the Ras Tanura refinery in the Eastern Province and caused large fires. Saudi authorities did not comment on the claim; the coalition said it intercepted missiles.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Yemen's Houthis claim missile attack on Saudi Arabia's Ras Tanura oil refinery",
+          "url": "https://www.aa.com.tr/en/middle-east/yemen-s-houthis-claim-missile-attack-on-saudi-arabia-s-ras-tanura-oil-refinery/4102578",
+          "date": "2026-10-27"
+        },
+        {
+          "publisher": "Dawn (AFP)",
+          "title": "Houthis claim strikes on Saudi refinery, ministry",
+          "url": "https://www.dawn.com/news/2040379/houthis-claim-strikes-on-saudi-refinery-ministry",
+          "date": "2026-10-28"
+        }
+      ]
+    },
+    {
       "id": "2026-10-27-houthi-missile-taif-intercepted",
       "date": "2026-10-27",
       "time": null,
@@ -5307,6 +5338,49 @@
           "publisher": "The Chronicle (Philippines)",
           "title": "Saudi-led coalition intercepts Houthi missile targeting eastern Saudi Arabia",
           "url": "https://thechronicle.com.ph/saudi-led-coalition-intercepts-houthi-missile-targeting-eastern-saudi-arabia/",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-29-tanker-on-fire-north-of-khasab",
+      "date": "2026-10-29",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Tanker (not named)",
+      "place": "Strait of Hormuz, about 9 nm north of Khasab",
+      "country": "Oman",
+      "lat": 26.3332,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Tanker reported on fire about 9 nm north of Khasab in Strait of Hormuz",
+      "summary": "UKMTO said a passing ship reported a tanker on fire about 9 nm north of Khasab on 29 Oct; cause and crew status unknown. Vanguard Tech claimed a projectile hit it. The IRGC separately claimed three tankers hit mines south of the strait.",
+      "sources": [
+        {
+          "publisher": "The Maritime Executive",
+          "title": "UKMTO Reports Burning Tanker Off Musandam Peninsula",
+          "url": "https://maritime-executive.com/article/ukmto-reports-burning-tanker-off-musandam-peninsula",
+          "date": "2026-10-28"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Fire reported on vessel in Strait of Hormuz: UKMTO",
+          "url": "https://www.aa.com.tr/en/middle-east/fire-reported-on-vessel-in-strait-of-hormuz-ukmto/4104568",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "Manila Times (AFP)",
+          "title": "Ship on fire in Strait of Hormuz — maritime agency",
+          "url": "https://www.manilatimes.net/2026/10/29/world/ship-on-fire-in-strait-of-hormuz-maritime-agency/2456933",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "Arab News (Reuters, AFP)",
+          "title": "Iran's Revolutionary Guards say three oil tankers hit mines in Strait of Hormuz",
+          "url": "https://www.arabnews.com/middle-east/irans-revolutionary-guards-say-three-oil-tankers-hit-mines-in-strait-of-hormuz-3008795",
           "date": "2026-10-29"
         }
       ]
