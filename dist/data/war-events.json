@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-29T12:29:00Z",
+  "reviewedAt": "2026-10-29T18:15:31Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5343,21 +5343,71 @@
       ]
     },
     {
+      "id": "2026-10-29-houthi-missiles-riyadh-intercepted",
+      "date": "2026-10-29",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Riyadh",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Coalition says it intercepted two Houthi ballistic missiles fired at Riyadh",
+      "summary": "The Saudi-led coalition said on the evening of 29 Oct that two Houthi ballistic missiles fired toward Riyadh were intercepted and destroyed. Civil Defense issued warnings for Riyadh, Najran and Al-Kharj, lifted about 20 minutes later.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Saudi air defenses shoot down Houthi missiles targeting Riyadh",
+          "url": "https://www.arabnews.com/saudi-arabia/saudi-air-defenses-shoot-down-houthi-missiles-targeting-riyadh-3008889",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-29-iran-claims-tankers-hit-mines-hormuz",
+      "date": "2026-10-29",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC and army, claimed)",
+      "target": "Four unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran claims four tankers caught fire after hitting mines in the Strait of Hormuz",
+      "summary": "The IRGC claimed on 29 Oct that three tankers hit mines on the strait's southern route over 24 hours; Iran's army later claimed a fourth east of the strait. Ships, flags and timing were not given; the claims were not verified.",
+      "sources": [
+        {
+          "publisher": "Arab News (AFP)",
+          "title": "Iran claims four tankers hit mines in Hormuz as dhow crew rescued",
+          "url": "https://www.arabnews.com/middle-east/iran-claims-four-tankers-hit-mines-in-hormuz-as-dhow-crew-rescued-3008795",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
       "id": "2026-10-29-tanker-on-fire-north-of-khasab",
       "date": "2026-10-29",
       "time": null,
       "layer": "shipping",
       "type": "shipping-attack",
       "actor": "Unattributed",
-      "target": "Tanker (not named)",
+      "target": "A dhow, first reported as a tanker",
       "place": "Strait of Hormuz, about 9 nm north of Khasab",
       "country": "Oman",
       "lat": 26.3332,
       "lon": 56.25,
       "precision": "sea-area",
       "confidence": "claimed",
-      "title": "Tanker reported on fire about 9 nm north of Khasab in Strait of Hormuz",
-      "summary": "UKMTO said a passing ship reported a tanker on fire about 9 nm north of Khasab on 29 Oct; cause and crew status unknown. Vanguard Tech claimed a projectile hit it. The IRGC separately claimed three tankers hit mines south of the strait.",
+      "title": "Dhow catches fire and sinks about 9 nm north of Khasab in Strait of Hormuz",
+      "summary": "UKMTO said a tanker was on fire about 9 nm north of Khasab on 29 Oct, then that it was a dhow that burned in a security incident and sank; crew evacuated. Cause not given; Vanguard Tech claimed a projectile hit it.",
       "sources": [
         {
           "publisher": "The Maritime Executive",
@@ -5378,9 +5428,9 @@
           "date": "2026-10-29"
         },
         {
-          "publisher": "Arab News (Reuters, AFP)",
-          "title": "Iran's Revolutionary Guards say three oil tankers hit mines in Strait of Hormuz",
-          "url": "https://www.arabnews.com/middle-east/irans-revolutionary-guards-say-three-oil-tankers-hit-mines-in-strait-of-hormuz-3008795",
+          "publisher": "Arab News (AFP)",
+          "title": "Iran claims four tankers hit mines in Hormuz as dhow crew rescued",
+          "url": "https://www.arabnews.com/middle-east/iran-claims-four-tankers-hit-mines-in-hormuz-as-dhow-crew-rescued-3008795",
           "date": "2026-10-29"
         }
       ]
