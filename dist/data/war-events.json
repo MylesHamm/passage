@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-28T18:11:56Z",
+  "reviewedAt": "2026-10-29T00:11:38Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5209,6 +5209,68 @@
           "title": "Explosions heard over Riyadh as Saudi authorities say Houthi missiles downed, and other Mideast news",
           "url": "https://www.idahostatejournal.com/news/national/explosions-heard-over-riyadh-as-saudi-authorities-say-houthi-missiles-downed-and-other-mideast-news/article_7646b36a-f8cb-5e09-b8b0-b3a2f478ef24.html",
           "date": "2026-10-27"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-28-al-hazm-market-strike",
+      "date": "2026-10-28",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition (claimed by the Houthis)",
+      "target": "Central market and nearby fuel station in al-Hazm",
+      "place": "al-Hazm, al-Jawf",
+      "country": "Yemen",
+      "lat": 16.1642,
+      "lon": 44.7767,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis say Saudi-led air strikes on al-Hazm market in al-Jawf killed 14",
+      "summary": "The Houthi-run Health Ministry claimed Saudi-led strikes on al-Hazm's central market and a fuel station at midday on 28 Oct killed 14, including three children, and wounded 15; Al-Masirah said 10 wounded. Saudi Arabia did not comment.",
+      "sources": [
+        {
+          "publisher": "Xinhua",
+          "title": "14 killed, 10 wounded in Saudi airstrikes in N. Yemen: Houthi media",
+          "url": "https://english.news.cn/20261028/0bff5197bf7d4bd8aef67cc902090535/c.html",
+          "date": "2026-10-28"
+        },
+        {
+          "publisher": "Daily Record (AP)",
+          "title": "Houthis say Saudi-led airstrikes killed 14 at a market in northern Yemen, and other Mideast news",
+          "url": "https://www.dailyrecordnews.com/ap_news/us/houthis-say-saudi-led-airstrikes-killed-13-at-a-market-in-northern-yemen-and-other/article_1c1947f3-4f0a-538a-85d3-2a16ec32783b.html",
+          "date": "2026-10-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-28-houthi-missiles-aden-airport",
+      "date": "2026-10-28",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Aden International Airport",
+      "place": "Aden International Airport",
+      "country": "Yemen",
+      "lat": 12.8294,
+      "lon": 45.0289,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Houthis fire two ballistic missiles at Aden airport",
+      "summary": "Yemeni officials said the Houthis fired two ballistic missiles at Aden airport on 28 Oct after the group urged civilians to leave; video showed two runway craters. AP said no staff remained; Arab News reported civilian injuries.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Houthis strike Aden airport with two ballistic missiles",
+          "url": "https://www.arabnews.com/middle-east/houthis-strike-aden-airport-with-two-ballistic-missiles-3008708",
+          "date": "2026-10-28"
+        },
+        {
+          "publisher": "Daily Record (AP)",
+          "title": "Houthis say Saudi-led airstrikes killed 14 at a market in northern Yemen, and other Mideast news",
+          "url": "https://www.dailyrecordnews.com/ap_news/us/houthis-say-saudi-led-airstrikes-killed-13-at-a-market-in-northern-yemen-and-other/article_1c1947f3-4f0a-538a-85d3-2a16ec32783b.html",
+          "date": "2026-10-28"
         }
       ]
     }
