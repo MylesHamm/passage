@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-29T18:15:31Z",
+  "reviewedAt": "2026-10-30T00:13:51Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5357,12 +5357,18 @@
       "precision": "city",
       "confidence": "confirmed",
       "title": "Coalition says it intercepted two Houthi ballistic missiles fired at Riyadh",
-      "summary": "The Saudi-led coalition said on the evening of 29 Oct that two Houthi ballistic missiles fired toward Riyadh were intercepted and destroyed. Civil Defense issued warnings for Riyadh, Najran and Al-Kharj, lifted about 20 minutes later.",
+      "summary": "The Saudi-led coalition said on 29 Oct that two Houthi ballistic missiles fired toward Riyadh were intercepted and destroyed. Civil Defense said debris caused minor injuries to a citizen and damaged a house and a vehicle.",
       "sources": [
         {
           "publisher": "Arab News",
           "title": "Saudi air defenses shoot down Houthi missiles targeting Riyadh",
           "url": "https://www.arabnews.com/saudi-arabia/saudi-air-defenses-shoot-down-houthi-missiles-targeting-riyadh-3008889",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "Arab Times",
+          "title": "Iran-Backed Houthi Missile Debris Injures Saudi Citizen, Damages Home and Vehicle in Riyadh",
+          "url": "https://www.arabtimesonline.com/news/iran-backed-houthi-missile-debris-injures-saudi-citizen-damages-home-and-vehicle-in-riyadh/",
           "date": "2026-10-29"
         }
       ]
@@ -5388,6 +5394,43 @@
           "publisher": "Arab News (AFP)",
           "title": "Iran claims four tankers hit mines in Hormuz as dhow crew rescued",
           "url": "https://www.arabnews.com/middle-east/iran-claims-four-tankers-hit-mines-in-hormuz-as-dhow-crew-rescued-3008795",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-29-tanker-hit-hormuz-outbound",
+      "date": "2026-10-29",
+      "time": "16:00Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed tanker on outbound transit",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Tanker struck by unknown projectile during outbound transit of Strait of Hormuz",
+      "summary": "UKMTO said a tanker was hit by an unknown projectile at about 16:00 GMT on 29 Oct while completing its outbound transit of the Strait of Hormuz. No crew injuries or environmental impact were reported; the ship was not named.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Oil tanker struck by unknown projectile in Strait of Hormuz: UK maritime agency",
+          "url": "https://www.aa.com.tr/en/middle-east/oil-tanker-struck-by-unknown-projectile-in-strait-of-hormuz-uk-maritime-agency/4105386",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "Iran International",
+          "title": "Tanker struck by unknown projectile in Strait of Hormuz, UKMTO says",
+          "url": "https://www.iranintl.com/en/202610299439",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "Arab Times",
+          "title": "Tanker Takes A Hit by Unknown Projectile Off Oman's Coast",
+          "url": "https://www.arabtimesonline.com/news/tanker-takes-a-hit-by-unknown-projectile-off-omans-coast/",
           "date": "2026-10-29"
         }
       ]
