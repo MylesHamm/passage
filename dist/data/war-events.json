@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-30T06:12:58Z",
+  "reviewedAt": "2026-10-30T12:18:00Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5689,9 +5689,9 @@
       "lat": 21.4225,
       "lon": 39.8262,
       "precision": "area",
-      "confidence": "confirmed",
+      "confidence": "claimed",
       "title": "Coalition says it intercepted a Houthi drone in the Makkah region",
-      "summary": "Coalition spokesman Turki al-Maliki said a Houthi drone was intercepted and destroyed over the Makkah region early on 30 Oct, after a cruise missile fired toward the western region was shot down. No damage was reported.",
+      "summary": "Coalition spokesman Turki al-Maliki claimed a Houthi drone was intercepted and destroyed over the Makkah region early on 30 Oct, after a cruise missile toward the western region was shot down. Houthi spokesman Yahya Saree denied any attack.",
       "sources": [
         {
           "publisher": "Asharq Al-Awsat",
@@ -5703,6 +5703,18 @@
           "publisher": "Arab News (AFP)",
           "title": "Saudi-led coalition says intercepted Houthi drone in Makkah region",
           "url": "https://www.arabnews.com/middle-east/saudi-led-coalition-says-intercepted-houthi-drone-in-makkah-region-3008941",
+          "date": "2026-10-30"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Saudi Arabia reports interception of Houthi drone targeting Mecca",
+          "url": "https://www.aljazeera.com/news/2026/10/30/saudi-arabia-reports-interception-of-houthi-drone-targeting-mecca",
+          "date": "2026-10-30"
+        },
+        {
+          "publisher": "The Express Tribune (Reuters)",
+          "title": "Yemen's Houthis deny launching drone after coalition reports interception in Makkah region",
+          "url": "https://tribune.com.pk/story/2637742/saudi-led-coalition-says-it-downed-houthi-drone-in-mecca-region",
           "date": "2026-10-30"
         }
       ]
