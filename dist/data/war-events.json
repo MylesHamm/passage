@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-30T00:13:51Z",
+  "reviewedAt": "2026-10-30T06:12:58Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5306,6 +5306,173 @@
       ]
     },
     {
+      "id": "2026-10-29-houthi-claimed-attack-najran-military-hq",
+      "date": "2026-10-29",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Saudi military headquarters in Najran",
+      "place": "Najran",
+      "country": "Saudi Arabia",
+      "lat": 17.4917,
+      "lon": 44.1322,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis claim attack on Saudi military headquarters in Najran",
+      "summary": "Houthi spokesman Yahya Saree claimed on 29 Oct that the group attacked a Saudi military headquarters in Najran, causing casualties; the weapon was not specified. Saudi Arabia did not confirm it; it was not independently corroborated.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthis claim six attacks on Saudi Arabia airports and oil facilities",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthis-claim-six-attacks-saudi-arabia-airports-and-oil-facilities",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Houthi forces claim six attacks on Saudi airports, oil facilities",
+          "url": "https://www.aljazeera.com/news/2026/10/30/houthi-forces-claim-six-attacks-on-saudi-airports-oil-facilities",
+          "date": "2026-10-30"
+        },
+        {
+          "publisher": "Free Press Journal (IANS)",
+          "title": "Yemen's Houthis Claim 6 Missile, Drone Attacks On Saudi Oil Facilities, Airports",
+          "url": "https://www.freepressjournal.in/world/yemens-houthis-claim-6-missile-drone-attacks-on-saudi-oil-facilities-airports",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-29-houthi-claimed-drone-dammam-airport",
+      "date": "2026-10-29",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "King Fahd International Airport",
+      "place": "King Fahd International Airport, Dammam",
+      "country": "Saudi Arabia",
+      "lat": 26.4712,
+      "lon": 49.7979,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthis claim drone attack on Dammam's King Fahd airport",
+      "summary": "Houthi spokesman Yahya Saree claimed on 29 Oct that the group hit King Fahd airport in Dammam with a drone, disrupting air traffic, one of six claimed attacks. Saudi Arabia did not confirm it; it was not independently corroborated.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthis claim six attacks on Saudi Arabia airports and oil facilities",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthis-claim-six-attacks-saudi-arabia-airports-and-oil-facilities",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Houthi forces claim six attacks on Saudi airports, oil facilities",
+          "url": "https://www.aljazeera.com/news/2026/10/30/houthi-forces-claim-six-attacks-on-saudi-airports-oil-facilities",
+          "date": "2026-10-30"
+        },
+        {
+          "publisher": "Free Press Journal (IANS)",
+          "title": "Yemen's Houthis Claim 6 Missile, Drone Attacks On Saudi Oil Facilities, Airports",
+          "url": "https://www.freepressjournal.in/world/yemens-houthis-claim-6-missile-drone-attacks-on-saudi-oil-facilities-airports",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-29-houthi-claimed-missile-abqaiq-aramco",
+      "date": "2026-10-29",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Aramco facility in Abqaiq",
+      "place": "Abqaiq",
+      "country": "Saudi Arabia",
+      "lat": 25.937,
+      "lon": 49.668,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis claim missile attack on Aramco facility in Abqaiq",
+      "summary": "Houthi spokesman Yahya Saree claimed on 29 Oct that the group targeted an Aramco facility in Abqaiq with a missile, one of six claimed attacks. Saudi Arabia did not confirm it; it was not independently corroborated.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthis claim six attacks on Saudi Arabia airports and oil facilities",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthis-claim-six-attacks-saudi-arabia-airports-and-oil-facilities",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Houthi forces claim six attacks on Saudi airports, oil facilities",
+          "url": "https://www.aljazeera.com/news/2026/10/30/houthi-forces-claim-six-attacks-on-saudi-airports-oil-facilities",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-29-houthi-claimed-missile-rabigh-refinery",
+      "date": "2026-10-29",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Rabigh refinery",
+      "place": "Rabigh",
+      "country": "Saudi Arabia",
+      "lat": 22.7986,
+      "lon": 39.0349,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis claim ballistic missile attack on Rabigh refinery",
+      "summary": "Houthi spokesman Yahya Saree claimed on 29 Oct that the group targeted the Rabigh refinery on the Red Sea coast with a ballistic missile, one of six claimed attacks. Saudi Arabia did not confirm it; it was not independently corroborated.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthis claim six attacks on Saudi Arabia airports and oil facilities",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthis-claim-six-attacks-saudi-arabia-airports-and-oil-facilities",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Houthi forces claim six attacks on Saudi airports, oil facilities",
+          "url": "https://www.aljazeera.com/news/2026/10/30/houthi-forces-claim-six-attacks-on-saudi-airports-oil-facilities",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-29-houthi-claimed-missile-ras-tanura-refinery",
+      "date": "2026-10-29",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Ras Tanura refinery",
+      "place": "Ras Tanura",
+      "country": "Saudi Arabia",
+      "lat": 26.6333,
+      "lon": 50.1667,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis claim ballistic missile attack on Ras Tanura refinery",
+      "summary": "Houthi spokesman Yahya Saree claimed on 29 Oct that the group targeted the Ras Tanura refinery with a ballistic missile, one of six claimed attacks. Saudi Arabia did not confirm it; it was not independently corroborated.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthis claim six attacks on Saudi Arabia airports and oil facilities",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthis-claim-six-attacks-saudi-arabia-airports-and-oil-facilities",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Houthi forces claim six attacks on Saudi airports, oil facilities",
+          "url": "https://www.aljazeera.com/news/2026/10/30/houthi-forces-claim-six-attacks-on-saudi-airports-oil-facilities",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
       "id": "2026-10-29-houthi-missile-eastern-province-intercepted",
       "date": "2026-10-29",
       "time": null,
@@ -5475,6 +5642,68 @@
           "title": "Iran claims four tankers hit mines in Hormuz as dhow crew rescued",
           "url": "https://www.arabnews.com/middle-east/iran-claims-four-tankers-hit-mines-in-hormuz-as-dhow-crew-rescued-3008795",
           "date": "2026-10-29"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-29-tanker-small-boat-explosives-northeast-of-khasab",
+      "date": "2026-10-29",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed tanker on outbound transit",
+      "place": "Strait of Hormuz, about 25 nm northeast of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.4774,
+      "lon": 56.5789,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Small boat attaches explosives to tanker 25 nm northeast of Khasab",
+      "summary": "UKMTO said a small boat attached two explosive devices to an outbound tanker's hull on 29 Oct, 25 nm northeast of Khasab; blasts started an engine-room fire. Crew safe, fire out. Attacker unknown.",
+      "sources": [
+        {
+          "publisher": "Jerusalem Post (Reuters)",
+          "title": "Tanker in Strait of Hormuz hit by explosives attached to small boat, crew reported safe",
+          "url": "https://www.jpost.com/middle-east/iran-news/article-913315",
+          "date": "2026-10-30"
+        },
+        {
+          "publisher": "Arab News (Reuters)",
+          "title": "Fire-hit tanker continues journey after being attacked in Strait of Hormuz, UKMTO says",
+          "url": "https://www.arabnews.com/middle-east/fire-hit-tanker-continues-journey-after-being-attacked-in-strait-of-hormuz-ukmto-says-3008930",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-30-houthi-drone-makkah-region-intercepted",
+      "date": "2026-10-30",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Makkah region",
+      "place": "Makkah region",
+      "country": "Saudi Arabia",
+      "lat": 21.4225,
+      "lon": 39.8262,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Coalition says it intercepted a Houthi drone in the Makkah region",
+      "summary": "Coalition spokesman Turki al-Maliki said a Houthi drone was intercepted and destroyed over the Makkah region early on 30 Oct, after a cruise missile fired toward the western region was shot down. No damage was reported.",
+      "sources": [
+        {
+          "publisher": "Asharq Al-Awsat",
+          "title": "Coalition Intercepts Houthi Drone over Makkah Region",
+          "url": "https://english.aawsat.com/gulf/5335440-coalition-intercepts-houthi-drone-over-makkah-region",
+          "date": "2026-10-30"
+        },
+        {
+          "publisher": "Arab News (AFP)",
+          "title": "Saudi-led coalition says intercepted Houthi drone in Makkah region",
+          "url": "https://www.arabnews.com/middle-east/saudi-led-coalition-says-intercepted-houthi-drone-in-makkah-region-3008941",
+          "date": "2026-10-30"
         }
       ]
     }
