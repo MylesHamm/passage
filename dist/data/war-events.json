@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-30T12:18:00Z",
+  "reviewedAt": "2026-10-30T18:09:44Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5715,6 +5715,37 @@
           "publisher": "The Express Tribune (Reuters)",
           "title": "Yemen's Houthis deny launching drone after coalition reports interception in Makkah region",
           "url": "https://tribune.com.pk/story/2637742/saudi-led-coalition-says-it-downed-houthi-drone-in-mecca-region",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-30-houthi-missile-south-drone-riyadh-intercepted",
+      "date": "2026-10-30",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Southern Saudi Arabia and Riyadh region",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Coalition says it intercepted a Houthi missile toward the south and a drone over Riyadh",
+      "summary": "Coalition spokesman Turki al-Maliki said on 30 Oct that air defences destroyed a Houthi ballistic missile launched toward the southern region and a drone over Riyadh. Anadolu said the coalition did not say where the drone came from.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Saudi-led coalition intercepts Houthi drone over Riyadh, missile in south",
+          "url": "https://www.arabnews.com/saudi-arabia/saudi-led-coalition-intercepts-houthi-drone-over-riyadh-missile-in-south-3009043",
+          "date": "2026-10-30"
+        },
+        {
+          "publisher": "A News (Anadolu)",
+          "title": "Saudi-led coalition intercepts Houthi ballistic missile, drone near Riyadh",
+          "url": "https://www.anews.com.tr/world/2026/10/30/saudi-led-coalition-intercepts-houthi-ballistic-missile-drone-near-riyadh",
           "date": "2026-10-30"
         }
       ]
