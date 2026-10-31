@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-31T12:15:39Z",
+  "reviewedAt": "2026-10-31T18:11:03Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5902,6 +5902,68 @@
           "title": "Oman evacuates 25 crew from Panama-flagged vessel after attack sparks fire",
           "url": "https://www.aa.com.tr/en/middle-east/oman-evacuates-25-crew-from-panama-flagged-vessel-after-attack-sparks-fire/4106562",
           "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-31-al-masahin-shamayatayn-home-strike",
+      "date": "2026-10-31",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "A family home in al-Masahin",
+      "place": "al-Masahin, al-Shamayatayn district, Taiz",
+      "country": "Yemen",
+      "lat": 13.1427,
+      "lon": 44.0651,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi media say Saudi strike on a house in al-Masahin, Taiz, killed six",
+      "summary": "Houthi-affiliated Al-Masirah TV claimed a Saudi strike on a house in al-Masahin, al-Shamayatayn district, on 31 Oct killed at least six, including a woman and four of her children. The claim was not independently verified.",
+      "sources": [
+        {
+          "publisher": "Shafaq News",
+          "title": "Six killed in Yemen as Saudi-Houthi fighting escalates",
+          "url": "https://shafaq.com/en/Middle-East/Six-killed-in-Yemen-as-Saudi-Houthi-fighting-escalates",
+          "date": "2026-10-31"
+        },
+        {
+          "publisher": "Press TV (Iranian state-run)",
+          "title": "Saudi airstrike kills 6 Yemeni citizens, including a mother and her four children",
+          "url": "https://www.presstv.co.uk/Detail/2026/10/31/779621/six-citizens-including-a-mother-and-four-of-her-children-martyred-in-a-saudi-airstrike-on-a-house-in",
+          "date": "2026-10-31"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-31-drone-hits-fishing-boats-south-of-qeshm",
+      "date": "2026-10-31",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Unidentified (Iranian media blame an \"enemy\" drone)",
+      "target": "Two Iranian fishing boats",
+      "place": "About 14 nm south of Qeshm Island",
+      "country": "Iran",
+      "lat": 26.7675,
+      "lon": 55.7725,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Drone attacks two fishing boats south of Iran’s Qeshm Island, Iranian media say",
+      "summary": "Iran’s semi-official Fars news agency claimed an \"enemy\" drone attacked two fishing boats about 14 nm south of Qeshm Island on 31 Oct; two fishermen were missing and two wounded. It did not say who operated the drone.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (Reuters)",
+          "title": "Drone attacks fishing boats south of Qeshm Island, Iranian media reports",
+          "url": "https://www.timesofisrael.com/liveblog_entry/drone-attacks-fishing-boats-south-of-qeshm-island-iranian-media-reports/",
+          "date": "2026-10-31"
+        },
+        {
+          "publisher": "Axar.az (Anadolu)",
+          "title": "Drone attacks 2 fishing boats off Iran’s Qeshm Island",
+          "url": "https://en.axar.az/news/world/1144504.html",
+          "date": "2026-10-31"
         }
       ]
     },
