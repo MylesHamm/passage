@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-31T06:10:20Z",
+  "reviewedAt": "2026-10-31T12:15:39Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5708,6 +5708,37 @@
       ]
     },
     {
+      "id": "2026-10-30-houthi-drone-madinah-region-intercepted",
+      "date": "2026-10-30",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Madinah region",
+      "place": "Madinah region",
+      "country": "Saudi Arabia",
+      "lat": 24.4672,
+      "lon": 39.6111,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted a Houthi drone in the Madinah region",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 30 Oct that air defences destroyed a Houthi drone in the Madinah region, the fourth attack he reported that day. Houthi spokesman Yahya Saree denied it and accused Saudi Arabia of fabrication.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Coalition intercepts Houthi drones over Riyadh and Madinah, missile in south",
+          "url": "https://www.arabnews.com/saudi-arabia/saudi-led-coalition-intercepts-houthi-drones-over-riyadh-and-madinah-missile-in-south-3009043",
+          "date": "2026-10-30"
+        },
+        {
+          "publisher": "Bernama (Anadolu)",
+          "title": "Saudi-Led Coalition Intercepts Houthi Drone In Medina Region",
+          "url": "https://bernama.com/en/world/news.php?id=2628044",
+          "date": "2026-10-31"
+        }
+      ]
+    },
+    {
       "id": "2026-10-30-houthi-drone-makkah-region-intercepted",
       "date": "2026-10-30",
       "time": null,
@@ -5840,6 +5871,93 @@
           "title": "Iran's IRGC Navy says four tankers catch fire in Strait of Hormuz",
           "url": "https://theprint.in/world/irans-irgc-navy-says-four-tankers-catch-fire-in-strait-of-hormuz/3086698/",
           "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-30-vessel-rit1-attacked-off-musandam",
+      "date": "2026-10-30",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Panama-flagged commercial vessel (RIT1)",
+      "place": "Strait of Hormuz off Musandam, Oman",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Panama-flagged vessel attacked and set on fire off Musandam; Oman evacuates 25 crew",
+      "summary": "Oman's Maritime Security Centre said on 30 Oct a Panama-flagged vessel, named by Anadolu as RIT1, was targeted about 1.6 nm off Musandam and caught fire; the navy evacuated 25 crew. It did not say who attacked or how.",
+      "sources": [
+        {
+          "publisher": "102.7 WBOW (Reuters)",
+          "title": "Oman navy evacuates 25 crew from vessel off Musandam",
+          "url": "https://1027wbow.com/2026/10/30/oman-navy-evacuates-25-crew-from-vessel-off-musandam/",
+          "date": "2026-10-30"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Oman evacuates 25 crew from Panama-flagged vessel after attack sparks fire",
+          "url": "https://www.aa.com.tr/en/middle-east/oman-evacuates-25-crew-from-panama-flagged-vessel-after-attack-sparks-fire/4106562",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-31-hostile-drone-riyadh-region-intercepted",
+      "date": "2026-10-31",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Unattributed",
+      "target": "Riyadh region",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted a 'hostile' drone over the Riyadh region",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 31 Oct that air defences destroyed a 'hostile' drone over the Riyadh region; debris fell but caused no casualties. He did not say who launched it.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it intercepted 'hostile' drone over Riyadh region",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-says-it-intercepted-hostile-drone-over-riyadh-region/4107048",
+          "date": "2026-10-31"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-31-houthi-drones-eastern-province-south-intercepted",
+      "date": "2026-10-31",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Eastern Province and southern Saudi Arabia",
+      "place": "Eastern Province",
+      "country": "Saudi Arabia",
+      "lat": 26.4207,
+      "lon": 50.0888,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted Houthi drones over the Eastern Province and the south",
+      "summary": "Coalition spokesman Turki al-Maliki claimed early on 31 Oct that two drones launched by the Houthis were intercepted and destroyed, one over the Eastern Province and one over the southern region. No damage or casualties were reported.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthi drone intercepted over Saudi Arabia's southern region, coalition says",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthi-drone-intercepted-over-saudi-arabias-southern-region-coalition",
+          "date": "2026-10-31"
+        },
+        {
+          "publisher": "SANA (Syrian state-run)",
+          "title": "Coalition announces interception of two drones launched by Houthi militia",
+          "url": "https://sana.sy/en/middle-east/2354775/",
+          "date": "2026-10-31"
         }
       ]
     }
