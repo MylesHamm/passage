@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-30T18:09:44Z",
+  "reviewedAt": "2026-10-31T00:11:45Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5746,6 +5746,37 @@
           "publisher": "A News (Anadolu)",
           "title": "Saudi-led coalition intercepts Houthi ballistic missile, drone near Riyadh",
           "url": "https://www.anews.com.tr/world/2026/10/30/saudi-led-coalition-intercepts-houthi-ballistic-missile-drone-near-riyadh",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-30-vessel-hit-projectile-south-of-lavan-island",
+      "date": "2026-10-30",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed vessel",
+      "place": "Persian Gulf, about 40 nm south of Lavan Island",
+      "country": "Persian Gulf",
+      "lat": 26.143,
+      "lon": 53.2689,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Vessel hit by unknown projectile 40 nm south of Iran's Lavan Island, UKMTO says",
+      "summary": "UKMTO said on 30 Oct an unknown projectile hit a vessel's port side about 40 nm south of Lavan Island, starting a fire; crew safe. Reuters said it was unclear if it was one of the tankers the IRGC claimed hit mines.",
+      "sources": [
+        {
+          "publisher": "Shafaq News",
+          "title": "Ship hit by unknown projectile near Iran's Lavan Island",
+          "url": "https://shafaq.com/en/Middle-East/Ship-hit-by-unknown-projectile-near-Iran-s-Lavan-Island",
+          "date": "2026-10-30"
+        },
+        {
+          "publisher": "ThePrint (Reuters)",
+          "title": "Iran's IRGC Navy says four tankers catch fire in Strait of Hormuz",
+          "url": "https://theprint.in/world/irans-irgc-navy-says-four-tankers-catch-fire-in-strait-of-hormuz/3086698/",
           "date": "2026-10-30"
         }
       ]
