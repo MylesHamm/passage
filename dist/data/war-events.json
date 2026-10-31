@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-31T00:11:45Z",
+  "reviewedAt": "2026-10-31T06:10:20Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5306,6 +5306,37 @@
       ]
     },
     {
+      "id": "2026-10-29-al-barah-maqbana-homes-strike",
+      "date": "2026-10-29",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Family homes in al-Barah",
+      "place": "al-Barah, Maqbana district, Taiz",
+      "country": "Yemen",
+      "lat": 13.4406,
+      "lon": 43.7033,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis say Saudi strike on homes in al-Barah, Taiz province, killed 12",
+      "summary": "The Houthi-run Health Ministry claimed on 29 Oct that a Saudi strike on family homes in al-Barah, Maqbana district, killed 12 and critically injured three, an initial toll. The claim was not independently verified.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Yemen's Houthis say Saudi strike kills 12 in Taiz residential area",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthis-say-saudi-strike-kills-12-yemeni-residential-area",
+          "date": "2026-10-29"
+        },
+        {
+          "publisher": "The New Arab (AFP)",
+          "title": "Houthis say Saudi strike kills 12 as blasts heard in Riyadh",
+          "url": "https://www.newarab.com/news/houthis-say-saudi-strike-kills-12-blasts-heard-riyadh",
+          "date": "2026-10-29"
+        }
+      ]
+    },
+    {
       "id": "2026-10-29-houthi-claimed-attack-najran-military-hq",
       "date": "2026-10-29",
       "time": null,
@@ -5746,6 +5777,37 @@
           "publisher": "A News (Anadolu)",
           "title": "Saudi-led coalition intercepts Houthi ballistic missile, drone near Riyadh",
           "url": "https://www.anews.com.tr/world/2026/10/30/saudi-led-coalition-intercepts-houthi-ballistic-missile-drone-near-riyadh",
+          "date": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-30-houthi-missiles-aden-airport-maashiq-palace",
+      "date": "2026-10-30",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Aden airport and al-Maashiq Presidential Palace",
+      "place": "Aden",
+      "country": "Yemen",
+      "lat": 12.7855,
+      "lon": 45.0187,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Yemeni army says Houthis fired ballistic missiles at Aden airport and Maashiq palace",
+      "summary": "Yemeni army spokesman Majed al-Nuzaili claimed the Houthis fired ballistic missiles at Aden airport and the Maashiq Presidential Palace on 30 Oct. No casualty or damage details were given.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Houthis target Aden airport and Maashiq Presidential Palace with ballistic missiles",
+          "url": "https://www.arabnews.com/middle-east/houthis-target-aden-airport-and-maashiq-presidential-palace-with-ballistic-missiles-3009041",
+          "date": "2026-10-30"
+        },
+        {
+          "publisher": "TASS (Russian state-run)",
+          "title": "Houthis deliver missile strikes on airport, presidential palace in Aden",
+          "url": "https://tass.com/world/2211195",
           "date": "2026-10-30"
         }
       ]
