@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-10-31T18:11:03Z",
+  "reviewedAt": "2026-11-01T00:10:38Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6019,6 +6019,37 @@
           "publisher": "SANA (Syrian state-run)",
           "title": "Coalition announces interception of two drones launched by Houthi militia",
           "url": "https://sana.sy/en/middle-east/2354775/",
+          "date": "2026-10-31"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-31-iran-navy-claims-tanker-hit-mines-east-of-hormuz",
+      "date": "2026-10-31",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (Navy, claimed)",
+      "target": "An unnamed oil tanker",
+      "place": "East of the Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran's navy claims a tanker caught fire after hitting mines east of Hormuz",
+      "summary": "Iran's navy claimed a tanker caught fire after hitting naval mines on the afternoon of 31 Oct while sailing in what it called a prohibited zone east of the Strait of Hormuz. The ship was not named; no casualties were reported.",
+      "sources": [
+        {
+          "publisher": "WANA (Iran-based)",
+          "title": "Another Tanker Catches Fire After Striking Naval Mines in Eastern Strait of Hormuz",
+          "url": "https://wanaen.com/another-tanker-catches-fire-after-striking-naval-mines-in-eastern-strait-of-hormuz/",
+          "date": "2026-10-31"
+        },
+        {
+          "publisher": "Gulf News",
+          "title": "Middle East War: Iran warns US and Israel against attacks; Saudi Arabia reports drone interception",
+          "url": "https://gulfnews.com/world/mena/middle-east-war-saudi-intercepts-drone-iran-claims-3-tankers-hit-mines-in-hormuz-1.500730393",
           "date": "2026-10-31"
         }
       ]
