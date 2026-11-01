@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-01T12:13:17Z",
+  "reviewedAt": "2026-11-01T18:09:44Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6063,6 +6063,31 @@
           "title": "Middle East War: Iran warns US and Israel against attacks; Saudi Arabia reports drone interception",
           "url": "https://gulfnews.com/world/mena/middle-east-war-saudi-intercepts-drone-iran-claims-3-tankers-hit-mines-in-hormuz-1.500730393",
           "date": "2026-10-31"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-01-houthi-missile-drone-south-intercepted",
+      "date": "2026-11-01",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Southern Saudi Arabia",
+      "place": "Abha and Khamis Mushait (southern region)",
+      "country": "Saudi Arabia",
+      "lat": 18.2164,
+      "lon": 42.5053,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted a Houthi ballistic missile and a drone aimed at the south",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 1 Nov that air defences destroyed a ballistic missile and a drone launched by the Houthis at the southern region, after alerts in Abha and Khamis Mushait. No casualties or damage were reported.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition intercepts Houthi missile, drone targeting kingdom",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-intercepts-houthi-missile-drone-targeting-kingdom/4108159",
+          "date": "2026-11-01"
         }
       ]
     }
