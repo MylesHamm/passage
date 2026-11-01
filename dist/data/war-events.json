@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-01T06:09:42Z",
+  "reviewedAt": "2026-11-01T12:13:17Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5994,6 +5994,12 @@
           "publisher": "Anadolu Agency",
           "title": "Saudi-led coalition says it intercepted 'hostile' drone over Riyadh region",
           "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-says-it-intercepted-hostile-drone-over-riyadh-region/4107048",
+          "date": "2026-10-31"
+        },
+        {
+          "publisher": "Times of Israel (AFP)",
+          "title": "Saudi Arabia says at least 2 suspected Houthi drones shot down over kingdom",
+          "url": "https://www.timesofisrael.com/saudi-arabia-says-at-least-2-suspected-houthi-drones-shot-down-over-kingdom/",
           "date": "2026-10-31"
         }
       ]
