@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-01T00:10:38Z",
+  "reviewedAt": "2026-11-01T06:09:42Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5942,7 +5942,7 @@
       "time": null,
       "layer": "strikes-on-iran-yemen",
       "type": "air-strike",
-      "actor": "Unidentified (Iranian media blame an \"enemy\" drone)",
+      "actor": "Unidentified (Iranian state TV blames the US)",
       "target": "Two Iranian fishing boats",
       "place": "About 14 nm south of Qeshm Island",
       "country": "Iran",
@@ -5951,7 +5951,7 @@
       "precision": "area",
       "confidence": "claimed",
       "title": "Drone attacks two fishing boats south of Iran’s Qeshm Island, Iranian media say",
-      "summary": "Iran’s semi-official Fars news agency claimed an \"enemy\" drone attacked two fishing boats about 14 nm south of Qeshm Island on 31 Oct; two fishermen were missing and two wounded. It did not say who operated the drone.",
+      "summary": "Iran’s semi-official Fars claimed an \"enemy\" drone attacked two fishing boats about 14 nm south of Qeshm Island on 31 Oct; two fishermen were missing and two wounded. State TV later claimed a US attack and said the two were found.",
       "sources": [
         {
           "publisher": "Times of Israel (Reuters)",
@@ -5963,6 +5963,12 @@
           "publisher": "Axar.az (Anadolu)",
           "title": "Drone attacks 2 fishing boats off Iran’s Qeshm Island",
           "url": "https://en.axar.az/news/world/1144504.html",
+          "date": "2026-10-31"
+        },
+        {
+          "publisher": "Times of Israel (AFP)",
+          "title": "Iran says fishermen found after accusing US of attack in Hormuz",
+          "url": "https://www.timesofisrael.com/liveblog_entry/iran-says-fishermen-found-after-accusing-us-of-attack-in-hormuz/",
           "date": "2026-10-31"
         }
       ]
