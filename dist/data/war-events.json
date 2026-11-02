@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-02T06:13:48Z",
+  "reviewedAt": "2026-11-02T12:10:33Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6260,6 +6260,68 @@
           "publisher": "UA.NEWS (Anadolu)",
           "title": "UKMTO reports possible strike on vessel in Strait of Hormuz — Anadolu Agency",
           "url": "https://ua.news/en/dovkolo-svitu/ukmto-povidomilo-pro-mozhlivii-udar-po-sudnu-v-ormuzkii-prototsi-anadolu-agency",
+          "date": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-02-houthi-ballistic-missile-south-intercepted",
+      "date": "2026-11-02",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Southern Saudi Arabia",
+      "place": "Abha and Khamis Mushait (southern region)",
+      "country": "Saudi Arabia",
+      "lat": 18.2164,
+      "lon": 42.5053,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted a Houthi ballistic missile aimed at the south",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 2 Nov that air defences destroyed a Houthi ballistic missile aimed at the southern region. Civil defence briefly issued alerts for Khamis Mushait, Abha, Taif and Najran. No casualties reported.",
+      "sources": [
+        {
+          "publisher": "Business Recorder (Reuters)",
+          "title": "Saudi civil defence sounds all-clear after alerts in southern cities",
+          "url": "https://www.brecorder.com/news/40447038/saudi-civil-defence-sounds-all-clear-after-alerts-in-southern-cities",
+          "date": "2026-11-02"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it intercepted Houthi ballistic missile targeting southern region",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-says-it-intercepted-houthi-ballistic-missile-targeting-southern-region/4108355",
+          "date": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-02-houthi-missile-health-centre-ras-al-arah-lahj",
+      "date": "2026-11-02",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Al-Suqya health centre",
+      "place": "Ras al-Arah, al-Madaribah wa al-Arah district, Lahj",
+      "country": "Yemen",
+      "lat": 12.6083,
+      "lon": 43.9158,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Yemeni state media say Houthi missile hit a health centre in Lahj",
+      "summary": "State-run Saba TV claimed a missile hit the Al-Suqya health centre in Lahj's al-Madaribah wa al-Arah district on 2 Nov, killing or injuring at least 20. Army-run 26 September Net claimed a Houthi ballistic missile killed 3 and injured 11.",
+      "sources": [
+        {
+          "publisher": "26 September Net (Yemeni army-run)",
+          "title": "Three Martyrs and 11 Injuries in Houthi Ballistic Missile Attack on Health Center in Lahj",
+          "url": "https://en.26sepnews.net/2026/11/02/three-martyrs-and-11-injuries-in-houthi-ballistic-missile-attack-on-health-center-in-lahj/",
+          "date": "2026-11-02"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "20 civilians killed, injured in Houthi missile attack on health center in Yemen: Media",
+          "url": "https://www.aa.com.tr/en/middle-east/20-civilians-killed-injured-in-houthi-missile-attack-on-health-center-in-yemen-media/4108749",
           "date": "2026-11-02"
         }
       ]
