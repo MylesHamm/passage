@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-01T18:09:44Z",
+  "reviewedAt": "2026-11-02T00:11:22Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -5827,7 +5827,7 @@
       "precision": "city",
       "confidence": "claimed",
       "title": "Yemeni army says Houthis fired ballistic missiles at Aden airport and Maashiq palace",
-      "summary": "Yemeni army spokesman Majed al-Nuzaili claimed the Houthis fired ballistic missiles at Aden airport and the Maashiq Presidential Palace on 30 Oct. No casualty or damage details were given.",
+      "summary": "Yemeni army spokesman Majed al-Nuzaili claimed the Houthis fired ballistic missiles at Aden airport and the Maashiq Presidential Palace on 30 Oct. A police official told AFP two missiles targeted the palace; witnesses saw ambulances enter.",
       "sources": [
         {
           "publisher": "Arab News",
@@ -5840,6 +5840,12 @@
           "title": "Houthis deliver missile strikes on airport, presidential palace in Aden",
           "url": "https://tass.com/world/2211195",
           "date": "2026-10-30"
+        },
+        {
+          "publisher": "The New Arab (AFP)",
+          "title": "Strikes blamed on Houthis target Yemen presidential palace",
+          "url": "https://www.newarab.com/news/strikes-blamed-houthis-target-yemen-presidential-palace",
+          "date": "2026-10-30"
         }
       ]
     },
@@ -5850,7 +5856,7 @@
       "layer": "shipping",
       "type": "shipping-attack",
       "actor": "Unattributed",
-      "target": "Unnamed vessel",
+      "target": "LNG carrier Al Mayeda (Qatar)",
       "place": "Persian Gulf, about 40 nm south of Lavan Island",
       "country": "Persian Gulf",
       "lat": 26.143,
@@ -5858,7 +5864,7 @@
       "precision": "sea-area",
       "confidence": "confirmed",
       "title": "Vessel hit by unknown projectile 40 nm south of Iran's Lavan Island, UKMTO says",
-      "summary": "UKMTO said on 30 Oct an unknown projectile hit a vessel's port side about 40 nm south of Lavan Island, starting a fire; crew safe. Reuters said it was unclear if it was one of the tankers the IRGC claimed hit mines.",
+      "summary": "UKMTO said on 30 Oct an unknown projectile hit a vessel about 40 nm south of Lavan Island, starting a fire. Windward named it as Qatari LNG carrier Al Mayeda; owner Nakilat said no crew were hurt and it stayed operational.",
       "sources": [
         {
           "publisher": "Shafaq News",
@@ -5871,6 +5877,24 @@
           "title": "Iran's IRGC Navy says four tankers catch fire in Strait of Hormuz",
           "url": "https://theprint.in/world/irans-irgc-navy-says-four-tankers-catch-fire-in-strait-of-hormuz/3086698/",
           "date": "2026-10-30"
+        },
+        {
+          "publisher": "Windward",
+          "title": "Limpet Mines Return to the Gulf as Iran Strikes Four Tankers Near the Strait of Hormuz",
+          "url": "https://windward.ai/blog/limpet-mines-return-to-the-gulf-as-iran-strikes-four-tankers/",
+          "date": "2026-11-01"
+        },
+        {
+          "publisher": "Gulf News",
+          "title": "Qatar LNG tanker hit in Gulf; crew safe, no oil spill reported",
+          "url": "https://gulfnews.com/world/gulf/qatar/qatar-lng-tanker-hit-in-gulf-crew-safe-no-oil-spill-reported-1.500731634",
+          "date": "2026-11-01"
+        },
+        {
+          "publisher": "ABC News (AP)",
+          "title": "Israeli strike kills boy in Gaza as Qataris say vessel struck in Gulf, and other Mideast news",
+          "url": "https://abcnews.com/International/wireStory/israeli-strike-kills-boy-gaza-qataris-vessel-struck-137745763",
+          "date": "2026-11-01"
         }
       ]
     },
@@ -6067,6 +6091,37 @@
       ]
     },
     {
+      "id": "2026-11-01-hodeidah-university-medical-faculty-strikes",
+      "date": "2026-11-01",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Faculty of medicine, Hodeidah University",
+      "place": "Hodeidah",
+      "country": "Yemen",
+      "lat": 14.8022,
+      "lon": 42.9511,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthi media claim two Saudi airstrikes hit Hodeidah University medical school",
+      "summary": "Houthi-run Al-Masirah TV claimed on 1 Nov that two Saudi airstrikes hit the University of Hodeidah's medical school. AP said there was no immediate word on casualties. The coalition announced a precision operation but named no locations.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (AP)",
+          "title": "Houthis accuse Saudi Arabia of 2 airstrikes on medical school",
+          "url": "https://www.timesofisrael.com/liveblog_entry/houthis-accuse-saudi-arabia-of-2-airstrikes-on-medical-school/",
+          "date": "2026-11-01"
+        },
+        {
+          "publisher": "The Standard (AFP)",
+          "title": "Houthi media says Saudi strikes target pier, vessel in Yemen port",
+          "url": "https://www.thestandard.com.hk/world/article/347184/Houthi-media-says-Saudi-strikes-target-pier-vessel-in-Yemen-port",
+          "date": "2026-11-01"
+        }
+      ]
+    },
+    {
       "id": "2026-11-01-houthi-missile-drone-south-intercepted",
       "date": "2026-11-01",
       "time": null,
@@ -6088,6 +6143,87 @@
           "title": "Saudi-led coalition intercepts Houthi missile, drone targeting kingdom",
           "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-intercepts-houthi-missile-drone-targeting-kingdom/4108159",
           "date": "2026-11-01"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-01-iran-claims-two-tankers-hit-mines-hormuz",
+      "date": "2026-11-01",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC Navy, claimed)",
+      "target": "Two unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC Navy claims two oil tankers exploded after hitting mines in the Strait of Hormuz",
+      "summary": "The IRGC Navy claimed on 1 Nov that two oil tankers \"exploded\" after striking mines while using what it called an \"unauthorized route\" in the Strait of Hormuz, Iranian state media said. Ships were not named; the claim was not verified.",
+      "sources": [
+        {
+          "publisher": "Arab News (agencies)",
+          "title": "UK agency reports vessel strike in Hormuz; Iran’s Guards say tankers hit mines",
+          "url": "https://www.arabnews.com/middle-east/uk-agency-reports-vessel-strike-in-hormuz-irans-guards-say-tankers-hit-mines-3009316",
+          "date": "2026-11-01"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-01-ras-issa-port-pier-ship-strikes",
+      "date": "2026-11-01",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Ras Issa port pier and a commercial ship",
+      "place": "Ras Issa port, Hodeidah governorate",
+      "country": "Yemen",
+      "lat": 15.2167,
+      "lon": 42.6333,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi media claim Saudi airstrikes hit pier and commercial ship at Ras Issa port",
+      "summary": "Houthi-run Al-Masirah TV claimed on 1 Nov that Saudi airstrikes hit Ras Issa port, north of Hodeidah, targeting a pier and a commercial ship. Two residents told AFP they heard an explosion. No casualties were reported.",
+      "sources": [
+        {
+          "publisher": "The Standard (AFP)",
+          "title": "Houthi media says Saudi strikes target pier, vessel in Yemen port",
+          "url": "https://www.thestandard.com.hk/world/article/347184/Houthi-media-says-Saudi-strikes-target-pier-vessel-in-Yemen-port",
+          "date": "2026-11-01"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-01-vessel-hit-projectile-hormuz-mayday",
+      "date": "2026-11-01",
+      "time": "15:09Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed vessel",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "UKMTO says a vessel may have been hit by an unknown projectile in the Strait of Hormuz",
+      "summary": "UKMTO said a merchant ship's master relayed a Mayday call on 1 Nov (15:09 GMT) claiming another vessel was hit by an unknown projectile in the Strait of Hormuz. The vessel, damage and casualties were not reported.",
+      "sources": [
+        {
+          "publisher": "Arab News (agencies)",
+          "title": "UK agency reports vessel strike in Hormuz; Iran’s Guards say tankers hit mines",
+          "url": "https://www.arabnews.com/middle-east/uk-agency-reports-vessel-strike-in-hormuz-irans-guards-say-tankers-hit-mines-3009316",
+          "date": "2026-11-01"
+        },
+        {
+          "publisher": "UA.NEWS (Anadolu)",
+          "title": "UKMTO reports possible strike on vessel in Strait of Hormuz — Anadolu Agency",
+          "url": "https://ua.news/en/dovkolo-svitu/ukmto-povidomilo-pro-mozhlivii-udar-po-sudnu-v-ormuzkii-prototsi-anadolu-agency",
+          "date": "2026-11-02"
         }
       ]
     }
