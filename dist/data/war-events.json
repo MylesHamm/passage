@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-02T00:11:22Z",
+  "reviewedAt": "2026-11-02T06:13:48Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6197,26 +6197,63 @@
       ]
     },
     {
+      "id": "2026-11-01-tanker-two-projectiles-east-of-ras-al-khafji",
+      "date": "2026-11-01",
+      "time": "23:47Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed tanker",
+      "place": "Persian Gulf, about 72 nm east of Ras Al Khafji",
+      "country": "Saudi Arabia",
+      "lat": 28.4167,
+      "lon": 48.5,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "UKMTO says a tanker was hit by two unknown projectiles 72 nm east of Ras Al Khafji",
+      "summary": "UKMTO said a tanker heading southeast through the Gulf was struck on its port side by two unknown projectiles about 72 nm east of Ras Al Khafji, Saudi Arabia, at 23:47 UTC on 1 Nov. All crew were accounted for; no environmental impact.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "UKMTO says vessel hit by two projectiles near Saudi Arabia",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/ukmto-says-vessel-hit-two-projectiles-near-saudi-arabia",
+          "date": "2026-11-02"
+        },
+        {
+          "publisher": "Siasat Daily",
+          "title": "Tanker hit by two unidentified projectiles off Saudi Arabia",
+          "url": "https://www.siasat.com/tanker-hit-by-two-unidentified-projectiles-off-saudi-arabia-3568410/",
+          "date": "2026-11-02"
+        }
+      ]
+    },
+    {
       "id": "2026-11-01-vessel-hit-projectile-hormuz-mayday",
       "date": "2026-11-01",
       "time": "15:09Z",
       "layer": "shipping",
       "type": "shipping-attack",
       "actor": "Unattributed",
-      "target": "Unnamed vessel",
+      "target": "Selat Storm (UAE-owned offshore tug)",
       "place": "Strait of Hormuz",
       "country": "Strait of Hormuz",
       "lat": 26.5667,
       "lon": 56.25,
       "precision": "sea-area",
-      "confidence": "claimed",
-      "title": "UKMTO says a vessel may have been hit by an unknown projectile in the Strait of Hormuz",
-      "summary": "UKMTO said a merchant ship's master relayed a Mayday call on 1 Nov (15:09 GMT) claiming another vessel was hit by an unknown projectile in the Strait of Hormuz. The vessel, damage and casualties were not reported.",
+      "confidence": "confirmed",
+      "title": "Offshore tug Selat Storm hit by a projectile in the Strait of Hormuz",
+      "summary": "UKMTO said a ship relayed a Mayday on 1 Nov (15:09 GMT) reporting a vessel hit by an unknown projectile in the Strait of Hormuz. Vanguard Tech identified it as the tug Selat Storm, northwest of Musandam, and said it was partially sinking.",
       "sources": [
         {
           "publisher": "Arab News (agencies)",
           "title": "UK agency reports vessel strike in Hormuz; Iran’s Guards say tankers hit mines",
           "url": "https://www.arabnews.com/middle-east/uk-agency-reports-vessel-strike-in-hormuz-irans-guards-say-tankers-hit-mines-3009316",
+          "date": "2026-11-01"
+        },
+        {
+          "publisher": "The Maritime Executive",
+          "title": "Offshore Tug Hit in Latest Attack in Strait of Hormuz",
+          "url": "https://maritime-executive.com/article/offshore-tug-hit-in-latest-attack-in-strait-of-hormuz",
           "date": "2026-11-01"
         },
         {
