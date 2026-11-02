@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-02T12:10:33Z",
+  "reviewedAt": "2026-11-02T18:23:12Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6091,6 +6091,31 @@
       ]
     },
     {
+      "id": "2026-11-01-bajil-oil-company-site-strike",
+      "date": "2026-11-01",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition (claimed by the Houthis)",
+      "target": "Oil company site",
+      "place": "Bajil district, Hodeidah governorate",
+      "country": "Yemen",
+      "lat": 15.0583,
+      "lon": 43.285,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi media claim coalition strike on an oil company site in Bajil wounded three",
+      "summary": "Houthi-affiliated media claimed a Saudi-led coalition air strike on an oil company site in Hodeidah's Bajil district on 1 Nov wounded three people. The coalition did not comment; Al Jazeera could not verify the claim.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Saudi-led coalition intercepts a missile as fighting rages in Yemen’s al-Jawf",
+          "url": "https://www.aljazeera.com/news/2026/11/2/saudi-led-coalition-intercepts-a-missile-as-fighting-rages-in-yemens-al-jawf",
+          "date": "2026-11-02"
+        }
+      ]
+    },
+    {
       "id": "2026-11-01-hodeidah-university-medical-faculty-strikes",
       "date": "2026-11-01",
       "time": null,
@@ -6186,13 +6211,44 @@
       "precision": "area",
       "confidence": "claimed",
       "title": "Houthi media claim Saudi airstrikes hit pier and commercial ship at Ras Issa port",
-      "summary": "Houthi-run Al-Masirah TV claimed on 1 Nov that Saudi airstrikes hit Ras Issa port, north of Hodeidah, targeting a pier and a commercial ship. Two residents told AFP they heard an explosion. No casualties were reported.",
+      "summary": "Houthi-run Al-Masirah TV claimed on 1 Nov that Saudi airstrikes hit Ras Issa port, north of Hodeidah, targeting a pier and a commercial ship. Houthi-affiliated media later claimed four people were wounded there, Al Jazeera said.",
       "sources": [
         {
           "publisher": "The Standard (AFP)",
           "title": "Houthi media says Saudi strikes target pier, vessel in Yemen port",
           "url": "https://www.thestandard.com.hk/world/article/347184/Houthi-media-says-Saudi-strikes-target-pier-vessel-in-Yemen-port",
           "date": "2026-11-01"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Saudi-led coalition intercepts a missile as fighting rages in Yemen’s al-Jawf",
+          "url": "https://www.aljazeera.com/news/2026/11/2/saudi-led-coalition-intercepts-a-missile-as-fighting-rages-in-yemens-al-jawf",
+          "date": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-01-saada-telecom-facility-strike",
+      "date": "2026-11-01",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Telecommunications facility",
+      "place": "Saada",
+      "country": "Yemen",
+      "lat": 16.9402,
+      "lon": 43.7639,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi media claim Saudi airstrike hit a telecom facility southeast of Saada city",
+      "summary": "Houthi-run Al-Masirah TV claimed on 1 Nov that Saudi warplanes carried out an airstrike on a telecommunications facility southeast of Saada city. No casualties were immediately reported; the claim was not verified.",
+      "sources": [
+        {
+          "publisher": "Telangana Today (IANS)",
+          "title": "Houthis report airstrikes on Red Sea oil port, telecom facility in Yemen",
+          "url": "https://telanganatoday.com/houthis-report-airstrikes-on-red-sea-oil-port-telecom-facility-in-yemen",
+          "date": "2026-11-02"
         }
       ]
     },
@@ -6296,6 +6352,68 @@
       ]
     },
     {
+      "id": "2026-11-02-houthi-claimed-drones-dammam-airport",
+      "date": "2026-11-02",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "King Fahd International Airport",
+      "place": "King Fahd International Airport, Dammam",
+      "country": "Saudi Arabia",
+      "lat": 26.4712,
+      "lon": 49.7979,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthis claim they hit Dammam airport with two drones",
+      "summary": "Houthi spokesman Yahya Saree claimed on 2 Nov that the group hit Dammam airport in two phases with two drones over the previous 48 hours, disrupting air traffic. There was no immediate Saudi confirmation.",
+      "sources": [
+        {
+          "publisher": "Business Recorder (Reuters)",
+          "title": "Yemen's Houthis say they launched drones towards Saudi Arabia's Dammam airport",
+          "url": "https://www.brecorder.com/news/40447066/yemens-houthis-say-they-launched-drones-towards-saudi-arabias-dammam-airport",
+          "date": "2026-11-02"
+        },
+        {
+          "publisher": "Gulf News (AFP)",
+          "title": "Houthis say targeted Saudi Arabia's Dammam airport",
+          "url": "https://gulfnews.com/world/gulf/saudi/saudi-led-military-coalition-says-two-drones-intercepted-in-riyadh-area-1.500733112",
+          "date": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-02-houthi-claimed-drones-jizan-radar-aircraft",
+      "date": "2026-11-02",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Early-warning radar and a military transport aircraft",
+      "place": "Jizan",
+      "country": "Saudi Arabia",
+      "lat": 16.8892,
+      "lon": 42.5511,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis claim strikes on an early-warning radar and a military plane in Jizan",
+      "summary": "The Houthis claimed on 2 Nov that they attacked an early-warning radar in Jizan and a military transport aircraft at Jizan airport; Saree said a drone hit the radar. There was no immediate Saudi confirmation.",
+      "sources": [
+        {
+          "publisher": "Business Recorder (Reuters)",
+          "title": "Yemen's Houthis say they launched drones towards Saudi Arabia's Dammam airport",
+          "url": "https://www.brecorder.com/news/40447066/yemens-houthis-say-they-launched-drones-towards-saudi-arabias-dammam-airport",
+          "date": "2026-11-02"
+        },
+        {
+          "publisher": "Gulf News (AFP)",
+          "title": "Houthis say targeted Saudi Arabia's Dammam airport",
+          "url": "https://gulfnews.com/world/gulf/saudi/saudi-led-military-coalition-says-two-drones-intercepted-in-riyadh-area-1.500733112",
+          "date": "2026-11-02"
+        }
+      ]
+    },
+    {
       "id": "2026-11-02-houthi-missile-health-centre-ras-al-arah-lahj",
       "date": "2026-11-02",
       "time": null,
@@ -6322,6 +6440,31 @@
           "publisher": "Anadolu Agency",
           "title": "20 civilians killed, injured in Houthi missile attack on health center in Yemen: Media",
           "url": "https://www.aa.com.tr/en/middle-east/20-civilians-killed-injured-in-houthi-missile-attack-on-health-center-in-yemen-media/4108749",
+          "date": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-02-two-drones-riyadh-region-intercepted",
+      "date": "2026-11-02",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Unattributed",
+      "target": "Riyadh area",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says two drones were intercepted and destroyed in the Riyadh area",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 2 Nov that forces intercepted and destroyed two drones in the Riyadh area. He did not say who launched them. No damage or casualties were reported.",
+      "sources": [
+        {
+          "publisher": "Gulf News (AFP)",
+          "title": "Houthis say targeted Saudi Arabia's Dammam airport",
+          "url": "https://gulfnews.com/world/gulf/saudi/saudi-led-military-coalition-says-two-drones-intercepted-in-riyadh-area-1.500733112",
           "date": "2026-11-02"
         }
       ]
