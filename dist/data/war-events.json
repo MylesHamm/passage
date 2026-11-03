@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-03T00:11:27Z",
+  "reviewedAt": "2026-11-03T06:10:32Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6327,6 +6327,37 @@
       ]
     },
     {
+      "id": "2026-11-01-vessel-hit-projectile-northeast-of-limah",
+      "date": "2026-11-01",
+      "time": "20:20Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed merchant vessel",
+      "place": "About 9 nm north-east of Limah, Musandam",
+      "country": "Oman",
+      "lat": 26.048,
+      "lon": 56.5422,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Vessel struck by unknown projectile off Oman: UK maritime agency",
+      "summary": "UKMTO said an unknown projectile struck a vessel about 9 nm north-east of Lima, Oman, at about 2020 GMT on 1 Nov, making a hole in its starboard side. The vessel and crew were safe; no environmental impact. The ship was not named.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Vessel struck by unknown projectile off Oman: UK maritime agency",
+          "url": "https://aa.com.tr/en/us-israel-iran-war/vessel-struck-by-unknown-projectile-off-oman-uk-maritime-agency/4109148",
+          "date": "2026-11-02"
+        },
+        {
+          "publisher": "Gulf News (AFP)",
+          "title": "Vessel struck near Strait of Hormuz: maritime agency",
+          "url": "https://gulfnews.com/world/mena/vessel-struck-near-strait-of-hormuz-maritime-agency-1.500733362",
+          "date": "2026-11-02"
+        }
+      ]
+    },
+    {
       "id": "2026-11-02-houthi-ballistic-missile-south-intercepted",
       "date": "2026-11-02",
       "time": null,
@@ -6471,6 +6502,37 @@
           "publisher": "Gulf News (AFP)",
           "title": "Houthis say targeted Saudi Arabia's Dammam airport",
           "url": "https://gulfnews.com/world/gulf/saudi/saudi-led-military-coalition-says-two-drones-intercepted-in-riyadh-area-1.500733112",
+          "date": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-02-us-defensive-strikes-qeshm-island",
+      "date": "2026-11-02",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States",
+      "target": "Launcher used to fire on US aircraft",
+      "place": "Qeshm Island",
+      "country": "Iran",
+      "lat": 26.7675,
+      "lon": 55.7725,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "US officials say US carried out limited defensive strikes on Iran's Qeshm Island",
+      "summary": "US officials said US forces struck Qeshm Island on 2 Nov after Iran fired on a US aircraft; one said the aim was to take out a launcher. Iranian state media reported five explosions on the island. No casualties were reported.",
+      "sources": [
+        {
+          "publisher": "NBC News",
+          "title": "U.S. military carries out limited strikes on Iran’s Qeshm Island, U.S. officials say",
+          "url": "https://www.nbcnews.com/world/iran/us-conducted-defensive-strikes-iranian-targets-strait-hormuz-us-offici-rcna607161",
+          "date": "2026-11-02"
+        },
+        {
+          "publisher": "ABC News",
+          "title": "US carries out defensive airstrikes on Iran's Qeshm Island: Officials",
+          "url": "https://abcnews.com/International/us-carries-defensive-airstrikes-irans-qeshm-island-officials/story?id=137792518",
           "date": "2026-11-02"
         }
       ]
