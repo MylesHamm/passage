@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-03T06:10:32Z",
+  "reviewedAt": "2026-11-03T12:13:20Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6534,6 +6534,37 @@
           "title": "US carries out defensive airstrikes on Iran's Qeshm Island: Officials",
           "url": "https://abcnews.com/International/us-carries-defensive-airstrikes-irans-qeshm-island-officials/story?id=137792518",
           "date": "2026-11-02"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-03-drone-makkah-region-intercepted",
+      "date": "2026-11-03",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Unattributed",
+      "target": "Makkah region",
+      "place": "Makkah region",
+      "country": "Saudi Arabia",
+      "lat": 21.4225,
+      "lon": 39.8262,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says a drone was intercepted and destroyed in the Makkah region",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 3 Nov that a drone was intercepted and destroyed in the Makkah region, without saying who launched it. Houthi spokesman Yahya Saree denied any attack on Saudi territory that day.",
+      "sources": [
+        {
+          "publisher": "Asharq Al-Awsat",
+          "title": "Coalition Says Drone Intercepted and Destroyed in Makkah Region",
+          "url": "https://english.aawsat.com/gulf/5337019-coalition-says-drone-intercepted-and-destroyed-makkah-region",
+          "date": "2026-11-03"
+        },
+        {
+          "publisher": "Gulf News (AFP)",
+          "title": "Saudi forces say intercepted drone, as Yemen's Houthis announce 17 killed in two days",
+          "url": "https://gulfnews.com/world/gulf/saudi/saudi-forces-say-intercepted-drone-as-yemens-houthis-announce-17-killed-in-two-days-1.500734033",
+          "date": "2026-11-03"
         }
       ]
     }
