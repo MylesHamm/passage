@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-03T18:12:05Z",
+  "reviewedAt": "2026-11-04T00:10:14Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6595,6 +6595,62 @@
           "publisher": "Gulf News (AFP)",
           "title": "Saudi forces say intercepted drone, as Yemen's Houthis announce 17 killed in two days",
           "url": "https://gulfnews.com/world/gulf/saudi/saudi-forces-say-intercepted-drone-as-yemens-houthis-announce-17-killed-in-two-days-1.500734033",
+          "date": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-03-drones-eastern-province-south-intercepted",
+      "date": "2026-11-03",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Unattributed",
+      "target": "Eastern Province and southern Saudi Arabia",
+      "place": "Eastern Province",
+      "country": "Saudi Arabia",
+      "lat": 26.4207,
+      "lon": 50.0888,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says drones were intercepted over the Eastern Province and the south",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 3 Nov that a drone was destroyed over the Eastern Province, without saying who launched it, and later that a Houthi drone headed for the south was destroyed. No damage was reported.",
+      "sources": [
+        {
+          "publisher": "A News (Anadolu)",
+          "title": "Saudi-led coalition says it intercepted drone in eastern kingdom",
+          "url": "https://www.anews.com.tr/middle-east/2026/11/03/saudi-led-coalition-says-it-intercepted-drone-in-eastern-kingdom",
+          "date": "2026-11-03"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it intercepted Houthi drone headed toward southern kingdom",
+          "url": "https://aa.com.tr/en/middle-east/saudi-led-coalition-says-it-intercepted-houthi-drone-headed-toward-southern-kingdom/4110514",
+          "date": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-03-houthi-claimed-drone-abha-airport-missile-khamis-mushait",
+      "date": "2026-11-03",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis (claimed)",
+      "target": "Abha International Airport and Khamis Mushait Air Base",
+      "place": "Abha International Airport",
+      "country": "Saudi Arabia",
+      "lat": 18.2404,
+      "lon": 42.6566,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthis claim a drone attack on Abha airport and a missile strike on Khamis Mushait",
+      "summary": "The Houthis claimed on 3 Nov that a drone hit Abha airport, with Yahya Saree saying it disrupted air traffic, and that a ballistic missile hit Khamis Mushait Air Base. Saudi authorities did not immediately respond to the claim.",
+      "sources": [
+        {
+          "publisher": "Shafaq News",
+          "title": "Houthis claim drone strike on Saudi Abha airport",
+          "url": "https://shafaq.com/en/Middle-East/Houthis-claim-drone-strike-on-Saudi-Abha-airport",
           "date": "2026-11-03"
         }
       ]
