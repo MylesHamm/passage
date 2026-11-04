@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-04T06:09:13Z",
+  "reviewedAt": "2026-11-04T12:16:50Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6358,6 +6358,43 @@
       ]
     },
     {
+      "id": "2026-11-02-al-mukhaf-market-strike-al-misrakh",
+      "date": "2026-11-02",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed by the Yemeni government; the Houthis blame Saudi-backed forces)",
+      "target": "Al-Mukhaf popular market",
+      "place": "al-Mukhaf, al-Misrakh district, Taiz",
+      "country": "Yemen",
+      "lat": 13.4518,
+      "lon": 44.0349,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Strike on al-Mukhaf market in Taiz's al-Misrakh district kills civilians",
+      "summary": "Yemen's army claimed a Houthi ballistic missile hit al-Mukhaf market, Taiz, on 2 Nov, killing or wounding 60; Saba, cited by SANA, said 14 died and 25 were hurt. Houthi-run YPA claimed Saudi-backed forces' fire killed 10.",
+      "sources": [
+        {
+          "publisher": "Yemen Press Agency (Houthi-affiliated)",
+          "title": "Update: Death toll from Saudi-backed forces’ shelling on Al-Mukh’af market in Taiz rises to 10",
+          "url": "https://en.ypagency.net/410788",
+          "date": "2026-11-02"
+        },
+        {
+          "publisher": "Ajel News (Saudi)",
+          "title": "Sixty civilians killed or injured in Houthi missile strike on Taiz village",
+          "url": "https://english.ajel.sa/world/solg4144u",
+          "date": "2026-11-02"
+        },
+        {
+          "publisher": "SANA (Syrian state-run)",
+          "title": "Yemen attacks kill 19, injure 40 in Taiz and Lahj",
+          "url": "https://sana.sy/en/middle-east/2355591/",
+          "date": "2026-11-03"
+        }
+      ]
+    },
+    {
       "id": "2026-11-02-houthi-ballistic-missile-south-intercepted",
       "date": "2026-11-02",
       "time": null,
@@ -6656,6 +6693,37 @@
       ]
     },
     {
+      "id": "2026-11-03-taiziyah-footwear-factory-strike",
+      "date": "2026-11-03",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Plastic footwear factory at the Shar'ab junction",
+      "place": "Shar'ab junction, at-Ta'iziyah district, Taiz",
+      "country": "Yemen",
+      "lat": 13.6948,
+      "lon": 44.0094,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi media say Saudi strike on a footwear factory north of Taiz killed three",
+      "summary": "Houthi-run media claimed Saudi warplanes struck a plastic footwear factory at the Shar'ab junction in at-Ta'iziyah district, north of Taiz city, on 3 Nov, killing three and wounding eight. The claim was not independently verified.",
+      "sources": [
+        {
+          "publisher": "Yemen Press Agency (Houthi-affiliated)",
+          "title": "Saudi airstrike on factory in Taiz kills three, wounds eight",
+          "url": "https://en.ypagency.net/410848",
+          "date": "2026-11-03"
+        },
+        {
+          "publisher": "Social News XYZ (IANS)",
+          "title": "Casualties reported as fighting escalates across Yemen's southern fronts",
+          "url": "https://www.socialnews.xyz/2026/11/03/casualties-reported-as-fighting-escalates-across-yemens-southern-fronts/",
+          "date": "2026-11-03"
+        }
+      ]
+    },
+    {
       "id": "2026-11-03-tanker-two-projectiles-northeast-of-limah",
       "date": "2026-11-03",
       "time": "19:00Z",
@@ -6688,6 +6756,31 @@
           "publisher": "Arab Times",
           "title": "Tanker Hit by Two Unidentified Projectiles Off Oman",
           "url": "https://www.arabtimesonline.com/news/tanker-hit-by-two-unidentified-projectiles-off-oman/",
+          "date": "2026-11-04"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-irgc-claims-four-tankers-hit-mines-south-of-hormuz",
+      "date": "2026-11-04",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC, claimed)",
+      "target": "Four unnamed oil tankers",
+      "place": "South of the Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC claims four oil tankers destroyed by mines south of the Strait of Hormuz",
+      "summary": "The IRGC claimed on 4 Nov, in a statement carried by IRNA, that four oil tankers were destroyed and left ablaze after hitting naval mines in a prohibited lane south of the Strait of Hormuz. Ships were not named; the claim was not verified.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera (Reuters, Anadolu)",
+          "title": "Iran says US reply to Hormuz plan ‘unconvincing’; Trump confirms strikes",
+          "url": "https://www.aljazeera.com/news/2026/11/4/iran-says-us-reply-to-hormuz-plan-unconvincing-trump-confirms-strikes",
           "date": "2026-11-04"
         }
       ]
