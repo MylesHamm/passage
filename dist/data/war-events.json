@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-04T00:10:14Z",
+  "reviewedAt": "2026-11-04T06:09:13Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6652,6 +6652,43 @@
           "title": "Houthis claim drone strike on Saudi Abha airport",
           "url": "https://shafaq.com/en/Middle-East/Houthis-claim-drone-strike-on-Saudi-Abha-airport",
           "date": "2026-11-03"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-03-tanker-two-projectiles-northeast-of-limah",
+      "date": "2026-11-03",
+      "time": "19:00Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed tanker",
+      "place": "About 14 nm north-east of Limah, Musandam",
+      "country": "Oman",
+      "lat": 26.1068,
+      "lon": 56.6078,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Tanker hit by two projectiles off northeast coast of Oman, UK maritime agency says",
+      "summary": "UKMTO said two unidentified projectiles struck a tanker's engine room about 14 nm north-east of Lima, Oman, at 1900 GMT on 3 Nov, per the company security officer. No casualties or environmental damage; the tanker was not named.",
+      "sources": [
+        {
+          "publisher": "CBS News",
+          "title": "Tanker hit by 2 projectiles off northeast coast of Oman, U.K. maritime agency says",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-trump-negotiations-midterms/",
+          "date": "2026-11-03"
+        },
+        {
+          "publisher": "EconoTimes",
+          "title": "UKMTO Says Two Projectiles Hit Tanker’s Engine Room Off Oman",
+          "url": "https://econotimes.com/UKMTO-Says-Two-Projectiles-Hit-Tanker-s-Engine-Room-Off-Oman-1770357",
+          "date": "2026-11-04"
+        },
+        {
+          "publisher": "Arab Times",
+          "title": "Tanker Hit by Two Unidentified Projectiles Off Oman",
+          "url": "https://www.arabtimesonline.com/news/tanker-hit-by-two-unidentified-projectiles-off-oman/",
+          "date": "2026-11-04"
         }
       ]
     }
