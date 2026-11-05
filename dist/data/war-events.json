@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-05T06:11:40Z",
+  "reviewedAt": "2026-11-05T12:12:49Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6937,6 +6937,31 @@
           "title": "Saudi Airstrikes Across Yemen Kill at Least 12 Civilians, Including Six Children",
           "url": "https://news.antiwar.com/2026/11/04/saudi-airstrikes-across-yemen-kill-at-least-12-civilians-including-six-children/",
           "date": "2026-11-04"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-05-irgc-claims-two-tankers-tug-on-fire-hormuz",
+      "date": "2026-11-05",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC, claimed)",
+      "target": "Two unnamed oil tankers and a tugboat",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC claims two tankers and a tugboat caught fire in the Strait of Hormuz",
+      "summary": "The IRGC claimed on 5 Nov that a tanker struck a mine south of the Strait of Hormuz and a supertanker caught fire in the strait's east, then a tug helping it caught fire, after using unauthorised routes. Ships unnamed; not verified.",
+      "sources": [
+        {
+          "publisher": "Arab News (Reuters)",
+          "title": "Iran's IRGC says two tankers and tugboat caught fire in Strait of Hormuz",
+          "url": "https://www.arabnews.com/middle-east/irans-irgc-says-two-tankers-and-tugboat-caught-fire-in-strait-of-hormuz-3009888",
+          "date": "2026-11-05"
         }
       ]
     }
