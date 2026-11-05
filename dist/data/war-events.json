@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-04T18:10:09Z",
+  "reviewedAt": "2026-11-05T00:10:46Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6761,6 +6761,31 @@
       ]
     },
     {
+      "id": "2026-11-04-houthi-claimed-missile-aakefah-camp-najran",
+      "date": "2026-11-04",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed)",
+      "target": "Aakefah military camp",
+      "place": "Najran",
+      "country": "Saudi Arabia",
+      "lat": 17.4917,
+      "lon": 44.1322,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis claim ballistic missile strike on the Aakefah camp in Najran",
+      "summary": "Houthi spokesman Yahya Saree claimed on 4 Nov that a ballistic missile targeted the Aakefah camp in Najran. Saudi civil defence issued an alert in Najran and later said the danger had passed. There was no Saudi confirmation of a hit.",
+      "sources": [
+        {
+          "publisher": "Siasat Daily",
+          "title": "Houthis claim direct hit on Riyadh airport, warn airlines",
+          "url": "https://www.siasat.com/houthis-claim-direct-hit-on-riyadh-airport-warn-airlines-3569851/",
+          "date": "2026-11-04"
+        }
+      ]
+    },
+    {
       "id": "2026-11-04-houthi-claimed-missile-king-khalid-airport-riyadh",
       "date": "2026-11-04",
       "time": null,
@@ -6798,6 +6823,68 @@
       ]
     },
     {
+      "id": "2026-11-04-houthi-claimed-strikes-jizan-border-guard-radar",
+      "date": "2026-11-04",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed)",
+      "target": "Border Guard command and control facility and a radar north of Jizan",
+      "place": "Jizan",
+      "country": "Saudi Arabia",
+      "lat": 16.8892,
+      "lon": 42.5511,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis claim missile and drone strikes on a Border Guard command post and radar in Jizan",
+      "summary": "Houthi spokesman Yahya Saree claimed on 4 Nov that a ballistic missile hit a Border Guard command and control facility in Jizan and a drone hit a radar on the al-Qahmah peninsula, causing casualties. Saudi civil defence issued alerts.",
+      "sources": [
+        {
+          "publisher": "KRCG (AP)",
+          "title": "Iranians celebrate setback for Trump in US election, and other Mideast news",
+          "url": "https://krcgtv.com/news/nation-world/iranians-celebrate-setback-for-trump-in-us-election-and-other-mideast-news",
+          "date": "2026-11-04"
+        },
+        {
+          "publisher": "Siasat Daily",
+          "title": "Houthis claim direct hit on Riyadh airport, warn airlines",
+          "url": "https://www.siasat.com/houthis-claim-direct-hit-on-riyadh-airport-warn-airlines-3569851/",
+          "date": "2026-11-04"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-houthi-missile-al-ulala-camp-qatabah",
+      "date": "2026-11-04",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (blamed by government officials)",
+      "target": "Al-Ulala military training camp, government recruits",
+      "place": "Al-Ulala camp, west of Qatabah, al-Dhale",
+      "country": "Yemen",
+      "lat": 13.8524,
+      "lon": 44.7035,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Houthi missile hits a government training camp near Qatabah, al-Dhale, killing recruits",
+      "summary": "A ballistic missile blamed on the Houthis hit a training camp near Qatabah on 4 Nov. A government official told Xinhua 13 recruits were killed and 65 wounded; military sources told The New Arab the toll could exceed 25.",
+      "sources": [
+        {
+          "publisher": "The New Arab",
+          "title": "Houthi missile attack kills dozens at military camp in Yemen's al-Dhale",
+          "url": "https://www.newarab.com/news/houthi-missile-attack-kills-dozens-military-camp-yemen",
+          "date": "2026-11-04"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "13 killed in Houthi missile strike on Yemeni military camp",
+          "url": "https://english.news.cn/20261105/33779a75a23741e6a1741058b7cfbc80/c.html",
+          "date": "2026-11-05"
+        }
+      ]
+    },
+    {
       "id": "2026-11-04-irgc-claims-four-tankers-hit-mines-south-of-hormuz",
       "date": "2026-11-04",
       "time": null,
@@ -6818,6 +6905,37 @@
           "publisher": "Al Jazeera (Reuters, Anadolu)",
           "title": "Iran says US reply to Hormuz plan ‘unconvincing’; Trump confirms strikes",
           "url": "https://www.aljazeera.com/news/2026/11/4/iran-says-us-reply-to-hormuz-plan-unconvincing-trump-confirms-strikes",
+          "date": "2026-11-04"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-maqbana-house-strike",
+      "date": "2026-11-04",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "A house in Maqbana district",
+      "place": "Maqbana district, Taiz",
+      "country": "Yemen",
+      "lat": 13.5846,
+      "lon": 43.6674,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis say an airstrike on a house in Maqbana district, Taiz, killed seven",
+      "summary": "The Houthi-run Health Ministry claimed a Saudi airstrike hit a house in Maqbana district on 4 Nov, killing at least seven, including two children; AP said six other children were wounded. Saudi Arabia did not immediately comment.",
+      "sources": [
+        {
+          "publisher": "KRCG (AP)",
+          "title": "Iranians celebrate setback for Trump in US election, and other Mideast news",
+          "url": "https://krcgtv.com/news/nation-world/iranians-celebrate-setback-for-trump-in-us-election-and-other-mideast-news",
+          "date": "2026-11-04"
+        },
+        {
+          "publisher": "Antiwar.com",
+          "title": "Saudi Airstrikes Across Yemen Kill at Least 12 Civilians, Including Six Children",
+          "url": "https://news.antiwar.com/2026/11/04/saudi-airstrikes-across-yemen-kill-at-least-12-civilians-including-six-children/",
           "date": "2026-11-04"
         }
       ]
