@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-05T12:12:49Z",
+  "reviewedAt": "2026-11-05T18:12:17Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6937,6 +6937,111 @@
           "title": "Saudi Airstrikes Across Yemen Kill at Least 12 Civilians, Including Six Children",
           "url": "https://news.antiwar.com/2026/11/04/saudi-airstrikes-across-yemen-kill-at-least-12-civilians-including-six-children/",
           "date": "2026-11-04"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-tanker-two-projectiles-north-of-madinat-ash-shamal",
+      "date": "2026-11-04",
+      "time": "23:20Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed tanker",
+      "place": "About 50 nm north of Madinat ash Shamal",
+      "country": "Qatar",
+      "lat": 26.9494,
+      "lon": 51.2167,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Tanker struck by two unidentified projectiles north of Qatar, UKMTO says",
+      "summary": "UKMTO said a tanker was hit by two unidentified projectiles about 50 nm north of Madinat ash Shamal, Qatar, in a report received at 2320 UTC on 4 Nov. Crew condition and damage were unconfirmed; the ship was not named.",
+      "sources": [
+        {
+          "publisher": "Dawn (Reuters)",
+          "title": "Tanker struck by 2 unidentified projectiles north of Qatar, crew status unconfirmed, UKMTO says",
+          "url": "https://www.dawn.com/news/2042327/tanker-struck-by-2-unidentified-projectiles-north-of-qatar-crew-status-unconfirmed-ukmto-says",
+          "date": "2026-11-05"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Tanker hit by 2 projectiles north of Qatar, British military says",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-trump-midterms-strait-of-hormuz/",
+          "date": "2026-11-05"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-05-houthi-ballistic-missile-madinah-region-intercepted",
+      "date": "2026-11-05",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Madinah region",
+      "place": "Madinah region",
+      "country": "Saudi Arabia",
+      "lat": 24.4672,
+      "lon": 39.6111,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted a Houthi ballistic missile fired at the Madinah region",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 5 Nov that air defences intercepted and destroyed a Houthi ballistic missile launched toward the Madinah region. No target or damage was given. Houthi spokesman Yahya Saree called it false.",
+      "sources": [
+        {
+          "publisher": "A News (Anadolu)",
+          "title": "Saudi-led coalition says it intercepts ballistic missile headed toward Medina region",
+          "url": "https://www.anews.com.tr/world/2026/11/05/saudi-led-coalition-says-it-intercepts-ballistic-missile-headed-toward-medina-region",
+          "date": "2026-11-05"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Coalition says Houthi missile fired at Saudi Arabia's Madinah region intercepted",
+          "url": "https://www.arabnews.com/saudi-arabia/saudi-coalition-says-houthi-missile-fired-at-medina-region-intercepted-3009937",
+          "date": "2026-11-05"
+        },
+        {
+          "publisher": "Siasat Daily",
+          "title": "Houthis claim drone attack on Dammam airport",
+          "url": "https://www.siasat.com/houthis-claim-drone-attack-on-dammam-airport-3570433/",
+          "date": "2026-11-05"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-05-houthi-claimed-drone-dammam-airport",
+      "date": "2026-11-05",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "King Fahd International Airport",
+      "place": "King Fahd International Airport, Dammam",
+      "country": "Saudi Arabia",
+      "lat": 26.4712,
+      "lon": 49.7979,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthis claim a drone attack on Dammam airport",
+      "summary": "The Houthis claimed on 5 Nov that a drone operation against King Fahd International Airport in Dammam disrupted air traffic. No Saudi comment; the coalition said it later downed a Houthi drone over the Eastern Province.",
+      "sources": [
+        {
+          "publisher": "CBS News",
+          "title": "Houthi drone disrupts traffic at Saudi airport, group says",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-trump-midterms-strait-of-hormuz/",
+          "date": "2026-11-05"
+        },
+        {
+          "publisher": "Siasat Daily",
+          "title": "Houthis claim drone attack on Dammam airport",
+          "url": "https://www.siasat.com/houthis-claim-drone-attack-on-dammam-airport-3570433/",
+          "date": "2026-11-05"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Coalition says Houthi missile fired at Saudi Arabia's Madinah region intercepted",
+          "url": "https://www.arabnews.com/saudi-arabia/saudi-coalition-says-houthi-missile-fired-at-medina-region-intercepted-3009937",
+          "date": "2026-11-05"
         }
       ]
     },
