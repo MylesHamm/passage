@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-06T12:14:10Z",
+  "reviewedAt": "2026-11-06T18:12:00Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6972,15 +6972,15 @@
       "layer": "shipping",
       "type": "shipping-attack",
       "actor": "Unattributed",
-      "target": "Unnamed tanker",
+      "target": "Tanker Velos Sapphire (Marshall Islands-flagged)",
       "place": "About 50 nm north of Madinat ash Shamal",
       "country": "Qatar",
       "lat": 26.9494,
       "lon": 51.2167,
       "precision": "sea-area",
       "confidence": "confirmed",
-      "title": "Tanker struck by two unidentified projectiles north of Qatar, UKMTO says",
-      "summary": "UKMTO said a tanker was hit by two unidentified projectiles about 50 nm north of Madinat ash Shamal, Qatar, at 2320 UTC on 4 Nov. Maritime Executive cited open-source and security accounts that a crewmember died; UKMTO did not confirm.",
+      "title": "Tanker Velos Sapphire hit by two projectiles north of Qatar; one seafarer killed",
+      "summary": "UKMTO said a tanker was hit by two unidentified projectiles about 50 nm north of Madinat ash Shamal, Qatar, at 2320 UTC on 4 Nov. Riviera, citing the IMO, named it Velos Sapphire; its owner said on 6 Nov a seafarer was killed.",
       "sources": [
         {
           "publisher": "Dawn (Reuters)",
@@ -6999,6 +6999,18 @@
           "title": "One Seafarer Reported Killed in Strike on a Tanker off Qatar",
           "url": "https://maritime-executive.com/article/one-seafarer-reported-killed-in-strike-on-a-tanker-off-qatar",
           "date": "2026-11-05"
+        },
+        {
+          "publisher": "Arab News (Reuters)",
+          "title": "Seafarer killed in suspected missile attack on tanker in Gulf",
+          "url": "https://www.arabnews.pk/middle-east/seafarer-killed-in-suspected-missile-attack-on-tanker-in-gulf-3006299",
+          "date": "2026-11-06"
+        },
+        {
+          "publisher": "Riviera Maritime Media",
+          "title": "Seafarer killed in attack on Greek-owned tanker in Middle East Gulf",
+          "url": "https://www.rivieramm.com/news-content-hub/seafarer-killed-in-attack-on-greek-owned-tanker-in-middle-east-gulf-90497",
+          "date": "2026-11-06"
         }
       ]
     },
@@ -7133,6 +7145,74 @@
       ]
     },
     {
+      "id": "2026-11-05-tanker-explosion-east-of-khasab",
+      "date": "2026-11-05",
+      "time": "22:00Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed outbound tanker",
+      "place": "About 16 nm east of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.183,
+      "lon": 56.547,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Tanker reports an explosion at its waterline east of Khasab, UKMTO says",
+      "summary": "UKMTO said a tanker's master reported an explosion at the port-side waterline about 16 nm east of Khasab, Oman, at 2200 UTC on 5 Nov. The crew were safe and the ship continued its voyage. No cause or attacker was given.",
+      "sources": [
+        {
+          "publisher": "Arab News (Reuters)",
+          "title": "Tanker reports explosion near Oman’s Khasab while transiting Strait of Hormuz, UKMTO says",
+          "url": "https://www.arabnews.com/middle-east/tanker-reports-explosion-near-omans-khasab-while-transiting-strait-of-hormuz-ukmto-says-3010151",
+          "date": "2026-11-06"
+        },
+        {
+          "publisher": "Siasat Daily",
+          "title": "Oman: Tanker reports explosion while crossing Strait of Hormuz",
+          "url": "https://www.siasat.com/oman-tanker-reports-explosion-while-crossing-strait-of-hormuz-3570900/",
+          "date": "2026-11-06"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-06-al-hadara-market-strike-al-waziyah-taiz",
+      "date": "2026-11-06",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Disputed (the Houthis blame Saudi airstrikes; the government blames a Houthi missile)",
+      "target": "Al-Hadara market",
+      "place": "Al-Waziyah district, Taiz",
+      "country": "Yemen",
+      "lat": 13.174,
+      "lon": 43.7298,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Strike on al-Hadara market in al-Waziyah, Taiz, kills at least 30, Houthis say",
+      "summary": "Houthi officials claimed three Saudi airstrikes hit al-Hadara market on 6 Nov; their health ministry first said 20 were killed, a Houthi official later told AP 30. Yemen's government said no aircraft flew and blamed a Houthi missile.",
+      "sources": [
+        {
+          "publisher": "Asharq Al-Awsat",
+          "title": "Houthi Ballistic Missile Attack Leaves Civilian Casualties in Taiz",
+          "url": "https://english.aawsat.com/arab-world/5338385-houthi-ballistic-missile-attack-leaves-civilian-casualties-taiz",
+          "date": "2026-11-06"
+        },
+        {
+          "publisher": "WTOP (AP)",
+          "title": "Airstrikes on a market in southwestern Yemen kill at least 30, Houthis say",
+          "url": "https://wtop.com/world/2026/11/iran-backed-houthi-rebels-health-ministry-says-at-least-20-killed-in-airstrikes-on-a-market-in-southwestern-yemen/",
+          "date": "2026-11-06"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Yemeni forces accuse Houthis of deadly market attack in Taiz",
+          "url": "https://arabnews.pk/middle-east/yemeni-forces-accuse-houthis-of-deadly-market-attack-in-taiz-3006308",
+          "date": "2026-11-06"
+        }
+      ]
+    },
+    {
       "id": "2026-11-06-drone-makkah-region-intercepted",
       "date": "2026-11-06",
       "time": null,
@@ -7159,6 +7239,68 @@
           "publisher": "Kurdistan24 (AFP)",
           "title": "Saudi Coalition Announces Drone Interception in Mecca Region",
           "url": "https://kurdistan24.net/en/story/951129/saudi-coalition-announces-drone-interception-in-mecca-region",
+          "date": "2026-11-06"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-06-houthi-ballistic-missiles-najran-intercepted",
+      "date": "2026-11-06",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Najran",
+      "place": "Najran",
+      "country": "Saudi Arabia",
+      "lat": 17.4917,
+      "lon": 44.1322,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted two Houthi ballistic missiles fired at Najran",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 6 Nov that air defences intercepted and destroyed two Houthi ballistic missiles fired toward Najran; debris fell and damage was being assessed. No Houthi claim was reported.",
+      "sources": [
+        {
+          "publisher": "Devdiscourse (Reuters)",
+          "title": "Saudi-led coalition says it intercepted two Houthi ballistic missiles fired towards Saudi Arabia's Najran",
+          "url": "https://www.devdiscourse.com/article/international/4002574-saudi-led-coalition-says-it-intercepted-two-houthi-ballistic-missiles-fired-towards-saudi-arabias-najran",
+          "date": "2026-11-06"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Coalition forces intercept Houthi ballistic missiles targeting Najran",
+          "url": "https://www.arabnews.com/saudi-arabia/coalition-forces-intercept-houthi-ballistic-missiles-targeting-najran-3010126",
+          "date": "2026-11-06"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-06-irgc-claims-two-more-tankers-mines-hormuz",
+      "date": "2026-11-06",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC, claimed)",
+      "target": "Two unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC claims two more oil tankers hit mines and caught fire in the Strait of Hormuz",
+      "summary": "The IRGC claimed on 6 Nov that two more oil tankers hit naval mines in the Strait of Hormuz, one in its east and one on an unauthorised route, and caught fire and stopped. Ships were not named; the claim was not verified.",
+      "sources": [
+        {
+          "publisher": "Shafaq News",
+          "title": "IRGC reports two more tankers ablaze in Hormuz",
+          "url": "https://shafaq.com/en/World/IRGC-reports-two-more-tankers-ablaze-in-Hormuz",
+          "date": "2026-11-06"
+        },
+        {
+          "publisher": "Mehr News Agency (Iranian state-affiliated)",
+          "title": "Two other oil tanker on fire afte hitting mines in Hormuz",
+          "url": "https://en.mehrnews.com/news/249197/Two-other-oil-tanker-on-fire-afte-hitting-mines-in-Hormuz",
           "date": "2026-11-06"
         }
       ]
