@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-06T06:10:52Z",
+  "reviewedAt": "2026-11-06T12:14:10Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6854,6 +6854,31 @@
       ]
     },
     {
+      "id": "2026-11-04-houthi-missile-al-athawir-hayfan-taiz",
+      "date": "2026-11-04",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Family home in al-Athawir",
+      "place": "Al-Athawir, Hayfan district, Taiz",
+      "country": "Yemen",
+      "lat": 13.2166,
+      "lon": 44.2325,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi missile kills four of one family in Hayfan, Taiz, reports say",
+      "summary": "Middle East Eye reported a Houthi ballistic missile hit a home in Hayfan, Taiz, on 4 Nov, killing four of one family including three children; government state media claimed four more were hurt. No Houthi comment reported.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthi attack kills four people as Yemeni government forces make gains in al-Jawf and Taiz",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthi-attack-kills-four-people-yemeni-government-forces-make-gains-al",
+          "date": "2026-11-04"
+        }
+      ]
+    },
+    {
       "id": "2026-11-04-houthi-missile-al-ulala-camp-qatabah",
       "date": "2026-11-04",
       "time": null,
@@ -6955,7 +6980,7 @@
       "precision": "sea-area",
       "confidence": "confirmed",
       "title": "Tanker struck by two unidentified projectiles north of Qatar, UKMTO says",
-      "summary": "UKMTO said a tanker was hit by two unidentified projectiles about 50 nm north of Madinat ash Shamal, Qatar, in a report received at 2320 UTC on 4 Nov. Crew condition and damage were unconfirmed; the ship was not named.",
+      "summary": "UKMTO said a tanker was hit by two unidentified projectiles about 50 nm north of Madinat ash Shamal, Qatar, at 2320 UTC on 4 Nov. Maritime Executive cited open-source and security accounts that a crewmember died; UKMTO did not confirm.",
       "sources": [
         {
           "publisher": "Dawn (Reuters)",
@@ -6967,6 +6992,12 @@
           "publisher": "CBS News",
           "title": "Tanker hit by 2 projectiles north of Qatar, British military says",
           "url": "https://www.cbsnews.com/live-updates/iran-war-us-trump-midterms-strait-of-hormuz/",
+          "date": "2026-11-05"
+        },
+        {
+          "publisher": "The Maritime Executive",
+          "title": "One Seafarer Reported Killed in Strike on a Tanker off Qatar",
+          "url": "https://maritime-executive.com/article/one-seafarer-reported-killed-in-strike-on-a-tanker-off-qatar",
           "date": "2026-11-05"
         }
       ]
@@ -7098,6 +7129,37 @@
           "title": "Iran's IRGC says two tankers and tugboat caught fire in Strait of Hormuz",
           "url": "https://www.arabnews.com/middle-east/irans-irgc-says-two-tankers-and-tugboat-caught-fire-in-strait-of-hormuz-3009888",
           "date": "2026-11-05"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-06-drone-makkah-region-intercepted",
+      "date": "2026-11-06",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Unattributed",
+      "target": "Makkah region",
+      "place": "Makkah region",
+      "country": "Saudi Arabia",
+      "lat": 21.4225,
+      "lon": 39.8262,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says a drone was intercepted and destroyed in the Makkah region",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 6 Nov that a drone was intercepted and destroyed in the Makkah region, without saying where it came from or what it targeted. No damage was reported.",
+      "sources": [
+        {
+          "publisher": "LBCI (AFP)",
+          "title": "Saudi-led coalition says it intercepted drone in Mecca region",
+          "url": "https://www.lbcgroup.tv/news/middleeastnews/966646/saudi-led-coalition-says-it-intercepted-drone-in-mecca-region/en",
+          "date": "2026-11-06"
+        },
+        {
+          "publisher": "Kurdistan24 (AFP)",
+          "title": "Saudi Coalition Announces Drone Interception in Mecca Region",
+          "url": "https://kurdistan24.net/en/story/951129/saudi-coalition-announces-drone-interception-in-mecca-region",
+          "date": "2026-11-06"
         }
       ]
     }
