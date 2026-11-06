@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-05T18:12:17Z",
+  "reviewedAt": "2026-11-06T00:08:58Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -6967,6 +6967,37 @@
           "publisher": "CBS News",
           "title": "Tanker hit by 2 projectiles north of Qatar, British military says",
           "url": "https://www.cbsnews.com/live-updates/iran-war-us-trump-midterms-strait-of-hormuz/",
+          "date": "2026-11-05"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-05-at-talh-farm-strikes-sahar-saada",
+      "date": "2026-11-05",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Farmers and rescue workers at At Talh",
+      "place": "At Talh, Sahar district, Saada",
+      "country": "Yemen",
+      "lat": 17.0205,
+      "lon": 43.6744,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis say two airstrikes at At Talh, Saada, killed seven",
+      "summary": "The Houthi-run Health Ministry claimed two Saudi airstrikes on 5 Nov killed seven and wounded six in Saada; al-Masirah said farmers at At Talh, Sahar district, were hit, then rescuers. Saudi Arabia did not immediately comment.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (AP)",
+          "title": "Houthis claim two Saudi airstrikes in Yemen killed 7 people",
+          "url": "https://www.timesofisrael.com/liveblog_entry/houthis-claim-two-saudi-airstrikes-in-yemen-killed-7-people/",
+          "date": "2026-11-05"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "7 killed in airstrikes on N. Yemen's Saada: Houthi media",
+          "url": "https://english.news.cn/20261105/b3ef39d3c2bb47b7aaf8b5d974e2babb/c.html",
           "date": "2026-11-05"
         }
       ]
