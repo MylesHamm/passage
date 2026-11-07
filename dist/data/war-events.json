@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-07T12:11:36Z",
+  "reviewedAt": "2026-11-07T18:09:34Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7381,8 +7381,8 @@
       "lon": 44.5,
       "precision": "area",
       "confidence": "claimed",
-      "title": "Houthi media say Saudi strikes on homes in Bani Hushaish, Sanaa, killed 22",
-      "summary": "Houthi-run Saba claimed on 7 Nov that Saudi strikes on homes in al-Sharya, Bani Hushaish, killed 11, including women and children, and hit paramedics; Saba and Al-Masirah later claimed 22 killed and 30 hurt. No Saudi comment.",
+      "title": "Saudi strikes on homes in Bani Hushaish, Sanaa, killed 27, Houthi health ministry says",
+      "summary": "Houthi-run Saba claimed on 7 Nov Saudi strikes on homes in al-Sharya, Bani Hushaish, killed 11 and hit paramedics; Al-Masirah later claimed 22 killed, the Houthi health ministry 25, then 27 killed and 36 hurt. No Saudi comment.",
       "sources": [
         {
           "publisher": "Middle East Eye (AFP)",
@@ -7400,6 +7400,18 @@
           "publisher": "The New Arab (agencies)",
           "title": "Qatar says mediation efforts between US and Iran continue to prevent escalation",
           "url": "https://www.newarab.com/news/qatar-continues-us-iran-mediation-efforts-prevent-escalation",
+          "date": "2026-11-07"
+        },
+        {
+          "publisher": "Canberra Times (AAP)",
+          "title": "Air strike kills 25 near Yemeni capital, Houthis say",
+          "url": "https://canberratimes.com.au/story/9387546/air-strike-kills-25-near-yemeni-capital-houthis-say",
+          "date": "2026-11-07"
+        },
+        {
+          "publisher": "The New Arab (agencies)",
+          "title": "Houthis say 27 killed in Saudi strikes on Yemen’s Sanaa province",
+          "url": "https://www.newarab.com/news/houthis-say-27-killed-saudi-strikes-yemens-sanaa-province",
           "date": "2026-11-07"
         }
       ]
@@ -7419,7 +7431,7 @@
       "precision": "area",
       "confidence": "claimed",
       "title": "Coalition says it intercepted a Houthi cruise missile fired toward Riyadh",
-      "summary": "Coalition spokesman Turki al-Maliki claimed on 7 Nov that a cruise missile launched by the Houthis toward the Riyadh area was intercepted and destroyed. No casualties or damage were reported; no Houthi claim was reported.",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 7 Nov that a Houthi cruise missile fired toward the Riyadh area was intercepted and destroyed; no damage was reported. Houthi spokesman Yahya Saree claimed six operations incl. Riyadh airport.",
       "sources": [
         {
           "publisher": "Arab News",
@@ -7431,6 +7443,12 @@
           "publisher": "UAE Vartha",
           "title": "Saudi Air Defenses Intercept Houthi Cruise Missile Fired at Riyadh",
           "url": "https://english.uaevartha.com/saudi-air-defenses-intercept-houthi-cruise-missile-fired-at-riyadh/",
+          "date": "2026-11-07"
+        },
+        {
+          "publisher": "The New Arab (agencies)",
+          "title": "Houthis say targeted Saudi oil sites, troops and Riyadh airport",
+          "url": "https://www.newarab.com/news/houthis-say-targeted-saudi-oil-sites-troops-and-riyadh-airport",
           "date": "2026-11-07"
         }
       ]
