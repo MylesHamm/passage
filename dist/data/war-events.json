@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-07T06:09:28Z",
+  "reviewedAt": "2026-11-07T12:11:36Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7368,6 +7368,43 @@
       ]
     },
     {
+      "id": "2026-11-07-al-sharya-bani-hushaish-strikes",
+      "date": "2026-11-07",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Homes in al-Sharya",
+      "place": "Bani Hushaish district, Sanaa governorate",
+      "country": "Yemen",
+      "lat": 15.5,
+      "lon": 44.5,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi media say Saudi strikes on homes in Bani Hushaish, Sanaa, killed 22",
+      "summary": "Houthi-run Saba claimed on 7 Nov that Saudi strikes on homes in al-Sharya, Bani Hushaish, killed 11, including women and children, and hit paramedics; Saba and Al-Masirah later claimed 22 killed and 30 hurt. No Saudi comment.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye (AFP)",
+          "title": "Houthi media says 11 killed in Saudi strikes on Yemen's Sanaa province",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthi-media-says-11-killed-saudi-strikes-yemens-sanaa-province",
+          "date": "2026-11-07"
+        },
+        {
+          "publisher": "Al-Quds Al-Arabi (agencies)",
+          "title": "إعلام حوثي: 11 قتيلا في غارات سعودية على محافظة صنعاء",
+          "url": "https://www.alquds.co.uk/%D8%A5%D8%B9%D9%84%D8%A7%D9%85-%D8%AD%D9%88%D8%AB%D9%8A-11-%D9%82%D8%AA%D9%8A%D9%84%D8%A7-%D9%81%D9%8A-%D8%BA%D8%A7%D8%B1%D8%A7%D8%AA-%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9-%D8%B9%D9%84%D9%89-%D9%85/",
+          "date": "2026-11-07"
+        },
+        {
+          "publisher": "The New Arab (agencies)",
+          "title": "Qatar says mediation efforts between US and Iran continue to prevent escalation",
+          "url": "https://www.newarab.com/news/qatar-continues-us-iran-mediation-efforts-prevent-escalation",
+          "date": "2026-11-07"
+        }
+      ]
+    },
+    {
       "id": "2026-11-07-houthi-cruise-missile-riyadh-intercepted",
       "date": "2026-11-07",
       "time": null,
@@ -7394,6 +7431,31 @@
           "publisher": "UAE Vartha",
           "title": "Saudi Air Defenses Intercept Houthi Cruise Missile Fired at Riyadh",
           "url": "https://english.uaevartha.com/saudi-air-defenses-intercept-houthi-cruise-missile-fired-at-riyadh/",
+          "date": "2026-11-07"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-07-iran-navy-claims-tanker-mine-east-hormuz",
+      "date": "2026-11-07",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (navy, claimed)",
+      "target": "Unnamed oil tanker",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran navy says tanker hits mine, catches fire in Hormuz",
+      "summary": "Iran's navy claimed on 7 Nov that an oil tanker caught fire and was immobilised after striking a naval mine east of the Strait of Hormuz, saying it had turned off its transponders and entered prohibited waters. Ship unnamed; not verified.",
+      "sources": [
+        {
+          "publisher": "A News (Reuters)",
+          "title": "Iran navy says tanker hits mine, catches fire in Hormuz",
+          "url": "https://www.anews.com.tr/world/2026/11/07/iran-navy-says-tanker-hits-mine-catches-fire-in-hormuz",
           "date": "2026-11-07"
         }
       ]
