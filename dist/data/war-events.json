@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-06T18:12:00Z",
+  "reviewedAt": "2026-11-07T00:10:19Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7244,6 +7244,31 @@
       ]
     },
     {
+      "id": "2026-11-06-drone-riyadh-region-intercepted",
+      "date": "2026-11-06",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Unattributed",
+      "target": "Riyadh region",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says a drone was intercepted and destroyed in the Riyadh region",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on X on 6 Nov that a drone was intercepted and destroyed in the region of Riyadh, without giving its origin, target or any damage.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it intercepted, destroyed drone in region of Saudi capital Riyadh",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-says-it-intercepted-destroyed-drone-in-region-of-saudi-capital-riyadh/4114767",
+          "date": "2026-11-06"
+        }
+      ]
+    },
+    {
       "id": "2026-11-06-houthi-ballistic-missiles-najran-intercepted",
       "date": "2026-11-06",
       "time": null,
@@ -7301,6 +7326,37 @@
           "publisher": "Mehr News Agency (Iranian state-affiliated)",
           "title": "Two other oil tanker on fire afte hitting mines in Hormuz",
           "url": "https://en.mehrnews.com/news/249197/Two-other-oil-tanker-on-fire-afte-hitting-mines-in-Hormuz",
+          "date": "2026-11-06"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-06-two-missiles-strike-qeshm-island",
+      "date": "2026-11-06",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Unattributed",
+      "target": "Suza area of Qeshm Island",
+      "place": "Qeshm Island",
+      "country": "Iran",
+      "lat": 26.7675,
+      "lon": 55.7725,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Two missiles struck Qeshm Island, Iranian media say",
+      "summary": "Iran's Tasnim claimed late on 6 Nov that two missiles struck Qeshm Island, origin and damage unknown; IRNA cited witnesses who said two projectiles hit the Suza area after an aircraft was heard. Not verified.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Two missiles struck Qeshm Island, Iranian media says",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/two-missiles-struck-qeshm-island-iranian-media-says",
+          "date": "2026-11-06"
+        },
+        {
+          "publisher": "Times of Israel (Reuters)",
+          "title": "Iran news agency reports 2 missiles struck Qeshm Island",
+          "url": "https://www.timesofisrael.com/liveblog_entry/iran-news-agency-reports-2-missiles-struck-qeshm-island/",
           "date": "2026-11-06"
         }
       ]
