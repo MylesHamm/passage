@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-08T12:09:30Z",
+  "reviewedAt": "2026-11-08T18:09:19Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7522,6 +7522,37 @@
       ]
     },
     {
+      "id": "2026-11-07-tanker-struck-projectile-outbound-hormuz",
+      "date": "2026-11-07",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed tanker",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Tanker struck by unknown projectile while sailing outbound through Hormuz, UKMTO says",
+      "summary": "UKMTO said a tanker was struck by an unknown projectile on the night of 7 Nov while transiting outbound through the Strait of Hormuz. All crew were safe and accounted for, with no environmental impact. The ship was not named.",
+      "sources": [
+        {
+          "publisher": "ABC News",
+          "title": "Iran live updates: Saudis say Houthi missiles targeted Riyadh, Aramco tower damaged",
+          "url": "https://abcnews.com/International/live-updates/iran-live-updates-trump-good-call-netanyahu/?id=137762456",
+          "date": "2026-11-08"
+        },
+        {
+          "publisher": "TASS (Russian state-run)",
+          "title": "UKMTO reports two incidents with tankers in Strait of Hormuz",
+          "url": "https://tass.com/world/2214475",
+          "date": "2026-11-08"
+        }
+      ]
+    },
+    {
       "id": "2026-11-07-us-aircraft-disables-cargo-ship-huda-gulf-of-oman",
       "date": "2026-11-07",
       "time": null,
@@ -7553,6 +7584,37 @@
       ]
     },
     {
+      "id": "2026-11-08-coalition-destroys-houthi-missile-launchers-saada",
+      "date": "2026-11-08",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Two Houthi ballistic missile launch platforms",
+      "place": "Saada governorate",
+      "country": "Yemen",
+      "lat": 16.9402,
+      "lon": 43.7639,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition destroys two Houthi ballistic missile launchers in Saada",
+      "summary": "Coalition spokesman Turki al-Maliki said on 8 Nov that coalition forces destroyed two ballistic missile launch platforms in Saada governorate that he said the Houthis had used in an attempted attack on Riyadh that day.",
+      "sources": [
+        {
+          "publisher": "The Peninsula",
+          "title": "Saudi-led coalition destroys two Houthi ballistic missile launch platforms in Yemen",
+          "url": "https://thepeninsulaqatar.com/article/08/11/2026/saudi-led-coalition-destroys-two-houthi-ballistic-missile-launch-platforms-in-yemen",
+          "date": "2026-11-08"
+        },
+        {
+          "publisher": "TASS (Russian state-run)",
+          "title": "Saudi-led coalition hits Houthi missile launchers used to attack Riyadh",
+          "url": "https://tass.com/world/2214505",
+          "date": "2026-11-08"
+        }
+      ]
+    },
+    {
       "id": "2026-11-08-houthi-ballistic-missiles-riyadh-intercepted",
       "date": "2026-11-08",
       "time": null,
@@ -7566,8 +7628,8 @@
       "lon": 46.6753,
       "precision": "area",
       "confidence": "claimed",
-      "title": "Coalition says it intercepted two Houthi ballistic missiles fired toward Riyadh",
-      "summary": "Coalition spokesman Turki al-Maliki claimed on 8 Nov that two Houthi ballistic missiles fired toward Riyadh were intercepted. The Saudi energy ministry said an Aramco building was targeted; falling shrapnel caused minor damage, no injuries.",
+      "title": "Coalition says it intercepted two ballistic and two cruise missiles fired toward Riyadh",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 8 Nov that two Houthi ballistic missiles and two cruise missiles fired toward Riyadh were intercepted. The energy ministry said shrapnel caused minor damage to an Aramco building, no injuries.",
       "sources": [
         {
           "publisher": "Arab News",
@@ -7579,6 +7641,12 @@
           "publisher": "Gulf News",
           "title": "Middle East conflict: UAE rescues 22 crew in Gulf of Oman; US tightens Iran blockade; Tehran lifts missile limits",
           "url": "https://gulfnews.com/world/mena/uae-rescues-22-crew-in-gulf-of-oman-as-us-tightens-iran-blockade-and-tehran-lifts-missile-limits-1.500739993",
+          "date": "2026-11-08"
+        },
+        {
+          "publisher": "ABC News",
+          "title": "Iran live updates: Saudis say Houthi missiles targeted Riyadh, Aramco tower damaged",
+          "url": "https://abcnews.com/International/live-updates/iran-live-updates-trump-good-call-netanyahu/?id=137762456",
           "date": "2026-11-08"
         }
       ]
