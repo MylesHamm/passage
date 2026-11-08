@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-07T18:09:34Z",
+  "reviewedAt": "2026-11-08T00:09:36Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7475,6 +7475,37 @@
           "title": "Iran navy says tanker hits mine, catches fire in Hormuz",
           "url": "https://www.anews.com.tr/world/2026/11/07/iran-navy-says-tanker-hits-mine-catches-fire-in-hormuz",
           "date": "2026-11-07"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-07-us-aircraft-disables-cargo-ship-huda-gulf-of-oman",
+      "date": "2026-11-07",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "United States",
+      "target": "St. Kitts-flagged cargo ship (M/V Huda)",
+      "place": "Gulf of Oman",
+      "country": "Gulf of Oman",
+      "lat": 24.5,
+      "lon": 58.5,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "US aircraft disables cargo ship Huda in the Gulf of Oman under the blockade",
+      "summary": "CENTCOM said a US aircraft fired precision munitions at the stern of the St. Kitts-flagged cargo ship Huda on 7 Nov after its crew ignored repeated warnings and tried to break the blockade on Iran. No casualties were reported.",
+      "sources": [
+        {
+          "publisher": "gCaptain (Reuters)",
+          "title": "US Military Says It Disabled Cargo Vessel In Gulf Of Oman",
+          "url": "https://gcaptain.com/us-military-says-it-disabled-cargo-vessel-in-gulf-of-oman/",
+          "date": "2026-11-07"
+        },
+        {
+          "publisher": "Arab News (Reuters)",
+          "title": "US military says it disabled cargo vessel in Gulf of Oman",
+          "url": "https://www.arabnews.com/middle-east/us-military-says-it-disabled-cargo-vessel-in-gulf-of-oman-3010407",
+          "date": "2026-11-08"
         }
       ]
     }
