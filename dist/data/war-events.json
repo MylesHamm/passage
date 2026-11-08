@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-08T06:09:16Z",
+  "reviewedAt": "2026-11-08T12:09:30Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7382,7 +7382,7 @@
       "precision": "area",
       "confidence": "claimed",
       "title": "Saudi strikes on homes in Bani Hushaish, Sanaa, killed 33, Houthi health ministry says",
-      "summary": "Houthi-run Saba claimed on 7 Nov Saudi strikes on homes in al-Sharya, Bani Hushaish, killed 11; Al-Masirah later claimed 22, the Houthi health ministry 25, then 27, then on 8 Nov 33 killed and 39 hurt. No Saudi comment.",
+      "summary": "Houthi-run Saba claimed on 7 Nov Saudi strikes on homes in al-Sharya, Bani Hushaish, killed 11; Al-Masirah later claimed 22, the Houthi health ministry 25, then 27, then on 8 Nov 33 killed and 39 hurt. A Saudi centre was investigating.",
       "sources": [
         {
           "publisher": "Middle East Eye (AFP)",
@@ -7418,6 +7418,12 @@
           "publisher": "Onmanorama (AFP)",
           "title": "Houthis say 33 killed in Saudi strikes on Yemen's Sanaa province",
           "url": "https://www.onmanorama.com/news/world/2026/11/08/houthis-say-33-killed-in-saudi-strikes-on-yemen-s-sanaa-province.html",
+          "date": "2026-11-08"
+        },
+        {
+          "publisher": "Aaj English TV (Reuters)",
+          "title": "33 killed in reported Saudi air strikes near Yemen's Sanaa",
+          "url": "https://english.aaj.tv/news/330479828/33-killed-in-reported-saudi-air-strikes-near-yemens-sanaa",
           "date": "2026-11-08"
         }
       ]
@@ -7485,6 +7491,37 @@
       ]
     },
     {
+      "id": "2026-11-07-tanker-fire-northwest-of-khasab",
+      "date": "2026-11-07",
+      "time": "19:20Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed tanker",
+      "place": "About 8 nm northwest of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.2775,
+      "lon": 56.1449,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Tanker catches fire off Oman's Khasab and its crew is evacuated, UKMTO says",
+      "summary": "UKMTO said, citing military authorities, that a tanker caught fire about 8 nm northwest of Khasab, Oman, at 1920 UTC on 7 Nov and its crew was evacuated. The ship was not named and no cause or attacker was given.",
+      "sources": [
+        {
+          "publisher": "Arab Times",
+          "title": "Tanker Catches Fire Off Oman's Khasab; Crew Evacuated",
+          "url": "https://www.arabtimesonline.com/news/tanker-catches-fire-off-omans-khasab-crew-evacuated/",
+          "date": "2026-11-08"
+        },
+        {
+          "publisher": "Business Recorder (AFP)",
+          "title": "Iran says 3 tankers caught fire in Hormuz",
+          "url": "https://www.brecorder.com/news/40447998/iran-says-3-tankers-caught-fire-in-hormuz",
+          "date": "2026-11-08"
+        }
+      ]
+    },
+    {
       "id": "2026-11-07-us-aircraft-disables-cargo-ship-huda-gulf-of-oman",
       "date": "2026-11-07",
       "time": null,
@@ -7530,12 +7567,18 @@
       "precision": "area",
       "confidence": "claimed",
       "title": "Coalition says it intercepted two Houthi ballistic missiles fired toward Riyadh",
-      "summary": "Coalition spokesman Turki al-Maliki claimed on 8 Nov that air defences intercepted and destroyed two Houthi ballistic missiles fired toward Riyadh. A civil defence warning for Riyadh was lifted shortly after. No damage was reported.",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 8 Nov that two Houthi ballistic missiles fired toward Riyadh were intercepted. The Saudi energy ministry said an Aramco building was targeted; falling shrapnel caused minor damage, no injuries.",
       "sources": [
         {
           "publisher": "Arab News",
           "title": "Saudi defenses intercept two Houthi ballistic missiles targeting Riyadh",
           "url": "https://www.arabnews.pk/saudi-arabia/saudi-defenses-intercept-two-houthi-ballistic-missiles-targeting-riyadh-3006425",
+          "date": "2026-11-08"
+        },
+        {
+          "publisher": "Gulf News",
+          "title": "Middle East conflict: UAE rescues 22 crew in Gulf of Oman; US tightens Iran blockade; Tehran lifts missile limits",
+          "url": "https://gulfnews.com/world/mena/uae-rescues-22-crew-in-gulf-of-oman-as-us-tightens-iran-blockade-and-tehran-lifts-missile-limits-1.500739993",
           "date": "2026-11-08"
         }
       ]
@@ -7567,6 +7610,31 @@
           "publisher": "Arab News",
           "title": "Saudi defenses intercept two Houthi ballistic missiles targeting Riyadh",
           "url": "https://www.arabnews.pk/saudi-arabia/saudi-defenses-intercept-two-houthi-ballistic-missiles-targeting-riyadh-3006425",
+          "date": "2026-11-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-08-irgc-claims-three-tankers-fire-hormuz",
+      "date": "2026-11-08",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran (IRGC, claimed)",
+      "target": "Three unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC claims three tankers exploded and caught fire in the Strait of Hormuz",
+      "summary": "Iran's Revolutionary Guards claimed on 8 Nov that three 'non-compliant' tankers exploded and caught fire while sailing in an 'illegal channel' in the Strait of Hormuz. Ships were not named; AFP could not confirm the claim.",
+      "sources": [
+        {
+          "publisher": "Business Recorder (AFP)",
+          "title": "Iran says 3 tankers caught fire in Hormuz",
+          "url": "https://www.brecorder.com/news/40447998/iran-says-3-tankers-caught-fire-in-hormuz",
           "date": "2026-11-08"
         }
       ]
