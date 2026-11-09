@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-09T06:15:25Z",
+  "reviewedAt": "2026-11-09T12:14:30Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7381,8 +7381,8 @@
       "lon": 44.5,
       "precision": "area",
       "confidence": "claimed",
-      "title": "Saudi strikes on homes in Bani Hushaish, Sanaa, killed 33, Houthi health ministry says",
-      "summary": "Houthi-run Saba claimed on 7 Nov Saudi strikes on homes in al-Sharya, Bani Hushaish, killed 11; Al-Masirah later claimed 22, the Houthi health ministry 25, then 27, then on 8 Nov 33 killed and 39 hurt. A Saudi centre was investigating.",
+      "title": "Saudi strikes on homes in Bani Hushaish, Sanaa, killed 44, Houthi health ministry says",
+      "summary": "Houthi-run Saba claimed on 7 Nov Saudi strikes on homes in al-Sharya, Bani Hushaish, killed 11; Houthi outlets later claimed 22, 25, 27, then 33 on 8 Nov; on 9 Nov the health ministry claimed 44 killed, 40 hurt. A Saudi probe is under way.",
       "sources": [
         {
           "publisher": "Middle East Eye (AFP)",
@@ -7425,6 +7425,12 @@
           "title": "33 killed in reported Saudi air strikes near Yemen's Sanaa",
           "url": "https://english.aaj.tv/news/330479828/33-killed-in-reported-saudi-air-strikes-near-yemens-sanaa",
           "date": "2026-11-08"
+        },
+        {
+          "publisher": "The Sun Malaysia (AFP)",
+          "title": "Death toll from Saudi attack in Yemen rises to 44 – Houthi media",
+          "url": "https://thesun.my/news/world-news/death-toll-from-saudi-attack-in-yemen-rises-to-44-houthi-media/",
+          "date": "2026-11-09"
         }
       ]
     },
@@ -7735,6 +7741,37 @@
           "title": "Iran says 3 tankers caught fire in Hormuz",
           "url": "https://www.brecorder.com/news/40447998/iran-says-3-tankers-caught-fire-in-hormuz",
           "date": "2026-11-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-08-us-projectile-strikes-qeshm-island",
+      "date": "2026-11-08",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States (per Iranian media)",
+      "target": "Unidentified sites on Qeshm Island",
+      "place": "Qeshm Island",
+      "country": "Iran",
+      "lat": 26.7675,
+      "lon": 55.7725,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Iran’s Tasnim says a US projectile struck Qeshm Island",
+      "summary": "Iran’s Tasnim claimed a US projectile struck Qeshm Island on the evening of 8 Nov and said no other sites in Hormozgan were hit. A provincial deputy governor said the sites were outside residential areas and no vital infrastructure was hit.",
+      "sources": [
+        {
+          "publisher": "Euronews (AFP)",
+          "title": "Trump says US has ‘won’ Iran war as Rubio reports no progress in talks",
+          "url": "https://www.euronews.com/2026/11/09/trump-says-us-has-won-iran-war-as-rubio-reports-no-progress-in-talks",
+          "date": "2026-11-09"
+        },
+        {
+          "publisher": "A News (Anadolu)",
+          "title": "US strikes on Iran’s Qeshm Island cause no damage to vital infrastructure: Official",
+          "url": "https://www.anews.com.tr/americas/2026/11/09/us-strikes-on-irans-qeshm-island-cause-no-damage-to-vital-infrastructure-official",
+          "date": "2026-11-09"
         }
       ]
     }
