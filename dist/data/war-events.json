@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-09T00:10:09Z",
+  "reviewedAt": "2026-11-09T06:15:25Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7579,6 +7579,37 @@
           "publisher": "Arab News (Reuters)",
           "title": "US military says it disabled cargo vessel in Gulf of Oman",
           "url": "https://www.arabnews.com/middle-east/us-military-says-it-disabled-cargo-vessel-in-gulf-of-oman-3010407",
+          "date": "2026-11-08"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-08-coalition-destroys-houthi-missile-launch-platform-sanaa",
+      "date": "2026-11-08",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi ballistic missile launch platform",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3483,
+      "lon": 44.2064,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition says it destroyed Houthi missile launch platform in Sanaa",
+      "summary": "The Saudi-led coalition said on 8 Nov it destroyed a ballistic missile launch platform in Sanaa used in an attempted attack on the Eastern Region that day, Reuters reported; Middle East Eye reported the coalition said two platforms.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Saudi-led coalition says it destroyed Houthi missile launchpads in Yemen's Sanaa",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/saudi-led-coalition-says-it-destroyed-houthi-missile-launchpads-yemens",
+          "date": "2026-11-08"
+        },
+        {
+          "publisher": "Devdiscourse (Reuters)",
+          "title": "Saudi-led coalition says it destroyed Houthi ballistic missile launch platform in Sanaa",
+          "url": "https://www.devdiscourse.com/article/international/4003549-saudi-led-coalition-says-it-destroyed-houthi-ballistic-missile-launch-platform-in-sanaa",
           "date": "2026-11-08"
         }
       ]
