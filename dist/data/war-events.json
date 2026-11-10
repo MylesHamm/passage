@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-10T12:12:41Z",
+  "reviewedAt": "2026-11-10T18:10:34Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7869,6 +7869,31 @@
       ]
     },
     {
+      "id": "2026-11-10-irgc-claims-three-tankers-fire-hormuz",
+      "date": "2026-11-10",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran (IRGC, claimed)",
+      "target": "Three unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC claims three oil tankers are on fire in the Strait of Hormuz",
+      "summary": "Iran's Revolutionary Guards claimed on 10 Nov that two tankers were halted after explosions on an 'unauthorized route' in the Strait of Hormuz and a third hit a naval mine, all burning. The ships were not named.",
+      "sources": [
+        {
+          "publisher": "Arab News (Reuters)",
+          "title": "Iran says three oil tankers on fire in Hormuz",
+          "url": "https://www.arabnews.com/middle-east/tanker-struck-by-unknown-projectile-off-oman-ukmto-says-3010988",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
       "id": "2026-11-10-saba-claims-saudi-strikes-sanaa-gas-station-oil-building",
       "date": "2026-11-10",
       "time": null,
@@ -7895,6 +7920,37 @@
           "publisher": "Xinhua (Chinese state media)",
           "title": "Airstrikes hit gas facility, oil company building in Yemen's capital",
           "url": "https://english.news.cn/20261110/c0bea21d5b1f42e4963375eb063c8b0f/c.html",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-10-tanker-struck-projectile-northeast-of-limah",
+      "date": "2026-11-10",
+      "time": "13:38Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed tanker",
+      "place": "About 19 nm north-east of Limah, Musandam",
+      "country": "Oman",
+      "lat": 26.1656,
+      "lon": 56.6735,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Tanker struck by unknown projectile 19 nm north-east of Limah, Oman, UKMTO says",
+      "summary": "UKMTO said a tanker was struck by an unidentified projectile about 19 nm north-east of Lima, Oman, at 1338 UTC on 10 Nov. The master reported all crew safe and no environmental impact. The ship and projectile origin were not identified.",
+      "sources": [
+        {
+          "publisher": "gCaptain",
+          "title": "ADNOC Vessel Damaged in Gulf Attack as UKMTO Reports Fresh Tanker Strike Near Hormuz",
+          "url": "https://gcaptain.com/adnoc-vessel-damaged-in-gulf-attack-as-ukmto-reports-fresh-tanker-strike-near-hormuz/",
+          "date": "2026-11-10"
+        },
+        {
+          "publisher": "Arab News (Reuters)",
+          "title": "Iran says three oil tankers on fire in Hormuz",
+          "url": "https://www.arabnews.com/middle-east/tanker-struck-by-unknown-projectile-off-oman-ukmto-says-3010988",
           "date": "2026-11-10"
         }
       ]
