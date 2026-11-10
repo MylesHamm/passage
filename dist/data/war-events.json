@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-10T06:14:02Z",
+  "reviewedAt": "2026-11-10T12:12:41Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7864,6 +7864,37 @@
           "publisher": "TRT World (agencies)",
           "title": "Houthi militia target Saudi Arabia with three missiles, two aimed at capital, coalition says",
           "url": "https://www.trtworld.com/article/4e1bf996828e",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-10-saba-claims-saudi-strikes-sanaa-gas-station-oil-building",
+      "date": "2026-11-10",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by the Houthis)",
+      "target": "Al-Mufazir gas station and a state oil company building",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3483,
+      "lon": 44.2064,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthi media claim Saudi airstrikes hit a gas station and oil company building in Sanaa",
+      "summary": "Houthi-run Saba claimed Saudi strikes on 10 Nov hit the al-Mufazir gas station north of Sanaa, setting gas trailers on fire, and a state oil company building in southern Sanaa. No casualties were reported; Saudi Arabia did not comment.",
+      "sources": [
+        {
+          "publisher": "Cyprus Mail (Reuters)",
+          "title": "Saudi-led coalition reports Houthi missile, drone interceptions; Saba reports Saudi strikes on Sanaa",
+          "url": "https://cyprus-mail.com/2026/11/10/saudi-led-coalition-reports-houthi-missile-drone-interceptions-saba-reports-saudi-strikes-on-sanaa",
+          "date": "2026-11-10"
+        },
+        {
+          "publisher": "Xinhua (Chinese state media)",
+          "title": "Airstrikes hit gas facility, oil company building in Yemen's capital",
+          "url": "https://english.news.cn/20261110/c0bea21d5b1f42e4963375eb063c8b0f/c.html",
           "date": "2026-11-10"
         }
       ]
