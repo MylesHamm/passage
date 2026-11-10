@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-10T00:10:32Z",
+  "reviewedAt": "2026-11-10T06:14:02Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7778,6 +7778,93 @@
           "title": "US strikes on Iran’s Qeshm Island cause no damage to vital infrastructure: Official",
           "url": "https://www.anews.com.tr/americas/2026/11/09/us-strikes-on-irans-qeshm-island-cause-no-damage-to-vital-infrastructure-official",
           "date": "2026-11-09"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-09-coalition-destroys-houthi-missile-production-facilities-sanaa",
+      "date": "2026-11-09",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi ballistic missile production facilities",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3483,
+      "lon": 44.2064,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition says it destroyed three Houthi missile production facilities in Sanaa",
+      "summary": "Coalition spokesman Turki al-Maliki said on 9 Nov the coalition destroyed three Houthi facilities: a missile component factory, a solid-propellant chemical plant and an electronics workshop. TRT World reported they were in Sanaa.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Houthi missiles, drone intercepted as coalition says it destroyed militia’s ballistic missile factories",
+          "url": "https://www.arabnews.com/saudi-arabia/houthi-missiles-drone-intercepted-as-coalition-says-it-destroyed-militias-ballistic-missile-factories-3010803",
+          "date": "2026-11-09"
+        },
+        {
+          "publisher": "TRT World (agencies)",
+          "title": "Houthi militia target Saudi Arabia with three missiles, two aimed at capital, coalition says",
+          "url": "https://www.trtworld.com/article/4e1bf996828e",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-10-houthi-drone-eastern-province-intercepted",
+      "date": "2026-11-10",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Eastern Province",
+      "place": "Eastern Province",
+      "country": "Saudi Arabia",
+      "lat": 26.4207,
+      "lon": 50.0888,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted a Houthi drone in the Eastern Province",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 10 Nov that a Houthi drone was intercepted and destroyed in the Eastern Region. No damage or casualties were reported.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Houthi missiles, drone intercepted as coalition says it destroyed militia’s ballistic missile factories",
+          "url": "https://www.arabnews.com/saudi-arabia/houthi-missiles-drone-intercepted-as-coalition-says-it-destroyed-militias-ballistic-missile-factories-3010803",
+          "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-10-houthi-missiles-riyadh-intercepted",
+      "date": "2026-11-10",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Riyadh",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted two Houthi missiles fired at Riyadh",
+      "summary": "Coalition spokesman Turki al-Maliki claimed two Houthi missiles targeting Riyadh were intercepted early on 10 Nov, a ballistic and a cruise missile per TRT World, plus a ballistic missile fired at the southern region.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Houthi missiles, drone intercepted as coalition says it destroyed militia’s ballistic missile factories",
+          "url": "https://www.arabnews.com/saudi-arabia/houthi-missiles-drone-intercepted-as-coalition-says-it-destroyed-militias-ballistic-missile-factories-3010803",
+          "date": "2026-11-10"
+        },
+        {
+          "publisher": "TRT World (agencies)",
+          "title": "Houthi militia target Saudi Arabia with three missiles, two aimed at capital, coalition says",
+          "url": "https://www.trtworld.com/article/4e1bf996828e",
+          "date": "2026-11-10"
         }
       ]
     }
