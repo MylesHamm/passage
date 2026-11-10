@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-09T12:14:30Z",
+  "reviewedAt": "2026-11-10T00:10:32Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7665,12 +7665,12 @@
       "lon": 46.6753,
       "precision": "area",
       "confidence": "claimed",
-      "title": "Coalition says it intercepted two ballistic and two cruise missiles fired toward Riyadh",
-      "summary": "Coalition spokesman Turki al-Maliki claimed on 8 Nov that two Houthi ballistic missiles and two cruise missiles fired toward Riyadh were intercepted. The energy ministry said shrapnel caused minor damage to an Aramco building, no injuries.",
+      "title": "Coalition says it intercepted Houthi ballistic missiles at Riyadh and two cruise missiles",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 8 Nov two Houthi ballistic missiles fired at Riyadh and two cruise missiles in the Riyadh and southern regions were intercepted. The energy ministry reported minor damage to an Aramco building.",
       "sources": [
         {
           "publisher": "Arab News",
-          "title": "Saudi defenses intercept two Houthi ballistic missiles targeting Riyadh",
+          "title": "Aramco building in Riyadh targeted, Saudi energy ministry says",
           "url": "https://www.arabnews.pk/saudi-arabia/saudi-defenses-intercept-two-houthi-ballistic-missiles-targeting-riyadh-3006425",
           "date": "2026-11-08"
         },
@@ -7684,6 +7684,12 @@
           "publisher": "ABC News",
           "title": "Iran live updates: Saudis say Houthi missiles targeted Riyadh, Aramco tower damaged",
           "url": "https://abcnews.com/International/live-updates/iran-live-updates-trump-good-call-netanyahu/?id=137762456",
+          "date": "2026-11-08"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it intercepted drone, 4 missiles over Riyadh, southern regions",
+          "url": "https://aa.com.tr/en/world/saudi-led-coalition-says-it-intercepted-drone-4-missiles-over-riyadh-southern-regions/4115656",
           "date": "2026-11-08"
         }
       ]
@@ -7713,7 +7719,7 @@
         },
         {
           "publisher": "Arab News",
-          "title": "Saudi defenses intercept two Houthi ballistic missiles targeting Riyadh",
+          "title": "Aramco building in Riyadh targeted, Saudi energy ministry says",
           "url": "https://www.arabnews.pk/saudi-arabia/saudi-defenses-intercept-two-houthi-ballistic-missiles-targeting-riyadh-3006425",
           "date": "2026-11-08"
         }
