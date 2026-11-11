@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-11T12:12:09Z",
+  "reviewedAt": "2026-11-11T19:10:00Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7989,6 +7989,68 @@
           "title": "Iran says three oil tankers on fire in Hormuz",
           "url": "https://www.arabnews.com/middle-east/tanker-struck-by-unknown-projectile-off-oman-ukmto-says-3010988",
           "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-11-houthi-cruise-missiles-riyadh-intercepted",
+      "date": "2026-11-11",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Riyadh region",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted three Houthi cruise missiles fired at the Riyadh region",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 11 Nov that three Houthi cruise missiles targeting the Riyadh region were intercepted and destroyed. No damage or casualties were reported.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition intercepts 3 Houthi cruise missiles, 2 drones targeting Riyadh, Mecca, southern Saudi Arabia",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-intercepts-3-houthi-cruise-missiles-2-drones-targeting-riyadh-mecca-southern-saudi-arabia/4120837",
+          "date": "2026-11-11"
+        },
+        {
+          "publisher": "Siasat Daily",
+          "title": "Riyadh faces fresh Houthi missile attack, three intercepted",
+          "url": "https://www.siasat.com/riyadh-faces-fresh-houthi-missile-attack-three-intercepted-3574641/",
+          "date": "2026-11-11"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-11-houthi-drones-makkah-south-intercepted",
+      "date": "2026-11-11",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Makkah and southern Saudi regions",
+      "place": "Makkah region",
+      "country": "Saudi Arabia",
+      "lat": 21.4225,
+      "lon": 39.8262,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted two Houthi drones aimed at Mecca and southern Saudi Arabia",
+      "summary": "The Saudi-led coalition claimed on 11 Nov that it intercepted and destroyed two drones launched by the Houthis toward Mecca and Saudi Arabia's southern regions. No damage or casualties were reported.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye (Reuters)",
+          "title": "Saudi-led coalition says it intercepted and destroyed two Houthi drones",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/saudi-led-coalition-says-it-intercepted-and-destroyed-two-houthi-drones",
+          "date": "2026-11-11"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition intercepts 3 Houthi cruise missiles, 2 drones targeting Riyadh, Mecca, southern Saudi Arabia",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-intercepts-3-houthi-cruise-missiles-2-drones-targeting-riyadh-mecca-southern-saudi-arabia/4120837",
+          "date": "2026-11-11"
         }
       ]
     },
