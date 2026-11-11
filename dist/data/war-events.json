@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-11T06:10:03Z",
+  "reviewedAt": "2026-11-11T12:12:09Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7939,7 +7939,7 @@
       "precision": "city",
       "confidence": "claimed",
       "title": "Houthi media claim Saudi airstrikes hit a gas station and oil company building in Sanaa",
-      "summary": "Houthi-run Saba claimed Saudi strikes on 10 Nov hit the al-Mufazir gas station north of Sanaa, setting gas trailers on fire, and a state oil company building in southern Sanaa. No casualties were reported; Saudi Arabia did not comment.",
+      "summary": "Houthi-run Saba claimed Saudi strikes on 10 Nov hit the al-Mufazir gas station north of Sanaa and a state oil company building. A Houthi health ministry spokesman claimed 1 killed and 9 injured; Saudi Arabia did not comment.",
       "sources": [
         {
           "publisher": "Cyprus Mail (Reuters)",
@@ -7951,6 +7951,12 @@
           "publisher": "Xinhua (Chinese state media)",
           "title": "Airstrikes hit gas facility, oil company building in Yemen's capital",
           "url": "https://english.news.cn/20261110/c0bea21d5b1f42e4963375eb063c8b0f/c.html",
+          "date": "2026-11-10"
+        },
+        {
+          "publisher": "La Nación (AP)",
+          "title": "Overnight strikes in Yemen kill at least 1 person and injure 9, and other Mideast news",
+          "url": "https://www.lanacion.com.ar/usa/overnight-strikes-in-yemen-kill-at-least-1-person-and-injure-9-and-other-mideast-news-nid10112026/",
           "date": "2026-11-10"
         }
       ]
@@ -7983,6 +7989,37 @@
           "title": "Iran says three oil tankers on fire in Hormuz",
           "url": "https://www.arabnews.com/middle-east/tanker-struck-by-unknown-projectile-off-oman-ukmto-says-3010988",
           "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-11-iran-army-claims-tanker-mine-east-hormuz",
+      "date": "2026-11-11",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (army navy, claimed)",
+      "target": "Unnamed oil tanker",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran's army says an oil tanker hit a mine and caught fire east of the Strait of Hormuz",
+      "summary": "The naval forces of Iran's army claimed on 11 Nov that early that morning a 'violating' oil tanker caught fire after striking a naval mine in a prohibited area east of the Strait of Hormuz. The ship was not named; not verified.",
+      "sources": [
+        {
+          "publisher": "This is Beirut (AFP)",
+          "title": "Iran Says Tanker Struck Mine, Caught Fire In Hormuz",
+          "url": "https://thisisbeirut.com.lb/news/politics/iran-says-tanker-struck-mine-caught-fire-in-hormuz",
+          "date": "2026-11-11"
+        },
+        {
+          "publisher": "Arab News (agencies)",
+          "title": "Iran says oil tanker hit mine and caught fire in Strait of Hormuz",
+          "url": "https://www.arabnews.com/middle-east/ukmto-reports-tanker-incident-in-strait-of-hormuz-3011095",
+          "date": "2026-11-11"
         }
       ]
     }
