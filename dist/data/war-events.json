@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-12T01:17:41Z",
+  "reviewedAt": "2026-11-12T07:10:41Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8020,6 +8020,74 @@
           "title": "Iran says three oil tankers on fire in Hormuz",
           "url": "https://www.arabnews.com/middle-east/tanker-struck-by-unknown-projectile-off-oman-ukmto-says-3010988",
           "date": "2026-11-10"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-11-houthi-ballistic-missiles-aden-al-buraiqa",
+      "date": "2026-11-11",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Coalition military sites",
+      "place": "Al-Buraiqa district, Aden",
+      "country": "Yemen",
+      "lat": 12.75,
+      "lon": 44.8833,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Houthis claim ballistic missile strike on Saudi command centre in Aden's al-Buraiqa",
+      "summary": "Houthi spokesman Yahya Saree claimed several ballistic missiles hit a Saudi command centre in Aden's al-Buraiqa on 11 Nov, causing large casualties. A security source told Xinhua two missiles hit military sites there; no toll was confirmed.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthis claim attack on Saudi command centre in Yemen",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthis-claim-attack-saudi-command-centre-yemen",
+          "date": "2026-11-11"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "2 explosions rock S. Yemen's Aden as Houthis claim missiles hit military sites",
+          "url": "https://english.news.cn/20261112/437f12a56b8e40b58459a23a66e872c4/c.html",
+          "date": "2026-11-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-11-houthi-ballistic-missiles-makkah-region-intercepted",
+      "date": "2026-11-11",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Makkah region",
+      "place": "Makkah region",
+      "country": "Saudi Arabia",
+      "lat": 21.4225,
+      "lon": 39.8262,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudis say debris from two intercepted Houthi ballistic missiles fell in Mecca region",
+      "summary": "Saudi civil defence claimed that on 11 Nov air defences intercepted two Houthi ballistic missiles launched toward the Mecca region and debris fell in several places, including Sabuhah village. No casualties were reported.",
+      "sources": [
+        {
+          "publisher": "ThePrint (Reuters)",
+          "title": "Saudi Arabia says debris from intercepted missiles falls in Mecca region",
+          "url": "https://theprint.in/world/saudi-arabia-says-debris-from-intercepted-missiles-falls-in-mecca-region/3096515/",
+          "date": "2026-11-12"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "2 explosions rock S. Yemen's Aden as Houthis claim missiles hit military sites",
+          "url": "https://english.news.cn/20261112/437f12a56b8e40b58459a23a66e872c4/c.html",
+          "date": "2026-11-12"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Fighting intensifies in Yemen as Houthis deny targeting Mecca",
+          "url": "https://www.aljazeera.com/news/2026/11/12/fighting-intensifies-in-yemen-as-houthis-deny-targeting-mecca",
+          "date": "2026-11-12"
         }
       ]
     },
