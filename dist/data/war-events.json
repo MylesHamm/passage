@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-11T19:10:00Z",
+  "reviewedAt": "2026-11-12T01:17:41Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -7726,6 +7726,37 @@
       ]
     },
     {
+      "id": "2026-11-08-iran-strikes-navigation-systems-didamar-island",
+      "date": "2026-11-08",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "IRGC",
+      "target": "Shipping navigation systems on Didamar Island",
+      "place": "Didamar Island",
+      "country": "Oman",
+      "lat": 26.4773,
+      "lon": 56.5384,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Iran strikes shipping navigation systems on Oman's Didamar island in Hormuz",
+      "summary": "Iranian state media said on 10 Nov the IRGC destroyed 'enemy navigation systems' on Oman's Didamar island; three sources told Reuters Iran struck them. ISW dated the attack to 8 Nov. Weapon and damage were not given.",
+      "sources": [
+        {
+          "publisher": "Yahoo News (Reuters)",
+          "title": "Iran attacks shipping navigation systems on Oman's Didamar island, sources say",
+          "url": "https://www.yahoo.com/news/world/articles/iran-attacks-shipping-navigation-systems-175211120.html",
+          "date": "2026-11-11"
+        },
+        {
+          "publisher": "Fox News",
+          "title": "Iran escalates in Hormuz, claims strike on Omani island it says 'enemy' uses for US military ops",
+          "url": "https://www.foxnews.com/world/iran-escalates-hormuz-claims-strike-omani-island-enemy-uses-us-military-ops",
+          "date": "2026-11-11"
+        }
+      ]
+    },
+    {
       "id": "2026-11-08-irgc-claims-three-tankers-fire-hormuz",
       "date": "2026-11-08",
       "time": null,
@@ -8007,7 +8038,7 @@
       "precision": "area",
       "confidence": "claimed",
       "title": "Coalition says it intercepted three Houthi cruise missiles fired at the Riyadh region",
-      "summary": "Coalition spokesman Turki al-Maliki claimed on 11 Nov that three Houthi cruise missiles targeting the Riyadh region were intercepted and destroyed. No damage or casualties were reported.",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 11 Nov that three Houthi cruise missiles targeting the Riyadh region were intercepted and destroyed. Houthi spokesman Yahya Saree claimed three cruise missiles targeted King Khalid airport.",
       "sources": [
         {
           "publisher": "Anadolu Agency",
@@ -8020,6 +8051,12 @@
           "title": "Riyadh faces fresh Houthi missile attack, three intercepted",
           "url": "https://www.siasat.com/riyadh-faces-fresh-houthi-missile-attack-three-intercepted-3574641/",
           "date": "2026-11-11"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "Yemen's Houthis claim missile, drone attacks on Riyadh airport, Saudi oil facility",
+          "url": "https://english.news.cn/20261112/9ec0dc0497934321bb100050f79290f4/c.html",
+          "date": "2026-11-12"
         }
       ]
     },
@@ -8038,7 +8075,7 @@
       "precision": "area",
       "confidence": "claimed",
       "title": "Coalition says it intercepted two Houthi drones aimed at Mecca and southern Saudi Arabia",
-      "summary": "The Saudi-led coalition claimed on 11 Nov that it intercepted and destroyed two drones launched by the Houthis toward Mecca and Saudi Arabia's southern regions. No damage or casualties were reported.",
+      "summary": "The Saudi-led coalition claimed on 11 Nov that it intercepted and destroyed two drones launched by the Houthis toward Mecca and Saudi Arabia's southern regions. Houthi spokesman Yahya Saree called the Mecca claim fabricated.",
       "sources": [
         {
           "publisher": "Middle East Eye (Reuters)",
@@ -8051,6 +8088,37 @@
           "title": "Saudi-led coalition intercepts 3 Houthi cruise missiles, 2 drones targeting Riyadh, Mecca, southern Saudi Arabia",
           "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-intercepts-3-houthi-cruise-missiles-2-drones-targeting-riyadh-mecca-southern-saudi-arabia/4120837",
           "date": "2026-11-11"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "Yemen's Houthis claim missile, drone attacks on Riyadh airport, Saudi oil facility",
+          "url": "https://english.news.cn/20261112/9ec0dc0497934321bb100050f79290f4/c.html",
+          "date": "2026-11-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-11-houthis-claim-drone-pumping-station-yanbu",
+      "date": "2026-11-11",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Pumping Station No. 11",
+      "place": "Yanbu area",
+      "country": "Saudi Arabia",
+      "lat": 24.0895,
+      "lon": 38.0618,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis claim drone strike on Pumping Station No. 11 in the Yanbu area",
+      "summary": "Houthi military spokesman Yahya Saree claimed on 11 Nov that a drone struck Pumping Station No. 11 in the Yanbu area and that the operation achieved its objectives. No Saudi confirmation was reported.",
+      "sources": [
+        {
+          "publisher": "Xinhua",
+          "title": "Yemen's Houthis claim missile, drone attacks on Riyadh airport, Saudi oil facility",
+          "url": "https://english.news.cn/20261112/9ec0dc0497934321bb100050f79290f4/c.html",
+          "date": "2026-11-12"
         }
       ]
     },
