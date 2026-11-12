@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-12T07:10:41Z",
+  "reviewedAt": "2026-11-12T13:14:42Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8218,6 +8218,68 @@
           "title": "Iran says oil tanker hit mine and caught fire in Strait of Hormuz",
           "url": "https://www.arabnews.com/middle-east/ukmto-reports-tanker-incident-in-strait-of-hormuz-3011095",
           "date": "2026-11-11"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-11-irgc-claims-two-supertankers-fire-hormuz",
+      "date": "2026-11-11",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Iran (IRGC, claimed)",
+      "target": "Two unnamed oil supertankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC claims two supertankers caught fire after an 'accident' in the Strait of Hormuz",
+      "summary": "Iran's Revolutionary Guards claimed on 12 Nov that 'last night' two supertankers with over four million barrels were hit by a violent explosion and set ablaze on an 'unauthorised route' in the Strait of Hormuz. Ships unnamed; unverified.",
+      "sources": [
+        {
+          "publisher": "Asharq Al-Awsat",
+          "title": "Iran's Guards Say 'Accident' Left Two Tankers on Fire in Hormuz",
+          "url": "https://english.aawsat.com/world/5340366-irans-guards-say-accident-left-two-tankers-fire-hormuz",
+          "date": "2026-11-12"
+        },
+        {
+          "publisher": "This is Beirut (AFP)",
+          "title": "Iran's Guards Say 'Accident' Left Two Tankers On Fire In Hormuz",
+          "url": "https://thisisbeirut.com.lb/news/politics/irans-guards-say-accident-left-two-tankers-on-fire-in-hormuz",
+          "date": "2026-11-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-11-merchant-vessel-struck-projectile-northwest-of-ras-al-khaimah",
+      "date": "2026-11-11",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unattributed",
+      "target": "Unnamed merchant vessel",
+      "place": "About 14 nm northwest of Ras Al Khaimah",
+      "country": "United Arab Emirates",
+      "lat": 25.9314,
+      "lon": 55.7667,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Merchant vessel struck by unknown projectile off UAE's Ras Al-Khaimah, Ambrey says",
+      "summary": "Maritime security firm Ambrey said an unknown projectile hit the stern of a merchant vessel about 14 nm northwest of Ras Al-Khaimah on 11 Nov leaving the Strait of Hormuz, causing an engine room fire. No injuries or pollution were reported.",
+      "sources": [
+        {
+          "publisher": "Devdiscourse (Reuters)",
+          "title": "Merchant vessel struck by unknown projectile off UAE's Ras Al-Khaimah, Ambrey says",
+          "url": "https://www.devdiscourse.com/article/international/4005732-merchant-vessel-struck-by-unknown-projectile-off-uaes-ras-al-khaimah-ambrey-says",
+          "date": "2026-11-12"
+        },
+        {
+          "publisher": "News.az",
+          "title": "Merchant ship hit by unidentified projectile northwest of UAE",
+          "url": "https://news.az/news/merchant-ship-hit-by-unidentified-projectile-northwest-of-uae",
+          "date": "2026-11-12"
         }
       ]
     }
