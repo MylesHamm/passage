@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-13T14:51:43Z",
+  "reviewedAt": "2026-11-13T19:10:22Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8591,7 +8591,7 @@
       "date": "2026-11-13",
       "time": null,
       "layer": "missile-drone",
-      "type": "missile",
+      "type": "drone",
       "actor": "Iran (IRGC, claimed)",
       "target": "US early-warning radar",
       "place": "Bahrain",
@@ -8599,9 +8599,9 @@
       "lat": 26.0275,
       "lon": 50.55,
       "precision": "area",
-      "confidence": "claimed",
+      "confidence": "confirmed",
       "title": "IRGC claims it destroyed a US early-warning radar in Bahrain",
-      "summary": "The IRGC claimed early on 13 Nov that it had 'a few hours' earlier targeted and destroyed a US early-warning radar on Bahrain, in response to an air attack on a telecom tower in Sirik. No site named; no US or Bahraini confirmation.",
+      "summary": "The IRGC claimed on 13 Nov it destroyed a US early-warning radar on Bahrain, in response to an attack on a telecom tower in Sirik. CENTCOM said US forces shot down two IRGC one-way attack drones aimed at Bahrain, with no injuries or damage.",
       "sources": [
         {
           "publisher": "Middle East Eye",
@@ -8619,6 +8619,49 @@
           "publisher": "Arab News (AFP)",
           "title": "Iran's Guards say they targeted US radar system in Bahrain",
           "url": "https://www.arabnews.com/middle-east/irans-guards-say-they-targeted-us-radar-system-in-bahrain-3011593",
+          "date": "2026-11-13"
+        },
+        {
+          "publisher": "RFE/RL",
+          "title": "CENTCOM Denies Iranian Claim It Struck A US Radar In Bahrain",
+          "url": "https://www.rferl.org/a/iran-us-sirik-bahrain-war-nuclear-talks/33897951.html",
+          "date": "2026-11-13"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran war live: US says shot down 2 drones over Bahrain, denies radar strike",
+          "url": "https://www.aljazeera.com/news/liveblog/2026/11/13/iran-war-live-riyadh-china-discuss-houthis-as-group-claims-aramco-attacks",
+          "date": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-13-yemeni-army-says-houthi-ballistic-missiles-aden",
+      "date": "2026-11-13",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed by Yemen's army)",
+      "target": "Civilians and civilian facilities",
+      "place": "Aden",
+      "country": "Yemen",
+      "lat": 12.7855,
+      "lon": 45.0187,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Yemeni army says Houthis fired ballistic missiles at Aden",
+      "summary": "Yemen's army spokesman Majed al-Nuzaili claimed the Houthis targeted civilians and civilian facilities in Aden with ballistic missiles on the evening of 13 Nov. No missile count, sites, casualties or damage were given.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Yemeni army accuses Houthis of targeting Aden with ballistic missiles",
+          "url": "https://aa.com.tr/en/middle-east/yemeni-army-accuses-houthis-of-targeting-aden-with-ballistic-missiles/4124576",
+          "date": "2026-11-13"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Houthis target civilians in Aden with ballistic missiles, Yemeni army says",
+          "url": "https://www.arabnews.pk/middle-east/houthis-target-civilians-in-aden-with-ballistic-missiles-yemeni-army-says-3006947",
           "date": "2026-11-13"
         }
       ]
