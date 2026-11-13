@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-12T19:12:28Z",
+  "reviewedAt": "2026-11-13T01:09:42Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8335,7 +8335,7 @@
       "precision": "area",
       "confidence": "claimed",
       "title": "Saudi-led coalition says it intercepted a drone over the Riyadh region",
-      "summary": "Coalition spokesman Turki al-Maliki claimed on 12 Nov that a drone was intercepted and destroyed over the Riyadh region. He gave no further details on its origin, damage or casualties.",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 12 Nov that a drone was intercepted and destroyed over the Riyadh region. Houthi spokesman Yahya Saree claimed a drone targeted Aramco in Riyadh and achieved its objective.",
       "sources": [
         {
           "publisher": "Kuwait Times (KUNA)",
@@ -8348,6 +8348,117 @@
           "title": "Saudi-led coalition says it intercepted drone over Riyadh region",
           "url": "https://aa.com.tr/en/middle-east/saudi-led-coalition-says-it-intercepted-drone-over-riyadh-region-/4121671",
           "date": "2026-11-12"
+        },
+        {
+          "publisher": "The Tribune (ANI)",
+          "title": "Houthis claim drone strikes on Riyadh, Saudi military sites; coalition says drones intercepted",
+          "url": "https://www.tribuneindia.com/news/air-defence/houthis-claim-drone-strikes-on-riyadh-saudi-military-sites-coalition-says-drones-intercepted",
+          "date": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-12-houthis-claim-ballistic-missile-king-khalid-air-base",
+      "date": "2026-11-12",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed)",
+      "target": "King Khalid Air Base",
+      "place": "King Khalid Air Base, Khamis Mushait",
+      "country": "Saudi Arabia",
+      "lat": 18.2969,
+      "lon": 42.8036,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthis claim ballistic missile strike on King Khalid Air Base in Khamis Mushait",
+      "summary": "Houthi spokesman Yahya Saree claimed on 12 Nov that a ballistic missile aimed at King Khalid Air Base in Khamis Mushait 'scored a direct hit'. The claim was not independently verified; Saudi authorities did not comment.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Yemen’s Houthis renew strikes on Saudi Arabia as UNSC extends sanctions",
+          "url": "https://www.aljazeera.com/news/2026/11/12/yemens-houthis-renew-strikes-on-saudi-arabia-as-unsc-extends-sanctions",
+          "date": "2026-11-12"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "Roundup: Houthis claim attacks on Saudi oil, military targets amid intensified fighting in Yemen",
+          "url": "https://english.news.cn/20261113/f3639000249a45b295f889e38266c7bd/c.html",
+          "date": "2026-11-13"
+        },
+        {
+          "publisher": "The Tribune (ANI)",
+          "title": "Houthis claim drone strikes on Riyadh, Saudi military sites; coalition says drones intercepted",
+          "url": "https://www.tribuneindia.com/news/air-defence/houthis-claim-drone-strikes-on-riyadh-saudi-military-sites-coalition-says-drones-intercepted",
+          "date": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-12-houthis-claim-ballistic-missile-yanbu-oil-facility",
+      "date": "2026-11-12",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed)",
+      "target": "Oil facility in Yanbu",
+      "place": "Yanbu",
+      "country": "Saudi Arabia",
+      "lat": 24.0895,
+      "lon": 38.0618,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis claim ballistic missile attack on an oil facility in Yanbu",
+      "summary": "Houthi spokesman Yahya Saree claimed on 12 Nov that a ballistic missile targeted an oil facility in Yanbu on the Red Sea, saying the operation achieved its objectives. The claim was not independently verified.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Yemen’s Houthis renew strikes on Saudi Arabia as UNSC extends sanctions",
+          "url": "https://www.aljazeera.com/news/2026/11/12/yemens-houthis-renew-strikes-on-saudi-arabia-as-unsc-extends-sanctions",
+          "date": "2026-11-12"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "Roundup: Houthis claim attacks on Saudi oil, military targets amid intensified fighting in Yemen",
+          "url": "https://english.news.cn/20261113/f3639000249a45b295f889e38266c7bd/c.html",
+          "date": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-12-houthis-claim-drone-cargo-plane-sharurah-airport",
+      "date": "2026-11-12",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis (claimed)",
+      "target": "Military cargo aircraft at Sharurah Airport",
+      "place": "Sharurah Airport",
+      "country": "Saudi Arabia",
+      "lat": 17.4669,
+      "lon": 47.1214,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthis claim drone strike on a military cargo plane at Sharurah Airport",
+      "summary": "Houthi spokesman Yahya Saree claimed on 12 Nov that a drone targeted a military cargo aircraft at Sharurah Airport in Najran region and achieved its objective. The claim was not independently verified; Saudi authorities did not comment.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Yemen’s Houthis renew strikes on Saudi Arabia as UNSC extends sanctions",
+          "url": "https://www.aljazeera.com/news/2026/11/12/yemens-houthis-renew-strikes-on-saudi-arabia-as-unsc-extends-sanctions",
+          "date": "2026-11-12"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "Roundup: Houthis claim attacks on Saudi oil, military targets amid intensified fighting in Yemen",
+          "url": "https://english.news.cn/20261113/f3639000249a45b295f889e38266c7bd/c.html",
+          "date": "2026-11-13"
+        },
+        {
+          "publisher": "The Tribune (ANI)",
+          "title": "Houthis claim drone strikes on Riyadh, Saudi military sites; coalition says drones intercepted",
+          "url": "https://www.tribuneindia.com/news/air-defence/houthis-claim-drone-strikes-on-riyadh-saudi-military-sites-coalition-says-drones-intercepted",
+          "date": "2026-11-13"
         }
       ]
     },
