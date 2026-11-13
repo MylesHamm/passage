@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-13T01:09:42Z",
+  "reviewedAt": "2026-11-13T07:12:20Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8508,13 +8508,87 @@
       "precision": "city",
       "confidence": "claimed",
       "title": "Southern Iran's Sirik attacked, IRNA reports",
-      "summary": "Iranian official sources claimed via state news agency IRNA late on 12 Nov that Sirik in Hormozgan province was hit by an 'enemy' strike that was military in nature. No details of damage or casualties were given.",
+      "summary": "Iranian official sources claimed via IRNA late on 12 Nov that Sirik in Hormozgan was hit by a military 'enemy' strike. The IRGC later claimed the target was a telecommunications tower. No damage or casualty details were given.",
       "sources": [
         {
           "publisher": "Devdiscourse (Reuters)",
           "title": "Southern Iran's Sirik attacked, IRNA cites official sources as saying",
           "url": "https://www.devdiscourse.com/article/international/4006160-southern-irans-sirik-attacked-irna-cites-official-sources-as-saying",
           "date": "2026-11-12"
+        },
+        {
+          "publisher": "Arab News (AFP)",
+          "title": "Iran's Guards say they targeted US radar system in Bahrain",
+          "url": "https://www.arabnews.com/middle-east/irans-guards-say-they-targeted-us-radar-system-in-bahrain-3011593",
+          "date": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-13-irgc-claims-gas-carrier-mine-east-hormuz",
+      "date": "2026-11-13",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC navy, claimed)",
+      "target": "Unnamed liquefied gas carrier",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC navy says a liquefied gas carrier hit a mine and exploded east of Hormuz",
+      "summary": "Iran's IRGC navy claimed on 13 Nov, per state media, that a tanker carrying liquefied gas struck a naval mine and exploded east of the Strait of Hormuz on an unauthorised route. Ship and gas type not named; unverified.",
+      "sources": [
+        {
+          "publisher": "Iran International",
+          "title": "Live - Trump says Persian Gulf allies urged restraint; IRGC claims strike on US radar in Bahrain",
+          "url": "https://www.iranintl.com/en/liveblog/202611077068",
+          "date": "2026-11-13"
+        },
+        {
+          "publisher": "Times of Israel (Reuters)",
+          "title": "Iran says tanker carrying liquefied gas hit mine, exploded in Hormuz",
+          "url": "https://www.timesofisrael.com/liveblog_entry/iran-says-tanker-carrying-liquefied-gas-hit-mine-exploded-in-hormuz/",
+          "date": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-13-irgc-claims-strike-us-radar-bahrain",
+      "date": "2026-11-13",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Iran (IRGC, claimed)",
+      "target": "US early-warning radar",
+      "place": "Bahrain",
+      "country": "Bahrain",
+      "lat": 26.0275,
+      "lon": 50.55,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "IRGC claims it destroyed a US early-warning radar in Bahrain",
+      "summary": "The IRGC claimed early on 13 Nov that it had 'a few hours' earlier targeted and destroyed a US early-warning radar on Bahrain, in response to an air attack on a telecom tower in Sirik. No site named; no US or Bahraini confirmation.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Iran's IRGC says it targeted US radar in Bahrain",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/irans-irgc-says-it-targeted-us-radar-bahrain",
+          "date": "2026-11-13"
+        },
+        {
+          "publisher": "Times of Israel (Reuters)",
+          "title": "IRGC says it targeted US early-warning radar in Bahrain after 'enemy attack' on telecom tower",
+          "url": "https://www.timesofisrael.com/liveblog_entry/irgc-says-it-targeted-us-early-warning-radar-in-bahrain-after-enemy-attack-on-telecom-tower/",
+          "date": "2026-11-13"
+        },
+        {
+          "publisher": "Arab News (AFP)",
+          "title": "Iran's Guards say they targeted US radar system in Bahrain",
+          "url": "https://www.arabnews.com/middle-east/irans-guards-say-they-targeted-us-radar-system-in-bahrain-3011593",
+          "date": "2026-11-13"
         }
       ]
     }
