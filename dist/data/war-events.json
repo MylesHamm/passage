@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-13T07:12:20Z",
+  "reviewedAt": "2026-11-13T14:51:43Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8317,6 +8317,37 @@
           "title": "Tanker Ablaze Off UAE as More Attacks Rattle Gulf Shipping",
           "url": "https://gcaptain.com/tanker-ablaze-off-uae-as-more-attacks-rattle-gulf-shipping/",
           "date": "2026-11-12"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-12-coalition-intercepts-drone-eastern-province",
+      "date": "2026-11-12",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Unattributed",
+      "target": "Eastern Province",
+      "place": "Eastern Province",
+      "country": "Saudi Arabia",
+      "lat": 26.4207,
+      "lon": 50.0888,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted a drone over the Eastern Province",
+      "summary": "Coalition spokesman Turki al-Maliki claimed a drone was intercepted and destroyed over the Eastern Province overnight from 11 to 12 Nov. He did not say who launched it and gave no further details; no damage was reported.",
+      "sources": [
+        {
+          "publisher": "Kuwait Times (KUNA)",
+          "title": "Coalition intercepts drones over Saudi Eastern Province and Riyadh region",
+          "url": "https://kuwaittimes.com/article/53509/world/coalition-intercepts-drones-over-saudi-eastern-province-and-riyadh-region/",
+          "date": "2026-11-12"
+        },
+        {
+          "publisher": "The Tribune (ANI)",
+          "title": "Houthis claim drone strikes on Riyadh, Saudi military sites; coalition says drones intercepted",
+          "url": "https://www.tribuneindia.com/news/air-defence/houthis-claim-drone-strikes-on-riyadh-saudi-military-sites-coalition-says-drones-intercepted",
+          "date": "2026-11-13"
         }
       ]
     },
