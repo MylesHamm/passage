@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-14T13:11:12Z",
+  "reviewedAt": "2026-11-14T19:09:06Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8792,6 +8792,37 @@
           "publisher": "Siasat Daily (IANS)",
           "title": "Houthis claim strikes on Riyadh airport, Saudi oil pipeline",
           "url": "https://www.siasat.com/houthis-claim-strikes-on-riyadh-airport-saudi-oil-pipeline-3576978/",
+          "date": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-14-coalition-intercepts-two-houthi-drones-riyadh-south",
+      "date": "2026-11-14",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Riyadh and southern Saudi Arabia",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it destroyed two Houthi drones aimed at Riyadh and the south",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 14 Nov that two drones launched by the Houthis toward Riyadh and the kingdom’s southern region were intercepted and destroyed. He gave no details of casualties or damage.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it intercepted 2 Houthi drones in Riyadh, southern Saudi Arabia",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-says-it-intercepted-2-houthi-drones-in-riyadh-southern-saudi-arabia/4125225",
+          "date": "2026-11-14"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Coalition says it destroyed Houthi drones launched towards Riyadh, southern region",
+          "url": "https://www.arabnews.com/saudi-arabia/coalition-says-it-destroyed-houthi-drones-launched-towards-riyadh-southern-region-3011857",
           "date": "2026-11-14"
         }
       ]
