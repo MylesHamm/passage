@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-13T19:10:22Z",
+  "reviewedAt": "2026-11-14T01:10:39Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8632,6 +8632,37 @@
           "title": "Iran war live: US says shot down 2 drones over Bahrain, denies radar strike",
           "url": "https://www.aljazeera.com/news/liveblog/2026/11/13/iran-war-live-riyadh-china-discuss-houthis-as-group-claims-aramco-attacks",
           "date": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-13-irgc-claims-two-tankers-mines-hormuz",
+      "date": "2026-11-13",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC navy, claimed)",
+      "target": "Two unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC navy says two oil tankers hit sea mines and caught fire in Hormuz",
+      "summary": "Iran's IRGC navy claimed on the night of 13 Nov that two oil tankers, one a supertanker, exploded and caught fire after hitting mines while crossing the Strait of Hormuz without coordination. Ships not named; unverified.",
+      "sources": [
+        {
+          "publisher": "ThePrint (Reuters)",
+          "title": "Iran's IRGC says two tankers hit sea mines in Hormuz",
+          "url": "https://theprint.in/world/irans-irgc-says-two-tankers-hit-sea-mines-in-hormuz/3098429/",
+          "date": "2026-11-13"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "Iran's IRGC says 2 \"violating\" tankers caught fire after hitting mines in Hormuz Strait",
+          "url": "https://english.news.cn/20261114/ecc70d2aebb44d05b12c831dfd020153/c.html",
+          "date": "2026-11-14"
         }
       ]
     },
