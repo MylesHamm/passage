@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-14T01:10:39Z",
+  "reviewedAt": "2026-11-14T07:09:20Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8694,6 +8694,37 @@
           "title": "Houthis target civilians in Aden with ballistic missiles, Yemeni army says",
           "url": "https://www.arabnews.pk/middle-east/houthis-target-civilians-in-aden-with-ballistic-missiles-yemeni-army-says-3006947",
           "date": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-14-iran-navy-claims-tanker-mine-east-hormuz",
+      "date": "2026-11-14",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (army navy, claimed)",
+      "target": "Unnamed tanker",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran's navy says another tanker hit a mine and caught fire east of Hormuz",
+      "summary": "Iran's army navy claimed on 14 Nov, per state media, that a tanker that had switched off its tracking systems caught fire after hitting a mine in a prohibited area east of the Strait of Hormuz. Ship not named; unverified.",
+      "sources": [
+        {
+          "publisher": "Press TV (Iranian state-run)",
+          "title": "Another tanker catches fire after hitting mine in Strait of Hormuz: Iran Navy",
+          "url": "https://www.presstv.co.uk/Detail/2026/11/14/780680/tanker-catches-fire-after-hitting-mine-in-strait-of-hormuz-iran-navy",
+          "date": "2026-11-14"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran war live: Tehran says tanker hit naval mine, caught fire",
+          "url": "https://www.aljazeera.com/news/liveblog/2026/11/14/iran-war-live-fighting-grips-yemen-as-qatar-turkiye-sign-defence-deal",
+          "date": "2026-11-14"
         }
       ]
     }
