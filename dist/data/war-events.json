@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-15T13:10:10Z",
+  "reviewedAt": "2026-11-15T19:10:02Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8946,6 +8946,31 @@
       ]
     },
     {
+      "id": "2026-11-15-coalition-intercepts-two-houthi-drones-makkah-region",
+      "date": "2026-11-15",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Makkah region",
+      "place": "Makkah region",
+      "country": "Saudi Arabia",
+      "lat": 21.4225,
+      "lon": 39.8262,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it destroyed two Houthi drones launched toward the Makkah region",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 15 Nov that Saudi air defences intercepted and destroyed two drones launched by the Houthis toward the Makkah region. No casualties or damage were reported.",
+      "sources": [
+        {
+          "publisher": "Siasat Daily",
+          "title": "Two drones launched by Houthis towards Makkah destroyed",
+          "url": "https://www.siasat.com/two-drones-launched-by-houthis-towards-makkah-destroyed-3578253/",
+          "date": "2026-11-15"
+        }
+      ]
+    },
+    {
       "id": "2026-11-15-irgc-claims-six-drones-us-radar-riffa-bahrain",
       "date": "2026-11-15",
       "time": null,
@@ -8978,6 +9003,68 @@
           "publisher": "Kurdistan24",
           "title": "IRGC Says Six Drones Targeted US Air-Defense Radar At Bahrain’s Riffa Base",
           "url": "https://www.kurdistan24.net/en/story/953065/irgc-says-six-drones-targeted-us-air-defense-radar-at-bahrains-riffa-base",
+          "date": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-15-irgc-claims-two-tankers-mines-one-sinks-hormuz",
+      "date": "2026-11-15",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC navy, claimed)",
+      "target": "Two unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran says two oil tankers hit mines near Hormuz and one supertanker sank",
+      "summary": "Iran's IRGC navy claimed on 15 Nov that two oil tankers on an 'unauthorized' route hit mines in the southern Strait of Hormuz and caught fire, and that one, a supertanker carrying over 2 million barrels, sank. Ships not named; unverified.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Iran says 2 oil tankers hit mines near Strait of Hormuz, 1 sinks",
+          "url": "https://aa.com.tr/en/middle-east/iran-says-2-oil-tankers-hit-mines-near-strait-of-hormuz-1-sinks/4125887",
+          "date": "2026-11-15"
+        },
+        {
+          "publisher": "Shafaq News",
+          "title": "Tanker hit in Gulf, Iran reports mine strikes",
+          "url": "https://shafaq.com/en/World/Tanker-hit-in-Gulf-Iran-reports-mine-strikes",
+          "date": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-15-ukmto-tanker-attacked-gulf-before-hormuz",
+      "date": "2026-11-15",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unknown",
+      "target": "Unnamed eastbound tanker",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "UKMTO says a tanker was attacked in the Gulf before entering the Strait of Hormuz",
+      "summary": "UKMTO said on 15 Nov it was aware of a report from Indian shipping authorities that an eastbound tanker was attacked in the Arabian Gulf before the Strait of Hormuz. Crew accounted for and safe; damage unknown; attacker not named.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Tanker comes under attack in Gulf waters: UK maritime agency",
+          "url": "https://aa.com.tr/en/middle-east/tanker-comes-under-attack-in-gulf-waters-uk-maritime-agency/4125797",
+          "date": "2026-11-15"
+        },
+        {
+          "publisher": "Shafaq News",
+          "title": "Tanker hit in Gulf, Iran reports mine strikes",
+          "url": "https://shafaq.com/en/World/Tanker-hit-in-Gulf-Iran-reports-mine-strikes",
           "date": "2026-11-15"
         }
       ]
