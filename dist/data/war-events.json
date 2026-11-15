@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-14T19:09:06Z",
+  "reviewedAt": "2026-11-15T01:10:00Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8855,6 +8855,43 @@
           "title": "Iran war live: Tehran says tanker hit naval mine, caught fire",
           "url": "https://www.aljazeera.com/news/liveblog/2026/11/14/iran-war-live-fighting-grips-yemen-as-qatar-turkiye-sign-defence-deal",
           "date": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-14-irgc-claims-two-tankers-mines-southern-hormuz",
+      "date": "2026-11-14",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC navy, claimed)",
+      "target": "Two unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC navy says two oil tankers exploded after hitting mines in southern Hormuz",
+      "summary": "Iran's IRGC navy claimed on 14 Nov, per state media, that two oil tankers on an unauthorised route with tracking off exploded and caught fire after hitting mines in the southern Strait of Hormuz. Ships not named; unverified.",
+      "sources": [
+        {
+          "publisher": "Iran International",
+          "title": "Live - Iran hits more tankers, says US blockade seeks to starve Iranians",
+          "url": "https://www.iranintl.com/en/liveblog/202611143682",
+          "date": "2026-11-14"
+        },
+        {
+          "publisher": "APA",
+          "title": "IRGC Navy says two tankers explode after hitting mines in Hormuz",
+          "url": "https://en.apa.az/asia/irgc-navy-says-two-tankers-explode-after-hitting-mines-in-hormuz-536182",
+          "date": "2026-11-15"
+        },
+        {
+          "publisher": "The Tribune (ANI)",
+          "title": "Three oil tankers catch fire after hitting naval mines in Hormuz, claims Iran's Navy",
+          "url": "https://www.tribuneindia.com/news/world/three-oil-tankers-catch-fire-after-hitting-naval-mines-in-hormuz-claims-irans-navy",
+          "date": "2026-11-15"
         }
       ]
     }
