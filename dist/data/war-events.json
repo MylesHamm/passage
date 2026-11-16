@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-15T19:10:02Z",
+  "reviewedAt": "2026-11-16T07:12:30Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8971,6 +8971,37 @@
       ]
     },
     {
+      "id": "2026-11-15-houthis-say-strike-wounds-four-northeastern-sanaa",
+      "date": "2026-11-15",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by Houthis)",
+      "target": "Residential neighbourhood, north-eastern Sanaa",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3694,
+      "lon": 44.191,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthi officials say a strike on a Sanaa neighbourhood wounded two women and two children",
+      "summary": "The Houthi-run Health Ministry claimed a strike early on 15 Nov hit north-eastern Sanaa, wounding two women and two children, and blamed Saudi Arabia, AP reported. Al Jazeera cited Houthi media calling it shelling by Saudi-backed forces.",
+      "sources": [
+        {
+          "publisher": "ABC News Australia (AP)",
+          "title": "Israel kills a top Hamas commander as Jordan sentences three over church attack",
+          "url": "https://abc.net.au/news/2026-11-15/israel-kills-top-hamas-commander/107388044",
+          "date": "2026-11-15"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Saudi-led coalition intercepts suspected Houthi missiles and drones",
+          "url": "https://aljazeera.com/news/2026/11/15/saudi-led-coalition-intercepts-two-missiles-two-drones-in-riyadh",
+          "date": "2026-11-15"
+        }
+      ]
+    },
+    {
       "id": "2026-11-15-irgc-claims-six-drones-us-radar-riffa-bahrain",
       "date": "2026-11-15",
       "time": null,
@@ -9066,6 +9097,37 @@
           "title": "Tanker hit in Gulf, Iran reports mine strikes",
           "url": "https://shafaq.com/en/World/Tanker-hit-in-Gulf-Iran-reports-mine-strikes",
           "date": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-16-irgc-claims-two-more-tankers-mines-hormuz",
+      "date": "2026-11-16",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC, claimed)",
+      "target": "Two unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Two oil tankers hit mines in the Strait of Hormuz, IRGC says",
+      "summary": "Iran's IRGC claimed on 16 Nov that two oil tankers hit mines in the Strait of Hormuz, causing explosions, and that six tankers caught fire in similar incidents on Sunday and Monday, Reuters reported. Ships not named; unverified.",
+      "sources": [
+        {
+          "publisher": "Jerusalem Post (Reuters)",
+          "title": "Two oil tankers hit mines in the Strait of Hormuz, IRGC says",
+          "url": "https://www.jpost.com/middle-east/article-915014",
+          "date": "2026-11-16"
+        },
+        {
+          "publisher": "Arab News Pakistan (Reuters)",
+          "title": "Two oil tankers hit mines in the Strait of Hormuz, IRGC says",
+          "url": "https://www.arabnews.pk/middle-east/two-oil-tankers-hit-mines-in-the-strait-of-hormuz-irgc-says-3007149",
+          "date": "2026-11-16"
         }
       ]
     }
