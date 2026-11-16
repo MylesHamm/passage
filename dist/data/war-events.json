@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-16T07:12:30Z",
+  "reviewedAt": "2026-11-16T13:13:57Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9101,6 +9101,68 @@
       ]
     },
     {
+      "id": "2026-11-16-houthis-say-drone-strike-house-al-sarar-sanaa",
+      "date": "2026-11-16",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by Houthis)",
+      "target": "House in the al-Sarar quarter",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3694,
+      "lon": 44.191,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis say a drone strike on a house in Sanaa's al-Sarar quarter killed a child",
+      "summary": "Houthi Health Ministry spokesman Anees al-Asbahi claimed a drone hit a house in Sanaa's al-Sarar quarter on 16 Nov, killing a child and injuring seven, and blamed Saudi Arabia, AP reported. Riyadh did not immediately comment.",
+      "sources": [
+        {
+          "publisher": "Siasat Daily (AP)",
+          "title": "Houthis accuse Saudi Arabia of strikes that killed 3 in Yemen",
+          "url": "https://www.siasat.com/houthis-accuse-saudi-arabia-of-strikes-that-killed-3-in-yemen-3578915/",
+          "date": "2026-11-16"
+        },
+        {
+          "publisher": "The New Arab",
+          "title": "Third US aircraft carrier arrives to region, Iran claims another tanker hit in Hormuz",
+          "url": "https://www.newarab.com/news/third-us-aircraft-carrier-arrives-iran-says-tankers-hit-mines",
+          "date": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-16-houthis-say-strike-fuel-station-harf-sufyan-omran",
+      "date": "2026-11-16",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by Houthis)",
+      "target": "Private fuel station",
+      "place": "Harf Sufyan district, Omran",
+      "country": "Yemen",
+      "lat": 16.5833,
+      "lon": 44.0,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis say an airstrike on a fuel station in Omran's Harf Sufyan killed two",
+      "summary": "Houthi Health Ministry spokesman Anees al-Asbahi claimed an airstrike hit a private fuel station in Harf Sufyan district, Omran province, on 16 Nov, killing two and wounding eight, and blamed Saudi Arabia, AP reported.",
+      "sources": [
+        {
+          "publisher": "Siasat Daily (AP)",
+          "title": "Houthis accuse Saudi Arabia of strikes that killed 3 in Yemen",
+          "url": "https://www.siasat.com/houthis-accuse-saudi-arabia-of-strikes-that-killed-3-in-yemen-3578915/",
+          "date": "2026-11-16"
+        },
+        {
+          "publisher": "The New Arab",
+          "title": "Third US aircraft carrier arrives to region, Iran claims another tanker hit in Hormuz",
+          "url": "https://www.newarab.com/news/third-us-aircraft-carrier-arrives-iran-says-tankers-hit-mines",
+          "date": "2026-11-16"
+        }
+      ]
+    },
+    {
       "id": "2026-11-16-irgc-claims-two-more-tankers-mines-hormuz",
       "date": "2026-11-16",
       "time": null,
@@ -9127,6 +9189,43 @@
           "publisher": "Arab News Pakistan (Reuters)",
           "title": "Two oil tankers hit mines in the Strait of Hormuz, IRGC says",
           "url": "https://www.arabnews.pk/middle-east/two-oil-tankers-hit-mines-in-the-strait-of-hormuz-irgc-says-3007149",
+          "date": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-16-ukmto-tanker-hit-unknown-projectile-leaving-hormuz",
+      "date": "2026-11-16",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unknown",
+      "target": "Tanker (named ON PHOENIX by Vanguard)",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "UKMTO says a tanker leaving Hormuz was hit by an unknown projectile, sparking a fire",
+      "summary": "UKMTO said a tanker transiting outbound through the Strait of Hormuz early on 16 Nov was struck by an unknown projectile, causing an engine-room fire; all crew accounted for. Vanguard named it the Panama-flagged ON PHOENIX.",
+      "sources": [
+        {
+          "publisher": "Arab News Pakistan (Reuters)",
+          "title": "British Authority: Tanker targeted by unknown projectile in Strait of Hormuz, fire erupts",
+          "url": "https://www.arabnews.pk/middle-east/british-authority-tanker-targeted-by-unknown-projectile-in-strait-of-hormuz-fire-erupts-3007161",
+          "date": "2026-11-16"
+        },
+        {
+          "publisher": "Yahoo News (ABC News)",
+          "title": "Iran live updates: Tanker attacked in Strait of Hormuz, UKMTO says",
+          "url": "https://www.yahoo.com/news/world/articles/iran-live-updates-tanker-attacked-084617419.html",
+          "date": "2026-11-16"
+        },
+        {
+          "publisher": "The New Arab",
+          "title": "Third US aircraft carrier arrives to region, Iran claims another tanker hit in Hormuz",
+          "url": "https://www.newarab.com/news/third-us-aircraft-carrier-arrives-iran-says-tankers-hit-mines",
           "date": "2026-11-16"
         }
       ]
