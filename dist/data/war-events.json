@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-16T13:13:57Z",
+  "reviewedAt": "2026-11-16T19:09:54Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9097,6 +9097,37 @@
           "title": "Tanker hit in Gulf, Iran reports mine strikes",
           "url": "https://shafaq.com/en/World/Tanker-hit-in-Gulf-Iran-reports-mine-strikes",
           "date": "2026-11-15"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-16-coalition-intercepts-two-houthi-drones-makkah-riyadh",
+      "date": "2026-11-16",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Makkah and Riyadh regions",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it destroyed two Houthi drones over the Makkah and Riyadh regions",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 16 Nov that two drones launched by the Houthis were intercepted and destroyed in the Makkah and Riyadh regions. No casualties or damage were reported.",
+      "sources": [
+        {
+          "publisher": "Asharq Al-Awsat",
+          "title": "Coalition: Two Houthi Drones Intercepted and Destroyed in Makkah and Riyadh Regions",
+          "url": "https://english.aawsat.com/gulf/5342018-coalition-two-houthi-drones-intercepted-and-destroyed-makkah-and-riyadh-regions",
+          "date": "2026-11-16"
+        },
+        {
+          "publisher": "Siasat Daily",
+          "title": "Two suspected Houthi drones intercepted in Makkah, Riyadh",
+          "url": "https://www.siasat.com/two-suspected-houthi-drones-intercepted-in-makkah-riyadh-3579020/",
+          "date": "2026-11-16"
         }
       ]
     },
