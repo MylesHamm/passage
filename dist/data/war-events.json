@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-17T13:13:00Z",
+  "reviewedAt": "2026-11-17T19:10:18Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9374,6 +9374,99 @@
           "publisher": "News.am",
           "title": "At least 6 strikes on Qeshm island, Iran reports downing of US drone",
           "url": "https://news.am/en/news/1075422",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-17-coalition-intercepts-houthi-drone-riyadh-region",
+      "date": "2026-11-17",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Riyadh region",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it destroyed a Houthi drone launched toward the Riyadh region",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 17 Nov that a drone launched by the Houthis toward the Riyadh region was intercepted and destroyed. He gave no details of casualties or damage.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition intercepts Houthi drone in Riyadh region",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-intercepts-houthi-drone-in-riyadh-region/4128220",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Live Updates: Iran claims new attack on U.S. radar system in Bahrain and says tanker hit near Strait of Hormuz",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-nuclear-oil-strait-of-hormuz/",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-17-houthis-claim-drones-pumping-stations-8-9-east-west-pipeline",
+      "date": "2026-11-17",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis (claimed)",
+      "target": "Pumping Stations No. 8 and No. 9, East-West Pipeline",
+      "place": "Riyadh area (Pumping Station No. 9, west of Riyadh)",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis claim drone strikes on East-West Pipeline Pumping Stations No. 8 and No. 9",
+      "summary": "Houthi spokesman Yahya Saree claimed on 17 Nov that three drones hit Pumping Station No. 9 west of Riyadh and two hit Station No. 8, causing major fires. Unverified; Saudi Arabia said it downed a drone nearby.",
+      "sources": [
+        {
+          "publisher": "This is Beirut",
+          "title": "Houthis Claim 2 Attacks on Saudi East-West Pipeline",
+          "url": "https://thisisbeirut.com.lb/news/politics/houthis-claim-2-attacks-on-saudi-east-west-pipeline",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Live Updates: Iran claims new attack on U.S. radar system in Bahrain and says tanker hit near Strait of Hormuz",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-nuclear-oil-strait-of-hormuz/",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-17-iran-navy-claims-three-tankers-mines-east-hormuz",
+      "date": "2026-11-17",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (army navy, claimed)",
+      "target": "Three unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran's navy says a third oil tanker caught fire after hitting a mine in Hormuz",
+      "summary": "Iran's army navy claimed on 17 Nov, per Fars, that three oil tankers had caught fire after hitting mines in the eastern Strait of Hormuz since early that day, accusing them of breaking navigation rules. Ships not named; unverified.",
+      "sources": [
+        {
+          "publisher": "CBS News",
+          "title": "Live Updates: Iran claims new attack on U.S. radar system in Bahrain and says tanker hit near Strait of Hormuz",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-nuclear-oil-strait-of-hormuz/",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "A News (Anadolu)",
+          "title": "Iranian navy says 3rd oil tanker catches fire after hitting mine in Strait of Hormuz",
+          "url": "https://www.anews.com.tr/middle-east/2026/11/17/iranian-navy-says-3rd-oil-tanker-catches-fire-after-hitting-mine-in-strait-of-hormuz",
           "date": "2026-11-17"
         }
       ]
