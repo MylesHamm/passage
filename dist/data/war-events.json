@@ -9342,6 +9342,43 @@
       ]
     },
     {
+      "id": "2026-11-17-blasts-qeshm-city-claimed-us-strikes",
+      "date": "2026-11-17",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "United States (per Iranian media)",
+      "target": "Sites northwest of Qeshm city, per Fars",
+      "place": "Qeshm Island",
+      "country": "Iran",
+      "lat": 26.7675,
+      "lon": 55.7725,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Blasts reported near Qeshm city; Iranian media claim at least six US strikes",
+      "summary": "Fars reported several blasts northwest of Qeshm city on 17 Nov and smoke over the island, cause unclear. Pars Today later claimed at least six strikes in a US attack. The IRGC claimed it downed a US MQ-1 drone south of the island.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Iranian media reports blasts heard in Qeshm Island",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/iranian-media-reports-blasts-heard-qeshm-island",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "Arab News (Reuters)",
+          "title": "Explosion heard on Iran’s Qeshm island, Fars agency reports",
+          "url": "https://www.arabnews.com/middle-east/explosion-heard-on-irans-qeshm-island-fars-agency-reports-3012499",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "News.am",
+          "title": "At least 6 strikes on Qeshm island, Iran reports downing of US drone",
+          "url": "https://news.am/en/news/1075422",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
       "id": "2026-11-17-irgc-claims-tanker-mine-east-hormuz",
       "date": "2026-11-17",
       "time": null,
