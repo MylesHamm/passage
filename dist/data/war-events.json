@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-16T19:09:54Z",
+  "reviewedAt": "2026-11-17T01:11:20Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8971,6 +8971,43 @@
       ]
     },
     {
+      "id": "2026-11-15-houthi-missile-checkpoint-khor-omeira-lahj",
+      "date": "2026-11-15",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Government checkpoint",
+      "place": "Khor Omeira, Lahj",
+      "country": "Yemen",
+      "lat": 12.6393,
+      "lon": 44.1188,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi missile attack on a checkpoint at Khor Omeira near Aden kills at least five",
+      "summary": "Government and military sources claimed a Houthi missile hit a checkpoint at Khor Omeira, Lahj, on 15 Nov, killing five and wounding eight, AFP reported; later the sources put the toll at eight killed and 12 wounded.",
+      "sources": [
+        {
+          "publisher": "Dawn (AFP)",
+          "title": "Yemen's Houthis kill five in attack near Aden, sources say",
+          "url": "https://www.dawn.com/news/2044728/yemens-houthis-kill-five-in-attack-near-aden-sources-say",
+          "date": "2026-11-15"
+        },
+        {
+          "publisher": "Times of Israel (AFP)",
+          "title": "5 killed in Houthi missile attack on checkpoint near Yemen's Aden",
+          "url": "https://www.timesofisrael.com/liveblog_entry/5-killed-in-houthi-missile-attack-on-checkpoint-near-yemens-aden/",
+          "date": "2026-11-15"
+        },
+        {
+          "publisher": "The New Arab (AFP)",
+          "title": "Houthi attacks kill eight in Yemen, strike Riyadh airport and financial centre",
+          "url": "https://www.newarab.com/news/houthi-attacks-kill-eight-yemen-strike-riyadh-airport",
+          "date": "2026-11-15"
+        }
+      ]
+    },
+    {
       "id": "2026-11-15-houthis-say-strike-wounds-four-northeastern-sanaa",
       "date": "2026-11-15",
       "time": null,
@@ -9173,7 +9210,7 @@
       "place": "Harf Sufyan district, Omran",
       "country": "Yemen",
       "lat": 16.5833,
-      "lon": 44.0,
+      "lon": 44,
       "precision": "area",
       "confidence": "claimed",
       "title": "Houthis say an airstrike on a fuel station in Omran's Harf Sufyan killed two",
@@ -9221,6 +9258,37 @@
           "title": "Two oil tankers hit mines in the Strait of Hormuz, IRGC says",
           "url": "https://www.arabnews.pk/middle-east/two-oil-tankers-hit-mines-in-the-strait-of-hormuz-irgc-says-3007149",
           "date": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-16-ukmto-tanker-attacked-north-of-khasab",
+      "date": "2026-11-16",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unknown",
+      "target": "Unnamed tanker",
+      "place": "Strait of Hormuz, about 7 nm north of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.2999,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "UKMTO says a tanker was attacked about 7 nm north of Khasab and disabled",
+      "summary": "UKMTO said on 16 Nov, citing a third party, that a tanker transiting the Strait of Hormuz was attacked about 7 nm north of Khasab, Oman, disabling it and starting an engine-room fire. Crew reported safe; attacker not named.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Tanker transiting Strait of Hormuz attacked near Oman: UKMTO",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/ukmto-tanker-transiting-strait-hormuz-attacked-near-oman",
+          "date": "2026-11-16"
+        },
+        {
+          "publisher": "Arab News (Reuters)",
+          "title": "Tanker attacked north of Oman's Khasab, UKMTO says",
+          "url": "https://www.arabnews.com/world/tanker-attacked-north-of-omans-khasab-ukmto-says-3012356",
+          "date": "2026-11-17"
         }
       ]
     },
