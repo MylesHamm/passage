@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-17T01:11:20Z",
+  "reviewedAt": "2026-11-17T07:10:17Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -8910,12 +8910,18 @@
       "precision": "city",
       "confidence": "claimed",
       "title": "Saudi-led coalition says it intercepted two Houthi ballistic missiles fired at Riyadh",
-      "summary": "The Saudi-led coalition claimed on 15 Nov that it intercepted two Houthi ballistic missiles fired toward Riyadh, Reuters reported. No casualties or damage were reported.",
+      "summary": "The Saudi-led coalition claimed on 15 Nov that it intercepted two Houthi ballistic missiles fired toward Riyadh, Reuters reported. The Houthis claimed their two missiles hit King Khalid International Airport and a financial centre.",
       "sources": [
         {
           "publisher": "Business Recorder (Reuters)",
           "title": "Saudi-led coalition intercepts missiles towards Riyadh, drones in Eastern Province",
           "url": "https://brecorder.com/news/40449006/saudi-led-coalition-intercepts-missiles-towards-riyadh-drones-in-eastern-province",
+          "date": "2026-11-15"
+        },
+        {
+          "publisher": "The New Arab (AFP)",
+          "title": "Houthi attacks kill eight in Yemen, strike Riyadh airport and financial centre",
+          "url": "https://www.newarab.com/news/houthi-attacks-kill-eight-yemen-strike-riyadh-airport",
           "date": "2026-11-15"
         }
       ]
