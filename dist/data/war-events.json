@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-17T07:10:17Z",
+  "reviewedAt": "2026-11-17T13:13:00Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9274,7 +9274,7 @@
       "layer": "shipping",
       "type": "shipping-attack",
       "actor": "Unknown",
-      "target": "Unnamed tanker",
+      "target": "Tara Gas (Panama-flagged LPG tanker)",
       "place": "Strait of Hormuz, about 7 nm north of Khasab",
       "country": "Oman (Strait of Hormuz)",
       "lat": 26.2999,
@@ -9282,7 +9282,7 @@
       "precision": "sea-area",
       "confidence": "confirmed",
       "title": "UKMTO says a tanker was attacked about 7 nm north of Khasab and disabled",
-      "summary": "UKMTO said on 16 Nov, citing a third party, that a tanker transiting the Strait of Hormuz was attacked about 7 nm north of Khasab, Oman, disabling it and starting an engine-room fire. Crew reported safe; attacker not named.",
+      "summary": "UKMTO said on 16 Nov, citing a third party, that a tanker transiting Hormuz was attacked about 7 nm north of Khasab, Oman, disabling it and starting an engine-room fire. Gulf News named it the Panama-flagged LPG tanker Tara Gas.",
       "sources": [
         {
           "publisher": "Middle East Eye",
@@ -9294,6 +9294,12 @@
           "publisher": "Arab News (Reuters)",
           "title": "Tanker attacked north of Oman's Khasab, UKMTO says",
           "url": "https://www.arabnews.com/world/tanker-attacked-north-of-omans-khasab-ukmto-says-3012356",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "Gulf News",
+          "title": "Strait of Hormuz attack: Indian seafarer missing after second attack on tanker off Oman",
+          "url": "https://gulfnews.com/world/mena/strait-of-hormuz-attack-indian-seafarer-missing-after-second-attack-on-tanker-off-oman-1.500750031",
           "date": "2026-11-17"
         }
       ]
@@ -9332,6 +9338,99 @@
           "title": "Third US aircraft carrier arrives to region, Iran claims another tanker hit in Hormuz",
           "url": "https://www.newarab.com/news/third-us-aircraft-carrier-arrives-iran-says-tankers-hit-mines",
           "date": "2026-11-16"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-17-irgc-claims-tanker-mine-east-hormuz",
+      "date": "2026-11-17",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC, claimed)",
+      "target": "Unnamed oil tanker",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC says a tanker hit a naval mine east of the Strait of Hormuz and caught fire",
+      "summary": "The IRGC claimed via Tasnim on 17 Nov that an oil tanker in its declared restricted area east of the Strait of Hormuz hit a naval mine, caught fire and was severely damaged. The ship was not named; the claim is unverified.",
+      "sources": [
+        {
+          "publisher": "Newsquawk",
+          "title": "\"An hour ago, an offending tanker that was traveling in the restricted area east of the Strait of Hormuz...caught fire and was severely damaged after hitting a naval mine\", Tasnim reports",
+          "url": "https://www.newsquawk.com/headlines/an-hour-ago-an-offending-tanker-that-was-traveling-in-the-restricted-area-east-of-the-strait-of-hormuz-tasnim-reports-",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Live Updates: Iran claims new attack on U.S. radar system in Bahrain and says tanker hit near Strait of Hormuz",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-nuclear-oil-strait-of-hormuz/",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-17-irgc-drones-us-radar-sheikh-isa-bahrain",
+      "date": "2026-11-17",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (IRGC)",
+      "target": "US radar system at Sheikh Isa Air Base",
+      "place": "Sheikh Isa Air Base",
+      "country": "Bahrain",
+      "lat": 25.9183,
+      "lon": 50.5906,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "IRGC drones target US radar at Bahrain's Sheikh Isa Air Base; Bahrain intercepts them",
+      "summary": "The IRGC claimed on 17 Nov it used drones to target a US radar at Sheikh Isa Air Base. Bahrain said it intercepted the attack; CENTCOM said multiple IRGC one-way drones were intercepted with no damage or injuries, Reuters reported.",
+      "sources": [
+        {
+          "publisher": "Jerusalem Post (Reuters)",
+          "title": "Bahrain says it intercepts Iranian air attacks, IRGC says it targets US radar",
+          "url": "https://www.jpost.com/middle-east/article-915140",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Live Updates: Iran claims new attack on U.S. radar system in Bahrain and says tanker hit near Strait of Hormuz",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-nuclear-oil-strait-of-hormuz/",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-17-tara-gas-struck-again-crew-abandon-ship-hormuz",
+      "date": "2026-11-17",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unknown",
+      "target": "Tara Gas (Panama-flagged LPG tanker)",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "LPG tanker Tara Gas struck again in Hormuz; crew abandon ship and one Indian is missing",
+      "summary": "UKMTO said on 17 Nov the Tara Gas, disabled off Khasab a day earlier, was struck again, causing a fire. India's shipping minister Sarbananda Sonowal said the crew abandoned ship; 24 were accounted for and one Indian was missing.",
+      "sources": [
+        {
+          "publisher": "Gulf News",
+          "title": "Strait of Hormuz attack: Indian seafarer missing after second attack on tanker off Oman",
+          "url": "https://gulfnews.com/world/mena/strait-of-hormuz-attack-indian-seafarer-missing-after-second-attack-on-tanker-off-oman-1.500750031",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "Siasat Daily",
+          "title": "One Indian missing after fresh attack on LPG tanker in Hormuz",
+          "url": "https://www.siasat.com/one-indian-missing-after-fresh-attack-on-lpg-tanker-in-hormuz-3579673/",
+          "date": "2026-11-17"
         }
       ]
     }
