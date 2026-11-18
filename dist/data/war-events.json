@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-18T07:11:27Z",
+  "reviewedAt": "2026-11-18T13:13:30Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9349,14 +9349,14 @@
       "type": "shipping-attack",
       "actor": "Unknown",
       "target": "ADNOC L&S vessel (unnamed)",
-      "place": "Strait of Hormuz",
-      "country": "Strait of Hormuz",
-      "lat": 26.5667,
+      "place": "Strait of Hormuz, about 13 nm north of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.3999,
       "lon": 56.25,
       "precision": "sea-area",
       "confidence": "confirmed",
       "title": "ADNOC L&S says one of its ships was attacked in Hormuz; one crew member missing",
-      "summary": "ADNOC Logistics & Services said one of its vessels was attacked while transiting the Strait of Hormuz on the evening of 17 Nov; one crew member was missing, 11 were injured and the rest were evacuated. It named no attacker.",
+      "summary": "ADNOC L&S said one of its ships was hit in Hormuz on the evening of 17 Nov; one crew member was missing and 11 injured. UKMTO, not naming the ship, said a tanker was hit by an unknown projectile 13 nm north of Khasab, per Reuters.",
       "sources": [
         {
           "publisher": "The National",
@@ -9368,6 +9368,12 @@
           "publisher": "Gulf News",
           "title": "ADNOC vessel attacked in Strait of Hormuz, 1 crew member missing",
           "url": "https://gulfnews.com/uae/abu-dhabi/adnoc-vessel-attacked-in-strait-of-hormuz-1-crew-member-missing-1.500751692",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Free Malaysia Today (Reuters)",
+          "title": "UAE state oil firm says one missing after its ship hit in Hormuz",
+          "url": "https://freemalaysiatoday.com/category/world/2026/11/18/uae-state-oil-firm-says-one-missing-after-ship-hit-in-hormuz",
           "date": "2026-11-18"
         }
       ]
@@ -9497,8 +9503,8 @@
       "lon": 42.9511,
       "precision": "city",
       "confidence": "claimed",
-      "title": "Houthis say strikes on a Hodeidah sponge factory killed seven",
-      "summary": "Houthi Health Ministry spokesman Anees al-Asbahi claimed strikes on a sponge factory in Hodeidah on 17 Nov killed at least seven and wounded nine, and Houthi media blamed Saudi Arabia, AP reported. Saudi Arabia did not comment.",
+      "title": "Houthis say strikes on a Hodeidah sponge factory killed at least 15",
+      "summary": "Houthi Health Ministry spokesman Anees al-Asbahi first claimed strikes on a Hodeidah sponge factory on 17 Nov killed at least 7 and wounded 9; on 18 Nov the ministry claimed at least 15 killed and 15 wounded, AP reported.",
       "sources": [
         {
           "publisher": "Xinhua (Chinese state media)",
@@ -9511,6 +9517,12 @@
           "title": "Saudi-backed forces in Yemen beef up defenses outside Aden to thwart Houthis, and other Mideast news",
           "url": "https://www.click2houston.com/news/world/2026/11/17/saudi-backed-forces-in-yemen-beef-up-defenses-outside-aden-to-thwart-houthis-and-other-mideast-news/",
           "date": "2026-11-17"
+        },
+        {
+          "publisher": "Yahoo News (AP)",
+          "title": "Saudi-backed forces launch a major attack on Houthi rebels in Yemen, and other Mideast news",
+          "url": "https://www.yahoo.com/news/world/articles/saudi-backed-forces-launch-major-075818680.html",
+          "date": "2026-11-18"
         }
       ]
     },
@@ -9727,7 +9739,7 @@
       "precision": "area",
       "confidence": "claimed",
       "title": "Saudi-led coalition says it intercepted a Houthi cruise missile launched toward Riyadh",
-      "summary": "Coalition spokesman Turki al-Maliki claimed on 18 Nov that a cruise missile launched by the Houthis toward the Riyadh area was intercepted and destroyed. No casualties or damage were reported.",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 18 Nov that a Houthi cruise missile launched toward the Riyadh area was intercepted and destroyed; AP reported the spokesman said two were destroyed. No casualties or damage reported.",
       "sources": [
         {
           "publisher": "Middle East Eye",
@@ -9739,6 +9751,12 @@
           "publisher": "France 24",
           "title": "Middle East live: Kuwait, Bahrain report drone and missile attacks",
           "url": "https://www.france24.com/en/middle-east/20261118-middle-east-live-kuwait-bahrain-report-drone-and-missile-attacks",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Yahoo News (AP)",
+          "title": "Saudi-backed forces launch a major attack on Houthi rebels in Yemen, and other Mideast news",
+          "url": "https://www.yahoo.com/news/world/articles/saudi-backed-forces-launch-major-075818680.html",
           "date": "2026-11-18"
         }
       ]
