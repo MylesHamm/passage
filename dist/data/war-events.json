@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-17T19:10:18Z",
+  "reviewedAt": "2026-11-18T01:09:42Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9347,16 +9347,16 @@
       "time": null,
       "layer": "strikes-on-iran-yemen",
       "type": "air-strike",
-      "actor": "United States (per Iranian media)",
-      "target": "Sites northwest of Qeshm city, per Fars",
+      "actor": "United States",
+      "target": "IRGC missile launch site on Qeshm Island, per a US military official",
       "place": "Qeshm Island",
       "country": "Iran",
       "lat": 26.7675,
       "lon": 55.7725,
       "precision": "area",
-      "confidence": "claimed",
+      "confidence": "confirmed",
       "title": "Blasts reported near Qeshm city; Iranian media claim at least six US strikes",
-      "summary": "Fars reported several blasts northwest of Qeshm city on 17 Nov and smoke over the island, cause unclear. Pars Today later claimed at least six strikes in a US attack. The IRGC claimed it downed a US MQ-1 drone south of the island.",
+      "summary": "Fars reported blasts northwest of Qeshm city on 17 Nov. A US military official later confirmed US jets struck an IRGC missile launch site on the island in what he called self-defence. The IRGC claimed it downed a US MQ-1 drone.",
       "sources": [
         {
           "publisher": "Middle East Eye",
@@ -9374,6 +9374,18 @@
           "publisher": "News.am",
           "title": "At least 6 strikes on Qeshm island, Iran reports downing of US drone",
           "url": "https://news.am/en/news/1075422",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "Iran International",
+          "title": "US confirms it struck IRGC missile launch site on Iran's Qeshm Island",
+          "url": "https://www.iranintl.com/en/202611172999",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "KTVZ (CNN)",
+          "title": "US carries out ‘self-defense’ strikes on Iranian missile launch site",
+          "url": "https://ktvz.com/politics/cnn-us-politics/2026/11/17/us-carries-out-self-defense-strikes-on-iranian-missile-launch-site/",
           "date": "2026-11-17"
         }
       ]
@@ -9436,6 +9448,37 @@
           "publisher": "CBS News",
           "title": "Live Updates: Iran claims new attack on U.S. radar system in Bahrain and says tanker hit near Strait of Hormuz",
           "url": "https://www.cbsnews.com/live-updates/iran-war-us-nuclear-oil-strait-of-hormuz/",
+          "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-17-houthis-say-strikes-sponge-factory-hodeidah",
+      "date": "2026-11-17",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by Houthis)",
+      "target": "Al-Khawlani sponge factory",
+      "place": "Hodeidah",
+      "country": "Yemen",
+      "lat": 14.8022,
+      "lon": 42.9511,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis say strikes on a Hodeidah sponge factory killed seven",
+      "summary": "Houthi Health Ministry spokesman Anees al-Asbahi claimed strikes on a sponge factory in Hodeidah on 17 Nov killed at least seven and wounded nine, and Houthi media blamed Saudi Arabia, AP reported. Saudi Arabia did not comment.",
+      "sources": [
+        {
+          "publisher": "Xinhua (Chinese state media)",
+          "title": "Houthis claim major territorial gains in Yemen, threaten Saudi oil facilities",
+          "url": "https://english.news.cn/20261117/02284fc761c74bd583ee3f8f7cbe7a0f/c.html",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "Click2Houston (AP)",
+          "title": "Saudi-backed forces in Yemen beef up defenses outside Aden to thwart Houthis, and other Mideast news",
+          "url": "https://www.click2houston.com/news/world/2026/11/17/saudi-backed-forces-in-yemen-beef-up-defenses-outside-aden-to-thwart-houthis-and-other-mideast-news/",
           "date": "2026-11-17"
         }
       ]
