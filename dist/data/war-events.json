@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-18T01:09:42Z",
+  "reviewedAt": "2026-11-18T07:11:27Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9342,6 +9342,37 @@
       ]
     },
     {
+      "id": "2026-11-17-adnoc-ls-ship-attacked-hormuz-one-missing",
+      "date": "2026-11-17",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unknown",
+      "target": "ADNOC L&S vessel (unnamed)",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "ADNOC L&S says one of its ships was attacked in Hormuz; one crew member missing",
+      "summary": "ADNOC Logistics & Services said one of its vessels was attacked while transiting the Strait of Hormuz on the evening of 17 Nov; one crew member was missing, 11 were injured and the rest were evacuated. It named no attacker.",
+      "sources": [
+        {
+          "publisher": "The National",
+          "title": "Adnoc L&S ship attacked in Strait of Hormuz with one crew member missing",
+          "url": "https://www.thenationalnews.com/business/energy/2026/11/18/adnoc-ls-ship-attacked-at-strait-of-hormuz-with-one-crew-member-missing/",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Gulf News",
+          "title": "ADNOC vessel attacked in Strait of Hormuz, 1 crew member missing",
+          "url": "https://gulfnews.com/uae/abu-dhabi/adnoc-vessel-attacked-in-strait-of-hormuz-1-crew-member-missing-1.500751692",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
       "id": "2026-11-17-blasts-qeshm-city-claimed-us-strikes",
       "date": "2026-11-17",
       "time": null,
@@ -9484,6 +9515,43 @@
       ]
     },
     {
+      "id": "2026-11-17-iran-army-drones-ali-al-salem-kuwait",
+      "date": "2026-11-17",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (Army)",
+      "target": "US Patriot systems and drone and missile launch platforms at Ali Al Salem Air Base",
+      "place": "Ali Al Salem Air Base",
+      "country": "Kuwait",
+      "lat": 29.3467,
+      "lon": 47.5208,
+      "precision": "facility",
+      "confidence": "confirmed",
+      "title": "Kuwait says it countered hostile drones; Iran's army says it targeted Ali Al Salem base",
+      "summary": "Kuwait's army said on 17 Nov its air defences were countering hostile drone attacks and gave no damage details. Iran's army claimed via IRIB its drones targeted US Patriot systems and launch platforms at Ali Al Salem Air Base.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Kuwait reports drone attacks as Iran, US trade attacks on Qeshm and Bahrain",
+          "url": "https://www.aljazeera.com/news/2026/11/17/kuwait-reports-drone-attacks-as-iran-us-trade-attacks-on-qeshm-and-bahrain",
+          "date": "2026-11-17"
+        },
+        {
+          "publisher": "Times of Israel (Reuters)",
+          "title": "Iranian army claims attack on Kuwait, says it targeted US military installations",
+          "url": "https://www.timesofisrael.com/liveblog_entry/iranian-army-claims-attack-on-kuwait-says-it-targeted-us-military-installations/",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Arab News Pakistan",
+          "title": "Kuwait, Bahrain fend off Iranian aerial attacks as coalition hits Houthi military sites",
+          "url": "https://www.arabnews.pk/middle-east/kuwait-under-hostile-drone-attacks-says-army-3007347",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
       "id": "2026-11-17-iran-navy-claims-three-tankers-mines-east-hormuz",
       "date": "2026-11-17",
       "time": null,
@@ -9604,6 +9672,74 @@
           "title": "One Indian missing after fresh attack on LPG tanker in Hormuz",
           "url": "https://www.siasat.com/one-indian-missing-after-fresh-attack-on-lpg-tanker-in-hormuz-3579673/",
           "date": "2026-11-17"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-18-coalition-60-houthi-targets-four-governorates",
+      "date": "2026-11-18",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi missile storage tunnels and drone workshops in Sanaa, Amran, Saada and Hodeidah",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3694,
+      "lon": 44.191,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition says it destroyed 60 Houthi targets in four Yemeni governorates",
+      "summary": "Coalition spokesman Turki al-Maliki said early on 18 Nov that strikes destroyed 60 Houthi military targets in Sanaa, Amran, Saada and Hodeidah, including ballistic missile storage tunnels and drone workshops. No casualty figures given.",
+      "sources": [
+        {
+          "publisher": "Arab News Pakistan",
+          "title": "Kuwait, Bahrain fend off Iranian aerial attacks as coalition hits Houthi military sites",
+          "url": "https://www.arabnews.pk/middle-east/kuwait-under-hostile-drone-attacks-says-army-3007347",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Asharq Al-Awsat",
+          "title": "Coalition Destroys 60 Houthi Military Targets in 4 Yemeni Regions",
+          "url": "https://english.aawsat.com/gulf/5342575-coalition-destroys-60-houthi-military-targets-4-yemeni-regions",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it destroyed 60 Houthi targets in Yemen",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-says-it-destroyed-60-houthi-targets-in-yemen/4128487",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-18-coalition-intercepts-houthi-cruise-missile-riyadh",
+      "date": "2026-11-18",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Riyadh area",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it intercepted a Houthi cruise missile launched toward Riyadh",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 18 Nov that a cruise missile launched by the Houthis toward the Riyadh area was intercepted and destroyed. No casualties or damage were reported.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Saudi-led coalition says it intercepted destroyed Houthi missile",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/saudi-led-coalition-says-it-intercepted-destroyed-houthi-missile",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "France 24",
+          "title": "Middle East live: Kuwait, Bahrain report drone and missile attacks",
+          "url": "https://www.france24.com/en/middle-east/20261118-middle-east-live-kuwait-bahrain-report-drone-and-missile-attacks",
+          "date": "2026-11-18"
         }
       ]
     }
