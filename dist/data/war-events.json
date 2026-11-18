@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-18T19:09:39Z",
+  "reviewedAt": "2026-11-18T21:42:59Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9776,7 +9776,7 @@
       "precision": "area",
       "confidence": "claimed",
       "title": "Saudi-led coalition says it intercepted two Houthi cruise missiles launched toward Riyadh",
-      "summary": "Coalition spokesman Turki al-Maliki first claimed on 18 Nov that one Houthi cruise missile aimed at Riyadh was destroyed; the coalition later claimed two were intercepted, launched hours apart that morning. No casualties reported.",
+      "summary": "Coalition spokesman Turki al-Maliki first claimed on 18 Nov one Houthi cruise missile aimed at Riyadh was destroyed, then two. Houthi spokesman Yahya Saree claimed cruise missiles hit King Khalid airport and Riyadh's financial centre.",
       "sources": [
         {
           "publisher": "Middle East Eye",
@@ -9800,6 +9800,12 @@
           "publisher": "Arab News",
           "title": "Saudi air defenses destroy Houthi missiles launched toward Riyadh",
           "url": "https://www.arabnews.com/saudi-arabia/saudi-air-defenses-destroy-houthi-missiles-launched-toward-riyadh-3012641",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Middle East Eye (Reuters)",
+          "title": "Houthis say they targeted King Khalid Airport and financial centre in Riyadh",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthis-say-they-targeted-king-khalid-airport-and-financial-centre",
           "date": "2026-11-18"
         }
       ]
