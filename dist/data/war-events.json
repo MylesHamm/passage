@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-18T13:13:30Z",
+  "reviewedAt": "2026-11-18T19:09:39Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9688,6 +9688,43 @@
       ]
     },
     {
+      "id": "2026-11-18-bahrain-intercepts-iranian-aerial-attacks",
+      "date": "2026-11-18",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran",
+      "target": "Bahrain",
+      "place": "Bahrain",
+      "country": "Bahrain",
+      "lat": 26.0275,
+      "lon": 50.55,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Bahrain says its air defences intercepted Iranian aerial attacks on Wednesday",
+      "summary": "Bahrain's defence force claimed its air defences intercepted Iranian aerial attacks on 18 Nov, a day after the IRGC drone attack on Sheikh Isa; the Interior Ministry issued two threat alerts. No damage or casualties reported.",
+      "sources": [
+        {
+          "publisher": "Asharq Al-Awsat",
+          "title": "Bahrain, Kuwait Intercept Iranian Aerial Attacks",
+          "url": "https://english.aawsat.com/gulf/5342578-bahrain-kuwait-intercept-iranian-aerial-attacks",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Jerusalem Post (Reuters)",
+          "title": "Iran attacks US bases in Gulf countries despite diplomatic efforts",
+          "url": "https://www.jpost.com/middle-east/article-915253",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Gulf News",
+          "title": "Bahrain shoots down fresh Iranian drone attacks as sirens blare",
+          "url": "https://gulfnews.com/world/gulf/bahrain/bahrain-shoots-down-fresh-iranian-drone-attacks-as-sirens-blare-1.500751453",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
       "id": "2026-11-18-coalition-60-houthi-targets-four-governorates",
       "date": "2026-11-18",
       "time": null,
@@ -9738,8 +9775,8 @@
       "lon": 46.6753,
       "precision": "area",
       "confidence": "claimed",
-      "title": "Saudi-led coalition says it intercepted a Houthi cruise missile launched toward Riyadh",
-      "summary": "Coalition spokesman Turki al-Maliki claimed on 18 Nov that a Houthi cruise missile launched toward the Riyadh area was intercepted and destroyed; AP reported the spokesman said two were destroyed. No casualties or damage reported.",
+      "title": "Saudi-led coalition says it intercepted two Houthi cruise missiles launched toward Riyadh",
+      "summary": "Coalition spokesman Turki al-Maliki first claimed on 18 Nov that one Houthi cruise missile aimed at Riyadh was destroyed; the coalition later claimed two were intercepted, launched hours apart that morning. No casualties reported.",
       "sources": [
         {
           "publisher": "Middle East Eye",
@@ -9757,6 +9794,37 @@
           "publisher": "Yahoo News (AP)",
           "title": "Saudi-backed forces launch a major attack on Houthi rebels in Yemen, and other Mideast news",
           "url": "https://www.yahoo.com/news/world/articles/saudi-backed-forces-launch-major-075818680.html",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Saudi air defenses destroy Houthi missiles launched toward Riyadh",
+          "url": "https://www.arabnews.com/saudi-arabia/saudi-air-defenses-destroy-houthi-missiles-launched-toward-riyadh-3012641",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-18-coalition-intercepts-two-houthi-drones-riyadh-south",
+      "date": "2026-11-18",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Riyadh and southern regions",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it destroyed two Houthi drones over Riyadh and southern regions",
+      "summary": "The Saudi-led coalition claimed that on the evening of 18 Nov two Houthi drones were intercepted and destroyed over the Riyadh and southern regions. Civil defence had issued a danger warning for Sharurah. No casualties reported.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Saudi air defenses destroy Houthi missiles launched toward Riyadh",
+          "url": "https://www.arabnews.com/saudi-arabia/saudi-air-defenses-destroy-houthi-missiles-launched-toward-riyadh-3012641",
           "date": "2026-11-18"
         }
       ]
