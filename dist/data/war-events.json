@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-19T01:10:31Z",
+  "reviewedAt": "2026-11-19T07:11:32Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9961,6 +9961,142 @@
           "publisher": "Gulf News",
           "title": "Tanker hit by unknown projectile near Oman in latest Hormuz attack",
           "url": "https://gulfnews.com/world/gulf/oman/tanker-hit-by-unknown-projectile-near-oman-in-latest-hormuz-attack-1.500752860",
+          "date": "2026-11-19"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-19-coalition-destroys-houthi-launch-platform-dhamar",
+      "date": "2026-11-19",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi ballistic missile launch platform",
+      "place": "Dhamar",
+      "country": "Yemen",
+      "lat": 14.5427,
+      "lon": 44.4051,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition says it destroyed a Houthi ballistic missile launch platform in Dhamar",
+      "summary": "Coalition spokesman Turki al-Maliki said on 19 Nov its forces destroyed a Houthi ballistic missile launch platform in Dhamar, which he said was used in an attempted attack on Riyadh. No casualty figures given.",
+      "sources": [
+        {
+          "publisher": "MTV Lebanon",
+          "title": "Saudi-led coalition spokesperson in Yemen: We have destroyed a ballistic missile launch platform in Dhamar",
+          "url": "https://www.mtv.com.lb/en/news/1759755",
+          "date": "2026-11-19"
+        },
+        {
+          "publisher": "JNS",
+          "title": "Saudi-led coalition intercepts four Houthi ballistic missiles",
+          "url": "https://www.jns.org/news/world/saudi-led-coalition-intercepts-four-houthi-ballistic-missiles",
+          "date": "2026-11-19"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-19-coalition-intercepts-four-houthi-ballistic-missiles-south",
+      "date": "2026-11-19",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Southern Saudi Arabia",
+      "place": "Abha and Khamis Mushait (southern region)",
+      "country": "Saudi Arabia",
+      "lat": 18.2164,
+      "lon": 42.5053,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition intercepts four Houthi ballistic missiles",
+      "summary": "Coalition spokesman Turki al-Maliki claimed air defences intercepted and destroyed four Houthi ballistic missiles fired toward the southern region on the morning of 19 Nov. Civil defence lifted alerts in Abha and Khamis Mushait.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Saudi-led coalition says it downed Houthi missiles, as alerts lifted in Khamis Mushait, Abha city",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/saudi-led-coalition-says-it-downed-houthi-missiles-alerts-lifted-khamis",
+          "date": "2026-11-19"
+        },
+        {
+          "publisher": "Kuwait Times (KUNA)",
+          "title": "Coalition intercepts 4 Houthi ballistic missiles after debris hits Riyadh",
+          "url": "https://kuwaittimes.com/article/53976/world/coalition-intercepts-4-houthi-ballistic-missiles-after-debris-hits-riyadh/",
+          "date": "2026-11-19"
+        },
+        {
+          "publisher": "JNS",
+          "title": "Saudi-led coalition intercepts four Houthi ballistic missiles",
+          "url": "https://www.jns.org/news/world/saudi-led-coalition-intercepts-four-houthi-ballistic-missiles",
+          "date": "2026-11-19"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-19-houthi-missile-riyadh-debris-damage-pif-tower",
+      "date": "2026-11-19",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Riyadh; PIF tower in the financial district damaged",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Houthi missile threat towards Riyadh causes damage, Saudi-led coalition says",
+      "summary": "The Saudi-led coalition said early on 19 Nov it dealt with a Houthi missile threat toward Riyadh and falling debris caused material damage. A source told AFP the PIF tower's facade was damaged across several floors. No casualties reported.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Saudi-led coalition says forces responded to Houthi missile threat targeting Riyadh",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/saudi-led-coalition-says-forces-responded-houthi-missile-threat",
+          "date": "2026-11-19"
+        },
+        {
+          "publisher": "Cyprus Mail (Reuters)",
+          "title": "Houthi missile threat towards Riyadh causes damage, Saudi-led coalition says",
+          "url": "https://cyprus-mail.com/2026/11/19/houthi-missile-threat-towards-riyadh-causes-damage-saudi-led-coalition-says",
+          "date": "2026-11-19"
+        },
+        {
+          "publisher": "Times of Israel (agencies)",
+          "title": "Damage seen to Riyadh skyscraper following Houthi attack",
+          "url": "https://www.timesofisrael.com/liveblog_entry/damage-seen-to-riyadh-skyscraper-following-houthi-attack",
+          "date": "2026-11-19"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-19-houthis-say-coalition-struck-sanaa-saada-taiz",
+      "date": "2026-11-19",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition (claimed)",
+      "target": "Sanaa, Saada and Taiz governorates",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3694,
+      "lon": 44.191,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis say Saudi-led coalition struck Sanaa, two Yemeni governorates",
+      "summary": "Houthi-run Saba claimed Saudi aircraft struck Sanaa early on 19 Nov, and also Saada and Taiz, where it said a medical centre was damaged. No casualty figures; no immediate confirmation from Saudi authorities.",
+      "sources": [
+        {
+          "publisher": "Cyprus Mail (Reuters)",
+          "title": "Houthi missile threat towards Riyadh causes damage, Saudi-led coalition says",
+          "url": "https://cyprus-mail.com/2026/11/19/houthi-missile-threat-towards-riyadh-causes-damage-saudi-led-coalition-says",
+          "date": "2026-11-19"
+        },
+        {
+          "publisher": "TASS (Russian state media)",
+          "title": "Houthis say Saudi-led coalition struck Sanaa, two Yemeni governorates",
+          "url": "https://tass.com/world/2220919",
           "date": "2026-11-19"
         }
       ]
