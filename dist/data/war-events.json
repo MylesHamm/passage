@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-18T21:42:59Z",
+  "reviewedAt": "2026-11-19T01:10:31Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9762,6 +9762,37 @@
       ]
     },
     {
+      "id": "2026-11-18-coalition-destroys-houthi-launch-platform-saada",
+      "date": "2026-11-18",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi ballistic missile launch platform",
+      "place": "Saada",
+      "country": "Yemen",
+      "lat": 16.9402,
+      "lon": 43.7639,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition says it destroyed a Houthi ballistic missile launch platform in Saada",
+      "summary": "The Saudi-led coalition said late on 18 Nov its forces destroyed a Houthi ballistic missile launch platform in Saada, which it said was used earlier that day in an attempted attack on southern Saudi Arabia. No casualty figures.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Coalition says missile launch platform destroyed in Saada",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/coalition-says-missile-launch-platform-destroyed-saada",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Al Jazeera",
+          "title": "Iran war live: Saudi-led coalition strikes Yemen; ships on fire in Hormuz",
+          "url": "https://www.aljazeera.com/news/liveblog/2026/11/19/iran-war-live-saudi-led-coalition-strikes-yemen-ships-on-fire-in-hormuz",
+          "date": "2026-11-19"
+        }
+      ]
+    },
+    {
       "id": "2026-11-18-coalition-intercepts-houthi-cruise-missile-riyadh",
       "date": "2026-11-18",
       "time": null,
@@ -9832,6 +9863,105 @@
           "title": "Saudi air defenses destroy Houthi missiles launched toward Riyadh",
           "url": "https://www.arabnews.com/saudi-arabia/saudi-air-defenses-destroy-houthi-missiles-launched-toward-riyadh-3012641",
           "date": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-18-houthis-claim-ballistic-missiles-jazan",
+      "date": "2026-11-18",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed)",
+      "target": "A sensitive site in the Jazan region",
+      "place": "Jazan",
+      "country": "Saudi Arabia",
+      "lat": 16.8892,
+      "lon": 42.5511,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis claim several ballistic missiles targeted a sensitive site in Jazan",
+      "summary": "Houthi spokesman Yahya Saree claimed on 18 Nov that several ballistic missiles targeted a sensitive site in the Jazan region. Saudi civil defence said danger had passed in Jazan after alerts; Saudi authorities did not confirm the claim.",
+      "sources": [
+        {
+          "publisher": "Jerusalem Post (Reuters)",
+          "title": "Saudi Arabia says danger has passed in three southern cities after alerts",
+          "url": "https://www.jpost.com/middle-east/article-915377",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Iran International",
+          "title": "Iran-backed Houthis say they targeted Riyadh, Jizan and Saudi air base",
+          "url": "https://www.iranintl.com/en/liveblog/202611143682",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-18-houthis-claim-drone-khamis-mushait-air-base",
+      "date": "2026-11-18",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis (claimed)",
+      "target": "A sensitive site at Khamis Mushait air base",
+      "place": "King Khalid Air Base, Khamis Mushait",
+      "country": "Saudi Arabia",
+      "lat": 18.2969,
+      "lon": 42.8036,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthis claim drone attack on a sensitive site at Khamis Mushait air base",
+      "summary": "Houthi spokesman Yahya Saree claimed on 18 Nov that a drone targeted a sensitive site at Khamis Mushait air base. Saudi civil defence said danger had passed in Khamis Mushait after alerts; Saudi authorities did not confirm the claim.",
+      "sources": [
+        {
+          "publisher": "Jerusalem Post (Reuters)",
+          "title": "Saudi Arabia says danger has passed in three southern cities after alerts",
+          "url": "https://www.jpost.com/middle-east/article-915377",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Iran International",
+          "title": "Iran-backed Houthis say they targeted Riyadh, Jizan and Saudi air base",
+          "url": "https://www.iranintl.com/en/liveblog/202611143682",
+          "date": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-18-tanker-hit-projectile-engine-room-north-of-khasab",
+      "date": "2026-11-18",
+      "time": "16:45Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unknown",
+      "target": "Unnamed tanker on outbound transit",
+      "place": "Strait of Hormuz, about 6 nm north of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.2833,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "UKMTO says a tanker was hit by an unknown projectile about 6 nm north of Khasab",
+      "summary": "UKMTO said, after a delayed report, that an outbound tanker was hit in the engine room by an unknown projectile about 6 nm north of Khasab, Oman; all crew safe and accounted for. Gulf News gave the time as 1645 UTC on 18 Nov.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Tanker struck by unknown projectile near Oman's Khasab, UKMTO says",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/tanker-struck-unknown-projectile-near-omans-khasab-ukmto-says",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Arab News Pakistan (Reuters)",
+          "title": "Tanker struck by projectile near Oman’s Khasab as attacks in Hormuz continue",
+          "url": "https://www.arabnews.pk/middle-east/tanker-struck-by-projectile-near-omans-khasab-as-attacks-in-hormuz-continue-3007452",
+          "date": "2026-11-18"
+        },
+        {
+          "publisher": "Gulf News",
+          "title": "Tanker hit by unknown projectile near Oman in latest Hormuz attack",
+          "url": "https://gulfnews.com/world/gulf/oman/tanker-hit-by-unknown-projectile-near-oman-in-latest-hormuz-attack-1.500752860",
+          "date": "2026-11-19"
         }
       ]
     }
