@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-19T13:11:59Z",
+  "reviewedAt": "2026-11-19T19:10:08Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10077,6 +10077,37 @@
       ]
     },
     {
+      "id": "2026-11-19-houthis-say-airstrike-mokha-rest-stop",
+      "date": "2026-11-19",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-backed forces (claimed)",
+      "target": "Rest stop in Mokha",
+      "place": "Mokha",
+      "country": "Yemen",
+      "lat": 13.3203,
+      "lon": 43.25,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis say airstrike on a rest stop in Mokha killed 10",
+      "summary": "Houthi Health Ministry spokesman Anees al-Asbahi claimed a strike by Saudi-backed forces on a rest stop in Houthi-held Mokha on 19 Nov killed 10 and wounded 9, AP reported; Antiwar.com, citing the ministry, gave 9 killed, 10 wounded.",
+      "sources": [
+        {
+          "publisher": "Union-Bulletin (AP)",
+          "title": "Iraq compromises with a militia, rebels say airstrikes kill 15 in Yemen, and other Mideast news",
+          "url": "https://www.union-bulletin.com/news/national/iraq-compromises-with-a-militia-rebels-say-airstrikes-kill-15-in-yemen-and-other-mideast/article_bba5bef8-cb49-53e7-8cc6-3c8b0b8d6033.html",
+          "date": "2026-11-19"
+        },
+        {
+          "publisher": "Antiwar.com",
+          "title": "Saudi Airstrike on Hotel in Yemen's Red Sea Port City of Mocha Kills Nine: Health Ministry",
+          "url": "https://news.antiwar.com/2026/11/19/saudi-airstrike-on-hotel-in-yemens-red-sea-port-city-of-mocha-kills-nine-health-ministry/",
+          "date": "2026-11-19"
+        }
+      ]
+    },
+    {
       "id": "2026-11-19-houthis-say-coalition-struck-sanaa-saada-taiz",
       "date": "2026-11-19",
       "time": null,
@@ -10109,6 +10140,37 @@
           "publisher": "Xinhua (Chinese state media)",
           "title": "Houthi media says Saudi airstrikes kill 11, Saudi-led coalition reports interception",
           "url": "https://english.news.cn/20261119/752fd8163d964acab464b54796b1ff56/c.html",
+          "date": "2026-11-19"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-19-irgc-claims-two-supertankers-mines-hormuz",
+      "date": "2026-11-19",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC, claimed)",
+      "target": "Two unnamed supertankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC says two supertankers hit mines and exploded in the Strait of Hormuz",
+      "summary": "The IRGC Navy claimed on 19 Nov that two supertankers carrying over 4 million barrels of crude hit naval mines near the strait's southern coast, exploded and were abandoned. Ships not named; unverified.",
+      "sources": [
+        {
+          "publisher": "Iran International",
+          "title": "Iran's Guards say two supertankers hit mines, exploded in Strait of Hormuz",
+          "url": "https://www.iranintl.com/en/202611195706",
+          "date": "2026-11-19"
+        },
+        {
+          "publisher": "Press TV (Iranian state media)",
+          "title": "Two ‘violating’ supertankers explode after hitting naval mines in Strait of Hormuz: IRGC",
+          "url": "https://www.presstv.co.uk/Detail/2026/11/19/781097/two-violating-supertankers-explode-after-hitting-naval-mines-in-strait-of-hormuz-irgc",
           "date": "2026-11-19"
         }
       ]
