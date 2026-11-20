@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-20T17:15:39Z",
+  "reviewedAt": "2026-11-20T19:09:00Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10338,6 +10338,43 @@
           "publisher": "Arab News Pakistan",
           "title": "Coalition targets Houthi sites in Sanaa, Saada and Taiz, strikes Hodeidah port",
           "url": "https://www.arabnews.pk/saudi-arabia/coalition-targets-houthi-sites-in-sanaa-saada-and-taiz-strikes-hodeidah-port-3007589",
+          "date": "2026-11-20"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-20-missile-strikes-outskirts-qeshm-city",
+      "date": "2026-11-20",
+      "time": "15:20Z",
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Unidentified (Tasnim blames the US and Israel)",
+      "target": "Outskirts of Qeshm city",
+      "place": "Qeshm",
+      "country": "Iran",
+      "lat": 26.9581,
+      "lon": 56.2692,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Iranian media say a missile struck the outskirts of Qeshm city",
+      "summary": "Tasnim claimed an 'enemy missile' launched by the US and Israel struck an outer district of Qeshm city at 6:50 p.m. local time on 20 Nov. No damage or casualties were immediately reported; there was no US or Israeli comment.",
+      "sources": [
+        {
+          "publisher": "Yahoo News (dpa)",
+          "title": "Missile attack reported on Iran's Qeshm Island",
+          "url": "https://www.yahoo.com/news/world/articles/missile-attack-reported-irans-qeshm-173330106.html",
+          "date": "2026-11-20"
+        },
+        {
+          "publisher": "TASS (Russian state media)",
+          "title": "Missile strikes outskirts of Iranian city of Qeshm — agency",
+          "url": "https://tass.com/world/2222643",
+          "date": "2026-11-20"
+        },
+        {
+          "publisher": "Arab News Pakistan (Reuters)",
+          "title": "Tanker hit in Strait of Hormuz as missile strikes Iran’s Qeshm Island",
+          "url": "https://www.arabnews.pk/middle-east/tanker-hit-in-strait-of-hormuz-as-missile-strikes-irans-qeshm-island-3007610",
           "date": "2026-11-20"
         }
       ]
