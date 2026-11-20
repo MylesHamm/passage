@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-20T01:09:14Z",
+  "reviewedAt": "2026-11-20T07:10:13Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10182,6 +10182,37 @@
       ]
     },
     {
+      "id": "2026-11-19-houthis-say-strike-road-workers-taiz",
+      "date": "2026-11-19",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-backed forces (claimed)",
+      "target": "Workers repairing a road",
+      "place": "Taiz",
+      "country": "Yemen",
+      "lat": 13.5795,
+      "lon": 44.0209,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthis say a strike on road repair workers in Taiz province killed five",
+      "summary": "Houthi Health Ministry spokesman Anees al-Asbahi claimed a strike by Saudi-backed forces on workers repairing a road in Taiz province on 19 Nov killed five and wounded five, AP reported. The claim was not independently verified.",
+      "sources": [
+        {
+          "publisher": "Union-Bulletin (AP)",
+          "title": "Iraq compromises with a militia, rebels say airstrikes kill 15 in Yemen, and other Mideast news",
+          "url": "https://www.union-bulletin.com/news/national/iraq-compromises-with-a-militia-rebels-say-airstrikes-kill-15-in-yemen-and-other-mideast/article_bba5bef8-cb49-53e7-8cc6-3c8b0b8d6033.html",
+          "date": "2026-11-19"
+        },
+        {
+          "publisher": "Gulf News",
+          "title": "Middle East War: 7 things UAE residents need to know tonight, November 19",
+          "url": "https://gulfnews.com/uae/middle-east-war-7-things-uae-residents-need-to-know-tonight-november-19-1.500753986",
+          "date": "2026-11-19"
+        }
+      ]
+    },
+    {
       "id": "2026-11-19-irgc-claims-two-supertankers-mines-hormuz",
       "date": "2026-11-19",
       "time": null,
@@ -10209,6 +10240,68 @@
           "title": "Two ‘violating’ supertankers explode after hitting naval mines in Strait of Hormuz: IRGC",
           "url": "https://www.presstv.co.uk/Detail/2026/11/19/781097/two-violating-supertankers-explode-after-hitting-naval-mines-in-strait-of-hormuz-irgc",
           "date": "2026-11-19"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-20-coalition-intercepts-houthi-ballistic-missile-south",
+      "date": "2026-11-20",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Southern Saudi Arabia",
+      "place": "Abha and Khamis Mushait (southern region)",
+      "country": "Saudi Arabia",
+      "lat": 18.2164,
+      "lon": 42.5053,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it intercepted a Houthi ballistic missile aimed at the south",
+      "summary": "The Saudi-led coalition claimed air defences intercepted and destroyed a Houthi ballistic missile fired at the south on 20 Nov. Saudi civil defence said drones were also intercepted; alerts in Jazan, Abha and Khamis Mushait were lifted.",
+      "sources": [
+        {
+          "publisher": "ThePrint (Reuters)",
+          "title": "Saudi-led coalition says it intercepted Houthi missile targeting southern region",
+          "url": "https://theprint.in/world/saudi-led-coalition-says-it-intercepted-houthi-missile-targeting-southern-region/3103795/",
+          "date": "2026-11-20"
+        },
+        {
+          "publisher": "TRT World (Anadolu)",
+          "title": "Houthi militia missile aimed at southern Saudi Arabia intercepted, Saudi-led coalition says",
+          "url": "https://www.trtworld.com/article/0c94bafe68eb",
+          "date": "2026-11-20"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-20-houthis-say-saudi-airstrikes-sanaa",
+      "date": "2026-11-20",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition (claimed)",
+      "target": "Sanaa",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3694,
+      "lon": 44.191,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthi-run Al-Masirah says Saudi airstrikes hit Sanaa on Friday",
+      "summary": "Houthi-run Al-Masirah TV claimed Saudi airstrikes on the capital Sanaa on 20 Nov, Reuters reported. Saudi Arabia did not immediately comment. No casualty figures given.",
+      "sources": [
+        {
+          "publisher": "ThePrint (Reuters)",
+          "title": "Saudi-led coalition says it intercepted Houthi missile targeting southern region",
+          "url": "https://theprint.in/world/saudi-led-coalition-says-it-intercepted-houthi-missile-targeting-southern-region/3103795/",
+          "date": "2026-11-20"
+        },
+        {
+          "publisher": "Aaj English TV (Reuters)",
+          "title": "Saudi Arabia intercepts Houthi missile targeting southern region",
+          "url": "https://english.aaj.tv/news/330481373/saudi-arabia-intercepts-houthi-missile-targeting-southern-region",
+          "date": "2026-11-20"
         }
       ]
     }
