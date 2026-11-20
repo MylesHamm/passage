@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-19T19:10:08Z",
+  "reviewedAt": "2026-11-20T01:09:14Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10072,6 +10072,43 @@
           "publisher": "Times of Israel (agencies)",
           "title": "Damage seen to Riyadh skyscraper following Houthi attack",
           "url": "https://www.timesofisrael.com/liveblog_entry/damage-seen-to-riyadh-skyscraper-following-houthi-attack",
+          "date": "2026-11-19"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-19-houthis-claim-attack-sadaf-petrochemicals-jubail",
+      "date": "2026-11-19",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Sadaf petrochemical company",
+      "place": "Jubail",
+      "country": "Saudi Arabia",
+      "lat": 27.0046,
+      "lon": 49.646,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis claim attack on Sadaf petrochemical company in Jubail",
+      "summary": "Houthi spokesman Yahya Saree claimed on 19 Nov the group struck the Sadaf petrochemical company in Jubail, with Riyadh's financial centre, King Khalid airport and Khamis Mushait air base. Weapon not specified; no Saudi comment on Jubail.",
+      "sources": [
+        {
+          "publisher": "TASS (Russian state media)",
+          "title": "Houthis claim strikes on four sites in Saudi Arabia, warn investors",
+          "url": "https://tass.com/world/2222091",
+          "date": "2026-11-19"
+        },
+        {
+          "publisher": "This is Beirut",
+          "title": "Houthis Claim 4 Attacks on Saudi Arabia, Including the Financial Center of Riyadh",
+          "url": "https://thisisbeirut.com.lb/news/politics/houthis-claim-4-attacks-on-saudi-arabia-including-the-financial-center-of-riyadh",
+          "date": "2026-11-19"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthis confirm targeting financial centre in Saudi capital",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthis-confirm-targeting-financial-centre-saudi-capital",
           "date": "2026-11-19"
         }
       ]
