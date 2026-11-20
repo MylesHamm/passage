@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-20T13:11:21Z",
+  "reviewedAt": "2026-11-20T17:15:39Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10275,21 +10275,52 @@
       ]
     },
     {
+      "id": "2026-11-20-coalition-strikes-hodeidah-port",
+      "date": "2026-11-20",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Hodeidah port facilities",
+      "place": "Hodeidah port",
+      "country": "Yemen",
+      "lat": 14.8022,
+      "lon": 42.9511,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition says it struck Hodeidah port facilities used to smuggle weapons",
+      "summary": "The Saudi-led coalition said on 20 Nov it struck facilities at Hodeidah port that it said were used to smuggle weapons and missile components, after urging civilians to leave the port area. No casualty figures were given.",
+      "sources": [
+        {
+          "publisher": "AP via KSAT",
+          "title": "Saudi Arabia attacks Yemen’s Houthis and intercepts more missiles and drones, and other Mideast news",
+          "url": "https://www.ksat.com/news/world/2026/11/20/saudi-arabia-intercepts-more-yemen-houthi-missiles-and-drones-and-other-mideast-news/",
+          "date": "2026-11-20"
+        },
+        {
+          "publisher": "Arab News Pakistan",
+          "title": "Coalition targets Houthi sites in Sanaa, Saada and Taiz, strikes Hodeidah port",
+          "url": "https://www.arabnews.pk/saudi-arabia/coalition-targets-houthi-sites-in-sanaa-saada-and-taiz-strikes-hodeidah-port-3007589",
+          "date": "2026-11-20"
+        }
+      ]
+    },
+    {
       "id": "2026-11-20-houthis-say-saudi-airstrikes-sanaa",
       "date": "2026-11-20",
       "time": null,
       "layer": "strikes-on-iran-yemen",
       "type": "air-strike",
-      "actor": "Saudi-led coalition (claimed)",
+      "actor": "Saudi-led coalition",
       "target": "Sanaa",
       "place": "Sanaa",
       "country": "Yemen",
       "lat": 15.3694,
       "lon": 44.191,
       "precision": "city",
-      "confidence": "claimed",
-      "title": "Houthi-run Al-Masirah says Saudi airstrikes hit Sanaa on Friday",
-      "summary": "Houthi-run Al-Masirah TV claimed Saudi airstrikes on the capital Sanaa on 20 Nov, Reuters reported. Saudi Arabia did not immediately comment. No casualty figures given.",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition strikes Houthi targets in Sanaa on Friday",
+      "summary": "Houthi-run Al-Masirah TV said Saudi airstrikes hit Sanaa on 20 Nov, Reuters reported. The coalition later said it attacked Houthi targets in Sanaa and neutralised a main supply depot there. No casualty figures given.",
       "sources": [
         {
           "publisher": "ThePrint (Reuters)",
@@ -10301,6 +10332,43 @@
           "publisher": "Aaj English TV (Reuters)",
           "title": "Saudi Arabia intercepts Houthi missile targeting southern region",
           "url": "https://english.aaj.tv/news/330481373/saudi-arabia-intercepts-houthi-missile-targeting-southern-region",
+          "date": "2026-11-20"
+        },
+        {
+          "publisher": "Arab News Pakistan",
+          "title": "Coalition targets Houthi sites in Sanaa, Saada and Taiz, strikes Hodeidah port",
+          "url": "https://www.arabnews.pk/saudi-arabia/coalition-targets-houthi-sites-in-sanaa-saada-and-taiz-strikes-hodeidah-port-3007589",
+          "date": "2026-11-20"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-20-tanker-hit-projectile-fire-north-of-khasab",
+      "date": "2026-11-20",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unknown",
+      "target": "Unnamed tanker on outbound transit",
+      "place": "Strait of Hormuz, about 8 nm north of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.3166,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "UKMTO says a tanker caught fire after an unknown projectile hit it 8 nm north of Khasab",
+      "summary": "UKMTO said on 20 Nov an outbound tanker was struck by an unknown projectile about 8 nm north of Khasab, Oman, and caught fire; no casualties reported. The IRGC said, via Iranian state media, a tanker caught fire after hitting a mine.",
+      "sources": [
+        {
+          "publisher": "Yahoo News (Reuters)",
+          "title": "Tanker catches fire after projectile strike near Strait of Hormuz, UKMTO says",
+          "url": "https://www.yahoo.com/news/world/articles/tanker-catches-fire-projectile-strike-170458570.html",
+          "date": "2026-11-20"
+        },
+        {
+          "publisher": "Arab News Pakistan (Reuters)",
+          "title": "Tanker hit in Strait of Hormuz as missile strikes Iran’s Qeshm Island",
+          "url": "https://www.arabnews.pk/middle-east/tanker-hit-in-strait-of-hormuz-as-missile-strikes-irans-qeshm-island-3007610",
           "date": "2026-11-20"
         }
       ]
