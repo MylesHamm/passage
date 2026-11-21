@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-21T01:08:34Z",
+  "reviewedAt": "2026-11-21T07:09:18Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10270,6 +10270,43 @@
           "publisher": "TRT World (Anadolu)",
           "title": "Houthi militia missile aimed at southern Saudi Arabia intercepted, Saudi-led coalition says",
           "url": "https://www.trtworld.com/article/0c94bafe68eb",
+          "date": "2026-11-20"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-20-coalition-intercepts-two-houthi-missiles-jazan",
+      "date": "2026-11-20",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Jazan region",
+      "place": "Al-Shuqaiq, Jazan",
+      "country": "Saudi Arabia",
+      "lat": 17.7167,
+      "lon": 42.0167,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it intercepted two Houthi missiles targeting Jazan",
+      "summary": "The Saudi-led coalition claimed it intercepted two Houthi ballistic missiles aimed at Jazan on 20 Nov; debris fell in Al-Shuqaiq, with no immediate casualty reports. The Houthis claimed hits on the Al-Shuqaiq power station and Jizan port.",
+      "sources": [
+        {
+          "publisher": "Devdiscourse (Reuters)",
+          "title": "Saudi-led coalition says it intercepted two Houthi missiles targeting Jazan",
+          "url": "https://www.devdiscourse.com/article/international/4010058-saudi-led-coalition-says-it-intercepted-two-houthi-missiles-targeting-jazan",
+          "date": "2026-11-20"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition intercepts 2 Houthi ballistic missiles targeting Jazan",
+          "url": "https://aa.com.tr/en/middle-east/saudi-led-coalition-intercepts-2-houthi-ballistic-missiles-targeting-jazan/4132419",
+          "date": "2026-11-20"
+        },
+        {
+          "publisher": "Al-Monitor (AFP)",
+          "title": "Yemen's Houthis launch strikes after Saudi coalition's 'special operation'",
+          "url": "https://www.al-monitor.com/originals/2026/11/yemens-houthis-launch-strikes-after-saudi-coalitions-special-operation",
           "date": "2026-11-20"
         }
       ]
