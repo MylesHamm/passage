@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-21T07:09:18Z",
+  "reviewedAt": "2026-11-21T13:09:36Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10448,6 +10448,31 @@
       ]
     },
     {
+      "id": "2026-11-21-coalition-intercepts-houthi-drone-south",
+      "date": "2026-11-21",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Southern Saudi Arabia",
+      "place": "Abha and Khamis Mushait (southern region)",
+      "country": "Saudi Arabia",
+      "lat": 18.2164,
+      "lon": 42.5053,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it destroyed a Houthi drone fired toward southern Saudi Arabia",
+      "summary": "Coalition spokesman Turki Al-Maliki claimed air defences intercepted and destroyed a drone launched by the Houthis toward Saudi Arabia's southern region at dawn on 21 Nov. He gave no further details.",
+      "sources": [
+        {
+          "publisher": "Kuwait Times (KUNA)",
+          "title": "Coalition intercepts Houthi drone after downing 3 missiles aimed at Riyadh",
+          "url": "https://kuwaittimes.com/article/54048/world/coalition-intercepts-houthi-drone-after-downing-3-missiles-aimed-at-riyadh/",
+          "date": "2026-11-21"
+        }
+      ]
+    },
+    {
       "id": "2026-11-21-coalition-intercepts-three-houthi-ballistic-missiles-riyadh",
       "date": "2026-11-21",
       "time": null,
@@ -10474,6 +10499,68 @@
           "publisher": "Arab News",
           "title": "Coalition air defenses intercept 3 Houthi ballistic missiles targeting Riyadh",
           "url": "https://www.arabnews.com/saudi-arabia/coalition-air-defenses-intercept-3-houthi-ballistic-missiles-targeting-riyadh-3013264",
+          "date": "2026-11-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-21-tanker-hit-engine-room-east-of-khasab",
+      "date": "2026-11-21",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unknown",
+      "target": "Unnamed tanker",
+      "place": "Strait of Hormuz, about 17 nm east of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.183,
+      "lon": 56.5655,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "UKMTO says a tanker was hit in its engine room by a projectile 17 nm east of Khasab",
+      "summary": "UKMTO said on 21 Nov a tanker was hit in its engine room by an unidentified projectile 17 nm east of Khasab; no casualties reported. Iran's navy said a tanker caught fire after hitting a mine east of Hormuz; Reuters could not link the two.",
+      "sources": [
+        {
+          "publisher": "SRN News (Reuters)",
+          "title": "UK maritime agency reports two tanker incidents near Oman; Iran says vessel hit mine east of Hormuz",
+          "url": "https://srnnews.com/tanker-hit-by-unknown-projectile-near-omans-khasab-ukmto-says/",
+          "date": "2026-11-21"
+        },
+        {
+          "publisher": "Gulf News (AFP)",
+          "title": "Two tankers attacked in Hormuz strait: maritime agency",
+          "url": "https://gulfnews.com/world/mena/two-tankers-attacked-in-hormuz-strait-maritime-agency-1.500756027",
+          "date": "2026-11-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-21-tanker-hit-stern-projectile-north-of-khasab",
+      "date": "2026-11-21",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unknown",
+      "target": "Unnamed tanker on outbound transit",
+      "place": "Strait of Hormuz, about 11 nm north of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.3665,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "UKMTO says an outbound tanker was hit on its stern by a projectile 11 nm north of Khasab",
+      "summary": "UKMTO said on 21 Nov an outbound tanker was struck on its stern by an unidentified projectile about 11 nm north of Khasab, Oman; no casualties reported. Reuters said it was unclear if this and a later report were the same ship.",
+      "sources": [
+        {
+          "publisher": "SRN News (Reuters)",
+          "title": "UK maritime agency reports two tanker incidents near Oman; Iran says vessel hit mine east of Hormuz",
+          "url": "https://srnnews.com/tanker-hit-by-unknown-projectile-near-omans-khasab-ukmto-says/",
+          "date": "2026-11-21"
+        },
+        {
+          "publisher": "Gulf News (AFP)",
+          "title": "Two tankers attacked in Hormuz strait: maritime agency",
+          "url": "https://gulfnews.com/world/mena/two-tankers-attacked-in-hormuz-strait-maritime-agency-1.500756027",
           "date": "2026-11-21"
         }
       ]
