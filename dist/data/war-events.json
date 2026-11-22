@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-21T19:09:13Z",
+  "reviewedAt": "2026-11-22T01:09:41Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10562,6 +10562,43 @@
           "title": "Two tankers attacked in Hormuz strait: maritime agency",
           "url": "https://gulfnews.com/world/mena/two-tankers-attacked-in-hormuz-strait-maritime-agency-1.500756027",
           "date": "2026-11-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-22-coalition-intercepts-houthi-ballistic-missile-western-region",
+      "date": "2026-11-22",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Western Saudi Arabia",
+      "place": "Western region (Makkah region alert)",
+      "country": "Saudi Arabia",
+      "lat": 21.4225,
+      "lon": 39.8262,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Coalition says it intercepted a Houthi ballistic missile aimed at western Saudi Arabia",
+      "summary": "The Saudi-led coalition claimed air defences intercepted and destroyed a Houthi ballistic missile fired toward western Saudi Arabia early on 22 Nov, Saudi time. Saudi Civil Defense warned of danger in the Mecca region. No damage reported.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (Reuters)",
+          "title": "Saudi-led coalition says it intercepted Houthi ballistic missile targeting western region",
+          "url": "https://www.timesofisrael.com/liveblog_entry/saudi-led-coalition-says-it-intercepted-houthi-ballistic-missile-targeting-western-region/",
+          "date": "2026-11-21"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "Saudi-led coalition says it intercepted Houthi ballistic missile targeting western region",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/saudi-led-coalition-says-it-intercepted-houthi-ballistic-missile-0",
+          "date": "2026-11-21"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it intercepted Houthi ballistic missile targeting western Saudi Arabia",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-says-it-intercepted-houthi-ballistic-missile-targeting-western-saudi-arabia/4133276",
+          "date": "2026-11-22"
         }
       ]
     }
