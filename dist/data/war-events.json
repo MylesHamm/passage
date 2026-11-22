@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-22T01:09:41Z",
+  "reviewedAt": "2026-11-22T07:10:09Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10448,6 +10448,37 @@
       ]
     },
     {
+      "id": "2026-11-21-coalition-intercepts-houthi-drone-riyadh-region",
+      "date": "2026-11-21",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Riyadh region",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it destroyed a Houthi drone headed toward the Riyadh region",
+      "summary": "Coalition spokesman Turki al-Maliki claimed forces intercepted and destroyed a Houthi drone launched toward the Riyadh region on 21 Nov. He gave no further details; no damage was reported.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it intercepted another Houthi drone headed toward Riyadh region",
+          "url": "https://aa.com.tr/en/middle-east/saudi-led-coalition-says-it-intercepted-another-houthi-drone-headed-toward-riyadh-region/4133212",
+          "date": "2026-11-21"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "Saudi airstrikes hit Yemen's Hodeidah amid escalating cross-border attacks",
+          "url": "https://english.news.cn/20261122/e873d385a5bb45b8832b89c53cd2ac98/c.html",
+          "date": "2026-11-22"
+        }
+      ]
+    },
+    {
       "id": "2026-11-21-coalition-intercepts-houthi-drone-south",
       "date": "2026-11-21",
       "time": null,
@@ -10500,6 +10531,62 @@
           "title": "Coalition air defenses intercept 3 Houthi ballistic missiles targeting Riyadh",
           "url": "https://www.arabnews.com/saudi-arabia/coalition-air-defenses-intercept-3-houthi-ballistic-missiles-targeting-riyadh-3013264",
           "date": "2026-11-21"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-21-houthis-say-saudi-airstrikes-hodeidah",
+      "date": "2026-11-21",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by Houthis)",
+      "target": "Hodeidah",
+      "place": "Hodeidah",
+      "country": "Yemen",
+      "lat": 14.8022,
+      "lon": 42.9511,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthi-run media say Saudi warplanes struck Hodeidah",
+      "summary": "Houthi-run al-Masirah TV claimed Saudi warplanes carried out a series of airstrikes on Hodeidah on the evening of 21 Nov, Xinhua reported; a resident said more than five explosions shook the city. No casualty or damage details given.",
+      "sources": [
+        {
+          "publisher": "Xinhua",
+          "title": "Saudi airstrikes hit Yemen's Hodeidah amid escalating cross-border attacks",
+          "url": "https://english.news.cn/20261122/e873d385a5bb45b8832b89c53cd2ac98/c.html",
+          "date": "2026-11-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-21-iran-attack-fire-industrial-facility-bahrain",
+      "date": "2026-11-21",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "IRGC",
+      "target": "Civilian industrial facility (Bahrain); IRGC claimed US positions at al-Riffa and Awali",
+      "place": "Bahrain",
+      "country": "Bahrain",
+      "lat": 26.0275,
+      "lon": 50.55,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Bahrain says an Iranian attack set a civilian industrial facility on fire",
+      "summary": "Bahrain said an Iranian attack late on 21 Nov caused a fire and material damage at a civilian industrial facility; no injuries reported. The IRGC claimed a missile and drone strike on US positions at the al-Riffa and Awali bases.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "Bahrain says Iranian attack causes fire at industrial facility",
+          "url": "https://www.aljazeera.com/news/2026/11/21/bahrain-says-iranian-attack-causes-fire-at-industrial-facility",
+          "date": "2026-11-21"
+        },
+        {
+          "publisher": "Kuwait Times (KUNA)",
+          "title": "Bahrain condemns Iranian attack on civilian industrial facility",
+          "url": "https://kuwaittimes.com/article/54116/world/bahrain-condemns-iranian-attack-on-civilian-industrial-facility/",
+          "date": "2026-11-22"
         }
       ]
     },
