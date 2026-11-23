@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-23T01:09:35Z",
+  "reviewedAt": "2026-11-23T07:12:35Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10727,6 +10727,31 @@
       ]
     },
     {
+      "id": "2026-11-22-coalition-intercepts-houthi-drone-southern-region",
+      "date": "2026-11-22",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Southern Saudi Arabia",
+      "place": "Southern region (Asir)",
+      "country": "Saudi Arabia",
+      "lat": 18.2164,
+      "lon": 42.5053,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it destroyed a Houthi drone launched toward southern Saudi Arabia",
+      "summary": "The Saudi-led coalition claimed on 22 Nov that it intercepted and destroyed a Houthi drone launched toward southern Saudi Arabia, separate from a drone aimed at the Riyadh region. It gave no location and reported no casualties or damage.",
+      "sources": [
+        {
+          "publisher": "Bernama (Anadolu)",
+          "title": "Saudi-led Coalition Intercepts Houthi Drone Targeting Southern Saudi Arabia",
+          "url": "https://www.bernama.com/en/world/news.php?id=2637965",
+          "date": "2026-11-23"
+        }
+      ]
+    },
+    {
       "id": "2026-11-22-houthi-drone-attack-aden-al-buraiqa",
       "date": "2026-11-22",
       "time": null,
@@ -10747,6 +10772,62 @@
           "publisher": "OmmcomNews (IANS)",
           "title": "Airstrikes, Houthi Drone Attack Kill 5, Injure 18 Across Yemen: Sources",
           "url": "https://ommcomnews.com/world-news/airstrikes-houthi-drone-attack-kill-5-injure-18-across-yemen-sources/",
+          "date": "2026-11-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-22-houthis-claim-strike-rabigh-refinery-dawasir-radar",
+      "date": "2026-11-22",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Rabigh oil refinery; radar in Al-Dawasir area",
+      "place": "Rabigh",
+      "country": "Saudi Arabia",
+      "lat": 22.7986,
+      "lon": 39.0349,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis claim strikes on Saudi Rabigh refinery and an Al-Dawasir radar",
+      "summary": "Houthi spokesman Yahya Saree claimed on 22 Nov a \"direct hit\" on the Rabigh oil refinery and a two-phase strike on a radar in the Al-Dawasir area. He gave no weapons or damage details; Saudi authorities did not comment.",
+      "sources": [
+        {
+          "publisher": "The Hans India (IANS)",
+          "title": "Yemen's Houthis claim strikes on Saudi oil refinery, radar facility",
+          "url": "https://www.thehansindia.com/news/international/yemens-houthis-claim-strikes-on-saudi-oil-refinery-radar-facility-1144896",
+          "date": "2026-11-22"
+        },
+        {
+          "publisher": "Bernama (Anadolu)",
+          "title": "Saudi-led Coalition Intercepts Houthi Drone Targeting Southern Saudi Arabia",
+          "url": "https://www.bernama.com/en/world/news.php?id=2637965",
+          "date": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-22-houthis-say-airstrikes-taiz-homes-kill-two",
+      "date": "2026-11-22",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition (claimed by Houthis)",
+      "target": "Residential houses",
+      "place": "Sabir al-Mawadim and Jabal Habashi districts, Taiz",
+      "country": "Yemen",
+      "lat": 13.5795,
+      "lon": 44.0209,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Houthi media say airstrikes on homes in Taiz province killed two",
+      "summary": "Houthi-run al-Masirah TV claimed airstrikes on residential houses in Taiz province's Sabir al-Mawadim and Jabal Habashi districts on 22 Nov killed two people and injured five, Xinhua reported. The coalition did not comment.",
+      "sources": [
+        {
+          "publisher": "Xinhua",
+          "title": "Airstrikes, Houthi drone attack kill 5, injure 18 across Yemen: sources",
+          "url": "https://english.news.cn/20261122/3965b583755f47a6b318b6626565656d/c.html",
           "date": "2026-11-22"
         }
       ]
