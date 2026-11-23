@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-22T19:09:47Z",
+  "reviewedAt": "2026-11-23T01:09:35Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10722,6 +10722,31 @@
           "publisher": "Al Jazeera (AFP)",
           "title": "Saudi Arabia intercepts drone, missile as Houthis report attack on Sanaa",
           "url": "https://www.aljazeera.com/news/2026/11/22/houthis-report-attack-on-sanaa-as-saudi-arabia-intercepts-drone",
+          "date": "2026-11-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-22-houthi-drone-attack-aden-al-buraiqa",
+      "date": "2026-11-22",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis (claimed)",
+      "target": "Residential neighbourhood",
+      "place": "Al-Buraiqa district, Aden",
+      "country": "Yemen",
+      "lat": 12.75,
+      "lon": 44.8833,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Security official says Houthi drone attack on Aden's Al-Buraiqah killed three",
+      "summary": "A security official told Xinhua a Houthi drone attack on a residential neighbourhood in Aden's Al-Buraiqah district on 22 Nov killed three people and injured seven. The claim was not independently verified; the Houthis did not comment.",
+      "sources": [
+        {
+          "publisher": "OmmcomNews (IANS)",
+          "title": "Airstrikes, Houthi Drone Attack Kill 5, Injure 18 Across Yemen: Sources",
+          "url": "https://ommcomnews.com/world-news/airstrikes-houthi-drone-attack-kill-5-injure-18-across-yemen-sources/",
           "date": "2026-11-22"
         }
       ]
