@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-23T07:12:35Z",
+  "reviewedAt": "2026-11-23T13:12:49Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10860,6 +10860,37 @@
           "title": "Airstrikes, Houthi Drone Attack Kill 5, Injure 18 Across Yemen: Sources",
           "url": "https://ommcomnews.com/world-news/airstrikes-houthi-drone-attack-kill-5-injure-18-across-yemen-sources/",
           "date": "2026-11-22"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-23-houthis-say-saudi-strike-hodeidah-telecom-building",
+      "date": "2026-11-23",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by Houthis)",
+      "target": "Public Telecommunications Corporation building",
+      "place": "Hodeidah",
+      "country": "Yemen",
+      "lat": 14.8022,
+      "lon": 42.9511,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthi media say Saudi strike on Hodeidah telecom building killed four",
+      "summary": "Houthi-run Al-Masirah TV claimed Saudi warplanes struck a state Public Telecommunications Corporation building in Hodeidah early on 23 Nov, killing at least four and injuring 18, Xinhua reported. Riyadh did not comment.",
+      "sources": [
+        {
+          "publisher": "Xinhua",
+          "title": "Airstrike on telecom facility kills 4 in Yemen's Hodeidah: Houthi media",
+          "url": "https://english.news.cn/20261123/c8782bb7b1a34180b550ddac7d714ed5/c.html",
+          "date": "2026-11-23"
+        },
+        {
+          "publisher": "CBS News",
+          "title": "Live Updates: Iran says it will use all means to end U.S. blockade as Trump plays down escalating attacks",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-trump-blockade-strait-of-hormuz-ship-attacks/",
+          "date": "2026-11-23"
         }
       ]
     }
