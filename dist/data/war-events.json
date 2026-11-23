@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-23T13:12:49Z",
+  "reviewedAt": "2026-11-23T19:09:47Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10877,8 +10877,8 @@
       "lon": 42.9511,
       "precision": "city",
       "confidence": "claimed",
-      "title": "Houthi media say Saudi strike on Hodeidah telecom building killed four",
-      "summary": "Houthi-run Al-Masirah TV claimed Saudi warplanes struck a state Public Telecommunications Corporation building in Hodeidah early on 23 Nov, killing at least four and injuring 18, Xinhua reported. Riyadh did not comment.",
+      "title": "Houthi media say Saudi strikes on Hodeidah telecom facilities killed 17",
+      "summary": "Houthi-run Al-Masirah TV first claimed Saudi strikes on a Public Telecommunications Corporation site in Hodeidah early on 23 Nov killed four and injured 18; the Houthi telecom ministry later said 17 workers were killed and 11 injured.",
       "sources": [
         {
           "publisher": "Xinhua",
@@ -10890,6 +10890,49 @@
           "publisher": "CBS News",
           "title": "Live Updates: Iran says it will use all means to end U.S. blockade as Trump plays down escalating attacks",
           "url": "https://www.cbsnews.com/live-updates/iran-war-us-trump-blockade-strait-of-hormuz-ship-attacks/",
+          "date": "2026-11-23"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "Yemen's Houthis say Saudi attack on telecoms facilities kills 17",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/yemens-houthis-say-saudi-attack-telecoms-facilities-kills-17",
+          "date": "2026-11-23"
+        },
+        {
+          "publisher": "Xinhua",
+          "title": "Death toll from airstrikes on Yemen's Hodeidah rises to 17: Houthi media",
+          "url": "https://english.news.cn/20261124/dabb567e6907437eae42ccc4a2ccbcb3/c.html",
+          "date": "2026-11-24"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-23-yemen-army-says-houthi-missile-hit-home-taiz-kahlan",
+      "date": "2026-11-23",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed by Yemeni government)",
+      "target": "Civilian home",
+      "place": "Kahlan village, Al-Aqroudh area, Taiz",
+      "country": "Yemen",
+      "lat": 13.5795,
+      "lon": 44.0209,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Yemeni army says Houthi ballistic missile hit a home in Taiz, killing two",
+      "summary": "Yemen's army claimed a Houthi ballistic missile hit a home in Kahlan village, Al-Aqroudh area, Taiz, on 23 Nov, killing two civilians and wounding seven; it said sniper fire wounded an eighth. The Houthis did not comment.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "2 civilians killed, 8 injured in Houthi attacks in Yemen's Taiz: Army",
+          "url": "https://aa.com.tr/en/middle-east/-2-civilians-killed-8-injured-in-houthi-attacks-in-yemens-taiz-army/4134793",
+          "date": "2026-11-23"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Yemen’s army claims 647 strikes on Houthis, says militia missile attack killed 2 in Taiz",
+          "url": "https://www.arabnews.pk/middle-east/yemens-army-claims-647-strikes-on-houthis-says-militia-missile-attack-killed-2-in-taiz-3007858",
           "date": "2026-11-23"
         }
       ]
