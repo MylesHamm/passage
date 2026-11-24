@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-24T07:09:20Z",
+  "reviewedAt": "2026-11-24T13:11:59Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -11014,6 +11014,37 @@
           "publisher": "Anadolu Agency",
           "title": "Saudi-led coalition intercepts Houthi drone targeting southern Saudi Arabia",
           "url": "https://aa.com.tr/en/middle-east/saudi-led-coalition-intercepts-houthi-drone-targeting-southern-saudi-arabia/4135193",
+          "date": "2026-11-24"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-24-irgc-claims-fourth-tanker-mine-hormuz",
+      "date": "2026-11-24",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC Navy, claimed)",
+      "target": "Unnamed oil tanker",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran says 4th oil tanker hits naval mine, catches fire in Strait of Hormuz",
+      "summary": "Iran's IRGC Navy claimed, via Tasnim, that a fourth oil tanker hit a naval mine early on 24 Nov in restricted waters east of the Strait of Hormuz, exploding and catching fire. It did not name the ship or give crew or casualty details.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Iran says 4th oil tanker hits naval mine, catches fire in Strait of Hormuz",
+          "url": "https://www.aa.com.tr/en/middle-east/iran-says-4th-oil-tanker-hits-naval-mine-catches-fire-in-strait-of-hormuz/4135570",
+          "date": "2026-11-24"
+        },
+        {
+          "publisher": "Middle East Eye",
+          "title": "Iran says fourth tanker hits mine in Strait of Hormuz",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/iran-says-fourth-tanker-hits-mine-strait-hormuz",
           "date": "2026-11-24"
         }
       ]
