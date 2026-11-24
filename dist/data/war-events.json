@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-23T19:09:47Z",
+  "reviewedAt": "2026-11-24T01:09:47Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10902,6 +10902,37 @@
           "publisher": "Xinhua",
           "title": "Death toll from airstrikes on Yemen's Hodeidah rises to 17: Houthi media",
           "url": "https://english.news.cn/20261124/dabb567e6907437eae42ccc4a2ccbcb3/c.html",
+          "date": "2026-11-24"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-23-irgc-claims-three-tankers-mines-hormuz",
+      "date": "2026-11-23",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC Navy, claimed)",
+      "target": "Three unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "IRGC says three oil tankers hit naval mines in Strait of Hormuz",
+      "summary": "Iran claimed on 23 Nov, via state media, that three oil tankers hit naval mines in the Strait of Hormuz, causing explosions and fires; one near the southern coast, two to the east. Ships not named; no casualties reported.",
+      "sources": [
+        {
+          "publisher": "CBS News",
+          "title": "Live Updates: Iran says it will use all means to end U.S. blockade as Trump plays down escalating attacks",
+          "url": "https://www.cbsnews.com/live-updates/iran-war-us-trump-blockade-strait-of-hormuz-ship-attacks/",
+          "date": "2026-11-23"
+        },
+        {
+          "publisher": "Arab Times",
+          "title": "IRGC says three oil tankers hit naval mines in Strait of Hormuz",
+          "url": "https://www.arabtimesonline.com/news/irgc-says-three-oil-tankers-hit-naval-mines-in-strait-of-hormuz/",
           "date": "2026-11-24"
         }
       ]
