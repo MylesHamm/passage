@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-24T01:09:47Z",
+  "reviewedAt": "2026-11-24T07:09:20Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10938,6 +10938,31 @@
       ]
     },
     {
+      "id": "2026-11-23-yemen-army-says-houthi-missile-aimed-aden-fell-dhamar",
+      "date": "2026-11-23",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis (claimed by Yemeni government)",
+      "target": "Aden",
+      "place": "Dhamar province",
+      "country": "Yemen",
+      "lat": 14.5427,
+      "lon": 44.4051,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Yemeni army says Houthi ballistic missile aimed at Aden fell in Dhamar",
+      "summary": "Yemeni army spokesman Majed al-Nazili claimed a Houthi ballistic missile launched from Saada toward Aden on 23 Nov fell in Dhamar province instead. No casualties or damage were reported. The Houthis did not comment.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Houthi attacks across Yemen kill and injure civilians: Army",
+          "url": "https://aa.com.tr/en/middle-east/houthi-attacks-across-yemen-kill-and-injure-civilians-army/4134793",
+          "date": "2026-11-23"
+        }
+      ]
+    },
+    {
       "id": "2026-11-23-yemen-army-says-houthi-missile-hit-home-taiz-kahlan",
       "date": "2026-11-23",
       "time": null,
@@ -10965,6 +10990,31 @@
           "title": "Yemen’s army claims 647 strikes on Houthis, says militia missile attack killed 2 in Taiz",
           "url": "https://www.arabnews.pk/middle-east/yemens-army-claims-647-strikes-on-houthis-says-militia-missile-attack-killed-2-in-taiz-3007858",
           "date": "2026-11-23"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-24-coalition-intercepts-houthi-drone-southern-region",
+      "date": "2026-11-24",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Southern Saudi Arabia",
+      "place": "Southern region (Asir)",
+      "country": "Saudi Arabia",
+      "lat": 18.2164,
+      "lon": 42.5053,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it destroyed a Houthi drone launched toward southern Saudi Arabia",
+      "summary": "Coalition spokesman Turki al-Maliki claimed early on 24 Nov that forces intercepted and destroyed a drone launched by the Houthis toward southern Saudi Arabia. He did not say where it was intercepted or give casualty or damage details.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition intercepts Houthi drone targeting southern Saudi Arabia",
+          "url": "https://aa.com.tr/en/middle-east/saudi-led-coalition-intercepts-houthi-drone-targeting-southern-saudi-arabia/4135193",
+          "date": "2026-11-24"
         }
       ]
     }
