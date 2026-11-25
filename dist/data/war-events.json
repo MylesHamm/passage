@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-25T13:11:41Z",
+  "reviewedAt": "2026-11-25T19:10:03Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -11225,6 +11225,74 @@
           "publisher": "Anadolu Agency",
           "title": "Yemen's Houthis claim attacks on Saudi oil refinery, Riyadh financial center",
           "url": "https://www.aa.com.tr/en/middle-east/yemen-s-houthis-claim-attacks-on-saudi-oil-refinery-riyadh-financial-center/4136810",
+          "date": "2026-11-25"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-25-houthi-projectile-hits-jazan-port",
+      "date": "2026-11-25",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Jazan port",
+      "place": "Jazan port",
+      "country": "Saudi Arabia",
+      "lat": 16.8892,
+      "lon": 42.5511,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Houthi projectile hits Saudi Arabia's Jazan port, causes minor damage: Coalition",
+      "summary": "Coalition spokesman Turki al-Maliki said a projectile fired by the Houthis hit Jazan port on 25 Nov, causing minor damage and no civilian casualties; the projectile type was being determined. Houthi-run Saba said the attack was retaliation.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Houthi projectile hits Saudi Arabia's Jazan port, causes minor damage: Coalition",
+          "url": "https://www.aa.com.tr/en/middle-east/houthi-projectile-hits-saudi-arabias-jazan-port-causes-minor-damage-coalition/4137807",
+          "date": "2026-11-25"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Houthi projectile hits Saudi Arabia's Jazan port, coalition says",
+          "url": "https://www.arabnews.com/saudi-arabia/houthi-projectile-hits-saudi-arabias-jazan-port-coalition-says-3014031",
+          "date": "2026-11-25"
+        },
+        {
+          "publisher": "TASS (Russian state-run)",
+          "title": "Houthi attack causes minor damage to Saudi port of Jizan — coalition",
+          "url": "https://tass.com/world/2224889",
+          "date": "2026-11-25"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-25-irgc-claims-lng-carrier-mine-hormuz",
+      "date": "2026-11-25",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC Navy, claimed)",
+      "target": "Unnamed LNG carrier",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "LNG carrier hits mine while using route in Strait of Hormuz not authorized by Iran — IRGC",
+      "summary": "Iran's IRGC Navy claimed that an LNG carrier with tracking switched off struck a naval mine on an unauthorised route in the Strait of Hormuz on the afternoon of 25 Nov and exploded. It did not name the ship or give casualty details.",
+      "sources": [
+        {
+          "publisher": "TASS (Russian state-run)",
+          "title": "LNG carrier hits mine while using route in Strait of Hormuz not authorized by Iran — IRGC",
+          "url": "https://tass.com/world/2224855",
+          "date": "2026-11-25"
+        },
+        {
+          "publisher": "APA",
+          "title": "Explosion occurs on LNG carrier in Strait of Hormuz",
+          "url": "https://en.apa.az/asia/explosion-occurs-on-lng-carrier-in-strait-of-hormuz-538570",
           "date": "2026-11-25"
         }
       ]
