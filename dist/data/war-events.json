@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-25T01:12:18Z",
+  "reviewedAt": "2026-11-25T07:10:21Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10864,6 +10864,31 @@
       ]
     },
     {
+      "id": "2026-11-22-ukmto-three-tankers-hit-eastbound-hormuz",
+      "date": "2026-11-22",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unknown",
+      "target": "Three unnamed tankers on eastbound transit",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "Four More Ships Attacked as Iran Widens Hormuz Crackdown to Tugboats",
+      "summary": "UKMTO said three tankers were struck by unidentified projectiles on 22 Nov while transiting eastbound through the Strait of Hormuz. All three continued their voyages with all crew accounted for; damage was unknown. Ships not named.",
+      "sources": [
+        {
+          "publisher": "gCaptain",
+          "title": "Four More Ships Attacked as Iran Widens Hormuz Crackdown to Tugboats",
+          "url": "https://gcaptain.com/four-more-ships-attacked-as-iran-widens-hormuz-crackdown-to-tugboats/",
+          "date": "2026-11-24"
+        }
+      ]
+    },
+    {
       "id": "2026-11-23-houthis-say-saudi-strike-hodeidah-telecom-building",
       "date": "2026-11-23",
       "time": null,
@@ -11139,6 +11164,31 @@
           "title": "Saudi-led coalition strikes Yemen's Hodeidah Port after Houthis threaten Red Sea ports",
           "url": "https://www.tribuneindia.com/news/evacuation-order/saudi-led-coalition-strikes-yemens-hodeidah-port-after-houthis-threaten-red-sea-ports",
           "date": "2026-11-25"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-24-saba-says-coalition-strikes-near-sanaa-airport",
+      "date": "2026-11-24",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition (claimed by Houthis)",
+      "target": "Vicinity of Sanaa International Airport",
+      "place": "Sanaa International Airport",
+      "country": "Yemen",
+      "lat": 15.4763,
+      "lon": 44.2197,
+      "precision": "facility",
+      "confidence": "claimed",
+      "title": "Houthi media report air strikes near Sanaa airport",
+      "summary": "Houthi-run Saba claimed on 24 Nov that the Saudi-led coalition struck the vicinity of Sanaa International Airport, after a Houthi attack on a Riyadh tower that day. No casualties were reported and the coalition did not comment.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Houthi media report air strikes near Sanaa airport",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthi-media-reports-air-strikes-near-sanaa-airport",
+          "date": "2026-11-24"
         }
       ]
     }
