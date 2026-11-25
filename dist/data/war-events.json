@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-24T13:11:59Z",
+  "reviewedAt": "2026-11-25T01:12:18Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -10938,6 +10938,37 @@
       ]
     },
     {
+      "id": "2026-11-23-strike-buses-trucks-wadi-maabaq-lahj-kills-26",
+      "date": "2026-11-23",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition (claimed by Houthis; disputed)",
+      "target": "Two Houthi vehicles, a bus and a truck on a front-line road",
+      "place": "Lahj province",
+      "country": "Yemen",
+      "lat": 13.05,
+      "lon": 44.8833,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Yemen officials say strike on buses, trucks kills 26",
+      "summary": "Officials told AFP a 23 Nov strike in Lahj (Wadi Maabaq, per Saba) killed 26: 12 Houthi fighters, 14 civilians. Houthis claimed Saudi jets did it; Houthi-run Saba said 25 dead or missing. Government forces blamed the Houthis.",
+      "sources": [
+        {
+          "publisher": "Middle East Eye",
+          "title": "Saudi strikes on Yemen buses and trucks leave 25 dead or missing: Report",
+          "url": "https://www.middleeasteye.net/live-blog/live-blog-update/saudi-strikes-yemen-buses-and-trucks-leave-25-dead-or-missing-report",
+          "date": "2026-11-24"
+        },
+        {
+          "publisher": "Free Malaysia Today (AFP)",
+          "title": "Yemen officials say strike on buses, trucks kills 26",
+          "url": "https://www.freemalaysiatoday.com/category/world/2026/11/24/yemen-officials-say-strike-on-buses-trucks-kills-26",
+          "date": "2026-11-24"
+        }
+      ]
+    },
+    {
       "id": "2026-11-23-yemen-army-says-houthi-missile-aimed-aden-fell-dhamar",
       "date": "2026-11-23",
       "time": null,
@@ -11019,6 +11050,43 @@
       ]
     },
     {
+      "id": "2026-11-24-houthi-drone-attack-riyadh-financial-district-tower",
+      "date": "2026-11-24",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Tower in King Abdullah Financial District (PIF tower, per witnesses)",
+      "place": "King Abdullah Financial District, Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.762,
+      "lon": 46.64,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "11 injured in Houthi drone attack on Riyadh tower, Saudi civil defence says",
+      "summary": "Saudi Civil Defense said a Houthi attack on 24 Nov hit a tower in Riyadh's financial district, injuring 11: two Saudis, two Indians, three Nepalis and four Egyptians. The coalition called it a drone attack. The Houthis did not comment.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera",
+          "title": "11 injured in Houthi drone attack on Riyadh tower, Saudi civil defence says",
+          "url": "https://www.aljazeera.com/news/2026/11/24/saudi-led-coalition-condemns-terrorist-attack-on-tower-in-riyadh",
+          "date": "2026-11-24"
+        },
+        {
+          "publisher": "Daily Sabah (Reuters)",
+          "title": "At least 11 injured in Houthi attack on Riyadh's tallest skyscraper",
+          "url": "https://www.dailysabah.com/world/mid-east/at-least-11-injured-in-houthi-attack-on-riyadhs-tallest-skyscraper",
+          "date": "2026-11-24"
+        },
+        {
+          "publisher": "Arab News Japan",
+          "title": "11 injured after Houthi attack on tower in Riyadh’s financial district",
+          "url": "https://www.arabnews.jp/en/saudi-arabia/11-injured-after-houthi-attack-on-tower-in-riyadhs-financial-district-3001599",
+          "date": "2026-11-24"
+        }
+      ]
+    },
+    {
       "id": "2026-11-24-irgc-claims-fourth-tanker-mine-hormuz",
       "date": "2026-11-24",
       "time": null,
@@ -11046,6 +11114,31 @@
           "title": "Iran says fourth tanker hits mine in Strait of Hormuz",
           "url": "https://www.middleeasteye.net/live-blog/live-blog-update/iran-says-fourth-tanker-hits-mine-strait-hormuz",
           "date": "2026-11-24"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-24-saba-says-coalition-strikes-hodeidah-port",
+      "date": "2026-11-24",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition (claimed by Houthis)",
+      "target": "Hodeidah port",
+      "place": "Hodeidah port",
+      "country": "Yemen",
+      "lat": 14.8022,
+      "lon": 42.9511,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition strikes Yemen's Hodeidah Port after Houthis threaten Red Sea ports",
+      "summary": "Houthi-run Saba claimed on 24 Nov that the Saudi-led coalition attacked Hodeidah port shortly after the coalition ordered civilians to leave it. No casualty figures were given and the coalition did not confirm the strike.",
+      "sources": [
+        {
+          "publisher": "The Tribune (ANI)",
+          "title": "Saudi-led coalition strikes Yemen's Hodeidah Port after Houthis threaten Red Sea ports",
+          "url": "https://www.tribuneindia.com/news/evacuation-order/saudi-led-coalition-strikes-yemens-hodeidah-port-after-houthis-threaten-red-sea-ports",
+          "date": "2026-11-25"
         }
       ]
     }
