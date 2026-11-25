@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-25T07:10:21Z",
+  "reviewedAt": "2026-11-25T13:11:41Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -11148,21 +11148,27 @@
       "time": null,
       "layer": "strikes-on-iran-yemen",
       "type": "air-strike",
-      "actor": "Saudi-led coalition (claimed by Houthis)",
+      "actor": "Saudi-led coalition",
       "target": "Hodeidah port",
       "place": "Hodeidah port",
       "country": "Yemen",
       "lat": 14.8022,
       "lon": 42.9511,
       "precision": "city",
-      "confidence": "claimed",
+      "confidence": "confirmed",
       "title": "Saudi-led coalition strikes Yemen's Hodeidah Port after Houthis threaten Red Sea ports",
-      "summary": "Houthi-run Saba claimed on 24 Nov that the Saudi-led coalition attacked Hodeidah port shortly after the coalition ordered civilians to leave it. No casualty figures were given and the coalition did not confirm the strike.",
+      "summary": "Houthi-run Saba said on 24 Nov that the Saudi-led coalition attacked Hodeidah port after ordering civilians to leave it. The coalition said it targeted operational capabilities at the port. No casualty figures were given.",
       "sources": [
         {
           "publisher": "The Tribune (ANI)",
           "title": "Saudi-led coalition strikes Yemen's Hodeidah Port after Houthis threaten Red Sea ports",
           "url": "https://www.tribuneindia.com/news/evacuation-order/saudi-led-coalition-strikes-yemens-hodeidah-port-after-houthis-threaten-red-sea-ports",
+          "date": "2026-11-25"
+        },
+        {
+          "publisher": "Al Jazeera (AFP, Reuters)",
+          "title": "Saudi-led coalition intercepts Houthi attacks after Hodeidah strike",
+          "url": "https://www.aljazeera.com/news/2026/11/25/saudi-led-coalition-intercepts-houthi-attacks-after-hodeidah-strike",
           "date": "2026-11-25"
         }
       ]
@@ -11189,6 +11195,68 @@
           "title": "Houthi media report air strikes near Sanaa airport",
           "url": "https://www.middleeasteye.net/live-blog/live-blog-update/houthi-media-reports-air-strikes-near-sanaa-airport",
           "date": "2026-11-24"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-25-houthi-drones-ras-tanura-four-intercepted",
+      "date": "2026-11-25",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Ras Tanura refinery",
+      "place": "Ras Tanura",
+      "country": "Saudi Arabia",
+      "lat": 26.6333,
+      "lon": 50.1667,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Yemen's Houthis claim attacks on Saudi oil refinery, Riyadh financial center",
+      "summary": "Coalition spokesman Turki al-Maliki said air defences destroyed four drones over Ras Tanura on the morning of 25 Nov; fragments fell and no casualties were reported. Houthi spokesman Yahya Saree claimed a direct hit that caused fires.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera (AFP, Reuters)",
+          "title": "Saudi-led coalition intercepts Houthi attacks after Hodeidah strike",
+          "url": "https://www.aljazeera.com/news/2026/11/25/saudi-led-coalition-intercepts-houthi-attacks-after-hodeidah-strike",
+          "date": "2026-11-25"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Yemen's Houthis claim attacks on Saudi oil refinery, Riyadh financial center",
+          "url": "https://www.aa.com.tr/en/middle-east/yemen-s-houthis-claim-attacks-on-saudi-oil-refinery-riyadh-financial-center/4136810",
+          "date": "2026-11-25"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-25-irgc-claims-two-tankers-mines-hormuz",
+      "date": "2026-11-25",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC Navy, claimed)",
+      "target": "Two unnamed oil tankers",
+      "place": "Strait of Hormuz",
+      "country": "Strait of Hormuz",
+      "lat": 26.5667,
+      "lon": 56.25,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran says ships hit mines in Hormuz, warns vessels to coordinate passage",
+      "summary": "Iran's IRGC Navy claimed, in a statement carried by state media, that two oil tankers on an unauthorised route struck naval mines early on 25 Nov, exploded and caught fire. It did not name the ships or give casualty details.",
+      "sources": [
+        {
+          "publisher": "Business Recorder (Reuters)",
+          "title": "Iran says ships hit mines in Hormuz, warns vessels to coordinate passage",
+          "url": "https://www.brecorder.com/news/40450695/iran-says-ships-hit-mines-in-hormuz-warns-vessels-to-coordinate-passage",
+          "date": "2026-11-25"
+        },
+        {
+          "publisher": "Oilprice.com",
+          "title": "Iran Reports Fresh Tanker Explosions as Hormuz Attacks Intensify",
+          "url": "https://oilprice.com/Latest-Energy-News/World-News/Iran-Reports-Fresh-Tanker-Explosions-as-Hormuz-Attacks-Intensify.html",
+          "date": "2026-11-25"
         }
       ]
     }
