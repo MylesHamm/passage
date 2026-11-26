@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-26T13:10:44Z",
+  "reviewedAt": "2026-11-26T19:09:20Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -11552,6 +11552,37 @@
       ]
     },
     {
+      "id": "2026-11-26-coalition-destroys-missile-launch-platform-hodeidah",
+      "date": "2026-11-26",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi ballistic missile launch platform",
+      "place": "Hodeidah governorate",
+      "country": "Yemen",
+      "lat": 14.8022,
+      "lon": 42.9511,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Coalition says it destroyed a Houthi ballistic missile launch platform in Hodeidah",
+      "summary": "The Saudi-led coalition said on 26 Nov it destroyed a ballistic missile launch platform in Hodeidah that the Houthis used in the Jazan refinery attack. Anadolu reported the site as Hodeidah province; Arab News as Hodeidah port.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Houthi attack targets oil refinery in southwestern Saudi Arabia: Coalition",
+          "url": "https://www.aa.com.tr/en/middle-east/houthi-attack-targets-oil-refinery-in-southwestern-saudi-arabia-coalition/4139233",
+          "date": "2026-11-26"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Houthi attack on Saudi Arabia's Jazan refinery kills Nepali worker",
+          "url": "https://www.arabnews.com/saudi-arabia/houthi-attack-on-saudi-arabias-jazan-refinery-kills-nepali-worker-3014153",
+          "date": "2026-11-26"
+        }
+      ]
+    },
+    {
       "id": "2026-11-26-coalition-intercepts-two-houthi-drones-eastern-province",
       "date": "2026-11-26",
       "time": null,
@@ -11572,6 +11603,37 @@
           "publisher": "Yeni Şafak",
           "title": "Saudi-led coalition intercepts 2 Houthi ballistic missiles aimed at Riyadh",
           "url": "https://en.yenisafak.com/world/saudi-led-coalition-intercepts-2-houthi-ballistic-missiles-aimed-at-riyadh-3726002",
+          "date": "2026-11-26"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-26-houthi-attack-jazan-refinery-kills-worker",
+      "date": "2026-11-26",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Jazan refinery",
+      "place": "Jazan",
+      "country": "Saudi Arabia",
+      "lat": 16.8892,
+      "lon": 42.5511,
+      "precision": "city",
+      "confidence": "confirmed",
+      "title": "Houthi attack on Saudi Arabia's Jazan refinery kills Nepali worker",
+      "summary": "The Saudi Energy Ministry said a hostile aerial projectile hit the Jazan refinery on 26 Nov, killing a Nepali worker, injuring several others and halting some operations. The Saudi-led coalition said the Houthis carried out the attack.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Houthi attack targets oil refinery in southwestern Saudi Arabia: Coalition",
+          "url": "https://www.aa.com.tr/en/middle-east/houthi-attack-targets-oil-refinery-in-southwestern-saudi-arabia-coalition/4139233",
+          "date": "2026-11-26"
+        },
+        {
+          "publisher": "Arab News",
+          "title": "Houthi attack on Saudi Arabia's Jazan refinery kills Nepali worker",
+          "url": "https://www.arabnews.com/saudi-arabia/houthi-attack-on-saudi-arabias-jazan-refinery-kills-nepali-worker-3014153",
           "date": "2026-11-26"
         }
       ]
