@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-26T07:10:55Z",
+  "reviewedAt": "2026-11-26T13:10:44Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -9356,7 +9356,7 @@
       "precision": "sea-area",
       "confidence": "confirmed",
       "title": "ADNOC L&S says one of its ships was attacked in Hormuz; one crew member missing",
-      "summary": "ADNOC L&S said one of its ships was hit in Hormuz on the evening of 17 Nov; one crew member was missing and 11 injured. UKMTO, not naming the ship, said a tanker was hit by an unknown projectile 13 nm north of Khasab, per Reuters.",
+      "summary": "ADNOC L&S said one of its ships was hit in Hormuz on the evening of 17 Nov, with one crew member missing and 11 injured; UKMTO said a tanker was hit 13 nm north of Khasab. On 26 Nov ADNOC L&S said the missing Jordanian was found dead.",
       "sources": [
         {
           "publisher": "The National",
@@ -9375,6 +9375,12 @@
           "title": "UAE state oil firm says one missing after its ship hit in Hormuz",
           "url": "https://freemalaysiatoday.com/category/world/2026/11/18/uae-state-oil-firm-says-one-missing-after-ship-hit-in-hormuz",
           "date": "2026-11-18"
+        },
+        {
+          "publisher": "The National",
+          "title": "Body of missing Jordanian sailor found off UAE eight days after tanker attack",
+          "url": "https://www.thenationalnews.com/news/mena/2026/11/26/body-of-jordanian-sailor-missing-since-tanker-attack-off-uae-found/",
+          "date": "2026-11-26"
         }
       ]
     },
@@ -11510,6 +11516,93 @@
           "publisher": "Times of Israel (Reuters)",
           "title": "Projectile said to cause explosion near tanker west of Dubai",
           "url": "https://www.timesofisrael.com/liveblog_entry/projectile-said-to-cause-explosion-near-tanker-west-of-dubai/",
+          "date": "2026-11-26"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-25-tanker-hit-projectile-18nm-east-of-khasab",
+      "date": "2026-11-25",
+      "time": "13:00Z",
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "Unknown",
+      "target": "Unnamed outbound tanker",
+      "place": "Strait of Hormuz, about 18 nm east of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.1829,
+      "lon": 56.5841,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "UKMTO says an outbound tanker was struck by a projectile 18 nm east of Khasab",
+      "summary": "UKMTO said an outbound tanker was struck by an unidentified projectile about 18 nm east of Khasab, Oman, at about 1300 UTC on 25 Nov. All crew were accounted for, with no environmental impact reported so far.",
+      "sources": [
+        {
+          "publisher": "Arab Times",
+          "title": "Outbound Tanker Struck by Unknown Projectile Near Oman’s Khasab",
+          "url": "https://www.arabtimesonline.com/news/tanker-struck-by-unknown-projectile-near-omans-khasab-112188/",
+          "date": "2026-11-26"
+        },
+        {
+          "publisher": "Gulf News",
+          "title": "Middle East conflict: Saudi Arabia intercepts missiles and drones as Trump keeps Iran options open",
+          "url": "https://gulfnews.com/world/mena/middle-east-conflict-saudi-arabia-intercepts-missiles-and-drones-as-trump-keeps-iran-options-open-1.500761343",
+          "date": "2026-11-26"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-26-coalition-intercepts-two-houthi-drones-eastern-province",
+      "date": "2026-11-26",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Eastern Province",
+      "place": "Eastern Province",
+      "country": "Saudi Arabia",
+      "lat": 26.4207,
+      "lon": 50.0888,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it destroyed two drones over the Eastern Province",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on 26 Nov that air defences intercepted and destroyed two drones over Saudi Arabia's Eastern Province, after two Houthi ballistic missiles aimed at Riyadh. No casualties or damage were reported.",
+      "sources": [
+        {
+          "publisher": "Yeni Şafak",
+          "title": "Saudi-led coalition intercepts 2 Houthi ballistic missiles aimed at Riyadh",
+          "url": "https://en.yenisafak.com/world/saudi-led-coalition-intercepts-2-houthi-ballistic-missiles-aimed-at-riyadh-3726002",
+          "date": "2026-11-26"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-26-houthis-say-saudi-airstrikes-sanaa-bani-al-harith",
+      "date": "2026-11-26",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi Arabia (claimed by Houthis)",
+      "target": "Factory and warehouses in Bani al-Harith",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3694,
+      "lon": 44.191,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthi media say Saudi airstrikes hit Sanaa after Houthi missiles targeted Riyadh",
+      "summary": "Houthi media claimed a series of Saudi airstrikes hit Sanaa on 26 Nov; Almasirah said a factory and warehouses in Bani al-Harith were targeted. An AFP journalist saw smoke near the airport. No casualty figures were given.",
+      "sources": [
+        {
+          "publisher": "Daily Sabah (AFP)",
+          "title": "Saudi retaliatory strikes hit Yemen's Houthi-held capital Sanaa",
+          "url": "https://www.dailysabah.com/world/mid-east/saudi-retaliatory-strikes-hit-yemens-houthi-held-capital-sanaa",
+          "date": "2026-11-26"
+        },
+        {
+          "publisher": "24NewsHD (AFP)",
+          "title": "Yemen's Houthi-held capital hit after group targets Riyadh",
+          "url": "https://www.24newshd.tv/26-Nov-2026/yemen-s-houthi-held-capital-hit-group-targets-riyadh",
           "date": "2026-11-26"
         }
       ]
