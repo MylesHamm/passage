@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-27T13:10:30Z",
+  "reviewedAt": "2026-11-27T19:11:03Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -11763,6 +11763,31 @@
       ]
     },
     {
+      "id": "2026-11-26-us-aircraft-disables-cargo-ship-pacific-archer-gulf-of-oman",
+      "date": "2026-11-26",
+      "time": null,
+      "layer": "shipping",
+      "type": "shipping-attack",
+      "actor": "United States",
+      "target": "Palau-flagged cargo ship (M/V Pacific Archer)",
+      "place": "Gulf of Oman",
+      "country": "Gulf of Oman",
+      "lat": 24.5,
+      "lon": 58.5,
+      "precision": "sea-area",
+      "confidence": "confirmed",
+      "title": "US aircraft disables cargo ship Pacific Archer in the Gulf of Oman under the blockade",
+      "summary": "CENTCOM said a US aircraft struck the stern of the Palau-flagged cargo ship Pacific Archer in the Gulf of Oman on 26 Nov, disabling its propulsion, after it left Bandar Abbas and ignored warnings. It said the crew was unharmed.",
+      "sources": [
+        {
+          "publisher": "Jerusalem Post",
+          "title": "US military strikes cargo ship from Bandar Abbas in Gulf of Oman, says it tried to breach blockade",
+          "url": "https://www.jpost.com/middle-east/iran-news/article-916339",
+          "date": "2026-11-27"
+        }
+      ]
+    },
+    {
       "id": "2026-11-27-coalition-intercepts-houthi-drone-riyadh-region",
       "date": "2026-11-27",
       "time": null,
@@ -11783,6 +11808,68 @@
           "publisher": "Anadolu Agency",
           "title": "Saudi-led coalition intercepts Houthi drone targeting Riyadh region",
           "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-intercepts-houthi-drone-targeting-riyadh-region/4140370",
+          "date": "2026-11-27"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-27-houthi-media-say-saudi-strike-kills-11-al-turbah-taiz",
+      "date": "2026-11-27",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition (claimed by Houthi media)",
+      "target": "Residential building",
+      "place": "Al-Turbah, Taiz",
+      "country": "Yemen",
+      "lat": 13.2155,
+      "lon": 44.1191,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Saudi strike kills '11 civilians' in Yemen's Taiz: Houthi media",
+      "summary": "Houthi-run Saba claimed, citing the Houthi health ministry, that a Saudi strike on a residential building in Al-Turbah, Taiz, killed 11 civilians on 27 Nov, most of them children. The coalition did not immediately comment.",
+      "sources": [
+        {
+          "publisher": "Al Jazeera (AFP)",
+          "title": "Saudi strike kills '11 civilians' in Yemen's Taiz: Houthi media",
+          "url": "https://www.aljazeera.com/news/2026/11/27/saudi-strike-kills-11-civilians-in-yemens-taiz-houthi-media",
+          "date": "2026-11-27"
+        },
+        {
+          "publisher": "Pakistan Today (Anadolu)",
+          "title": "11 killed as Saudi aircraft targets residential building in Yemen's Taiz: Saba",
+          "url": "https://www.pakistantoday.com.pk/2026/11/27/11-killed-as-saudi-aircraft-targets-residential-building-in-yemens-taiz-saba",
+          "date": "2026-11-27"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-27-irgc-claims-tanker-mine-north-of-ghanam-island",
+      "date": "2026-11-27",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC Navy, claimed)",
+      "target": "Unnamed oil tanker",
+      "place": "Strait of Hormuz, north of Ghanam Island",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.3537,
+      "lon": 56.3513,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Iran Guards say tanker hits mine near Strait of Hormuz",
+      "summary": "Iran's IRGC Navy claimed, in a statement carried by IRIB, that an oil tanker on an unauthorised route hit a mine and exploded north of Ghanam Island in the Strait of Hormuz on 27 Nov. It did not name the ship or give casualties.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (Reuters)",
+          "title": "Iran Guards say tanker hits mine near Strait of Hormuz",
+          "url": "https://www.timesofisrael.com/liveblog_entry/iran-guards-say-tanker-hits-mine-near-strait-of-hormuz/",
+          "date": "2026-11-27"
+        },
+        {
+          "publisher": "Pakistan Today (agencies)",
+          "title": "IRGC says tanker hit mine, exploded in Strait of Hormuz",
+          "url": "https://www.pakistantoday.com.pk/2026/11/27/irgc-says-tanker-hit-mine-exploded-in-strait-of-hormuz",
           "date": "2026-11-27"
         }
       ]
