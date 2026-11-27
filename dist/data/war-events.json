@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-27T01:10:44Z",
+  "reviewedAt": "2026-11-27T07:10:07Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -11608,6 +11608,62 @@
       ]
     },
     {
+      "id": "2026-11-26-coalition-strikes-houthi-targets-saada",
+      "date": "2026-11-26",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition",
+      "target": "Houthi military targets",
+      "place": "Saada governorate",
+      "country": "Yemen",
+      "lat": 16.9402,
+      "lon": 43.7639,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Saudi-led coalition says it hit Houthi targets in Saada among 50 across Yemen",
+      "summary": "Coalition spokesman Turki al-Maliki said on 26 Nov that the coalition destroyed 50 Houthi military targets in Sanaa, Al Hudaydah and Saada provinces. He did not describe the targets; no casualty figures were given.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it destroyed 50 Houthi military targets across Yemen",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-says-it-destroyed-50-houthi-military-targets-across-yemen/4139651",
+          "date": "2026-11-26"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-26-drone-attack-kuwait-air-defence-station-kills-two-italians",
+      "date": "2026-11-26",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Iran (per Kuwait and Italy; Iran denies)",
+      "target": "Air defence surveillance station",
+      "place": "Kuwait",
+      "country": "Kuwait",
+      "lat": 29.3759,
+      "lon": 47.9774,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Two Italians killed in attack on Kuwait site, Iran denies involvement",
+      "summary": "Drones hit an air defence surveillance station in Kuwait on 26 Nov, killing two Rheinmetall Italia technicians and wounding a Kuwaiti and a Pakistani, Kuwait's Defence Ministry and Italy said. Both blamed Iran; Iran denied it.",
+      "sources": [
+        {
+          "publisher": "NBC News (Reuters)",
+          "title": "Two Italians killed in attack on Kuwait site, Iran denies involvement",
+          "url": "https://www.nbcnews.com/world/middle-east/two-italians-killed-attack-kuwait-site-iran-denies-involvement-rcna611491",
+          "date": "2026-11-26"
+        },
+        {
+          "publisher": "The New Arab",
+          "title": "Iran denies Kuwait attack that killed 2 Italians; Houthis target Saudi refinery",
+          "url": "https://www.newarab.com/news/iran-denies-deadly-kuwait-attack-houthis-target-saudi-refinery",
+          "date": "2026-11-26"
+        }
+      ]
+    },
+    {
       "id": "2026-11-26-houthi-attack-jazan-refinery-kills-worker",
       "date": "2026-11-26",
       "time": null,
@@ -11644,16 +11700,16 @@
       "time": null,
       "layer": "strikes-on-iran-yemen",
       "type": "air-strike",
-      "actor": "Saudi Arabia (claimed by Houthis)",
+      "actor": "Saudi-led coalition",
       "target": "Factory and warehouses in Bani al-Harith",
       "place": "Sanaa",
       "country": "Yemen",
       "lat": 15.3694,
       "lon": 44.191,
       "precision": "city",
-      "confidence": "claimed",
+      "confidence": "confirmed",
       "title": "Houthi media say Saudi airstrikes hit Sanaa after Houthi missiles targeted Riyadh",
-      "summary": "Houthi media claimed a series of Saudi airstrikes hit Sanaa on 26 Nov; Almasirah said a factory and warehouses in Bani al-Harith were targeted. An AFP journalist saw smoke near the airport. No casualty figures were given.",
+      "summary": "Houthi media reported Saudi airstrikes on Sanaa on 26 Nov; Almasirah said a factory and warehouses in Bani al-Harith were hit. The coalition said it struck targets in Sanaa province that day. No casualty figures were given.",
       "sources": [
         {
           "publisher": "Daily Sabah (AFP)",
@@ -11665,6 +11721,43 @@
           "publisher": "24NewsHD (AFP)",
           "title": "Yemen's Houthi-held capital hit after group targets Riyadh",
           "url": "https://www.24newshd.tv/26-Nov-2026/yemen-s-houthi-held-capital-hit-group-targets-riyadh",
+          "date": "2026-11-26"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it destroyed 50 Houthi military targets across Yemen",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-says-it-destroyed-50-houthi-military-targets-across-yemen/4139651",
+          "date": "2026-11-26"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-26-irgc-claims-two-tankers-mines-north-of-khasab",
+      "date": "2026-11-26",
+      "time": null,
+      "layer": "shipping",
+      "type": "mine",
+      "actor": "Iran (IRGC Navy, claimed)",
+      "target": "Two unnamed tankers, one a supertanker",
+      "place": "Strait of Hormuz, north of Khasab",
+      "country": "Oman (Strait of Hormuz)",
+      "lat": 26.1797,
+      "lon": 56.2475,
+      "precision": "sea-area",
+      "confidence": "claimed",
+      "title": "Iran says two tankers hit while trying to cross Hormuz",
+      "summary": "Iran's IRGC claimed two tankers on an unauthorised route struck sea mines north of Oman's Khasab port early on 26 Nov, exploded and caught fire; it said one was a supertanker carrying over 2 million barrels. It named neither ship.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (Reuters)",
+          "title": "Iran says two tankers hit while trying to cross Hormuz",
+          "url": "https://www.timesofisrael.com/liveblog_entry/iran-says-two-tankers-hit-while-trying-to-cross-hormuz/",
+          "date": "2026-11-26"
+        },
+        {
+          "publisher": "Trend",
+          "title": "Two oil tankers explode after striking naval mines near Oman's Khasab port - IRGC",
+          "url": "https://www.trend.az/iran/4250972.html",
           "date": "2026-11-26"
         }
       ]
