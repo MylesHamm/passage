@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-27T07:10:07Z",
+  "reviewedAt": "2026-11-27T13:10:30Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -11759,6 +11759,31 @@
           "title": "Two oil tankers explode after striking naval mines near Oman's Khasab port - IRGC",
           "url": "https://www.trend.az/iran/4250972.html",
           "date": "2026-11-26"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-27-coalition-intercepts-houthi-drone-riyadh-region",
+      "date": "2026-11-27",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "drone",
+      "actor": "Houthis",
+      "target": "Riyadh region",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it intercepted a Houthi drone aimed at the Riyadh region",
+      "summary": "The Saudi-led coalition claimed on 27 Nov that it intercepted and destroyed a drone the Houthis launched towards the Riyadh region. Its brief statement reported no casualties or damage.",
+      "sources": [
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition intercepts Houthi drone targeting Riyadh region",
+          "url": "https://www.aa.com.tr/en/middle-east/saudi-led-coalition-intercepts-houthi-drone-targeting-riyadh-region/4140370",
+          "date": "2026-11-27"
         }
       ]
     }
