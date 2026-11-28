@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-28T07:10:59Z",
+  "reviewedAt": "2026-11-28T13:10:32Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -11875,6 +11875,37 @@
       ]
     },
     {
+      "id": "2026-11-28-armed-men-hijack-cargo-ship-southwest-of-balhaf",
+      "date": "2026-11-28",
+      "time": "06:30Z",
+      "layer": "shipping",
+      "type": "seizure",
+      "actor": "Unidentified armed persons",
+      "target": "Unnamed cargo ship",
+      "place": "Gulf of Aden, about 64 nm southwest of Balhaf",
+      "country": "Yemen (Gulf of Aden)",
+      "lat": 13.9786,
+      "lon": 48.1797,
+      "precision": "area",
+      "confidence": "confirmed",
+      "title": "Armed men hijack cargo ship in the Gulf of Aden southwest of Balhaf",
+      "summary": "UKMTO said the master reported armed persons boarded a cargo ship about 64 nm southwest of Balhaf, Yemen, at 06:30 GMT on 28 Nov and were in command of it. AFP gave about 120 km. No group claimed it; the ship was not named.",
+      "sources": [
+        {
+          "publisher": "Kuwait Times (AFP)",
+          "title": "Armed men hijack cargo ship off southern Yemen",
+          "url": "https://kuwaittimes.com/article/54510/world/armed-men-hijack-cargo-ship-off-southern-yemen",
+          "date": "2026-11-28"
+        },
+        {
+          "publisher": "Daily Sabah (agencies)",
+          "title": "Yemen airstrikes wound 15 as power plant burns, cargo ship hijacked",
+          "url": "https://www.dailysabah.com/world/mid-east/yemen-airstrikes-wound-15-as-power-plant-burns-cargo-ship-hijacked",
+          "date": "2026-11-28"
+        }
+      ]
+    },
+    {
       "id": "2026-11-28-coalition-intercepts-houthi-cruise-missile-riyadh",
       "date": "2026-11-28",
       "time": null,
@@ -11907,6 +11938,68 @@
           "publisher": "Free Malaysia Today (AFP)",
           "title": "Saudi, Houthis trade strikes targeting capitals",
           "url": "https://www.freemalaysiatoday.com/category/world/2026/11/28/saudi-houthis-trade-strikes-targeting-capitals",
+          "date": "2026-11-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-28-coalition-intercepts-three-houthi-ballistic-missiles-southern-region",
+      "date": "2026-11-28",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Southern region",
+      "place": "Southern region (Asir)",
+      "country": "Saudi Arabia",
+      "lat": 18.2164,
+      "lon": 42.5053,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it destroyed three Houthi ballistic missiles aimed at the south",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on X on 28 Nov that air defences destroyed one Houthi ballistic missile aimed at the southern region and, later, two more. Civil Defense briefly issued alerts for Jazan, Khamis Mushait and Abha.",
+      "sources": [
+        {
+          "publisher": "Arab News",
+          "title": "Air defenses intercept Houthi ballistic missile targeting Saudi Arabia's southern region",
+          "url": "https://www.arabnews.com/saudi-arabia/air-defenses-intercept-houthi-ballistic-missile-targeting-saudi-arabias-southern-region-3014357",
+          "date": "2026-11-28"
+        },
+        {
+          "publisher": "Anadolu Agency",
+          "title": "Saudi-led coalition says it destroyed 3 Houthi ballistic missiles targeting southern Saudi Arabia",
+          "url": "https://www.aa.com.tr/en/world/saudi-led-coalition-says-it-destroyed-3-houthi-ballistic-missiles-targeting-southern-saudi-arabia/4141283",
+          "date": "2026-11-28"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-28-houthis-say-strike-sanaa-abu-shamla-wounds-15",
+      "date": "2026-11-28",
+      "time": null,
+      "layer": "strikes-on-iran-yemen",
+      "type": "air-strike",
+      "actor": "Saudi-led coalition (claimed by Houthis)",
+      "target": "Abu Shamla neighbourhood, Al-Tahrir district",
+      "place": "Sanaa",
+      "country": "Yemen",
+      "lat": 15.3694,
+      "lon": 44.191,
+      "precision": "city",
+      "confidence": "claimed",
+      "title": "Houthis report airstrikes in Yemen's Sanaa, Red Sea port city Mokha",
+      "summary": "The Houthi-run Health Ministry claimed an early 28 Nov strike on Sanaa's Abu Shamla area wounded at least 15, including two women; Al-Masirah said eight houses, three shops and a gas station were hit. The Houthis blamed Saudi Arabia.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (AP)",
+          "title": "Houthis report airstrikes in Yemen's Sanaa, Red Sea port city Mokha",
+          "url": "https://www.timesofisrael.com/liveblog_entry/houthis-report-airstrikes-in-yemens-sanaa-red-sea-port-city-mokha/",
+          "date": "2026-11-28"
+        },
+        {
+          "publisher": "Daily Sabah (agencies)",
+          "title": "Yemen airstrikes wound 15 as power plant burns, cargo ship hijacked",
+          "url": "https://www.dailysabah.com/world/mid-east/yemen-airstrikes-wound-15-as-power-plant-burns-cargo-ship-hijacked",
           "date": "2026-11-28"
         }
       ]
