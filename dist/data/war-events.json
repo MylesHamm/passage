@@ -1,6 +1,6 @@
 {
   "schema": "passage-war-events/v1",
-  "reviewedAt": "2026-11-27T19:11:03Z",
+  "reviewedAt": "2026-11-28T07:10:59Z",
   "basis": "Curated from cited reporting; locations are the named place, not a precise impact point.",
   "events": [
     {
@@ -11871,6 +11871,43 @@
           "title": "IRGC says tanker hit mine, exploded in Strait of Hormuz",
           "url": "https://www.pakistantoday.com.pk/2026/11/27/irgc-says-tanker-hit-mine-exploded-in-strait-of-hormuz",
           "date": "2026-11-27"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-28-coalition-intercepts-houthi-cruise-missile-riyadh",
+      "date": "2026-11-28",
+      "time": null,
+      "layer": "missile-drone",
+      "type": "missile",
+      "actor": "Houthis",
+      "target": "Riyadh region",
+      "place": "Riyadh",
+      "country": "Saudi Arabia",
+      "lat": 24.7136,
+      "lon": 46.6753,
+      "precision": "area",
+      "confidence": "claimed",
+      "title": "Saudi-led coalition says it intercepted a Houthi cruise missile aimed at Riyadh",
+      "summary": "Coalition spokesman Turki al-Maliki claimed on X on 28 Nov that air defences intercepted and destroyed a Houthi cruise missile launched towards the Riyadh region. Saudi Civil Defense had issued alerts for Al Kharj and the Eastern Province.",
+      "sources": [
+        {
+          "publisher": "Times of Israel (AFP)",
+          "title": "Saudis shoot down cruise missile targeting Riyadh",
+          "url": "https://www.timesofisrael.com/liveblog_entry/saudis-shoot-down-cruise-missile-targeting-riyadh/",
+          "date": "2026-11-28"
+        },
+        {
+          "publisher": "The Peninsula (QNA)",
+          "title": "Saudi-led coalition intercepts missile launched towards Riyadh",
+          "url": "https://thepeninsulaqatar.com/article/28/11/2026/saudi-led-coalition-intercepts-missile-launched-towards-riyadh",
+          "date": "2026-11-28"
+        },
+        {
+          "publisher": "Free Malaysia Today (AFP)",
+          "title": "Saudi, Houthis trade strikes targeting capitals",
+          "url": "https://www.freemalaysiatoday.com/category/world/2026/11/28/saudi-houthis-trade-strikes-targeting-capitals",
+          "date": "2026-11-28"
         }
       ]
     }
